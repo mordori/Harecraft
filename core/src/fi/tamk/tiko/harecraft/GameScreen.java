@@ -30,17 +30,25 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(GameMain game) {
         this.game = game;
 
-        camera = new PerspectiveCamera(40f, WORLD_WIDTH, WORLD_HEIGHT);
+        camera = new PerspectiveCamera(50f, WORLD_WIDTH, WORLD_HEIGHT);
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
         decal_background = Decal.newDecal(Assets.texR_background, true);
         decal_background.setPosition(0f,0f,300f);
 
-        player = new Player(0f,0.5f,0f);
+        player = new Player(0f,0f,0f);
 
         clouds.add(new Cloud(1f,-1f,40f));
         clouds.add(new Cloud(-4f,2f,60f));
         clouds.add(new Cloud(-1f,2f,80f));
+        clouds.add(new Cloud(3f,1f,110f));
+
+        clouds.add(new Cloud(5f,-6f,70f));
+        clouds.add(new Cloud(-5f,-6f,60f));
+        clouds.add(new Cloud(2f,-6f,80f));
+        clouds.add(new Cloud(3f,-6f,120f));
+        clouds.add(new Cloud(-4f,-6f,90f));
+        clouds.add(new Cloud(0f,-6f,100f));
 
         camera.near = 0.1f;
         camera.far = 400f;

@@ -17,6 +17,6 @@ public class Cloud extends GameObject {
     }
 
     public void update(float delta) {
-        decal.translateZ(-12f * delta);
+        decal.translateZ(-10f * delta);
     }
 }
