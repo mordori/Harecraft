@@ -14,7 +14,7 @@ public class GameMain extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 	}
-
+	//this method is teh render method
 	@Override
 	public void render () {
 		super.render();
