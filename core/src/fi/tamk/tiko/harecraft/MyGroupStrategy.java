@@ -159,7 +159,8 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public void afterGroups () {
         shader.end();
-        Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+        //DISABLED
+        //Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
     }
 
     private void createDefaultShader () {
