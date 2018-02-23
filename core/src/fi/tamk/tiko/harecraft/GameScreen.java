@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         game.sBatch.begin();
-        game.sBatch.draw(tex_backgroundTest,0f,-100f);
+        game.sBatch.draw(tex_backgroundTest,0f,0f);
         game.sBatch.end();
     }
 
