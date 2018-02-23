@@ -15,9 +15,4 @@ public class Player extends GameObject {
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
         decal.setPosition(x,y,z);
     }
-
-    public Player(float x, float y, float z, int i) {
-        decal = Decal.newDecal(width*2,height*2,Assets.texR_cloud, true);
-        decal.setPosition(x,y,z);
-    }
 }

@@ -45,7 +45,8 @@ public class GameScreen extends ScreenAdapter {
         camera.near = 0.1f;
         camera.far = 400f;
         camera.position.set(0f,0f,-5f);
-        camera.lookAt(decal_background.getPosition());
+        //camera.lookAt(decal_background.getPosition());
+        camera.lookAt(0f,0f,50f);
 
         //Gdx.input.setInputProcessor(this);
     }
