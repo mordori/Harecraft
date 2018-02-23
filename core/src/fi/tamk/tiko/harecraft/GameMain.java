@@ -12,6 +12,7 @@ public class GameMain extends Game {
 	
 	@Override
 	public void create () {
+	    setScreen(new GameScreen());
 		batch = new SpriteBatch();
 	}
 	//this method is teh render method
