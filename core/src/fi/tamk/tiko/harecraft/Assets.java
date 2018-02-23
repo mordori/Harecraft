@@ -13,10 +13,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 
 public class Assets {
-    static Texture tex_backgroundTest;
+    static TextureRegion texR_background;
+    static TextureRegion texR_player;
 
     public static void load() {
-        tex_backgroundTest = loadTexture("tex_backgroundTest.png");
+        texR_background = new TextureRegion(loadTexture("tex_backgroundTest.png"));
+        texR_player = new TextureRegion(loadTexture("tex_planeTest.png"));
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
@@ -36,8 +38,8 @@ public class Assets {
         }
     }
 
-
     public static void dispose() {
-        tex_backgroundTest.dispose();
+        texR_background.getTexture().dispose();
+        texR_player.getTexture().dispose();
     }
 }
