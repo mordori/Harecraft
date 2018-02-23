@@ -15,7 +15,7 @@ public class GameMain extends Game {
 	    setScreen(new GameScreen());
 		batch = new SpriteBatch();
 	}
-	//this method is teh render method
+	//this method is teh render methodk
 	@Override
 	public void render () {
 		super.render();
