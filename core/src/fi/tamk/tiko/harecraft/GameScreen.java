@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 
+import java.util.ArrayList;
+
 /**
  * Created by musta on 23.2.2018.
  */
@@ -23,7 +25,7 @@ public class GameScreen extends ScreenAdapter {
     Decal decal_background;
 
     Player player;
-
+    ArrayList<Cloud> clouds = new ArrayList<Cloud>();
 
     public GameScreen(GameMain game) {
         this.game = game;
@@ -36,6 +38,11 @@ public class GameScreen extends ScreenAdapter {
 
         player = new Player(0f,0.5f,0f);
 
+        clouds.add(new Cloud(1f,-1f,40f));
+        clouds.add(new Cloud(-4f,2f,60f));
+        clouds.add(new Cloud(-1f,2f,80f));
+
+        camera.near = 0.1f;
         camera.far = 400f;
         camera.position.set(0f,0f,-5f);
         camera.lookAt(decal_background.getPosition());
@@ -52,11 +59,18 @@ public class GameScreen extends ScreenAdapter {
 
     public void update(float delta) {
         checkInput(delta);
+        camera.position.set(player.decal.getPosition().x,player.decal.getPosition().y,-5f);
         camera.update();
+        for(Cloud cloud : clouds) {
+            cloud.update(delta);
+        }
     }
 
     public void drawDecals() {
         dBatch.add(decal_background);
+        for(Cloud cloud : clouds) {
+            dBatch.add(cloud.decal);
+        }
         dBatch.add(player.decal);
         dBatch.flush();
     }
@@ -69,19 +83,19 @@ public class GameScreen extends ScreenAdapter {
     public void checkInput(float delta) {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             //Gdx.app.log("TAG","LEFT");
-            player.decal.translateX(1f * delta);
+            player.decal.translateX(2f * delta);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             //Gdx.app.log("TAG","RIGHT");
-            player.decal.translateX(-1f * delta);
+            player.decal.translateX(-2f * delta);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
             //Gdx.app.log("TAG","UP");
-            player.decal.translateY(1f * delta);
+            player.decal.translateY(2f * delta);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             //Gdx.app.log("TAG","DOWN");
-            player.decal.translateY(-1f * delta);
+            player.decal.translateY(-2f * delta);
         }
     }
 
