@@ -62,15 +62,15 @@ public class GameScreen extends ScreenAdapter {
         checkInput(delta);
         camera.position.set(player.decal.getPosition().x,player.decal.getPosition().y,-5f);
         camera.update();
-        for(Cloud cloud : clouds) {
-            cloud.update(delta);
+        for(Cloud c : clouds) {
+            c.update(delta);
         }
     }
 
     public void drawDecals() {
         dBatch.add(decal_background);
-        for(Cloud cloud : clouds) {
-            dBatch.add(cloud.decal);
+        for(Cloud c : clouds) {
+            dBatch.add(c.decal);
         }
         dBatch.add(player.decal);
         dBatch.flush();
