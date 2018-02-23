@@ -1,6 +1,5 @@
 package fi.tamk.tiko.harecraft;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
