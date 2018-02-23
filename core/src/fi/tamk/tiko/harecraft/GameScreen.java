@@ -1,6 +1,9 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +15,7 @@ import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
  * Created by musta on 23.2.2018.
  */
 
-public class GameScreen implements Screen {
+public class GameScreen  extends InputAdapter implements Screen {
 
     GameMain game;
     Decal dec_Background;
@@ -29,6 +32,7 @@ public class GameScreen implements Screen {
         camera.position.set(0f,0f,0f);
         camera.far = 500f;
         camera.lookAt(dec_Background.getPosition());
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -39,6 +43,8 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         camera.update();
+
+        checkInput();
 
         dBatch.add(dec_Background);
         dBatch.flush();
@@ -69,6 +75,29 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+
+    }
+
+    @Override
+    public boolean keyDown (int keycode) {
+        if (keycode == Input.Keys.SPACE)
+        Gdx.app.log("TAG","input prosessor spae");
+        return false;
+    }
+
+    public void checkInput() {
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            Gdx.app.log("TAG","Vasen");
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            Gdx.app.log("TAG","Oikea");
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            Gdx.app.log("TAG","Ylös");
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            Gdx.app.log("TAG","Alas");
+        }
 
     }
 }
