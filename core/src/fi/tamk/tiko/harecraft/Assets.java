@@ -18,9 +18,9 @@ public class Assets {
     static TextureRegion texR_cloud;
 
     public static void load() {
-        texR_background = new TextureRegion(loadTexture("tex_backgroundTest.png"));
-        texR_player = new TextureRegion(loadTexture("tex_planeTest.png"));
-        texR_cloud = new TextureRegion(loadTexture("tex_cloudTest.png"));
+        texR_background = new TextureRegion(loadTexture("tex_background.png"));
+        texR_player = new TextureRegion(loadTexture("tex_plane.png"));
+        texR_cloud = new TextureRegion(loadTexture("tex_cloud.png"));
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
