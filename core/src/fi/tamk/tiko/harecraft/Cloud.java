@@ -12,6 +12,7 @@ public class Cloud extends GameObject {
     float width = Assets.texR_cloud.getRegionWidth()/100f;
     float height = Assets.texR_cloud.getRegionHeight()/100f;
     Vector2 projection = new Vector2();
+    boolean isTransparent = false;
 
     public Cloud(float x, float y, float z) {
         decal = Decal.newDecal(width * 8f, height * 8f, Assets.texR_cloud, true);
@@ -23,7 +24,8 @@ public class Cloud extends GameObject {
         projection.y = decal.getPosition().y;
         stateTime += delta;
         opacity = stateTime < 1f ? stateTime : 1f;
-        if(decal.getPosition().z < 0f && projection.dst(GameScreen.player.decal.getPosition().x, GameScreen.player.decal.getPosition().y) < 2.2f) opacity = 0.4f;
+        if(!isTransparent && decal.getPosition().z < 0f && projection.dst(GameScreen.player.decal.getPosition().x, GameScreen.player.decal.getPosition().y) < 2f) isTransparent = true;
+        if(isTransparent) opacity = 0.4f;
         decal.setColor(1f,1f,1f, opacity);
         decal.translateZ(-15f * delta);
     }

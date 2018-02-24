@@ -69,9 +69,6 @@ public class GameScreen extends ScreenAdapter {
 
     public void update(float delta) {
         logger.log();
-
-        addClouds();
-
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
 
         camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
@@ -79,24 +76,11 @@ public class GameScreen extends ScreenAdapter {
         camera.lookAt(0f,0f,50f);
         camera.update();
 
-        for(Cloud c : clouds) {
-            c.update(delta);
-        }
-
-        for(Cloud c : cloudsLeft) {
-            c.update(delta);
-        }
-
-        for(Cloud c : cloudsRight) {
-            c.update(delta);
-        }
-
-        disposeClouds();
+        updateClouds(delta);
     }
 
     public void drawDecals() {
         dBatch.add(decal_background);
-
         for(Cloud c : clouds) {
             dBatch.add(c.decal);
         }
@@ -106,11 +90,8 @@ public class GameScreen extends ScreenAdapter {
         for(Cloud c : cloudsRight) {
             dBatch.add(c.decal);
         }
-
         dBatch.add(player.decal);
-
         dBatch.flush();
-
         System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
     }
 
@@ -119,24 +100,38 @@ public class GameScreen extends ScreenAdapter {
         game.sBatch.end();
     }
 
+    public void updateClouds(float delta) {
+        addClouds();
+        for(Cloud c : clouds) {
+            c.update(delta);
+        }
+        for(Cloud c : cloudsLeft) {
+            c.update(delta);
+        }
+        for(Cloud c : cloudsRight) {
+            c.update(delta);
+        }
+        disposeClouds();
+    }
+
     public void addClouds() {
+        float x;
+        float y;
         if(clouds.get(clouds.size() - 1).stateTime >= cloudSpawnTimer) {
-            float x = MathUtils.random(-10f,10f);
-            float y = MathUtils.random(-3f,3f);
+            x = MathUtils.random(-10f,10f);
+            y = MathUtils.random(-3f,3f);
             clouds.add(new Cloud(x,-y,100f));
             cloudSpawnTimer = MathUtils.random(0.2f,0.3f);
         }
-
         if(cloudsLeft.get(cloudsLeft.size() - 1).stateTime >= cloudLeftSpawnTimer) {
-            float x = MathUtils.random(-10f,-50f);
-            float y = MathUtils.random(-3f,3f);
+            x = MathUtils.random(-10f,-50f);
+            y = MathUtils.random(-3f,3f);
             cloudsLeft.add(new Cloud(x,-y,100f));
             cloudLeftSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
-
         if(cloudsRight.get(cloudsRight.size() - 1).stateTime >= cloudRightSpawnTimer) {
-            float x = MathUtils.random(10f,50f);
-            float y = MathUtils.random(-3f,3f);
+            x = MathUtils.random(10f,50f);
+            y = MathUtils.random(-3f,3f);
             cloudsRight.add(new Cloud(x,-y,100f));
             cloudRightSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
@@ -146,11 +141,9 @@ public class GameScreen extends ScreenAdapter {
         if(clouds.get(0).decal.getPosition().z < -5f) {
             clouds.remove(0);
         }
-
         if(cloudsLeft.get(0).decal.getPosition().z < -5f) {
             cloudsLeft.remove(0);
         }
-
         if(cloudsRight.get(0).decal.getPosition().z < -5f) {
             cloudsRight.remove(0);
         }
