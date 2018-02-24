@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  */
 
 public class GameScreen extends ScreenAdapter {
+    FPSLogger logger = new FPSLogger();
 
     public static final float WORLD_WIDTH = Gdx.graphics.getWidth() / 100f;
     public static final float WORLD_HEIGHT = Gdx.graphics.getHeight() / 100f;
@@ -58,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
+        logger.log();
         addClouds();
 
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
@@ -102,6 +105,7 @@ public class GameScreen extends ScreenAdapter {
         if(clouds.get(0).decal.getPosition().z < -5f) {
             clouds.remove(0);
             Gdx.app.log("TAG", "Cloud deleted");
+            disposeClouds();
         }
     }
 
