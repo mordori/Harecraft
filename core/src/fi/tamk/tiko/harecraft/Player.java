@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Player extends GameObject {
 
+    static final float ACCEL_Y_OFFSET = 6.5f;
+
     float width = Assets.texR_player.getRegionWidth()/100f;
     float height = Assets.texR_player.getRegionHeight()/100f;
 
@@ -27,7 +29,7 @@ public class Player extends GameObject {
     public void update(float delta, float accelX, float accelY) {
         if(Gdx.app.getType() == Application.ApplicationType.Android) {
             velocity.x = accelX * 1.5f;
-            velocity.y = (accelY - 5.5f) * 1.5f;
+            velocity.y = -(accelY - ACCEL_Y_OFFSET) * 1.5f;
 
             decal.setRotationZ(velocity.x * 5f);
         }

@@ -32,6 +32,10 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Cloud> cloudsLeft = new ArrayList<Cloud>();
     ArrayList<Cloud> cloudsRight = new ArrayList<Cloud>();
 
+    float cloudSpawnTimer = 1f;
+    float cloudLeftSpawnTimer = 1f;
+    float cloudRightSpawnTimer = 1f;
+
     public GameScreen(GameMain game) {
         this.game = game;
 
@@ -71,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
 
         camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
-        //camera.rotate(player.velocity.x / 15f,1f,1f,1f);
+        camera.rotate(player.velocity.x / 15f,1f,1f,1f);
         camera.lookAt(0f,0f,50f);
         camera.update();
 
@@ -107,7 +111,7 @@ public class GameScreen extends ScreenAdapter {
 
         dBatch.flush();
 
-        //System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
+        System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
     }
 
     public void drawHUD() {
@@ -116,22 +120,25 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void addClouds() {
-        if(clouds.get(clouds.size() - 1).stateTime >= MathUtils.random(0.3f,1f)) {
+        if(clouds.get(clouds.size() - 1).stateTime >= cloudSpawnTimer) {
             float x = MathUtils.random(-10f,10f);
             float y = MathUtils.random(-3f,3f);
             clouds.add(new Cloud(x,-y,100f));
+            cloudSpawnTimer = MathUtils.random(0.2f,0.3f);
         }
 
-        if(cloudsLeft.get(cloudsLeft.size() - 1).stateTime >= MathUtils.random(0.3f,1f)) {
-            float x = MathUtils.random(-10f,-30f);
+        if(cloudsLeft.get(cloudsLeft.size() - 1).stateTime >= cloudLeftSpawnTimer) {
+            float x = MathUtils.random(-10f,-50f);
             float y = MathUtils.random(-3f,3f);
             cloudsLeft.add(new Cloud(x,-y,100f));
+            cloudLeftSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
 
-        if(cloudsRight.get(cloudsRight.size() - 1).stateTime >= MathUtils.random(0.3f,1f)) {
-            float x = MathUtils.random(10f,30f);
+        if(cloudsRight.get(cloudsRight.size() - 1).stateTime >= cloudRightSpawnTimer) {
+            float x = MathUtils.random(10f,50f);
             float y = MathUtils.random(-3f,3f);
             cloudsRight.add(new Cloud(x,-y,100f));
+            cloudRightSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
     }
 
