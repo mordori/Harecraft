@@ -61,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void update(float delta) {
         logger.log();
+
         addClouds();
 
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
