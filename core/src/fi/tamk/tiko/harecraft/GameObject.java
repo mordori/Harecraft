@@ -12,6 +12,7 @@ public class GameObject {
     Decal decal;
     Vector3 velocity;
     float stateTime;
+    float opacity;
 
     public GameObject() {
 

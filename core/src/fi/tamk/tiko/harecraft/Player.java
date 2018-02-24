@@ -37,15 +37,9 @@ public class Player extends GameObject {
             decal.setRotationZ(velocity.x * 15f);
         }
 
-
-
+        stateTime += delta;
         decal.translateX(-velocity.x * delta * Math.abs(decal.getRotation().z) * 2f);
-
         decal.translateY(velocity.y * delta);
-
-
-        //System.out.println(velocity.x);
-        //System.out.println(velocity.y);
     }
 
     public void checkInput(float delta) {

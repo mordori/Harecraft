@@ -106,6 +106,8 @@ public class GameScreen extends ScreenAdapter {
         dBatch.add(player.decal);
 
         dBatch.flush();
+
+        //System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
     }
 
     public void drawHUD() {
@@ -136,20 +138,14 @@ public class GameScreen extends ScreenAdapter {
     public void disposeClouds() {
         if(clouds.get(0).decal.getPosition().z < -5f) {
             clouds.remove(0);
-            //Gdx.app.log("TAG", "Cloud deleted");
-            disposeClouds();
         }
 
         if(cloudsLeft.get(0).decal.getPosition().z < -5f) {
             cloudsLeft.remove(0);
-            //Gdx.app.log("TAG", "Cloud deleted");
-            disposeClouds();
         }
 
         if(cloudsRight.get(0).decal.getPosition().z < -5f) {
             cloudsRight.remove(0);
-            //Gdx.app.log("TAG", "Cloud deleted");
-            disposeClouds();
         }
     }
 
