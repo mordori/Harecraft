@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 
@@ -41,15 +42,12 @@ public class GameScreen extends ScreenAdapter {
         clouds.add(new Cloud(1f,-1f,40f));
         clouds.add(new Cloud(-4f,2f,60f));
         clouds.add(new Cloud(-1f,2f,80f));
-        clouds.add(new Cloud(3f,1f,110f));
-
+        clouds.add(new Cloud(3f,1f,10f));
 
         camera.near = 0.1f;
         camera.far = 400f;
         camera.position.set(0f,0f,-5f);
         camera.lookAt(0f,0f,50f);
-
-        //Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -60,6 +58,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
+        addClouds();
+
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
 
         camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
@@ -69,20 +69,40 @@ public class GameScreen extends ScreenAdapter {
         for(Cloud c : clouds) {
             c.update(delta);
         }
+
+        disposeClouds();
     }
 
     public void drawDecals() {
         dBatch.add(decal_background);
+
         for(Cloud c : clouds) {
             dBatch.add(c.decal);
         }
+
         dBatch.add(player.decal);
+
         dBatch.flush();
     }
 
     public void drawHUD() {
         game.sBatch.begin();
         game.sBatch.end();
+    }
+
+    public void addClouds() {
+        if(clouds.get(clouds.size() - 1).stateTime >= MathUtils.random(0.3f,1.5f)) {
+            float x = MathUtils.random(-10f,10f);
+            float y = MathUtils.random(-3f,3f);
+            clouds.add(new Cloud(x,-y,100f));
+        }
+    }
+
+    public void disposeClouds() {
+        if(clouds.get(0).decal.getPosition().z < -5f) {
+            clouds.remove(0);
+            Gdx.app.log("TAG", "Cloud deleted");
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ public class Player extends GameObject {
     float height = Assets.texR_player.getRegionHeight()/100f;
 
     final float SPEED = 5f;
+    final float MAX_SPEED = 5f;
 
     public Player(float x, float y, float z) {
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
@@ -27,31 +28,41 @@ public class Player extends GameObject {
         if(Gdx.app.getType() == Application.ApplicationType.Android) {
             velocity.x = accelX * 1.5f;
             velocity.y = (accelY - 5.5f) * 1.5f;
+
+            decal.setRotationZ(velocity.x * 5f);
         }
         else {
             checkInput(delta);
+
+            decal.setRotationZ(velocity.x * 15f);
         }
 
-        decal.translateX(-velocity.x * delta);
+
+
+        decal.translateX(-velocity.x * delta * Math.abs(decal.getRotation().z) * 2f);
+
         decal.translateY(velocity.y * delta);
-        decal.setRotationZ(velocity.x*2f);
+
+
+        //System.out.println(velocity.x);
+        //System.out.println(velocity.y);
     }
 
     public void checkInput(float delta) {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            //Gdx.app.log("TAG","LEFT");
+            if(velocity.x > -MAX_SPEED)
             velocity.x -= SPEED * delta;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            //Gdx.app.log("TAG","RIGHT");
+            if(velocity.x < MAX_SPEED)
             velocity.x += SPEED * delta;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            //Gdx.app.log("TAG","UP");
+            if(velocity.y < MAX_SPEED)
             velocity.y += SPEED * delta;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            //Gdx.app.log("TAG","DOWN");
+            if(velocity.y > -MAX_SPEED)
             velocity.y -= SPEED * delta;
         }
     }
