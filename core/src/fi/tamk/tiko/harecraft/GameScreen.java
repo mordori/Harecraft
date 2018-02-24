@@ -29,6 +29,8 @@ public class GameScreen extends ScreenAdapter {
 
     static Player player;
     ArrayList<Cloud> clouds = new ArrayList<Cloud>();
+    ArrayList<Cloud> cloudsLeft = new ArrayList<Cloud>();
+    ArrayList<Cloud> cloudsRight = new ArrayList<Cloud>();
 
     public GameScreen(GameMain game) {
         this.game = game;
@@ -44,7 +46,9 @@ public class GameScreen extends ScreenAdapter {
         clouds.add(new Cloud(1f,-1f,40f));
         clouds.add(new Cloud(-4f,2f,60f));
         clouds.add(new Cloud(-1f,2f,80f));
-        clouds.add(new Cloud(3f,1f,10f));
+        clouds.add(new Cloud(3f,1f,100f));
+        cloudsLeft.add(new Cloud(-20f,1f,100f));
+        cloudsRight.add(new Cloud(20f,1f,100f));
 
         camera.near = 0.1f;
         camera.far = 400f;
@@ -67,10 +71,19 @@ public class GameScreen extends ScreenAdapter {
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
 
         camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
+        //camera.rotate(player.velocity.x / 15f,1f,1f,1f);
         camera.lookAt(0f,0f,50f);
         camera.update();
 
         for(Cloud c : clouds) {
+            c.update(delta);
+        }
+
+        for(Cloud c : cloudsLeft) {
+            c.update(delta);
+        }
+
+        for(Cloud c : cloudsRight) {
             c.update(delta);
         }
 
@@ -81,6 +94,12 @@ public class GameScreen extends ScreenAdapter {
         dBatch.add(decal_background);
 
         for(Cloud c : clouds) {
+            dBatch.add(c.decal);
+        }
+        for(Cloud c : cloudsLeft) {
+            dBatch.add(c.decal);
+        }
+        for(Cloud c : cloudsRight) {
             dBatch.add(c.decal);
         }
 
@@ -95,17 +114,41 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void addClouds() {
-        if(clouds.get(clouds.size() - 1).stateTime >= MathUtils.random(0.3f,1.5f)) {
+        if(clouds.get(clouds.size() - 1).stateTime >= MathUtils.random(0.3f,1f)) {
             float x = MathUtils.random(-10f,10f);
             float y = MathUtils.random(-3f,3f);
             clouds.add(new Cloud(x,-y,100f));
+        }
+
+        if(cloudsLeft.get(cloudsLeft.size() - 1).stateTime >= MathUtils.random(0.3f,1f)) {
+            float x = MathUtils.random(-10f,-30f);
+            float y = MathUtils.random(-3f,3f);
+            cloudsLeft.add(new Cloud(x,-y,100f));
+        }
+
+        if(cloudsRight.get(cloudsRight.size() - 1).stateTime >= MathUtils.random(0.3f,1f)) {
+            float x = MathUtils.random(10f,30f);
+            float y = MathUtils.random(-3f,3f);
+            cloudsRight.add(new Cloud(x,-y,100f));
         }
     }
 
     public void disposeClouds() {
         if(clouds.get(0).decal.getPosition().z < -5f) {
             clouds.remove(0);
-            Gdx.app.log("TAG", "Cloud deleted");
+            //Gdx.app.log("TAG", "Cloud deleted");
+            disposeClouds();
+        }
+
+        if(cloudsLeft.get(0).decal.getPosition().z < -5f) {
+            cloudsLeft.remove(0);
+            //Gdx.app.log("TAG", "Cloud deleted");
+            disposeClouds();
+        }
+
+        if(cloudsRight.get(0).decal.getPosition().z < -5f) {
+            cloudsRight.remove(0);
+            //Gdx.app.log("TAG", "Cloud deleted");
             disposeClouds();
         }
     }
