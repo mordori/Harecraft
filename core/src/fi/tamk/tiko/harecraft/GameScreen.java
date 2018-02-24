@@ -70,12 +70,7 @@ public class GameScreen extends ScreenAdapter {
     public void update(float delta) {
         logger.log();
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
-
-        camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
-        camera.rotate(player.velocity.x / 15f,1f,1f,1f);
-        camera.lookAt(0f,0f,50f);
-        camera.update();
-
+        updateCamera();
         updateClouds(delta);
     }
 
@@ -91,6 +86,7 @@ public class GameScreen extends ScreenAdapter {
             dBatch.add(c.decal);
         }
         dBatch.add(player.decal);
+
         dBatch.flush();
         System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
     }
@@ -98,6 +94,13 @@ public class GameScreen extends ScreenAdapter {
     public void drawHUD() {
         game.sBatch.begin();
         game.sBatch.end();
+    }
+
+    public void updateCamera() {
+        camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
+        camera.rotate(player.velocity.x / 15f,1f,1f,1f);
+        camera.lookAt(0f,0f,50f);
+        camera.update();
     }
 
     public void updateClouds(float delta) {
@@ -120,32 +123,32 @@ public class GameScreen extends ScreenAdapter {
         if(clouds.get(clouds.size() - 1).stateTime >= cloudSpawnTimer) {
             x = MathUtils.random(-10f,10f);
             y = MathUtils.random(-3f,3f);
-            clouds.add(new Cloud(x,-y,100f));
+            clouds.add(new Cloud(x, y,100f));
             cloudSpawnTimer = MathUtils.random(0.2f,0.3f);
         }
         if(cloudsLeft.get(cloudsLeft.size() - 1).stateTime >= cloudLeftSpawnTimer) {
             x = MathUtils.random(-10f,-50f);
             y = MathUtils.random(-3f,3f);
-            cloudsLeft.add(new Cloud(x,-y,100f));
+            cloudsLeft.add(new Cloud(x, y,100f));
             cloudLeftSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
         if(cloudsRight.get(cloudsRight.size() - 1).stateTime >= cloudRightSpawnTimer) {
             x = MathUtils.random(10f,50f);
             y = MathUtils.random(-3f,3f);
-            cloudsRight.add(new Cloud(x,-y,100f));
+            cloudsRight.add(new Cloud(x, y,100f));
             cloudRightSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
     }
 
     public void disposeClouds() {
-        if(clouds.get(0).decal.getPosition().z < -5f) {
-            clouds.remove(0);
-        }
-        if(cloudsLeft.get(0).decal.getPosition().z < -5f) {
-            cloudsLeft.remove(0);
-        }
-        if(cloudsRight.get(0).decal.getPosition().z < -5f) {
-            cloudsRight.remove(0);
+        disposeCloud(clouds);
+        disposeCloud(cloudsLeft);
+        disposeCloud(cloudsRight);
+    }
+
+    public void disposeCloud(ArrayList<Cloud> cloudArray) {
+        if(cloudArray.get(0).decal.getPosition().z < camera.position.z) {
+            cloudArray.remove(0);
         }
     }
 
