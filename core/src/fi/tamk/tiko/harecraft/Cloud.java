@@ -15,7 +15,7 @@ public class Cloud extends GameObject {
     boolean isTransparent = false;
 
     public Cloud(float x, float y, float z) {
-        decal = Decal.newDecal(width * 8f, height * 8f, Assets.texR_cloud, true);
+        decal = Decal.newDecal(width * 10f, height * 10f, Assets.texR_cloud, true);
         decal.setPosition(x,y,z);
     }
 
@@ -29,6 +29,6 @@ public class Cloud extends GameObject {
         }
         else opacity = 0.4f;
         decal.setColor(1f,1f,1f, opacity);
-        decal.translateZ(-15f * delta);
+        decal.translateZ(-20f * delta);
     }
 }
