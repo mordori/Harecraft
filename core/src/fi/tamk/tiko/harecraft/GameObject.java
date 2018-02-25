@@ -13,6 +13,7 @@ public class GameObject {
     Vector3 velocity;
     float stateTime;
     float opacity;
+    float rotationZ;
 
     public GameObject() {
 
