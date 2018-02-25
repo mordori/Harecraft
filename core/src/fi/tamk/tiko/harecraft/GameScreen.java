@@ -24,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
     GameMain game;
     DecalBatch dBatch;
     PerspectiveCamera camera;
+    float fieldOfView = 45f;
 
     Decal decal_background;
 
@@ -36,10 +37,15 @@ public class GameScreen extends ScreenAdapter {
     float cloudLeftSpawnTimer = 1f;
     float cloudRightSpawnTimer = 1f;
 
+    float spawnDistance = 100f;
+
     public GameScreen(GameMain game) {
         this.game = game;
 
-        camera = new PerspectiveCamera(45f, WORLD_WIDTH, WORLD_HEIGHT);
+        camera = new PerspectiveCamera(fieldOfView, WORLD_WIDTH, WORLD_HEIGHT);
+        camera.near = 0.1f;
+        camera.far = 400f;
+
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
         decal_background = Decal.newDecal(Assets.texR_background, true);
@@ -50,14 +56,9 @@ public class GameScreen extends ScreenAdapter {
         clouds.add(new Cloud(1f,-1f,40f));
         clouds.add(new Cloud(-4f,2f,60f));
         clouds.add(new Cloud(-1f,2f,80f));
-        clouds.add(new Cloud(3f,1f,100f));
-        cloudsLeft.add(new Cloud(-20f,1f,100f));
-        cloudsRight.add(new Cloud(20f,1f,100f));
-
-        camera.near = 0.1f;
-        camera.far = 400f;
-        camera.position.set(0f,0f,-5f);
-        camera.lookAt(0f,0f,50f);
+        clouds.add(new Cloud(3f,1f, spawnDistance));
+        cloudsLeft.add(new Cloud(-20f,1f, spawnDistance));
+        cloudsRight.add(new Cloud(20f,1f, spawnDistance));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
-        logger.log();
+        //logger.log();
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
         updateCamera();
         updateClouds(delta);
@@ -88,7 +89,7 @@ public class GameScreen extends ScreenAdapter {
         dBatch.add(player.decal);
 
         dBatch.flush();
-        System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
+        //System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
     }
 
     public void drawHUD() {
@@ -99,7 +100,8 @@ public class GameScreen extends ScreenAdapter {
     public void updateCamera() {
         camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
         camera.rotate(player.velocity.x / 15f,1f,1f,1f);
-        camera.lookAt(0f,0f,50f);
+        //camera.rota
+        camera.lookAt(0f,0f,spawnDistance/2f);
         camera.update();
     }
 
@@ -122,20 +124,20 @@ public class GameScreen extends ScreenAdapter {
         float y;
         if(clouds.get(clouds.size() - 1).stateTime >= cloudSpawnTimer) {
             x = MathUtils.random(-10f,10f);
-            y = MathUtils.random(-3f,3f);
-            clouds.add(new Cloud(x, y,100f));
+            y = MathUtils.random(-10f,10f);
+            clouds.add(new Cloud(x, y, spawnDistance));
             cloudSpawnTimer = MathUtils.random(0.2f,0.3f);
         }
         if(cloudsLeft.get(cloudsLeft.size() - 1).stateTime >= cloudLeftSpawnTimer) {
             x = MathUtils.random(-10f,-50f);
             y = MathUtils.random(-3f,3f);
-            cloudsLeft.add(new Cloud(x, y,100f));
+            cloudsLeft.add(new Cloud(x, y, spawnDistance));
             cloudLeftSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
         if(cloudsRight.get(cloudsRight.size() - 1).stateTime >= cloudRightSpawnTimer) {
             x = MathUtils.random(10f,50f);
             y = MathUtils.random(-3f,3f);
-            cloudsRight.add(new Cloud(x, y,100f));
+            cloudsRight.add(new Cloud(x, y, spawnDistance));
             cloudRightSpawnTimer = MathUtils.random(0.1f,0.15f);
         }
     }
