@@ -25,7 +25,8 @@ public class Cloud extends GameObject {
         stateTime += delta;
         if(!isTransparent) {
             opacity = stateTime < 1f ? stateTime : 1f;
-            if(decal.getPosition().z < 0f && projection.dst(GameScreen.player.decal.getPosition().x, GameScreen.player.decal.getPosition().y) < 2.7f) isTransparent = true;
+            if(decal.getPosition().z < 0f && projection.dst(GameScreen.player.decal.getPosition().x, GameScreen.player.decal.getPosition().y) < 2.8f) isTransparent = true;
+            if(decal.getPosition().z < 0f && projection.dst(GameScreen.camera.position.x, GameScreen.camera.position.y) < 3f) isTransparent = true;
         }
         else opacity = 0.4f;
         decal.setColor(1f,1f,1f, opacity);

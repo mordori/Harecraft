@@ -23,7 +23,7 @@ public class GameScreen extends ScreenAdapter {
 
     GameMain game;
     DecalBatch dBatch;
-    PerspectiveCamera camera;
+    static PerspectiveCamera camera;
     float fieldOfView = 45f;
 
     Decal decal_background;
