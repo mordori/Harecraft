@@ -28,8 +28,10 @@ public class LifeRing extends GameObject {
             if(decal.getPosition().z < 0f && projection.dst(GameScreen.player.decal.getPosition().x, GameScreen.player.decal.getPosition().y) < 2f) isTransparent = true;
         }
         else {
-            opacity = 0.75f;
-            decal.setScale(decal.getScaleX() + delta*stateTime/3f);
+            opacity = 1f;
+            decal.setScale(decal.getScaleX() + delta*stateTime/3.5f);
+            decal.translateX(-GameScreen.player.velocity.x * delta * Math.abs(GameScreen.player.decal.getRotation().z) * 2f);
+            decal.translateY(GameScreen.player.velocity.y * delta);
         }
         decal.setColor(1f,1f,1f, opacity);
         if(!isTransparent || decal.getScaleX() > 1.35f)decal.translateZ(-20f * delta);

@@ -109,7 +109,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateCamera() {
-        camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.15f,-5f);
+        camera.position.set(player.decal.getPosition().x/1f, player.decal.getPosition().y/1f,-5f);
         camera.rotate(player.velocity.x / 15f,1f,1f,1f);
         //camera.rota
         camera.lookAt(0f,0f,spawnDistance/2f);
