@@ -68,10 +68,13 @@ public class Player extends GameObject {
         if(decal.getPosition().y < 7.2f && velocity.y > 0f || decal.getPosition().y > -7.2f && velocity.y < 0f)
         decal.translateY(velocity.y * delta);
 
-        if(velocity.y != 0 && Math.abs(velocity.y) > 0.05f) velocity.y -= Math.abs(velocity.y)/velocity.y * 0.05f;
+        if(velocity.y != 0 && Math.abs(velocity.y) > 0f) {
+            velocity.y -= Math.abs(velocity.y)/velocity.y * 0.05f;
+            if(Math.abs(velocity.y) < 0.05f) velocity.y = 0f;
+        }
         if(velocity.x != 0 && Math.abs(velocity.x) > 0f) {
-            velocity.x -= Math.abs(velocity.x)/velocity.x * 0.075f;
-            if(Math.abs(velocity.x) < 0.075f) velocity.x = 0f;
+            velocity.x -= Math.abs(velocity.x)/velocity.x * 0.05f;
+            if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
         }
 
         //if(state == State.HIT_BOUNDS && velocity.y < 2.5f) state = State.NORMAL;

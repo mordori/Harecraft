@@ -33,12 +33,14 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Cloud> cloudsLeftDown = new ArrayList<Cloud>();
     ArrayList<Cloud> cloudsRightUp = new ArrayList<Cloud>();
     ArrayList<Cloud> cloudsRightDown = new ArrayList<Cloud>();
+    ArrayList<LifeRing> lifeRings = new ArrayList<LifeRing>();
 
 
     float cloudsLeftUpSpawnTimer = 1f;
     float cloudsLeftDownSpawnTimer = 1f;
     float cloudsRightUpSpawnTimer = 1f;
     float cloudsRightDownSpawnTimer = 1f;
+    float lifeRingsSpawnTimer = 5f;
 
     float spawnDistance = 100f;
 
@@ -75,6 +77,7 @@ public class GameScreen extends ScreenAdapter {
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
         updateCamera();
         updateClouds(delta);
+        updateLifeRings(delta);
     }
 
     public void drawDecals() {
@@ -90,6 +93,9 @@ public class GameScreen extends ScreenAdapter {
         }
         for(Cloud c : cloudsRightDown) {
             dBatch.add(c.decal);
+        }
+        for(LifeRing lR : lifeRings) {
+            dBatch.add(lR.decal);
         }
         dBatch.add(player.decal);
 
@@ -135,25 +141,25 @@ public class GameScreen extends ScreenAdapter {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,6.2f);
             cloudsLeftUp.add(new Cloud(x, y, spawnDistance));
-            cloudsLeftUpSpawnTimer = MathUtils.random(0.1f,0.25f);
+            cloudsLeftUpSpawnTimer = MathUtils.random(0.1f,0.35f);
         }
         if(cloudsLeftDown.get(cloudsLeftDown.size() - 1).stateTime >= cloudsLeftDownSpawnTimer) {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,-6.2f);
             cloudsLeftDown.add(new Cloud(x, y, spawnDistance));
-            cloudsLeftDownSpawnTimer = MathUtils.random(0.1f,0.25f);
+            cloudsLeftDownSpawnTimer = MathUtils.random(0.1f,0.35f);
         }
         if(cloudsRightUp.get(cloudsRightUp.size() - 1).stateTime >= cloudsRightUpSpawnTimer) {
             x = MathUtils.random(0f,30f);
             y = MathUtils.random(0f,6.2f);
             cloudsRightUp.add(new Cloud(x, y, spawnDistance));
-            cloudsRightUpSpawnTimer = MathUtils.random(0.1f,0.25f);
+            cloudsRightUpSpawnTimer = MathUtils.random(0.1f,0.35f);
         }
         if(cloudsRightDown.get(cloudsRightDown.size() - 1).stateTime >= cloudsRightDownSpawnTimer) {
             x = MathUtils.random(0f,30f);
             y = MathUtils.random(0f,-6.2f);
             cloudsRightDown.add(new Cloud(x, y, spawnDistance));
-            cloudsRightDownSpawnTimer = MathUtils.random(0.1f,0.25f);
+            cloudsRightDownSpawnTimer = MathUtils.random(0.1f,0.35f);
         }
     }
 
@@ -167,6 +173,31 @@ public class GameScreen extends ScreenAdapter {
     public void disposeCloud(ArrayList<Cloud> cloudArray) {
         if(cloudArray.get(0).decal.getPosition().z < camera.position.z) {
             cloudArray.remove(0);
+        }
+    }
+
+    public void updateLifeRings(float delta) {
+        addLifeRings();
+        for(LifeRing lR : lifeRings) {
+            lR.update(delta);
+        }
+        disposeLifeRings();
+    }
+
+    public void addLifeRings() {
+        float x;
+        float y;
+
+        if(lifeRings.isEmpty() || lifeRings.get(lifeRings.size() - 1).stateTime >= lifeRingsSpawnTimer) {
+            x = MathUtils.random(-10f,10f);
+            y = MathUtils.random(-6.2f,6.2f);
+            lifeRings.add(new LifeRing(x, y, spawnDistance));
+        }
+    }
+
+    public void disposeLifeRings() {
+        if(!lifeRings.isEmpty() && lifeRings.get(0).decal.getPosition().z < camera.position.z) {
+            lifeRings.remove(0);
         }
     }
 

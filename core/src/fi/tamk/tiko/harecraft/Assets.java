@@ -16,11 +16,13 @@ public class Assets {
     static TextureRegion texR_background;
     static TextureRegion texR_player;
     static TextureRegion texR_cloud;
+    static TextureRegion texR_lifering;
 
     public static void load() {
         texR_background = new TextureRegion(loadTexture("tex_background.png"));
         texR_player = new TextureRegion(loadTexture("tex_plane.png"));
         texR_cloud = new TextureRegion(loadTexture("tex_cloud.png"));
+        texR_lifering = new TextureRegion(loadTexture("tex_lifering.png"));
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
@@ -44,5 +46,6 @@ public class Assets {
         texR_background.getTexture().dispose();
         texR_player.getTexture().dispose();
         texR_cloud.getTexture().dispose();
+        texR_lifering.getTexture().dispose();
     }
 }
