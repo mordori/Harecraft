@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -29,11 +30,11 @@ public class Player extends GameObject {
 
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
         decal.setPosition(x,y,z);
-        velocity = new Vector3();
+        position = new Vector2();
+        velocity = new Vector2();
     }
 
     public void update(float delta, float accelX, float accelY) {
-
         stateTime += delta;
 
         if(decal.getPosition().x >= 12.8f) velocity.x = 0.5f;
@@ -60,7 +61,6 @@ public class Player extends GameObject {
             }
         }
 
-
         if(decal.getPosition().x < 12.8f && velocity.x < 0f || decal.getPosition().x > -12.8f && velocity.x > 0f) {
             decal.translateX(-velocity.x * delta * Math.abs(decal.getRotation().z) * 2f);
         }
@@ -77,7 +77,8 @@ public class Player extends GameObject {
             if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
         }
 
-        //if(state == State.HIT_BOUNDS && velocity.y < 2.5f) state = State.NORMAL;
+        position.x = decal.getPosition().x;
+        position.y = decal.getPosition().y;
     }
 
     public void checkInput(float delta) {

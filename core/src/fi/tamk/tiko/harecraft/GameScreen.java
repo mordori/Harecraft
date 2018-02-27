@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ public class GameScreen extends ScreenAdapter {
     DecalBatch dBatch;
     static PerspectiveCamera camera;
     float fieldOfView = 45f;
+    float cameraRotation = 0f;
 
     Decal decal_background;
 
@@ -34,7 +37,6 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Cloud> cloudsRightUp = new ArrayList<Cloud>();
     ArrayList<Cloud> cloudsRightDown = new ArrayList<Cloud>();
     ArrayList<LifeRing> lifeRings = new ArrayList<LifeRing>();
-
 
     float cloudsLeftUpSpawnTimer = 1f;
     float cloudsLeftDownSpawnTimer = 1f;
@@ -100,7 +102,6 @@ public class GameScreen extends ScreenAdapter {
         dBatch.add(player.decal);
 
         dBatch.flush();
-        //System.out.println(clouds.size() + cloudsLeft.size() + cloudsRight.size());
     }
 
     public void drawHUD() {
@@ -109,9 +110,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateCamera() {
-        camera.position.set(player.decal.getPosition().x/1f, player.decal.getPosition().y/1f,-5f);
-        camera.rotate(player.velocity.x / 15f,1f,1f,1f);
-        //camera.rota
+        camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.15f,-5f);
+        camera.rotate(player.velocity.x / 20f,1f,1f,1f);
         camera.lookAt(0f,0f,spawnDistance/2f);
         camera.update();
     }
@@ -136,7 +136,6 @@ public class GameScreen extends ScreenAdapter {
     public void addClouds() {
         float x;
         float y;
-
         if(cloudsLeftUp.get(cloudsLeftUp.size() - 1).stateTime >= cloudsLeftUpSpawnTimer) {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,6.2f);
@@ -187,7 +186,6 @@ public class GameScreen extends ScreenAdapter {
     public void addLifeRings() {
         float x;
         float y;
-
         if(lifeRings.isEmpty() || lifeRings.get(lifeRings.size() - 1).stateTime >= lifeRingsSpawnTimer) {
             x = MathUtils.random(-10f,10f);
             y = MathUtils.random(-6.2f,6.2f);
