@@ -26,7 +26,7 @@ public class GameScreen extends ScreenAdapter {
     GameMain game;
     DecalBatch dBatch;
     static PerspectiveCamera camera;
-    float fieldOfView = 45f;
+    static float fieldOfView = 45f;
     float cameraRotation = 0f;
 
     Decal decal_background;
@@ -37,14 +37,20 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Cloud> cloudsRightUp = new ArrayList<Cloud>();
     ArrayList<Cloud> cloudsRightDown = new ArrayList<Cloud>();
     ArrayList<LifeRing> lifeRings = new ArrayList<LifeRing>();
+    ArrayList<Tree> trees = new ArrayList<Tree>();
 
     float cloudsLeftUpSpawnTimer = 1f;
     float cloudsLeftDownSpawnTimer = 1f;
     float cloudsRightUpSpawnTimer = 1f;
     float cloudsRightDownSpawnTimer = 1f;
     float lifeRingsSpawnTimer = 5f;
+    float TreeSpawnTimer = 1f;
 
-    float spawnDistance = 100f;
+    float spawnDistanceSky = 100f;
+    float spawnDistanceGround = 125f;
+
+    static float global_Speed = -13f;
+    static float global_Multiplier = 1f;
 
     public GameScreen(GameMain game) {
         this.game = game;
@@ -61,10 +67,9 @@ public class GameScreen extends ScreenAdapter {
 
         player = new Player(0f,0f,0f);
 
-        cloudsLeftUp.add(new Cloud(-5f,2f, spawnDistance));
-        cloudsLeftDown.add(new Cloud(-10f,-1f, spawnDistance));
-        cloudsRightUp.add(new Cloud(10f,1f, spawnDistance));
-        cloudsRightDown.add(new Cloud(5f,-2f, spawnDistance));
+        lifeRings.add(new LifeRing(0f, 0f, spawnDistanceSky/1.2f));
+
+        Assets.music_default.play();
     }
 
     @Override
@@ -75,11 +80,19 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
-        logger.log();
+        //logger.log();
+        if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
+        else global_Multiplier = 1f;
+
+        /*if(fieldOfView < 45f) fieldOfView += 10f * delta;
+        else fieldOfView = 45f;*/
+
+        //System.out.println(GameScreen.global_Multiplier);
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
         updateCamera();
         updateClouds(delta);
         updateLifeRings(delta);
+        updateTrees(delta);
     }
 
     public void drawDecals() {
@@ -96,8 +109,11 @@ public class GameScreen extends ScreenAdapter {
         for(Cloud c : cloudsRightDown) {
             dBatch.add(c.decal);
         }
-        for(LifeRing lR : lifeRings) {
-            dBatch.add(lR.decal);
+        for(LifeRing l : lifeRings) {
+            dBatch.add(l.decal);
+        }
+        for(Tree t : trees) {
+            dBatch.add(t.decal);
         }
         dBatch.add(player.decal);
 
@@ -111,8 +127,10 @@ public class GameScreen extends ScreenAdapter {
 
     public void updateCamera() {
         camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.15f,-5f);
-        camera.rotate(player.velocity.x / 20f,1f,1f,1f);
-        camera.lookAt(0f,0f,spawnDistance/2f);
+        //Needs work
+        //camera.rotate(player.velocity.x / 20f,1f,1f,1f);
+        camera.lookAt(0f,0f,spawnDistanceSky/2f);
+        camera.fieldOfView = fieldOfView;
         camera.update();
     }
 
@@ -136,29 +154,29 @@ public class GameScreen extends ScreenAdapter {
     public void addClouds() {
         float x;
         float y;
-        if(cloudsLeftUp.get(cloudsLeftUp.size() - 1).stateTime >= cloudsLeftUpSpawnTimer) {
+        if(cloudsLeftUp.isEmpty() || cloudsLeftUp.get(cloudsLeftUp.size() - 1).stateTime >= cloudsLeftUpSpawnTimer) {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,6.2f);
-            cloudsLeftUp.add(new Cloud(x, y, spawnDistance));
-            cloudsLeftUpSpawnTimer = MathUtils.random(0.1f,0.35f);
+            cloudsLeftUp.add(new Cloud(x, y, spawnDistanceSky));
+            cloudsLeftUpSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
         }
-        if(cloudsLeftDown.get(cloudsLeftDown.size() - 1).stateTime >= cloudsLeftDownSpawnTimer) {
+        if(cloudsLeftDown.isEmpty() || cloudsLeftDown.get(cloudsLeftDown.size() - 1).stateTime >= cloudsLeftDownSpawnTimer) {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,-6.2f);
-            cloudsLeftDown.add(new Cloud(x, y, spawnDistance));
-            cloudsLeftDownSpawnTimer = MathUtils.random(0.1f,0.35f);
+            cloudsLeftDown.add(new Cloud(x, y, spawnDistanceSky));
+            cloudsLeftDownSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
         }
-        if(cloudsRightUp.get(cloudsRightUp.size() - 1).stateTime >= cloudsRightUpSpawnTimer) {
+        if(cloudsRightUp.isEmpty() || cloudsRightUp.get(cloudsRightUp.size() - 1).stateTime >= cloudsRightUpSpawnTimer) {
             x = MathUtils.random(0f,30f);
             y = MathUtils.random(0f,6.2f);
-            cloudsRightUp.add(new Cloud(x, y, spawnDistance));
-            cloudsRightUpSpawnTimer = MathUtils.random(0.1f,0.35f);
+            cloudsRightUp.add(new Cloud(x, y, spawnDistanceSky));
+            cloudsRightUpSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
         }
-        if(cloudsRightDown.get(cloudsRightDown.size() - 1).stateTime >= cloudsRightDownSpawnTimer) {
+        if(cloudsRightDown.isEmpty() || cloudsRightDown.get(cloudsRightDown.size() - 1).stateTime >= cloudsRightDownSpawnTimer) {
             x = MathUtils.random(0f,30f);
             y = MathUtils.random(0f,-6.2f);
-            cloudsRightDown.add(new Cloud(x, y, spawnDistance));
-            cloudsRightDownSpawnTimer = MathUtils.random(0.1f,0.35f);
+            cloudsRightDown.add(new Cloud(x, y, spawnDistanceSky));
+            cloudsRightDownSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
         }
     }
 
@@ -177,8 +195,8 @@ public class GameScreen extends ScreenAdapter {
 
     public void updateLifeRings(float delta) {
         addLifeRings();
-        for(LifeRing lR : lifeRings) {
-            lR.update(delta);
+        for(LifeRing l : lifeRings) {
+            l.update(delta);
         }
         disposeLifeRings();
     }
@@ -187,15 +205,40 @@ public class GameScreen extends ScreenAdapter {
         float x;
         float y;
         if(lifeRings.isEmpty() || lifeRings.get(lifeRings.size() - 1).stateTime >= lifeRingsSpawnTimer) {
-            x = MathUtils.random(-10f,10f);
-            y = MathUtils.random(-6.2f,6.2f);
-            lifeRings.add(new LifeRing(x, y, spawnDistance));
+            x = MathUtils.random(-10f, 10f);
+            y = MathUtils.random(-6.2f, 6.2f);
+            lifeRings.add(new LifeRing(x, y, spawnDistanceSky));
         }
     }
 
     public void disposeLifeRings() {
         if(!lifeRings.isEmpty() && lifeRings.get(0).decal.getPosition().z < camera.position.z) {
             lifeRings.remove(0);
+        }
+    }
+
+    public void updateTrees(float delta) {
+        addTrees();
+        for(Tree t : trees) {
+            t.update(delta);
+        }
+        disposeTrees();
+    }
+
+    public void addTrees() {
+        float x;
+        float y;
+        if(trees.isEmpty() || trees.get(trees.size() - 1).stateTime >= TreeSpawnTimer) {
+            x = MathUtils.random(-100f, 100f);
+            y = -17f;
+            trees.add(new Tree(x, y, spawnDistanceGround));
+            TreeSpawnTimer = MathUtils.random(0.05f, 0.2f - global_Multiplier * 0.025f);
+        }
+    }
+
+    public void disposeTrees() {
+        if(!trees.isEmpty() && trees.get(0).decal.getPosition().z < camera.position.z) {
+            trees.remove(0);
         }
     }
 

@@ -30,36 +30,34 @@ public class Player extends GameObject {
 
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
         decal.setPosition(x,y,z);
-        position = new Vector2();
-        velocity = new Vector2();
+
+        velocity = new Vector3();
+        position = new Vector3();
     }
 
     public void update(float delta, float accelX, float accelY) {
         stateTime += delta;
+        position = decal.getPosition();
 
-        if(decal.getPosition().x >= 12.8f) velocity.x = 0.5f;
-        else if(decal.getPosition().x <= -12.8f) velocity.x = -0.5f;
-        if(decal.getPosition().y >= 7.2f) {
-            //state = State.HIT_BOUNDS;
+        if(decal.getPosition().x >= GameScreen.WORLD_WIDTH) velocity.x = 3f;
+        else if(decal.getPosition().x <= -GameScreen.WORLD_WIDTH) velocity.x = -3f;
+
+        if(decal.getPosition().y >= GameScreen.WORLD_WIDTH) {
             velocity.y = -3f;
-        }
-        else if(decal.getPosition().y <= -7.2f) {
-            //state = State.HIT_BOUNDS;
+        } else if(decal.getPosition().y <= -GameScreen.WORLD_WIDTH) {
             velocity.y = 3f;
         }
 
-        if(state == State.NORMAL) {
-            if(Gdx.app.getType() == Application.ApplicationType.Android) {
-                velocity.x = accelX * 1.5f;
-                velocity.y = (accelY - ACCEL_Y_OFFSET) * 1.5f;
-
-                decal.setRotationZ(velocity.x * 5f);
-            }
-            else {
-                checkInput(delta);
-                decal.setRotationZ(velocity.x * 15f);
-            }
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            velocity.x = accelX * 1.5f;
+            velocity.y = (accelY - ACCEL_Y_OFFSET) * 1.5f;
+            rotation = velocity.x * 5f;
+        } else {
+            checkInput(delta);
+            rotation = velocity.x * 15f;
         }
+
+        decal.setRotationZ(rotation);
 
         if(decal.getPosition().x < 12.8f && velocity.x < 0f || decal.getPosition().x > -12.8f && velocity.x > 0f) {
             decal.translateX(-velocity.x * delta * Math.abs(decal.getRotation().z) * 2f);
@@ -72,13 +70,11 @@ public class Player extends GameObject {
             velocity.y -= Math.abs(velocity.y)/velocity.y * 0.05f;
             if(Math.abs(velocity.y) < 0.05f) velocity.y = 0f;
         }
+
         if(velocity.x != 0 && Math.abs(velocity.x) > 0f) {
             velocity.x -= Math.abs(velocity.x)/velocity.x * 0.05f;
             if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
         }
-
-        position.x = decal.getPosition().x;
-        position.y = decal.getPosition().y;
     }
 
     public void checkInput(float delta) {

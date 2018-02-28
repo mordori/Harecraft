@@ -17,12 +17,25 @@ public class Assets {
     static TextureRegion texR_player;
     static TextureRegion texR_cloud;
     static TextureRegion texR_lifering;
+    static TextureRegion texR_tree;
+
+    static Music music_default;
+
+    static Sound sound_cloud_hit;
+    static Sound sound_lifering_collected;
 
     public static void load() {
         texR_background = new TextureRegion(loadTexture("tex_background.png"));
         texR_player = new TextureRegion(loadTexture("tex_plane.png"));
         texR_cloud = new TextureRegion(loadTexture("tex_cloud.png"));
         texR_lifering = new TextureRegion(loadTexture("tex_lifering.png"));
+        texR_tree = new TextureRegion(loadTexture("tex_tree.png"));
+
+        music_default = loadMusic("elevator.wav");
+        music_default.setLooping(true);
+
+        sound_cloud_hit = loadSound("Boup.wav");
+        sound_lifering_collected = loadSound("Spring.wav");
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
@@ -47,5 +60,9 @@ public class Assets {
         texR_player.getTexture().dispose();
         texR_cloud.getTexture().dispose();
         texR_lifering.getTexture().dispose();
+        texR_tree.getTexture().dispose();
+
+        sound_cloud_hit.dispose();
+        sound_lifering_collected.dispose();
     }
 }

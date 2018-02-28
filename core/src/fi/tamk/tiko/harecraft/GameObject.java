@@ -11,11 +11,14 @@ import com.badlogic.gdx.math.Vector3;
 abstract class GameObject {
 
     Decal decal;
-    Vector2 velocity;
-    Vector2 position;
-    Vector2 direction;
+
+    Vector3 velocity;
+    Vector3 direction;
+    Vector3 position;
+
     float stateTime;
     float opacity;
+    float rotation;
 
     public GameObject() {
 
