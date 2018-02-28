@@ -45,8 +45,8 @@ public class Opponent extends Pilot {
         if(opacity < 0f) opacity = 0f;
         decal.setColor(1f,1f,1f, opacity);
 
-        if(GameScreen.state == GameScreen.State.RACE) velocity.z = 4f - GameScreen.global_Multiplier * 2f;
-        else velocity.z = 20f;
+        if(GameScreen.state == GameScreen.State.RACE) velocity.z = 5f - GameScreen.global_Multiplier * 2f;
+        else velocity.z = 9f*stateTime;
         decal.translateZ(velocity.z * delta);
 
         distance += -velocity.z;

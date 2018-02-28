@@ -38,9 +38,9 @@ public class Player extends Pilot {
         if(decal.getPosition().x >= GameScreen.WORLD_WIDTH) velocity.x = 3f;
         else if(decal.getPosition().x <= -GameScreen.WORLD_WIDTH) velocity.x = -3f;
 
-        if(decal.getPosition().y >= GameScreen.WORLD_WIDTH) {
+        if(decal.getPosition().y >= GameScreen.WORLD_HEIGHT) {
             velocity.y = -3f;
-        } else if(decal.getPosition().y <= -GameScreen.WORLD_WIDTH) {
+        } else if(decal.getPosition().y <= -GameScreen.WORLD_HEIGHT) {
             velocity.y = 3f;
         }
 
