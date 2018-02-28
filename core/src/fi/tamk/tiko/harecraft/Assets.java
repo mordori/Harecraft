@@ -25,17 +25,17 @@ public class Assets {
     static Sound sound_lifering_collected;
 
     public static void load() {
-        texR_background = new TextureRegion(loadTexture("tex_background.png"));
-        texR_player = new TextureRegion(loadTexture("tex_plane.png"));
-        texR_cloud = new TextureRegion(loadTexture("tex_cloud.png"));
-        texR_lifering = new TextureRegion(loadTexture("tex_lifering.png"));
-        texR_tree = new TextureRegion(loadTexture("tex_tree.png"));
+        texR_background = new TextureRegion(loadTexture("textures/tex_background.png"));
+        texR_player = new TextureRegion(loadTexture("textures/tex_plane.png"));
+        texR_cloud = new TextureRegion(loadTexture("textures/tex_cloud.png"));
+        texR_lifering = new TextureRegion(loadTexture("textures/tex_lifering.png"));
+        texR_tree = new TextureRegion(loadTexture("textures/tex_tree.png"));
 
-        music_default = loadMusic("elevator.wav");
+        music_default = loadMusic("sound/elevator.wav");
         music_default.setLooping(true);
 
-        sound_cloud_hit = loadSound("Boup.wav");
-        sound_lifering_collected = loadSound("Spring.wav");
+        sound_cloud_hit = loadSound("sound/Boup.wav");
+        sound_lifering_collected = loadSound("sound/Spring.wav");
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
