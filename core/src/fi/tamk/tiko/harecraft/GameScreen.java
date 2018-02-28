@@ -133,6 +133,7 @@ public class GameScreen extends ScreenAdapter {
             dBatch.add(l.decal);
         }
         for(Tree t : trees) {
+            dBatch.add(t.decal_shadow);
             dBatch.add(t.decal);
         }
         for(Opponent o : opponents) {
@@ -188,25 +189,25 @@ public class GameScreen extends ScreenAdapter {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,6.2f);
             cloudsLeftUp.add(new Cloud(x, y, spawnDistanceSky));
-            cloudsLeftUpSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
+            cloudsLeftUpSpawnTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
         }
         if(cloudsLeftDown.isEmpty() || cloudsLeftDown.get(cloudsLeftDown.size() - 1).stateTime >= cloudsLeftDownSpawnTimer) {
             x = MathUtils.random(-30f,0f);
             y = MathUtils.random(0f,-6.2f);
             cloudsLeftDown.add(new Cloud(x, y, spawnDistanceSky));
-            cloudsLeftDownSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
+            cloudsLeftDownSpawnTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
         }
         if(cloudsRightUp.isEmpty() || cloudsRightUp.get(cloudsRightUp.size() - 1).stateTime >= cloudsRightUpSpawnTimer) {
             x = MathUtils.random(0f,30f);
             y = MathUtils.random(0f,6.2f);
             cloudsRightUp.add(new Cloud(x, y, spawnDistanceSky));
-            cloudsRightUpSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
+            cloudsRightUpSpawnTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
         }
         if(cloudsRightDown.isEmpty() || cloudsRightDown.get(cloudsRightDown.size() - 1).stateTime >= cloudsRightDownSpawnTimer) {
             x = MathUtils.random(0f,30f);
             y = MathUtils.random(0f,-6.2f);
             cloudsRightDown.add(new Cloud(x, y, spawnDistanceSky));
-            cloudsRightDownSpawnTimer = MathUtils.random(0.1f, 0.7f - global_Multiplier *  0.1f);
+            cloudsRightDownSpawnTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
         }
     }
 
@@ -260,8 +261,8 @@ public class GameScreen extends ScreenAdapter {
         float y;
         if(trees.isEmpty() || trees.get(trees.size() - 1).stateTime >= TreeSpawnTimer) {
             x = MathUtils.random(-100f, 100f);
-            y = -17f;
-            trees.add(new Tree(x, y, spawnDistanceGround));
+            y = -23f;
+            trees.add(new Tree(x, y, spawnDistanceGround + 50f));
             TreeSpawnTimer = MathUtils.random(0.05f, 0.2f - global_Multiplier * 0.025f);
         }
     }

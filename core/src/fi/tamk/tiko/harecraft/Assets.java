@@ -19,6 +19,7 @@ public class Assets {
     static TextureRegion texR_cloud;
     static TextureRegion texR_lifering;
     static TextureRegion texR_tree;
+    static TextureRegion texR_tree_shadow;
 
     static Music music_default;
 
@@ -32,6 +33,7 @@ public class Assets {
         texR_cloud = new TextureRegion(loadTexture("textures/tex_cloud.png"));
         texR_lifering = new TextureRegion(loadTexture("textures/tex_lifering.png"));
         texR_tree = new TextureRegion(loadTexture("textures/tex_tree.png"));
+        texR_tree_shadow = new TextureRegion(loadTexture("textures/tex_tree_shadow.png"));
 
         music_default = loadMusic("sound/elevator.wav");
         music_default.setLooping(true);
@@ -64,6 +66,7 @@ public class Assets {
         texR_cloud.getTexture().dispose();
         texR_lifering.getTexture().dispose();
         texR_tree.getTexture().dispose();
+        texR_tree_shadow.getTexture().dispose();
 
         sound_cloud_hit.dispose();
         sound_lifering_collected.dispose();

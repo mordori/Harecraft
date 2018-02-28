@@ -16,7 +16,7 @@ public class Cloud extends GameObject {
 
     public Cloud(float x, float y, float z) {
 
-        decal = Decal.newDecal(width * 10f, height * 10f, Assets.texR_cloud, true);
+        decal = Decal.newDecal(width * 13f, height * 13f, Assets.texR_cloud, true);
         decal.setPosition(x,y,z);
 
         position = new Vector3();
