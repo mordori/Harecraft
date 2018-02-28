@@ -11,17 +11,12 @@ import com.badlogic.gdx.math.Vector3;
  * Created by Mika on 23.2.2018.
  */
 
-public class Player extends GameObject {
-
-    enum State {
-        NORMAL, HIT_BOUNDS
-    }
+public class Player extends Pilot {
 
     static final float ACCEL_Y_OFFSET = 5f;
 
     float width = Assets.texR_player.getRegionWidth()/100f;
     float height = Assets.texR_player.getRegionHeight()/100f;
-    State state = State.NORMAL;
 
     final float SPEED = 15f;
     final float MAX_SPEED = 5f;
@@ -33,6 +28,7 @@ public class Player extends GameObject {
 
         velocity = new Vector3();
         position = new Vector3();
+        rotation = new Vector3();
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -48,16 +44,18 @@ public class Player extends GameObject {
             velocity.y = 3f;
         }
 
-        if(Gdx.app.getType() == Application.ApplicationType.Android) {
-            velocity.x = accelX * 1.5f;
-            velocity.y = (accelY - ACCEL_Y_OFFSET) * 1.5f;
-            rotation = velocity.x * 5f;
-        } else {
-            checkInput(delta);
-            rotation = velocity.x * 15f;
+        if(GameScreen.state == GameScreen.State.RACE) {
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                velocity.x = accelX * 1.5f;
+                velocity.y = (accelY - ACCEL_Y_OFFSET) * 1.5f;
+                rotation.z = velocity.x * 5f;
+            } else {
+                checkInput(delta);
+                rotation.z = velocity.x * 15f;
+            }
         }
 
-        decal.setRotationZ(rotation);
+        decal.setRotationZ(rotation.z);
 
         if(decal.getPosition().x < 12.8f && velocity.x < 0f || decal.getPosition().x > -12.8f && velocity.x > 0f) {
             decal.translateX(-velocity.x * delta * Math.abs(decal.getRotation().z) * 2f);
@@ -75,6 +73,9 @@ public class Player extends GameObject {
             velocity.x -= Math.abs(velocity.x)/velocity.x * 0.05f;
             if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
         }
+
+        distance += -(GameScreen.global_Speed - GameScreen.global_Multiplier * 3f) * delta;
+        System.out.println((int)distance);
     }
 
     public void checkInput(float delta) {

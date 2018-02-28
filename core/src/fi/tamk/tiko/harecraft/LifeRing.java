@@ -24,6 +24,7 @@ public class LifeRing extends GameObject {
         position = new Vector3();
         velocity = new Vector3();
         direction = new Vector3();
+        rotation = new Vector3();
     }
 
     public void update(float delta) {
@@ -62,9 +63,9 @@ public class LifeRing extends GameObject {
         decal.setColor(1f,1f,1f, opacity);
 
         //Rotation
-        if(!isCollected) rotation = delta * 50f;
-        else rotation = delta * 70f * (stateTime / 2);
-        decal.rotateZ(rotation);
+        if(!isCollected) rotation.z = delta * 50f;
+        else rotation.z = delta * 70f * (stateTime / 2);
+        decal.rotateZ(rotation.z);
 
         //Movement Z
         velocity.z = (GameScreen.global_Speed - GameScreen.global_Multiplier * 3f) * delta;

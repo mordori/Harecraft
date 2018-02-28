@@ -18,6 +18,11 @@ import java.util.ArrayList;
  */
 
 public class GameScreen extends ScreenAdapter {
+
+    enum State {
+        START, RACE, FINISH
+    }
+
     FPSLogger logger = new FPSLogger();
 
     public static final float WORLD_WIDTH = Gdx.graphics.getWidth() / 100f;
@@ -26,8 +31,9 @@ public class GameScreen extends ScreenAdapter {
     GameMain game;
     DecalBatch dBatch;
     static PerspectiveCamera camera;
-    static float fieldOfView = 45f;
+    static float fieldOfView = 47.5f;
     float cameraRotation = 0f;
+    static State state;
 
     Decal decal_background;
 
@@ -38,6 +44,7 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Cloud> cloudsRightDown = new ArrayList<Cloud>();
     ArrayList<LifeRing> lifeRings = new ArrayList<LifeRing>();
     ArrayList<Tree> trees = new ArrayList<Tree>();
+    ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 
     float cloudsLeftUpSpawnTimer = 1f;
     float cloudsLeftDownSpawnTimer = 1f;
@@ -46,11 +53,13 @@ public class GameScreen extends ScreenAdapter {
     float lifeRingsSpawnTimer = 5f;
     float TreeSpawnTimer = 1f;
 
-    float spawnDistanceSky = 100f;
-    float spawnDistanceGround = 125f;
+    static float spawnDistanceSky = 100f;
+    static float spawnDistanceGround = 125f;
 
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
+
+    static float timer;
 
     public GameScreen(GameMain game) {
         this.game = game;
@@ -67,9 +76,11 @@ public class GameScreen extends ScreenAdapter {
 
         player = new Player(0f,0f,0f);
 
-        lifeRings.add(new LifeRing(0f, 0f, spawnDistanceSky/1.2f));
+        opponents.add(new Opponent(-2f, 4f, -45f, 30f));
+        opponents.add(new Opponent(2f, 2f, -50f, 65f));
+        opponents.add(new Opponent(-3f, -1f, -55f, 100f));
 
-        Assets.music_default.play();
+        state = State.START;
     }
 
     @Override
@@ -84,15 +95,24 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
 
-        /*if(fieldOfView < 45f) fieldOfView += 10f * delta;
-        else fieldOfView = 45f;*/
+        if(state == State.START && timer > 5f) {
+            state = State.RACE;
+            lifeRings.add(new LifeRing(0f, 0f, spawnDistanceSky/1.3f));
+            Assets.music_default.play();
+            for(Opponent o : opponents) {
+                o.position.z = o.spawnPositionZ;
+            }
+            timer = 0;
+        }
 
-        //System.out.println(GameScreen.global_Multiplier);
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
-        updateCamera();
+        updateOpponents(delta);
         updateClouds(delta);
         updateLifeRings(delta);
         updateTrees(delta);
+        updateCamera();
+
+        timer += delta;
     }
 
     public void drawDecals() {
@@ -114,6 +134,16 @@ public class GameScreen extends ScreenAdapter {
         }
         for(Tree t : trees) {
             dBatch.add(t.decal);
+        }
+        for(Opponent o : opponents) {
+            if(o.position.z < spawnDistanceSky/3.5f) {
+                o.isDrawing = true;
+                dBatch.add(o.decal);
+            }
+            else if(o.opacity != 0f) {
+                o.isDrawing = false;
+                dBatch.add(o.decal);
+            }
         }
         dBatch.add(player.decal);
 
@@ -204,7 +234,7 @@ public class GameScreen extends ScreenAdapter {
     public void addLifeRings() {
         float x;
         float y;
-        if(lifeRings.isEmpty() || lifeRings.get(lifeRings.size() - 1).stateTime >= lifeRingsSpawnTimer) {
+        if(state == State.RACE && (lifeRings.isEmpty() || lifeRings.get(lifeRings.size() - 1).stateTime >= lifeRingsSpawnTimer)) {
             x = MathUtils.random(-10f, 10f);
             y = MathUtils.random(-6.2f, 6.2f);
             lifeRings.add(new LifeRing(x, y, spawnDistanceSky));
@@ -239,6 +269,11 @@ public class GameScreen extends ScreenAdapter {
     public void disposeTrees() {
         if(!trees.isEmpty() && trees.get(0).decal.getPosition().z < camera.position.z) {
             trees.remove(0);
+        }
+    }
+    public void updateOpponents(float delta) {
+        for(Opponent o : opponents) {
+            o.update(delta);
         }
     }
 

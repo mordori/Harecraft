@@ -49,7 +49,7 @@ public class Cloud extends GameObject {
         decal.setColor(1f,1f,1f, opacity);
 
         //Movement Z
-        velocity.z = (GameScreen.global_Speed - GameScreen.global_Multiplier * 3f) * delta;
-        decal.translateZ(velocity.z);
+        velocity.z = GameScreen.global_Speed - GameScreen.global_Multiplier * 3f;
+        decal.translateZ(velocity.z * delta);
     }
 }

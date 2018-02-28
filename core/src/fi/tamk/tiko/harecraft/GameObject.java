@@ -15,10 +15,10 @@ abstract class GameObject {
     Vector3 velocity;
     Vector3 direction;
     Vector3 position;
+    Vector3 rotation;
 
     float stateTime;
     float opacity;
-    float rotation;
 
     public GameObject() {
 
