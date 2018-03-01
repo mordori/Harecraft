@@ -57,14 +57,14 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Tree> trees = new ArrayList<Tree>();
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 
-    float lifeRingsSpawnTimer = 5f;
+    float lifeRingsSpawnTimer = 3.5f;
     float cloudsLeftUpSpawnTimer = 1f;
     float cloudsLeftDownSpawnTimer = 1f;
     float cloudsRightUpSpawnTimer = 1f;
     float cloudsRightDownSpawnTimer = 1f;
     float TreeSpawnTimer = 1f;
 
-    static float spawnDistance = 175;
+    static float spawnDistance = 250;
 
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
@@ -91,15 +91,15 @@ public class GameScreen extends ScreenAdapter {
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
         decal_background = Decal.newDecal(Assets.texR_background, true);
-        decal_background.setPosition(0f,0f,300f);
+        decal_background.setPosition(0f,12f,300f);
 
-        player = new Player(0f,-2f,0f);
+        player = new Player(0f,-9f,0f);
 
         opponents.add(new Opponent(-2f, 4f, -75f, 30f));
         opponents.add(new Opponent(2f, 2f, -80f, 65f));
         opponents.add(new Opponent(-4f, -2f, -85f, 100f));
 
-                /*ParticleSystem particleSystem = new ParticleSystem();
+        /*ParticleSystem particleSystem = new ParticleSystem();
         bPdParticleBatch.setCamera(camera);
         particleSystem.add(bPdParticleBatch);*/
         /*targetMatrix = new Matrix4();
@@ -160,7 +160,8 @@ public class GameScreen extends ScreenAdapter {
 
         if(state == State.START && timer > 6f) {
             state = State.RACE;
-            lifeRings.add(new LifeRing(0f, 0f, spawnDistance/2.8f));
+            lifeRings.add(new LifeRing(0f, -6f, spawnDistance/4f));
+            lifeRings.add(new LifeRing(3f, 1f, spawnDistance/1.5f));
             Assets.music_default.play();
             for(Opponent o : opponents) {
                 o.position.z = o.spawnPositionZ;
@@ -199,7 +200,7 @@ public class GameScreen extends ScreenAdapter {
             dBatch.add(t.decal);
         }
         for(Opponent o : opponents) {
-            if(o.position.z < spawnDistance/6f) {
+            if(o.position.z < spawnDistance/10f) {
                 o.isDrawing = true;
                 dBatch.add(o.decal);
             }
@@ -220,7 +221,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateCamera() {
-        camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.15f,-5f);
+        camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
         //Needs work
         //camera.rotate(player.velocity.x / 20f,1f,1f,1f);
         camera.lookAt(0f,0f,spawnDistance/2f);
@@ -300,7 +301,7 @@ public class GameScreen extends ScreenAdapter {
         float y;
         if(state == State.RACE && (lifeRings.isEmpty() || lifeRings.get(lifeRings.size() - 1).stateTime >= lifeRingsSpawnTimer)) {
             x = MathUtils.random(-10f, 10f);
-            y = MathUtils.random(-6.2f, 6.2f);
+            y = MathUtils.random(-9.2f, 6.2f);
             lifeRings.add(new LifeRing(x, y, spawnDistance - 50f));
         }
     }
@@ -324,7 +325,7 @@ public class GameScreen extends ScreenAdapter {
         float y;
         if(trees.isEmpty() || trees.get(trees.size() - 1).stateTime >= TreeSpawnTimer) {
             x = MathUtils.random(-100f, 100f);
-            y = -23f;
+            y = -25f;
             trees.add(new Tree(x, y, spawnDistance));
             TreeSpawnTimer = MathUtils.random(0.05f, 0.2f - global_Multiplier * 0.025f);
         }

@@ -23,8 +23,6 @@ public class Player extends Pilot {
     final float SPEED = 15f;
     final float MAX_SPEED = 5f;
 
-    ParticleEffect pfx_scarf;
-
     public Player(float x, float y, float z) {
 
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
@@ -44,9 +42,9 @@ public class Player extends Pilot {
         if(decal.getPosition().x >= GameScreen.WORLD_WIDTH) velocity.x = 3f;
         else if(decal.getPosition().x <= -GameScreen.WORLD_WIDTH) velocity.x = -3f;
 
-        if(decal.getPosition().y >= GameScreen.WORLD_HEIGHT) {
+        if(decal.getPosition().y >= GameScreen.WORLD_HEIGHT * 1.5f) {
             velocity.y = -3f;
-        } else if(decal.getPosition().y <= -GameScreen.WORLD_HEIGHT) {
+        } else if(decal.getPosition().y <= -GameScreen.WORLD_HEIGHT * 2f) {
             velocity.y = 3f;
         }
 
@@ -63,11 +61,11 @@ public class Player extends Pilot {
 
         decal.setRotationZ(rotation.z);
 
-        if(decal.getPosition().x < 12.8f && velocity.x < 0f || decal.getPosition().x > -12.8f && velocity.x > 0f) {
+        if(decal.getPosition().x < GameScreen.WORLD_WIDTH && velocity.x < 0f || decal.getPosition().x > -GameScreen.WORLD_WIDTH && velocity.x > 0f) {
             decal.translateX(-velocity.x * delta * Math.abs(decal.getRotation().z) * 2f);
         }
 
-        if(decal.getPosition().y < 7.2f && velocity.y > 0f || decal.getPosition().y > -7.2f && velocity.y < 0f)
+        if(decal.getPosition().y < GameScreen.WORLD_HEIGHT * 1.5f && velocity.y > 0f || decal.getPosition().y > -GameScreen.WORLD_HEIGHT * 2f && velocity.y < 0f)
         decal.translateY(velocity.y * delta);
 
         if(velocity.y != 0 && Math.abs(velocity.y) > 0f) {
@@ -140,8 +138,8 @@ public class Player extends Pilot {
         }*/
 
         pfx_scarf.setPosition(
-                -position.x * 31.5f + GameScreen.WORLD_WIDTH * 100f /2f,
-                position.y * 31.5f + GameScreen.WORLD_HEIGHT * 100f/2f + 10f);
+                -position.x * 31.5f / 1.05f + GameScreen.WORLD_WIDTH * 100f /2f,
+                position.y * 31.5f / 1.15f + GameScreen.WORLD_HEIGHT * 100f/2f + 10f);
 
         pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x  * 6f);
         pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x  * 5f);
@@ -171,6 +169,6 @@ public class Player extends Pilot {
     }
 
     public void dispose() {
-        pfx_scarf.dispose();
+        super.dispose();
     }
 }

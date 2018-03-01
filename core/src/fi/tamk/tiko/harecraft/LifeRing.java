@@ -36,7 +36,7 @@ public class LifeRing extends GameObject {
                 isCollected = true;
 
                 if(GameScreen.global_Multiplier < 5f) {
-                    GameScreen.global_Multiplier += 2.2f;
+                    GameScreen.global_Multiplier += 2.35f;
                     System.out.println("INCREASE");
                     //GameScreen.fieldOfView -= 10f;
                 }
