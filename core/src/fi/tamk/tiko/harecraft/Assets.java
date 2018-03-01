@@ -5,8 +5,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 
 /**
  * Created by Mika on 23.2.2018.
@@ -26,6 +28,8 @@ public class Assets {
     static Sound sound_cloud_hit;
     static Sound sound_lifering_collected;
 
+    static ParticleEffect pfx_scarf;
+
     public static void load() {
         texR_background = new TextureRegion(loadTexture("textures/tex_background.png"));
         texR_player = new TextureRegion(loadTexture("textures/tex_plane.png"));
@@ -40,6 +44,10 @@ public class Assets {
 
         sound_cloud_hit = loadSound("sound/Boup.wav");
         sound_lifering_collected = loadSound("sound/Spring.wav");
+
+        pfx_scarf = new ParticleEffect();
+        pfx_scarf.load(Gdx.files.internal("pfx_scarf"), Gdx.files.internal(""));
+
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
@@ -49,6 +57,9 @@ public class Assets {
     public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal(path));}
 
     public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal(path));}
+
+    public static Music loadParticles(String path) {return Gdx.audio.newMusic(Gdx.files.internal(path));}
+
 
     public static void flip(Animation<TextureRegion> animation, int frames) {
         TextureRegion regions;
@@ -67,8 +78,9 @@ public class Assets {
         texR_lifering.getTexture().dispose();
         texR_tree.getTexture().dispose();
         texR_tree_shadow.getTexture().dispose();
-
         sound_cloud_hit.dispose();
         sound_lifering_collected.dispose();
+        music_default.dispose();
+        pfx_scarf.dispose();
     }
 }

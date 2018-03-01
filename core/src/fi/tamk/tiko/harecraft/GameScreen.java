@@ -3,12 +3,22 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -31,8 +41,9 @@ public class GameScreen extends ScreenAdapter {
     GameMain game;
     DecalBatch dBatch;
     static PerspectiveCamera camera;
-    static float fieldOfView = 47.5f;
+    static float fieldOfView = 45f;
     float cameraRotation = 0f;
+
     static State state;
 
     Decal decal_background;
@@ -46,11 +57,11 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Tree> trees = new ArrayList<Tree>();
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 
+    float lifeRingsSpawnTimer = 5f;
     float cloudsLeftUpSpawnTimer = 1f;
     float cloudsLeftDownSpawnTimer = 1f;
     float cloudsRightUpSpawnTimer = 1f;
     float cloudsRightDownSpawnTimer = 1f;
-    float lifeRingsSpawnTimer = 5f;
     float TreeSpawnTimer = 1f;
 
     static float spawnDistance = 175;
@@ -59,6 +70,15 @@ public class GameScreen extends ScreenAdapter {
     static float global_Multiplier = 1f;
 
     static float timer;
+
+    ModelBatch modelBatch = new ModelBatch();
+    static AssetManager manager = new AssetManager();
+
+    ParticleSystem particleSystem;
+    static BillboardParticleBatch bPdParticleBatch = new BillboardParticleBatch();
+    ParticleEffect effect;
+    private ParticleEffect currentEffects;
+    private Matrix4 targetMatrix;
 
     public GameScreen(GameMain game) {
         this.game = game;
@@ -73,20 +93,64 @@ public class GameScreen extends ScreenAdapter {
         decal_background = Decal.newDecal(Assets.texR_background, true);
         decal_background.setPosition(0f,0f,300f);
 
-        player = new Player(0f,0f,0f);
+        player = new Player(0f,-2f,0f);
 
-        opponents.add(new Opponent(-2f, 4f, -95f, 30f));
-        opponents.add(new Opponent(2f, 2f, -100f, 65f));
-        opponents.add(new Opponent(-3f, -1f, -105f, 100f));
+        opponents.add(new Opponent(-2f, 4f, -75f, 30f));
+        opponents.add(new Opponent(2f, 2f, -80f, 65f));
+        opponents.add(new Opponent(-4f, -2f, -85f, 100f));
+
+                /*ParticleSystem particleSystem = new ParticleSystem();
+        bPdParticleBatch.setCamera(camera);
+        particleSystem.add(bPdParticleBatch);*/
+        /*targetMatrix = new Matrix4();
+
+
+        particleSystem = new ParticleSystem();
+        BillboardParticleBatch pointSpriteBatch = new BillboardParticleBatch();
+        pointSpriteBatch.setCamera(camera);
+        //particleSystem = new ParticleSystem();
+
+        particleSystem.add(pointSpriteBatch);
+        ParticleEffectLoader.ParticleEffectLoadParameter loadParam = new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
+        ParticleEffectLoader loader = new ParticleEffectLoader(new InternalFileHandleResolver());
+        manager.setLoader(ParticleEffect.class, loader);
+        manager.load("particles/pfx_scarf", ParticleEffect.class, loadParam);
+        // halt the main thread until assets are loaded.
+        // this is bad for actual games, but okay for demonstration purposes.
+        manager.finishLoading();
+
+        currentEffects=manager.get("particles/pfx_scarf",ParticleEffect.class).copy();
+        currentEffects.init();
+        particleSystem.add(currentEffects);*/
 
         state = State.START;
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
         update(delta);
         drawDecals();
+        //renderParticleEffects(delta);
         drawHUD();
+    }
+
+    private void renderParticleEffects(float delta) {
+
+
+        targetMatrix.idt();
+        targetMatrix.translate(player.position.x,player.position.y,player.position.z);
+        currentEffects.setTransform(targetMatrix);
+
+        modelBatch.begin(camera);
+        particleSystem.update(); // technically not necessary for rendering
+        particleSystem.begin();
+        particleSystem.draw();
+        particleSystem.end();
+        modelBatch.render(particleSystem);
+        modelBatch.end();
     }
 
     public void update(float delta) {
@@ -152,6 +216,8 @@ public class GameScreen extends ScreenAdapter {
 
     public void drawHUD() {
         game.sBatch.begin();
+        if(player.velocity.x != 0f || player.velocity.y != 0f)player.pfx_scarf.draw(game.sBatch);
+        //player.pfx_windRight.draw(game.sBatch);
         game.sBatch.end();
     }
 

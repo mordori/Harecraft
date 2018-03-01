@@ -3,6 +3,8 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,6 +23,9 @@ public class Player extends Pilot {
     final float SPEED = 15f;
     final float MAX_SPEED = 5f;
 
+    ParticleEffect pfx_scarf;
+    //ParticleEffect pfx_windRight;
+
     public Player(float x, float y, float z) {
 
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
@@ -29,6 +34,9 @@ public class Player extends Pilot {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
+
+        pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
+        //pfx_windRight = new ParticleEffect(Assets.pfx_wind);
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -75,7 +83,8 @@ public class Player extends Pilot {
         }
 
         distance += -(GameScreen.global_Speed - GameScreen.global_Multiplier * 3f) * delta;
-        System.out.println((int)distance);
+
+        updateParticles(delta);
     }
 
     public void checkInput(float delta) {
@@ -103,5 +112,64 @@ public class Player extends Pilot {
                 if(velocity.y <= -MAX_SPEED) velocity.y = -MAX_SPEED;
             }
         }
+    }
+
+    public void updateParticles(float delta) {
+        /*float dir = 0;
+        if(rotation.z != 0) dir = Math.abs(rotation.z)/rotation.z;
+            pfx_windLeft.setPosition(
+                    -position.x * 31.5f + GameScreen.WORLD_WIDTH * 100f / 2f - width * 80f ,
+                    position.y * 31.5f + GameScreen.WORLD_HEIGHT * 100f / 2f);
+            pfx_windRight.setPosition(
+                    -position.x * 31.5f + GameScreen.WORLD_WIDTH * 100f / 2f + width * 80f,
+                    position.y * 31.5f + GameScreen.WORLD_HEIGHT * 100f / 2f);
+*/
+        /*if(dir < 0) {
+            pfx_windLeft.setPosition(
+                    -position.x * 31.5f + GameScreen.WORLD_WIDTH * 100f / 2f - width * 80f + rotation.z * dir,
+                    position.y * 31.5f + GameScreen.WORLD_HEIGHT * 100f / 2f + rotation.z * -dir * 1.1f);
+            pfx_windRight.setPosition(
+                    -position.x * 31.5f + GameScreen.WORLD_WIDTH * 100f / 2f + width * 80f + rotation.z * -dir,
+                    position.y * 31.5f + GameScreen.WORLD_HEIGHT * 100f / 2f + rotation.z * dir * 1.1f);
+        }
+        else {
+            pfx_windLeft.setPosition(
+                    -position.x*31.5f + GameScreen.WORLD_WIDTH * 100f / 2f - width * 80f + rotation.z * dir,
+                    position.y*31.5f + GameScreen.WORLD_HEIGHT * 100f / 2f + rotation.z * dir * 1.1f);
+            pfx_windRight.setPosition(
+                    -position.x*31.5f + GameScreen.WORLD_WIDTH * 100f / 2f + width * 80f + rotation.z * -dir,
+                    position.y*31.5f + GameScreen.WORLD_HEIGHT * 100f / 2f + rotation.z * -dir * 1.1f);
+        }*/
+
+        pfx_scarf.setPosition(
+                -position.x * 31.5f + GameScreen.WORLD_WIDTH * 100f /2f,
+                position.y * 31.5f + GameScreen.WORLD_HEIGHT * 100f/2f + 10f);
+
+        pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x  * 6f);
+        pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x  * 5f);
+
+        //pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.y * 6f);
+        //pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.y * 5f);
+
+
+
+        ParticleEmitter.ScaledNumericValue angle;
+        float range;
+
+        /*for(ParticleEmitter em : pfx_windLeft.getEmitters()) {
+            angle = em.getAngle();
+            range = angle.getHighMax() - angle.getHighMin();
+
+            em.getAngle().setHigh(new Vector2(velocity.x, velocity.y).angle() - range / 2.0f, velocity.angle() + range / 2.0f);
+        }
+        for(ParticleEmitter em : pfx_windRight.getEmitters()) {
+            angle = em.getAngle();
+            range = angle.getHighMax() - angle.getHighMin();
+
+            em.getAngle().setHigh(new Vector2(velocity.x, velocity.y).angle() - range / 2.0f, velocity.angle() + range / 2.0f);
+        }*/
+
+        pfx_scarf.update(delta);
+        //pfx_windRight.update(delta);
     }
 }
