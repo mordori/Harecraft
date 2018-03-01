@@ -134,7 +134,7 @@ public class GameScreen extends ScreenAdapter {
         update(delta);
         drawDecals();
         //renderParticleEffects(delta);
-        drawHUD();
+        drawSprites();
     }
 
     private void renderParticleEffects(float delta) {
@@ -154,7 +154,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
-        //logger.log();
+        logger.log();
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
 
@@ -196,7 +196,6 @@ public class GameScreen extends ScreenAdapter {
             dBatch.add(l.decal);
         }
         for(Tree t : trees) {
-            dBatch.add(t.decal_shadow);
             dBatch.add(t.decal);
         }
         for(Opponent o : opponents) {
@@ -214,10 +213,9 @@ public class GameScreen extends ScreenAdapter {
         dBatch.flush();
     }
 
-    public void drawHUD() {
+    public void drawSprites() {
         game.sBatch.begin();
-        if(player.velocity.x != 0f || player.velocity.y != 0f)player.pfx_scarf.draw(game.sBatch);
-        //player.pfx_windRight.draw(game.sBatch);
+        if(player.velocity.x != 0f || player.velocity.y != 0f) player.pfx_scarf.draw(game.sBatch);
         game.sBatch.end();
     }
 
@@ -346,5 +344,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         dBatch.dispose();
+        player.dispose();
     }
 }

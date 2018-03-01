@@ -24,7 +24,6 @@ public class Player extends Pilot {
     final float MAX_SPEED = 5f;
 
     ParticleEffect pfx_scarf;
-    //ParticleEffect pfx_windRight;
 
     public Player(float x, float y, float z) {
 
@@ -36,7 +35,6 @@ public class Player extends Pilot {
         rotation = new Vector3();
 
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
-        //pfx_windRight = new ParticleEffect(Assets.pfx_wind);
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -153,10 +151,10 @@ public class Player extends Pilot {
 
 
 
-        ParticleEmitter.ScaledNumericValue angle;
+        /*ParticleEmitter.ScaledNumericValue angle;
         float range;
 
-        /*for(ParticleEmitter em : pfx_windLeft.getEmitters()) {
+        for(ParticleEmitter em : pfx_windLeft.getEmitters()) {
             angle = em.getAngle();
             range = angle.getHighMax() - angle.getHighMin();
 
@@ -170,6 +168,9 @@ public class Player extends Pilot {
         }*/
 
         pfx_scarf.update(delta);
-        //pfx_windRight.update(delta);
+    }
+
+    public void dispose() {
+        pfx_scarf.dispose();
     }
 }
