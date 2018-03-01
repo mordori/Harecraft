@@ -5,26 +5,26 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.World.player;
+
 /**
  * Created by Mika on 26/02/2018.
  */
 
-public class LifeRing extends GameObject {
-
+public class Ring extends GameObject {
     float width = Assets.texR_lifering.getRegionWidth()/100f;
     float height = Assets.texR_lifering.getRegionHeight()/100f;
     final float SPEED = 10f;
     boolean isCollected = false;
 
-    public LifeRing(float x, float y, float z) {
-
-        decal = Decal.newDecal(width * 8.5f, height * 8.5f, Assets.texR_lifering, true);
-        decal.setPosition(x,y,z);
-
+    public Ring(float x, float y, float z) {
         position = new Vector3();
         velocity = new Vector3();
         direction = new Vector3();
         rotation = new Vector3();
+
+        decal = Decal.newDecal(width * 8.5f, height * 8.5f, Assets.texR_lifering, true);
+        decal.setPosition(x,y,z);
     }
 
     public void update(float delta) {
@@ -32,13 +32,11 @@ public class LifeRing extends GameObject {
         position = decal.getPosition();
 
         if(!isCollected) {
-            if(decal.getPosition().z < 0.1f && decal.getPosition().z > -1f && position.dst(GameScreen.player.position) < 1.7f) {
+            if(decal.getPosition().z < 0.1f && decal.getPosition().z > -1f && position.dst(player.position) < 1.7f) {
                 isCollected = true;
 
                 if(GameScreen.global_Multiplier < 5f) {
                     GameScreen.global_Multiplier += 2.35f;
-                    System.out.println("INCREASE");
-                    //GameScreen.fieldOfView -= 10f;
                 }
                 if(GameScreen.global_Multiplier > 5f) GameScreen.global_Multiplier = 5f;
 
@@ -50,7 +48,7 @@ public class LifeRing extends GameObject {
         else {
             decal.setScale(decal.getScaleX() + delta * stateTime / 4f);
 
-            direction = GameScreen.player.position.cpy().sub(position);
+            direction = player.position.cpy().sub(position);
             velocity.x = direction.nor().x * SPEED * Math.abs(direction.x);
             velocity.y = direction.nor().y * SPEED * Math.abs(direction.y);
 

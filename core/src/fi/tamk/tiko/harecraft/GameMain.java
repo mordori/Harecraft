@@ -10,7 +10,7 @@ public class GameMain extends Game {
 	public void create () {
 		Assets.load();
 		sBatch = new SpriteBatch();
-	    setScreen(new GameScreen(this));
+	    setScreen(new GameScreen(this, new World()));
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector3;
  */
 
 public class Opponent extends Pilot {
-
     float width = Assets.texR_opponent_yellow.getRegionWidth()/100f;
     float height = Assets.texR_opponent_yellow.getRegionHeight()/100f;
 
@@ -23,13 +22,12 @@ public class Opponent extends Pilot {
     boolean isDrawing;
 
     public Opponent(float x, float y, float z, float spawnPositionZ) {
-
-        decal = Decal.newDecal(width*2f,height*2f,Assets.texR_opponent_yellow, true);
-        decal.setPosition(x,y,z);
-
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
+
+        decal = Decal.newDecal(width*2f,height*2f,Assets.texR_opponent_yellow, true);
+        decal.setPosition(x,y,z);
 
         this.spawnPositionZ = spawnPositionZ;
     }
@@ -50,5 +48,9 @@ public class Opponent extends Pilot {
         decal.translateZ(velocity.z * delta);
 
         distance += -velocity.z;
+    }
+
+    public void dispose() {
+        super.dispose();
     }
 }

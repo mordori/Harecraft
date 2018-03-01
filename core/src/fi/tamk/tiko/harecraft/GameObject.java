@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector3;
  */
 
 abstract class GameObject {
-
     Decal decal;
 
     Vector3 velocity;

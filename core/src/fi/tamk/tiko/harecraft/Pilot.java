@@ -12,6 +12,7 @@ abstract class Pilot extends GameObject {
     }
 
     ParticleEffect pfx_scarf;
+
     float distance;
 
     public Pilot() {
