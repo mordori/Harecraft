@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
  * Created by Mika on 28/02/2018.
  */
 
-public class Tree extends GameObject {
+public class Tree extends GroundObject {
     float width = Assets.texR_tree.getRegionWidth()/100f;
     float height = Assets.texR_tree.getRegionHeight()/100f;
 

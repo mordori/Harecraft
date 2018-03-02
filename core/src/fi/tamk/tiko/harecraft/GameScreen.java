@@ -19,7 +19,7 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 public class GameScreen extends ScreenAdapter {
     FPSLogger logger = new FPSLogger();
 
-    enum State {
+    enum GameState {
         START, RACE, FINISH
     }
 
@@ -32,8 +32,8 @@ public class GameScreen extends ScreenAdapter {
     static float fieldOfView = 45f;
     static float cameraRotation = 0f;
 
-    static State state;
-    static float timer;
+    static GameState gameState;
+    static float gameTime;
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
 
@@ -50,7 +50,7 @@ public class GameScreen extends ScreenAdapter {
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
-        state = State.START;
+        gameState = GameState.START;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GameScreen extends ScreenAdapter {
     public void update(float delta) {
         logger.log();
 
-        timer += delta;
+        gameTime += delta;
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
 
@@ -85,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
         //Needs work
         //camera.rotate(player.velocity.x / 20f,1f,1f,1f);
         camera.lookAt(0f,0f, spawnDistance/2f);
+        camera.up.set(0f, 100f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
     }

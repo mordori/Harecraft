@@ -6,6 +6,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+
 /**
  * Created by Mika on 28/02/2018.
  */
@@ -13,12 +16,9 @@ import com.badlogic.gdx.math.Vector3;
 public class Opponent extends Pilot {
     float width = Assets.texR_opponent_yellow.getRegionWidth()/100f;
     float height = Assets.texR_opponent_yellow.getRegionHeight()/100f;
-
     final float SPEED = 15f;
     final float MAX_SPEED = 5f;
-
     float spawnPositionZ;
-
     boolean isDrawing;
 
     public Opponent(float x, float y, float z, float spawnPositionZ) {
@@ -43,7 +43,7 @@ public class Opponent extends Pilot {
         if(opacity < 0f) opacity = 0f;
         decal.setColor(1f,1f,1f, opacity);
 
-        if(GameScreen.state == GameScreen.State.RACE) velocity.z = 5f - GameScreen.global_Multiplier * 2f;
+        if(gameState == RACE) velocity.z = 5f - GameScreen.global_Multiplier * 2f;
         else velocity.z = 9f*stateTime;
         decal.translateZ(velocity.z * delta);
 

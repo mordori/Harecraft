@@ -4,11 +4,11 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT;
 import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 
@@ -18,10 +18,8 @@ import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 
 public class Player extends Pilot {
     static final float ACCEL_Y_OFFSET = 5f;
-
     float width = Assets.texR_player.getRegionWidth()/100f;
     float height = Assets.texR_player.getRegionHeight()/100f;
-
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
 
@@ -49,7 +47,7 @@ public class Player extends Pilot {
             velocity.y = 3f;
         }
 
-        if(GameScreen.state == GameScreen.State.RACE) {
+        if(gameState == RACE) {
             if (Gdx.app.getType() == Application.ApplicationType.Android) {
                 velocity.x = accelX * 1.5f;
                 velocity.y = (accelY - ACCEL_Y_OFFSET) * 1.5f;

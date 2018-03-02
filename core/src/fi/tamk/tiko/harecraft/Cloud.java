@@ -13,7 +13,6 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class Cloud extends GameObject {
     float width = Assets.texR_cloud.getRegionWidth()/100f;
     float height = Assets.texR_cloud.getRegionHeight()/100f;
-
     boolean isTransparent = false;
 
     public Cloud(float x, float y, float z) {

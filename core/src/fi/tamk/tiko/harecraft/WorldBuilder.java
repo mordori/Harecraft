@@ -5,7 +5,11 @@ import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.camera;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.GameScreen.gameTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -22,29 +26,43 @@ public class WorldBuilder {
     float clouds_RUpTimer = 1f;
     float clouds_RDownTimer = 1f;
     float trees_Timer = 1f;
+    float x, y;
+
+    GroundObject[] groundObjects = new GroundObject[1];
+
+    static final int TREE = 0;
 
     public WorldBuilder(World world) {
         this.world = world;
     }
 
     public void update(float delta) {
-        if(GameScreen.state == GameScreen.State.START && GameScreen.timer > 6f) {
-            GameScreen.state = GameScreen.State.RACE;
+        if(gameState == START && gameTime > 6f) {
+            gameState = RACE;
             world.rings.add(new Ring(0f, -6f, spawnDistance/4f));
             world.rings.add(new Ring(3f, 1f, spawnDistance/1.5f));
             Assets.music_default.play();
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnPositionZ;
             }
-            GameScreen.timer = 0;
         }
 
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
+        spawnGroundObjects();
+        spawnSkyObjects();
 
         updateOpponents(delta);
         updateClouds(delta);
         updateRings(delta);
         updateTrees(delta);
+    }
+
+    public void spawnGroundObjects() {
+
+    }
+
+    public void spawnSkyObjects() {
+
     }
 
     public void updateOpponents(float delta) {
@@ -87,8 +105,6 @@ public class WorldBuilder {
     }
 
     public void addClouds() {
-        float x;
-        float y;
         if(world.clouds_LUp.isEmpty() || world.clouds_LUp.get(world.clouds_LUp.size() - 1).stateTime >= clouds_LUpTimer) {
             x = MathUtils.random(-40f,0f);
             y = MathUtils.random(0f,6.2f);
@@ -116,9 +132,7 @@ public class WorldBuilder {
     }
 
     public void addRings() {
-        float x;
-        float y;
-        if(GameScreen.state == GameScreen.State.RACE && (world.rings.isEmpty() || world.rings.get(world.rings.size() - 1).stateTime >= rings_Timer)) {
+        if(gameState == RACE && (world.rings.isEmpty() || world.rings.get(world.rings.size() - 1).stateTime >= rings_Timer)) {
             x = MathUtils.random(-10f, 10f);
             y = MathUtils.random(-9.2f, 6.2f);
             world.rings.add(new Ring(x, y, spawnDistance - 50f));
@@ -126,8 +140,6 @@ public class WorldBuilder {
     }
 
     public void addTrees() {
-        float x;
-        float y;
         if(world.trees.isEmpty() || world.trees.get(world.trees.size() - 1).stateTime >= trees_Timer) {
             x = MathUtils.random(-100f, 100f);
             y = -25f;
