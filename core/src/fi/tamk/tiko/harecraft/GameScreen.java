@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 
-import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT;
-import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -18,6 +16,9 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 public class GameScreen extends ScreenAdapter {
     FPSLogger logger = new FPSLogger();
+
+    public static final float SCREEN_WIDTH = Gdx.graphics.getWidth() / 100f;
+    public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight() / 100f;
 
     enum GameState {
         START, RACE, FINISH
@@ -41,9 +42,9 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.world = world;
         builder = new WorldBuilder(world);
-        renderer = new WorldRenderer(world);
+        renderer = new WorldRenderer(world, game);
 
-        camera = new PerspectiveCamera(fieldOfView, WORLD_WIDTH, WORLD_HEIGHT);
+        camera = new PerspectiveCamera(fieldOfView, SCREEN_WIDTH, SCREEN_HEIGHT);
         camera.near = 0.1f;
         camera.far = 400f;
         camera.position.set(0f,0f,-5f);
@@ -60,7 +61,6 @@ public class GameScreen extends ScreenAdapter {
 
         update(delta);
         renderer.renderWorld();
-        drawSprites();
     }
 
     public void update(float delta) {
@@ -70,14 +70,12 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
 
+        if(gameState == GameState.START) {
+            global_Multiplier = 3f;
+        }
+
         builder.update(delta);
         updateCamera();
-    }
-
-    public void drawSprites() {
-        game.sBatch.begin();
-        if(player.velocity.x != 0f || player.velocity.y != 0f) player.pfx_scarf.draw(game.sBatch);
-        game.sBatch.end();
     }
 
     public void updateCamera() {

@@ -3,13 +3,17 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+
 /**
  * Created by Mika on 28/02/2018.
  */
 
 public class Tree extends GroundObject {
-    float width = Assets.texR_tree.getRegionWidth()/100f;
-    float height = Assets.texR_tree.getRegionHeight()/100f;
+    static float width = Assets.texR_tree.getRegionWidth()/100f;
+    static float height = Assets.texR_tree.getRegionHeight()/100f;
 
     public Tree(float x, float y, float z) {
         position = new Vector3();
@@ -19,16 +23,14 @@ public class Tree extends GroundObject {
         decal.setPosition(x,y,z);
     }
 
+    @Override
     public void update(float delta) {
-        stateTime += delta;
-        position = decal.getPosition();
+        super.update(delta);
 
         //Opacity
-        opacity = stateTime < 1f ? stateTime : 1f;
-        decal.setColor(1f,1f,1f, opacity);
+        setOpacity();
 
         //Movement Z
-        velocity.z = GameScreen.global_Speed - GameScreen.global_Multiplier * 3f;
-        decal.translateZ(velocity.z * delta);
+        moveTowards(delta);
     }
 }

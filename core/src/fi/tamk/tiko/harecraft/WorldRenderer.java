@@ -9,14 +9,17 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class WorldRenderer {
+    GameMain game;
     World world;
 
-    public WorldRenderer(World world) {
+    public WorldRenderer(World world, GameMain game) {
         this.world = world;
+        this.game = game;
     }
 
     public void renderWorld() {
         drawDecals();
+        drawParticles();
     }
 
     public void drawDecals() {
@@ -39,8 +42,18 @@ public class WorldRenderer {
             dBatch.add(l.decal);
         }
 
-        for(Tree t : world.trees) {
+        for(Tree t : world.trees_L) {
             dBatch.add(t.decal);
+        }
+        for(Tree t : world.trees_R) {
+            dBatch.add(t.decal);
+        }
+
+        for(Lake l : world.lakes_L) {
+            dBatch.add(l.decal);
+        }
+        for(Lake l : world.lakes_R) {
+            dBatch.add(l.decal);
         }
 
         for(Opponent o : world.opponents) {
@@ -57,5 +70,11 @@ public class WorldRenderer {
         dBatch.add(player.decal);
         //////////////////////////////////////////////
         dBatch.flush();
+    }
+
+    public void drawParticles() {
+        game.sBatch.begin();
+        if(player.velocity.x != 0f || player.velocity.y != 0f) player.pfx_scarf.draw(game.sBatch);
+        game.sBatch.end();
     }
 }

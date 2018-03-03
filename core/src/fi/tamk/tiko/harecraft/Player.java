@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT;
+import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT_DOWN;
+import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT_UP;
 import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 
 /**
@@ -41,16 +44,16 @@ public class Player extends Pilot {
         if(decal.getPosition().x >= WORLD_WIDTH) velocity.x = 3f;
         else if(decal.getPosition().x <= -WORLD_WIDTH) velocity.x = -3f;
 
-        if(decal.getPosition().y >= WORLD_HEIGHT * 1.5f) {
+        if(decal.getPosition().y >= WORLD_HEIGHT_UP) {
             velocity.y = -3f;
-        } else if(decal.getPosition().y <= -WORLD_HEIGHT * 2f) {
+        } else if(decal.getPosition().y <= -WORLD_HEIGHT_DOWN) {
             velocity.y = 3f;
         }
 
         if(gameState == RACE) {
             if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                velocity.x = accelX * 1.5f;
-                velocity.y = (accelY - ACCEL_Y_OFFSET) * 1.5f;
+                velocity.x = accelX * 2f;
+                velocity.y = (accelY - ACCEL_Y_OFFSET) * 2f;
                 rotation.z = velocity.x * 5f;
             } else {
                 checkInput(delta);
@@ -64,7 +67,7 @@ public class Player extends Pilot {
             decal.translateX(-velocity.x * delta);
         }
 
-        if(decal.getPosition().y < WORLD_HEIGHT * 1.5f && velocity.y > 0f || decal.getPosition().y > -WORLD_HEIGHT * 2f && velocity.y < 0f)
+        if(decal.getPosition().y < WORLD_HEIGHT_UP && velocity.y > 0f || decal.getPosition().y > -WORLD_HEIGHT_DOWN && velocity.y < 0f)
         decal.translateY(velocity.y * delta);
 
         if(velocity.y != 0 && Math.abs(velocity.y) > 0f) {
@@ -111,8 +114,8 @@ public class Player extends Pilot {
 
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                -position.x * 31.5f / 1.05f + WORLD_WIDTH * 100f /2f,
-                position.y * 31.5f / 1.15f + WORLD_HEIGHT * 100f/2f + 10f);
+                -position.x * 31.5f / 1.05f + SCREEN_WIDTH * 100f /2f,
+                position.y * 31.5f / 1.15f + SCREEN_HEIGHT * 100f/2f + 10f);
 
         pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x  * 6f);
         pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x  * 5f);

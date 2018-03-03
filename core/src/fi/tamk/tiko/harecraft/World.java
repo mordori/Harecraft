@@ -1,39 +1,52 @@
 package fi.tamk.tiko.harecraft;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 
 import java.util.ArrayList;
+
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 
 /**
  * Created by Mika on 01/03/2018.
  */
 
 public class World {
-    public static final float WORLD_WIDTH = Gdx.graphics.getWidth() / 100f;
-    public static final float WORLD_HEIGHT = Gdx.graphics.getHeight() / 100f;
+    public static final float WORLD_WIDTH = SCREEN_WIDTH;
+    public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
+    public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
+    //BACKGROUND
     Decal decal_background;
 
+    //PLAYER
     static Player player;
 
+    //SKY
     ArrayList<Cloud> clouds_LUp = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_LDown = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_RUp = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_RDown = new ArrayList<Cloud>();
     ArrayList<Ring> rings = new ArrayList<Ring>();
-    ArrayList<Tree> trees = new ArrayList<Tree>();
+
+    //GROUND
+    ArrayList<Tree> trees_L = new ArrayList<Tree>();
+    ArrayList<Tree> trees_R = new ArrayList<Tree>();
+    ArrayList<Lake> lakes_L = new ArrayList<Lake>();
+    ArrayList<Lake> lakes_R = new ArrayList<Lake>();
+
+    //OPPONENTS
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 
     public World() {
         decal_background = Decal.newDecal(Assets.texR_background, true);
         decal_background.setPosition(0f,12f,300f);
 
-        player = new Player(0f,-9f,0f);
+        player = new Player(0f,-4f,0f);
 
-        opponents.add(new Opponent(-2f, 4f, -75f, 30f));
-        opponents.add(new Opponent(2f, 2f, -80f, 65f));
-        opponents.add(new Opponent(-4f, -2f, -85f, 100f));
+        opponents.add(new Opponent(-3f, 2f, -85f, 50f));
+        opponents.add(new Opponent(4f, 1f, -75f, 85f));
+        opponents.add(new Opponent(-0f, -1f, -70f, 150f));
     }
 
     public void dispose() {

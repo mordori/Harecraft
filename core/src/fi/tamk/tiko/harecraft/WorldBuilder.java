@@ -19,16 +19,18 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 public class WorldBuilder {
     World world;
+    float x, y;
     static float spawnDistance = 250;
+    static float groundLevel = -25f;
     float rings_Timer = 3.5f;
     float clouds_LUpTimer = 1f;
     float clouds_LDownTimer = 1f;
     float clouds_RUpTimer = 1f;
     float clouds_RDownTimer = 1f;
-    float trees_Timer = 1f;
-    float x, y;
-
-    GroundObject[] groundObjects = new GroundObject[1];
+    float trees_LTimer = 1f;
+    float trees_RTimer = 1f;
+    float lakes_LTimer = 10f;
+    float lakes_RTimer = 50f;
 
     static final int TREE = 0;
 
@@ -39,8 +41,8 @@ public class WorldBuilder {
     public void update(float delta) {
         if(gameState == START && gameTime > 6f) {
             gameState = RACE;
-            world.rings.add(new Ring(0f, -6f, spawnDistance/4f));
-            world.rings.add(new Ring(3f, 1f, spawnDistance/1.5f));
+            world.rings.add(new Ring(0f, 2f, spawnDistance/3.25f));
+            world.rings.add(new Ring(2f, 0f, spawnDistance/1.35f));
             Assets.music_default.play();
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnPositionZ;
@@ -48,12 +50,14 @@ public class WorldBuilder {
         }
 
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
+
         spawnGroundObjects();
         spawnSkyObjects();
 
         updateOpponents(delta);
         updateClouds(delta);
         updateRings(delta);
+        updateLakes(delta);
         updateTrees(delta);
     }
 
@@ -89,19 +93,33 @@ public class WorldBuilder {
     }
 
     public void updateRings(float delta) {
-        addRings();
+        addRing();
         for(Ring l : world.rings) {
             l.update(delta);
         }
-        disposeLifeRings();
+        disposeRing();
     }
 
     public void updateTrees(float delta) {
         addTrees();
-        for(Tree t : world.trees) {
+        for(Tree t : world.trees_L) {
+            t.update(delta);
+        }
+        for(Tree t : world.trees_R) {
             t.update(delta);
         }
         disposeTrees();
+    }
+
+    public void updateLakes(float delta) {
+        addLakes();
+        for(Lake l : world.lakes_L) {
+            l.update(delta);
+        }
+        for(Lake l : world.lakes_R) {
+            l.update(delta);
+        }
+        disposeLakes();
     }
 
     public void addClouds() {
@@ -131,7 +149,7 @@ public class WorldBuilder {
         }
     }
 
-    public void addRings() {
+    public void addRing() {
         if(gameState == RACE && (world.rings.isEmpty() || world.rings.get(world.rings.size() - 1).stateTime >= rings_Timer)) {
             x = MathUtils.random(-10f, 10f);
             y = MathUtils.random(-9.2f, 6.2f);
@@ -140,11 +158,33 @@ public class WorldBuilder {
     }
 
     public void addTrees() {
-        if(world.trees.isEmpty() || world.trees.get(world.trees.size() - 1).stateTime >= trees_Timer) {
-            x = MathUtils.random(-100f, 100f);
-            y = -25f;
-            world.trees.add(new Tree(x, y, spawnDistance));
-            trees_Timer = MathUtils.random(0.05f, 0.2f - global_Multiplier * 0.025f);
+        if(world.trees_L.isEmpty() || world.trees_L.get(world.trees_L.size() - 1).stateTime >= trees_LTimer) {
+            x = MathUtils.random(-150f, 0f);
+            y = groundLevel;
+            world.trees_L.add(new Tree(x, y, spawnDistance));
+            trees_LTimer = MathUtils.random(0.05f, 0.2f - global_Multiplier * 0.025f);
+        }
+
+        if(world.trees_R.isEmpty() || world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer) {
+            x = MathUtils.random(0f, 150f);
+            y = groundLevel;
+            world.trees_R.add(new Tree(x, y, spawnDistance));
+            trees_RTimer = MathUtils.random(0.05f, 0.2f - global_Multiplier * 0.025f);
+        }
+    }
+
+    public void addLakes() {
+        if(world.lakes_L.isEmpty() || world.lakes_L.get(world.lakes_L.size() - 1).stateTime >= lakes_LTimer) {
+            x = MathUtils.random(-150f, 0f);
+            y = groundLevel;
+            world.lakes_L.add(new Lake(x, y, spawnDistance));
+            lakes_LTimer = MathUtils.random(1f, 5f - global_Multiplier * 0.3f);
+        }
+        if(world.lakes_R.isEmpty() || world.lakes_R.get(world.lakes_R.size() - 1).stateTime >= lakes_RTimer) {
+            x = MathUtils.random(0f, 150f);
+            y = groundLevel;
+            world.lakes_R.add(new Lake(x, y, spawnDistance));
+            lakes_RTimer = MathUtils.random(1f, 5f - global_Multiplier * 0.3f);
         }
     }
 
@@ -155,21 +195,50 @@ public class WorldBuilder {
         disposeCloud(world.clouds_RDown);
     }
 
+    public void disposeTrees() {
+        disposeTree(world.trees_L);
+        disposeTree(world.trees_R);
+    }
+
+    public void disposeLakes() {
+        disposeLake(world.lakes_L);
+        disposeLake(world.lakes_R);
+    }
+
+    public void disposeRing() {
+        if(!world.rings.isEmpty() && world.rings.get(0).decal.getPosition().z < camera.position.z) {
+            world.rings.remove(0);
+        }
+    }
+
     public void disposeCloud(ArrayList<Cloud> cloudArray) {
         if(cloudArray.get(0).decal.getPosition().z < camera.position.z) {
             cloudArray.remove(0);
         }
     }
 
-    public void disposeTrees() {
-        if(!world.trees.isEmpty() && world.trees.get(0).decal.getPosition().z < camera.position.z) {
-            world.trees.remove(0);
+    public void disposeTree(ArrayList<Tree> treeArray) {
+        if(!world.lakes_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width/1.75f) {
+            world.trees_L.remove(world.trees_L.size()-1);
+        }
+        if(!world.lakes_R.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width/1.75f) {
+            world.trees_L.remove(world.trees_L.size()-1);
+        }
+        if(!world.lakes_R.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width/1.75f) {
+            world.trees_R.remove(world.trees_R.size()-1);
+        }
+        if(!world.lakes_L.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width/1.75f) {
+            world.trees_R.remove(world.trees_R.size()-1);
+        }
+
+        if(!treeArray.isEmpty() && treeArray.get(0).decal.getPosition().z < camera.position.z) {
+            treeArray.remove(0);
         }
     }
 
-    public void disposeLifeRings() {
-        if(!world.rings.isEmpty() && world.rings.get(0).decal.getPosition().z < camera.position.z) {
-            world.rings.remove(0);
+    public void disposeLake(ArrayList<Lake> lakeArray) {
+        if(!lakeArray.isEmpty() && lakeArray.get(0).decal.getPosition().z < camera.position.z) {
+            lakeArray.remove(0);
         }
     }
 }
