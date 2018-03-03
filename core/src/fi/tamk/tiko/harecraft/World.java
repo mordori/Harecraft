@@ -17,11 +17,14 @@ public class World {
     public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
-    static float finish = 500;
+    static float finish = 1000;
     static float end = finish + spawnDistance + 50f;
 
     //BACKGROUND
     Decal decal_background;
+    Decal decal_foreground;
+    Decal decal_sun1;
+    Decal decal_sun2;
 
     //FINISHLINE
     FinishLine finishLine;
@@ -48,6 +51,15 @@ public class World {
     public World() {
         decal_background = Decal.newDecal(Assets.texR_background, true);
         decal_background.setPosition(0f,12f,300f);
+
+        decal_foreground = Decal.newDecal(Assets.texR_foreground, true);
+        decal_foreground.setPosition(0f,15f,287f);
+
+        decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
+        decal_sun1.setPosition(0f,-40f,293f);
+        decal_sun2 = Decal.newDecal(Assets.texR_sun, true);
+        decal_sun2.setPosition(0f,-40f,290f);
+        decal_sun2.rotateZ(90f);
 
         player = new Player(0f,-4f,0f);
 

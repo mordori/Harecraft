@@ -51,7 +51,7 @@ public class WorldBuilder {
             }
         }
         else if(gameState == FINISH && gameStateTime == 0f) {
-            world.finishLine = new FinishLine(0f,WORLD_HEIGHT_UP,spawnDistance + 50f);
+            world.finishLine = new FinishLine(0f,0f,spawnDistance + 50f);
         }
 
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
@@ -73,6 +73,9 @@ public class WorldBuilder {
         int i = world.trees_R.size()+world.trees_L.size() + world.clouds_RDown.size() +world.clouds_RUp.size()+world.clouds_LDown.size()+world.clouds_LUp.size();
 
         //System.out.println("Decals: " + i);
+
+        world.decal_sun1.rotateZ(delta/2f);
+        world.decal_sun2.rotateZ(-delta);
     }
 
     public void spawnGroundObjects() {

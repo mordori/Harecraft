@@ -95,8 +95,8 @@ public class Player extends Pilot {
         if(gameState == END) {
             acceleration += delta * 2f;
             if(gameStateTime < 2.5f) {
-                decal.translateZ(-velocity.z/10f * delta * (acceleration * 2f));
-                decal.translateY(-velocity.z/6f * delta * (acceleration / 2.5f));
+                decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
+                decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
             }
         }
 

@@ -26,6 +26,9 @@ public class WorldRenderer {
 
     public void drawDecals() {
         dBatch.add(world.decal_background);
+        dBatch.add(world.decal_sun1);
+        dBatch.add(world.decal_sun2);
+        dBatch.add(world.decal_foreground);
 
         for(Cloud c : world.clouds_LUp) {
             dBatch.add(c.decal);
@@ -63,7 +66,7 @@ public class WorldRenderer {
         }
 
         if(gameState == FINISH) {
-            if(world.finishLine.isDrawing) dBatch.add(world.finishLine.decal);
+            //if(world.finishLine.isDrawing) dBatch.add(world.finishLine.decal);
         }
 
         if(player.isDrawing || player.opacity != 0f) dBatch.add(player.decal);
