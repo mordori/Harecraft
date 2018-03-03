@@ -1,6 +1,8 @@
 package fi.tamk.tiko.harecraft;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -57,17 +59,14 @@ public class WorldRenderer {
         }
 
         for(Opponent o : world.opponents) {
-            if(o.position.z < spawnDistance/10f) {
-                o.isDrawing = true;
-                dBatch.add(o.decal);
-            }
-            else if(o.opacity != 0f) {
-                o.isDrawing = false;
-                dBatch.add(o.decal);
-            }
+            if(o.isDrawing || o.opacity != 0f) dBatch.add(o.decal);
         }
 
-        dBatch.add(player.decal);
+        if(gameState == FINISH) {
+            if(world.finishLine.isDrawing) dBatch.add(world.finishLine.decal);
+        }
+
+        if(player.isDrawing || player.opacity != 0f) dBatch.add(player.decal);
         //////////////////////////////////////////////
         dBatch.flush();
     }

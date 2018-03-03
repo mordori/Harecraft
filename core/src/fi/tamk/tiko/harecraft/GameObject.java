@@ -30,8 +30,7 @@ abstract class GameObject {
     }
 
     //Use this for clouds, trees, etc
-    public void moveTowards(float delta) {
-        velocity.z = global_Speed - global_Multiplier * 3f;
+    public void moveZ(float delta) {
         decal.translateZ(velocity.z * delta);
     }
 
@@ -43,5 +42,6 @@ abstract class GameObject {
     public void update(float delta) {
         stateTime += delta;
         position = decal.getPosition();
+        if(!(this instanceof Opponent)) velocity.z = global_Speed - global_Multiplier * 3f;
     }
 }

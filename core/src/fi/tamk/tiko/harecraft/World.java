@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 01/03/2018.
@@ -16,8 +17,14 @@ public class World {
     public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
+    float finish = 300;
+    float end = finish + spawnDistance + 50f;
+
     //BACKGROUND
     Decal decal_background;
+
+    //FINISHLINE
+    FinishLine finishLine;
 
     //PLAYER
     static Player player;

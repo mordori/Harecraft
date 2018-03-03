@@ -36,6 +36,6 @@ public class Lake extends GroundObject {
         setOpacity();
 
         //Movement Z
-        moveTowards(delta);
+        moveZ(delta);
     }
 }

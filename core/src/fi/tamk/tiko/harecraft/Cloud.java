@@ -15,6 +15,8 @@ public class Cloud extends GameObject {
     float width = Assets.texR_cloud.getRegionWidth()/100f;
     float height = Assets.texR_cloud.getRegionHeight()/100f;
     boolean isTransparent = false;
+    final float MULTIPLIER_LOW = 1f;
+    final float MULTIPLIER_DECREMENT = 1f;
 
     public Cloud(float x, float y, float z) {
         position = new Vector3();
@@ -34,10 +36,10 @@ public class Cloud extends GameObject {
             if(decal.getPosition().z < 0.1f && position.dst(player.position) < 2.8f) {
                 isTransparent = true;
                 if(decal.getPosition().z > -0.5f && position.dst(player.position) < 1.85f) {
-                    if(global_Multiplier > 1f) {
-                        global_Multiplier -= 0.65f;
+                    if(global_Multiplier > MULTIPLIER_LOW) {
+                        global_Multiplier -= MULTIPLIER_DECREMENT;
                     }
-                    if(global_Multiplier < 1f) global_Multiplier = 1f;
+                    if(global_Multiplier < MULTIPLIER_LOW) global_Multiplier = MULTIPLIER_LOW;
                     Assets.sound_cloud_hit.play();
                 }
             }
@@ -48,6 +50,6 @@ public class Cloud extends GameObject {
         decal.setColor(1f,1f,1f, opacity);
 
         //Movement Z
-        moveTowards(delta);
+        moveZ(delta);
     }
 }

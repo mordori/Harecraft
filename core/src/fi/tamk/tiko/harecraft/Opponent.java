@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 28/02/2018.
@@ -16,10 +18,8 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 public class Opponent extends Pilot {
     float width = Assets.texR_opponent_yellow.getRegionWidth()/100f;
     float height = Assets.texR_opponent_yellow.getRegionHeight()/100f;
-    final float SPEED = 15f;
-    final float MAX_SPEED = 5f;
+
     float spawnPositionZ;
-    boolean isDrawing;
 
     public Opponent(float x, float y, float z, float spawnPositionZ) {
         velocity = new Vector3();
@@ -33,21 +33,11 @@ public class Opponent extends Pilot {
     }
 
     public void update(float delta) {
-        stateTime += delta;
-        position = decal.getPosition();
+        super.update(delta);
 
-        if(isDrawing) opacity += delta;
-        else opacity -= delta;
-
-        if(opacity > 1f) opacity = 1f;
-        if(opacity < 0f) opacity = 0f;
-        decal.setColor(1f,1f,1f, opacity);
-
-        if(gameState == RACE) velocity.z = 5f - GameScreen.global_Multiplier * 2f;
-        else velocity.z = 9f*stateTime;
-        decal.translateZ(velocity.z * delta);
-
-        distance += -velocity.z;
+        if(gameState == START) velocity.z = 9f * stateTime;
+        else velocity.z = 5f - GameScreen.global_Multiplier * 2f;
+        moveZ(delta);
     }
 
     public void dispose() {

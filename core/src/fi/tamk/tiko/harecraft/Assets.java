@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
     static TextureRegion texR_background;
+    static TextureRegion texR_finishline;
+
     static TextureRegion texR_player;
     static TextureRegion texR_opponent_yellow;
     static TextureRegion texR_cloud;
@@ -32,6 +34,9 @@ public class Assets {
 
     public static void load() {
         texR_background = new TextureRegion(loadTexture("textures/tex_background.png"));
+        texR_finishline = new TextureRegion(loadTexture("textures/tex_finishline.png"));
+        texR_finishline.flip(true,false);
+
         texR_player = new TextureRegion(loadTexture("textures/tex_plane_red.png"));
         texR_opponent_yellow = new TextureRegion(loadTexture("textures/tex_plane_yellow.png"));
         texR_cloud = new TextureRegion(loadTexture("textures/tex_cloud.png"));
@@ -72,6 +77,8 @@ public class Assets {
 
     public static void dispose() {
         texR_background.getTexture().dispose();
+        texR_finishline.getTexture().dispose();
+
         texR_player.getTexture().dispose();
         texR_opponent_yellow.getTexture().dispose();
         texR_cloud.getTexture().dispose();

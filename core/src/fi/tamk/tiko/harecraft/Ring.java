@@ -15,6 +15,8 @@ public class Ring extends GameObject {
     float width = Assets.texR_lifering.getRegionWidth()/100f;
     float height = Assets.texR_lifering.getRegionHeight()/100f;
     final float SPEED = 10f;
+    final float MULTIPLIER_HIGH = 6f;
+    final float MULTIPLIER_INCREMENT = 2.3f;
     boolean isCollected = false;
 
     public Ring(float x, float y, float z) {
@@ -35,10 +37,10 @@ public class Ring extends GameObject {
             if(decal.getPosition().z < 0.1f && decal.getPosition().z > -1f && position.dst(player.position) < 1.7f) {
                 isCollected = true;
 
-                if(global_Multiplier < 5f) {
-                    global_Multiplier += 2.35f;
+                if(global_Multiplier < MULTIPLIER_HIGH) {
+                    global_Multiplier += MULTIPLIER_INCREMENT;
                 }
-                if(global_Multiplier > 5f) global_Multiplier = 5f;
+                if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
                 Assets.sound_lifering_collected.play();
 
@@ -65,7 +67,6 @@ public class Ring extends GameObject {
         setOpacity();
 
         //Movement Z
-        velocity.z = (global_Speed - global_Multiplier * 3f) * delta;
-        if(!isCollected || decal.getScaleX() > 1.4f) decal.translateZ(velocity.z);
+        if(!isCollected || decal.getScaleX() > 1.4f) moveZ(delta);
     }
 }

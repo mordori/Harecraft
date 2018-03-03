@@ -31,6 +31,6 @@ public class Tree extends GroundObject {
         setOpacity();
 
         //Movement Z
-        moveTowards(delta);
+        moveZ(delta);
     }
 }

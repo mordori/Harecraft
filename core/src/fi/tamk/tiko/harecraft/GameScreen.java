@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -21,7 +25,7 @@ public class GameScreen extends ScreenAdapter {
     public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight() / 100f;
 
     enum GameState {
-        START, RACE, FINISH
+        START, RACE, FINISH, END
     }
 
     GameMain game;
@@ -34,7 +38,7 @@ public class GameScreen extends ScreenAdapter {
     static float cameraRotation = 0f;
 
     static GameState gameState;
-    static float gameTime;
+    static float gameStateTime;
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
 
@@ -66,12 +70,25 @@ public class GameScreen extends ScreenAdapter {
     public void update(float delta) {
         logger.log();
 
-        gameTime += delta;
+        gameStateTime += delta;
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
 
-        if(gameState == GameState.START) {
+        if(gameState == START) {
             global_Multiplier = 3f;
+        }
+
+        if(gameState == START && gameStateTime >= 6f) {
+            gameState = RACE;
+            gameStateTime = 0f;
+        }
+        else if(gameState == RACE && player.distance > world.finish) {
+            gameState = FINISH;
+            gameStateTime = 0f;
+        }
+        else if(gameState == FINISH && player.distance > world.end) {
+            gameState = END;
+            gameStateTime = 0f;
         }
 
         builder.update(delta);
