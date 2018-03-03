@@ -22,6 +22,8 @@ abstract class GameObject {
     Vector3 position;
     Vector3 rotation;
 
+    float width;
+    float height;
     float stateTime;
     float opacity;
 

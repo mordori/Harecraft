@@ -27,21 +27,23 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 public class Player extends Pilot {
     static final float ACCEL_Y_OFFSET = 5f;
-    float width = Assets.texR_player.getRegionWidth()/100f;
-    float height = Assets.texR_player.getRegionHeight()/100f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
-    float acceleration;
 
     public Player(float x, float y, float z) {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
 
+        width = Assets.texR_player.getRegionWidth()/100f;
+        height = Assets.texR_player.getRegionHeight()/100f;
+
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
         decal.setPosition(x,y,z);
 
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
+        speed = SPEED;
+        drawDistance = spawnDistance / 50f;
     }
 
     public void update(float delta, float accelX, float accelY) {

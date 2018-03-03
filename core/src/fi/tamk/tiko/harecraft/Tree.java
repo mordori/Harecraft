@@ -12,14 +12,16 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
  */
 
 public class Tree extends GroundObject {
-    static float width = Assets.texR_tree.getRegionWidth()/100f;
-    static float height = Assets.texR_tree.getRegionHeight()/100f;
-
     public Tree(float x, float y, float z) {
         position = new Vector3();
         velocity = new Vector3();
 
-        decal = Decal.newDecal(width * 17f, height * 17f, Assets.texR_tree, true);
+        width = Assets.texR_tree.getRegionWidth()/100f;
+        height = Assets.texR_tree.getRegionHeight()/100f;
+        width *= 17f;
+        height *= 17f;
+
+        decal = Decal.newDecal(width, height, Assets.texR_tree, true);
         decal.setPosition(x,y,z);
     }
 

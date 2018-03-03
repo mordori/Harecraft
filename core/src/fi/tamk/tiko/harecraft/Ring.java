@@ -12,11 +12,9 @@ import static fi.tamk.tiko.harecraft.World.player;
  */
 
 public class Ring extends GameObject {
-    float width = Assets.texR_lifering.getRegionWidth()/100f;
-    float height = Assets.texR_lifering.getRegionHeight()/100f;
-    final float SPEED = 10f;
-    final float MULTIPLIER_HIGH = 6f;
-    final float MULTIPLIER_INCREMENT = 2.3f;
+    final float COLLECTED_SPEED = 10f;
+    final float MULTIPLIER_HIGH = 5.5f;
+    final float MULTIPLIER_INCREMENT = 2.4f;
     boolean isCollected = false;
 
     public Ring(float x, float y, float z) {
@@ -25,7 +23,12 @@ public class Ring extends GameObject {
         direction = new Vector3();
         rotation = new Vector3();
 
-        decal = Decal.newDecal(width * 8.5f, height * 8.5f, Assets.texR_lifering, true);
+        width = Assets.texR_ring.getRegionWidth()/100f;
+        height = Assets.texR_ring.getRegionHeight()/100f;
+        width *= 8.5f;
+        height *= 8.5f;
+
+        decal = Decal.newDecal(width, height, Assets.texR_ring, true);
         decal.setPosition(x,y,z);
     }
 
@@ -42,8 +45,7 @@ public class Ring extends GameObject {
                 }
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
-                Assets.sound_lifering_collected.play();
-
+                Assets.sound_ring_collected.play();
                 decal.setPosition(position.x, position.y,0.1f);
             }
         }
@@ -51,8 +53,8 @@ public class Ring extends GameObject {
             decal.setScale(decal.getScaleX() + delta * stateTime / 4f);
 
             direction = player.position.cpy().sub(position);
-            velocity.x = direction.nor().x * SPEED * Math.abs(direction.x);
-            velocity.y = direction.nor().y * SPEED * Math.abs(direction.y);
+            velocity.x = direction.nor().x * COLLECTED_SPEED * Math.abs(direction.x);
+            velocity.y = direction.nor().y * COLLECTED_SPEED * Math.abs(direction.y);
 
             decal.translateX(velocity.x * delta);
             decal.translateY(velocity.y * delta);

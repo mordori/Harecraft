@@ -21,14 +21,14 @@ public class Assets {
     static TextureRegion texR_player;
     static TextureRegion texR_opponent_yellow;
     static TextureRegion texR_cloud;
-    static TextureRegion texR_lifering;
+    static TextureRegion texR_ring;
     static TextureRegion texR_tree;
     static TextureRegion texR_lake;
 
     static Music music_default;
 
     static Sound sound_cloud_hit;
-    static Sound sound_lifering_collected;
+    static Sound sound_ring_collected;
 
     static ParticleEffect pfx_scarf;
 
@@ -40,7 +40,7 @@ public class Assets {
         texR_player = new TextureRegion(loadTexture("textures/tex_plane_red.png"));
         texR_opponent_yellow = new TextureRegion(loadTexture("textures/tex_plane_yellow.png"));
         texR_cloud = new TextureRegion(loadTexture("textures/tex_cloud.png"));
-        texR_lifering = new TextureRegion(loadTexture("textures/tex_ring.png"));
+        texR_ring = new TextureRegion(loadTexture("textures/tex_ring.png"));
         texR_tree = new TextureRegion(loadTexture("textures/tex_tree.png"));
         texR_lake = new TextureRegion(loadTexture("textures/tex_lake.png"));
 
@@ -48,7 +48,7 @@ public class Assets {
         music_default.setLooping(true);
 
         sound_cloud_hit = loadSound("sound/Boup.wav");
-        sound_lifering_collected = loadSound("sound/Spring.wav");
+        sound_ring_collected = loadSound("sound/Spring.wav");
 
         pfx_scarf = new ParticleEffect();
         pfx_scarf.load(Gdx.files.internal("pfx_scarf"), Gdx.files.internal(""));
@@ -82,12 +82,12 @@ public class Assets {
         texR_player.getTexture().dispose();
         texR_opponent_yellow.getTexture().dispose();
         texR_cloud.getTexture().dispose();
-        texR_lifering.getTexture().dispose();
+        texR_ring.getTexture().dispose();
         texR_tree.getTexture().dispose();
         texR_lake.getTexture().dispose();
 
         sound_cloud_hit.dispose();
-        sound_lifering_collected.dispose();
+        sound_ring_collected.dispose();
 
         music_default.dispose();
 

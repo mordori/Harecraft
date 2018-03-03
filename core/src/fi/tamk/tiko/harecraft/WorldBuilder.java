@@ -47,7 +47,7 @@ public class WorldBuilder {
             world.rings.add(new Ring(2f, 0f, spawnDistance/1.35f));
             Assets.music_default.play();
             for(Opponent o : world.opponents) {
-                o.position.z = o.spawnPositionZ;
+                o.position.z = o.trueZ;
             }
         }
         else if(gameState == FINISH && gameStateTime == 0f) {

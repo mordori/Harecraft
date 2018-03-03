@@ -17,8 +17,8 @@ public class World {
     public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
-    float finish = 300;
-    float end = finish + spawnDistance + 50f;
+    static float finish = 500;
+    static float end = finish + spawnDistance + 50f;
 
     //BACKGROUND
     Decal decal_background;
@@ -51,9 +51,12 @@ public class World {
 
         player = new Player(0f,-4f,0f);
 
-        opponents.add(new Opponent(-3f, 2f, -85f, 50f));
-        opponents.add(new Opponent(4f, 1f, -75f, 85f));
-        opponents.add(new Opponent(-0f, -1f, -70f, 150f));
+        opponents.add(new Opponent(-3f, 2f, -70f, 85,Assets.texR_opponent_yellow,6.5f));
+        opponents.add(new Opponent(4f, -2f, -78f, 130, Assets.texR_opponent_yellow,7.5f));
+        opponents.add(new Opponent(-2f, 3f, -72f, 175, Assets.texR_opponent_yellow, 4.5f));
+        opponents.add(new Opponent(1f, 0f, -61f, 200, Assets.texR_opponent_yellow,6.5f));
+        opponents.add(new Opponent(-4f, 1f, -67f, 250f, Assets.texR_player,5.5f));
+        opponents.add(new Opponent(0f, -1f, -60f, 350f, Assets.texR_opponent_yellow,5f));
     }
 
     public void dispose() {

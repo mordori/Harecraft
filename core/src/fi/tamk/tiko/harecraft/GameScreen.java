@@ -81,6 +81,7 @@ public class GameScreen extends ScreenAdapter {
         if(gameState == START && gameStateTime >= 6f) {
             gameState = RACE;
             gameStateTime = 0f;
+            player.distance = 0f;
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;
