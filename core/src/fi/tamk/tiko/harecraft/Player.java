@@ -44,6 +44,9 @@ public class Player extends Pilot {
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
         speed = SPEED;
         drawDistance = spawnDistance / 50f;
+
+        pfx_scarf.getEmitters().get(0).getTransparency().scale(0.0f);
+
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -128,17 +131,6 @@ public class Player extends Pilot {
                 if(velocity.y <= -MAX_SPEED) velocity.y = -MAX_SPEED;
             }
         }
-    }
-
-    public void updateParticles(float delta) {
-        pfx_scarf.setPosition(
-                -position.x * 31.5f / 1.05f + SCREEN_WIDTH * 100f /2f,
-                position.y * 31.5f / 1.15f + SCREEN_HEIGHT * 100f/2f + 10f);
-
-        pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x  * 6f);
-        pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x  * 5f);
-
-        pfx_scarf.update(delta);
     }
 
     public void dispose() {
