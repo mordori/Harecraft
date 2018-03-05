@@ -35,7 +35,7 @@ public class Player extends Pilot {
         position = new Vector3();
         rotation = new Vector3();
 
-        width = Assets.texR_player.getRegionWidth()/100f;
+        width = Assets.texR_player.getRegionWidth()/200f;
         height = Assets.texR_player.getRegionHeight()/100f;
 
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
@@ -47,10 +47,30 @@ public class Player extends Pilot {
 
         pfx_scarf.getEmitters().get(0).getTransparency().scale(0.0f);
 
+        decal.getVertices()[decal.U1] = width/2.5f;
+        decal.getVertices()[decal.U3] = width/2.5f;
+        decal.getVertices()[decal.U2] = width/1.22f;
+        decal.getVertices()[decal.U4] = width/1.22F;
     }
 
     public void update(float delta, float accelX, float accelY) {
         super.update(delta);
+
+        decal.getVertices()[decal.U1] -=0.002f;
+        decal.getVertices()[decal.U2] -=0.002f;
+        decal.getVertices()[decal.U3] -=0.002f;
+        decal.getVertices()[decal.U4] -=0.002f;
+
+        if(decal.getVertices()[decal.U1] <= -0.01f) decal.getVertices()[decal.U1] = -0.01f;
+
+        if(decal.getVertices()[decal.U1] == -0.01f) {
+            decal.getVertices()[decal.U1] = width/3/2.5f;
+            decal.getVertices()[decal.U2] = width/3/1.22f;
+            decal.getVertices()[decal.U3] = width/3/2.5f;
+            decal.getVertices()[decal.U4] = width/3/1.22f;
+        }
+
+
 
         if(gameState != END) {
             if (decal.getPosition().x >= WORLD_WIDTH) velocity.x = 3f;
