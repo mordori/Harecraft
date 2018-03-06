@@ -3,11 +3,14 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 
 /**
@@ -26,6 +29,7 @@ public class Assets {
     static TextureRegion texR_ring;
     static TextureRegion texR_tree;
     static TextureRegion texR_lake;
+    static TextureRegion texR_hill;
 
     static Music music_default;
 
@@ -33,6 +37,8 @@ public class Assets {
     static Sound sound_ring_collected;
 
     static ParticleEffect pfx_scarf;
+
+    static BitmapFont font;
 
     public static void load() {
         texR_background = new TextureRegion(loadTexture("textures/tex_background.png"));
@@ -47,6 +53,7 @@ public class Assets {
         texR_ring = new TextureRegion(loadTexture("textures/tex_ring.png"));
         texR_tree = new TextureRegion(loadTexture("textures/tex_tree.png"));
         texR_lake = new TextureRegion(loadTexture("textures/tex_lake.png"));
+        texR_hill = new TextureRegion(loadTexture("textures/tex_hill.png"));
 
         music_default = loadMusic("sound/elevator.wav");
         music_default.setLooping(true);
@@ -57,6 +64,13 @@ public class Assets {
         pfx_scarf = new ParticleEffect();
         pfx_scarf.load(Gdx.files.internal("pfx_scarf"), Gdx.files.internal(""));
 
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("foo.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 128;
+        parameter.borderWidth = 2;
+        parameter.color = new Color(1f,0.6f,0f,1f);
+        font = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
@@ -91,6 +105,7 @@ public class Assets {
         texR_ring.getTexture().dispose();
         texR_tree.getTexture().dispose();
         texR_lake.getTexture().dispose();
+        texR_hill.getTexture().dispose();
 
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();

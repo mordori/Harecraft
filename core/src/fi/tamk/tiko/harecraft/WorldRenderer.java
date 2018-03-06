@@ -56,6 +56,12 @@ public class WorldRenderer {
         for(Tree t : world.trees_R) {
             dBatch.add(t.decal);
         }
+        for(Hill h : world.hills_L) {
+            dBatch.add(h.decal);
+        }
+        for(Hill h : world.hills_R) {
+            dBatch.add(h.decal);
+        }
 
         for(Lake l : world.lakes_L) {
             dBatch.add(l.decal);
@@ -66,13 +72,6 @@ public class WorldRenderer {
 
         for(Opponent o : world.opponents) {
             if(o.isDrawing || o.opacity != 0f) dBatch.add(o.decal);
-        }
-
-        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.1f && gameStateTime < 4.1f) || (gameStateTime > 4.2f && gameStateTime < 5.2f)
-                || (gameStateTime > 6f && gameStateTime < 7.3f))) {
-            if(world.finishLine.isDrawing) {
-                dBatch.add(world.finishLine.decal);
-            }
         }
 
         if(player.isDrawing || player.opacity != 0f) dBatch.add(player.decal);

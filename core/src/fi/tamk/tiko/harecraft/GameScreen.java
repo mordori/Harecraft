@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
@@ -34,6 +36,8 @@ public class GameScreen extends ScreenAdapter {
     WorldRenderer renderer;
     static DecalBatch dBatch;
     static PerspectiveCamera camera;
+    static OrthographicCamera orthoCamera;
+    ShapeRenderer shapeRenderer;
     static float fieldOfView = 45f;
     static float cameraRotation = 0f;
 
@@ -42,11 +46,17 @@ public class GameScreen extends ScreenAdapter {
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
 
+    static String string = "3";
+
     public GameScreen(GameMain game, World world) {
         this.game = game;
         this.world = world;
         builder = new WorldBuilder(world);
         renderer = new WorldRenderer(world, game);
+
+        orthoCamera = new OrthographicCamera();
+        orthoCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer = new ShapeRenderer();
 
         camera = new PerspectiveCamera(fieldOfView, SCREEN_WIDTH, SCREEN_HEIGHT);
         camera.near = 0.1f;
@@ -65,6 +75,20 @@ public class GameScreen extends ScreenAdapter {
 
         update(delta);
         renderer.renderWorld();
+
+        //orthoCamera.update();
+        //game.sBatch.setProjectionMatrix(orthoCamera.combined);
+
+        if(gameStateTime > 5.2f) string = "GO!";
+        else if(gameStateTime > 4.1f) string = "1";
+        else if(gameStateTime > 3f) string = "2";
+
+        game.sBatch.begin();
+        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.1f && gameStateTime < 4.1f) || (gameStateTime > 4.2f && gameStateTime < 5.2f)
+                || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {
+            Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);
+        }
+        game.sBatch.end();
     }
 
     public void update(float delta) {
@@ -110,6 +134,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         dBatch.dispose();
+        shapeRenderer.dispose();
         world.dispose();
     }
 }

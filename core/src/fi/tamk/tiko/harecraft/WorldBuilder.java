@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,9 @@ public class WorldBuilder {
     float trees_LTimer = 1f;
     float trees_RTimer = 1f;
     float lakes_LTimer = 10f;
-    float lakes_RTimer = 50f;
+    float lakes_RTimer = 10f;
+    float hills_LTimer = 1f;
+    float hills_RTimer = 1f;
 
     static final int TREE = 0;
 
@@ -69,10 +72,7 @@ public class WorldBuilder {
         updateRings(delta);
         updateLakes(delta);
         updateTrees(delta);
-
-        int i = world.trees_R.size()+world.trees_L.size() + world.clouds_RDown.size() +world.clouds_RUp.size()+world.clouds_LDown.size()+world.clouds_LUp.size();
-
-        //System.out.println("Decals: " + i);
+        updateHills(delta);
 
         world.decal_sun1.rotateZ(delta/2f);
         world.decal_sun2.rotateZ(-delta);
@@ -81,6 +81,7 @@ public class WorldBuilder {
     public void spawnGroundObjects() {
             addLakes();
             addTrees();
+            addHills();
     }
 
     public void spawnSkyObjects() {
@@ -107,7 +108,7 @@ public class WorldBuilder {
         for(Cloud c : world.clouds_RDown) {
             c.update(delta);
         }
-        disposeClouds();
+        removeClouds();
     }
 
     public void updateRings(float delta) {
@@ -115,7 +116,7 @@ public class WorldBuilder {
         for(Ring l : world.rings) {
             l.update(delta);
         }
-        disposeRing();
+        removeRing();
     }
 
     public void updateTrees(float delta) {
@@ -125,7 +126,7 @@ public class WorldBuilder {
         for(Tree t : world.trees_R) {
             t.update(delta);
         }
-        disposeTrees();
+        removeTrees();
     }
 
     public void updateLakes(float delta) {
@@ -135,7 +136,17 @@ public class WorldBuilder {
         for(Lake l : world.lakes_R) {
             l.update(delta);
         }
-        disposeLakes();
+        removeLakes();
+    }
+
+    public void updateHills(float delta) {
+        for(Hill h : world.hills_L) {
+            h.update(delta);
+        }
+        for(Hill h : world.hills_R) {
+            h.update(delta);
+        }
+        removeHills();
     }
 
     public void addClouds() {
@@ -178,14 +189,14 @@ public class WorldBuilder {
             x = MathUtils.random(-150f, 0f);
             y = groundLevel;
             world.trees_L.add(new Tree(x, y, spawnDistance));
-            trees_LTimer = MathUtils.random(0.1f - global_Multiplier * 0.015f, 0.3f - global_Multiplier * 0.035f);
+            trees_LTimer = MathUtils.random(0.15f - global_Multiplier * 0.015f, 0.35f - global_Multiplier * 0.035f);
         }
 
         if(world.trees_R.isEmpty() || world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer) {
             x = MathUtils.random(0f, 150f);
             y = groundLevel;
             world.trees_R.add(new Tree(x, y, spawnDistance));
-            trees_RTimer = MathUtils.random(0.1f - global_Multiplier * 0.015f, 0.3f - global_Multiplier * 0.035f);
+            trees_RTimer = MathUtils.random(0.15f - global_Multiplier * 0.015f, 0.35f - global_Multiplier * 0.035f);
         }
     }
 
@@ -204,47 +215,93 @@ public class WorldBuilder {
         }
     }
 
-    public void disposeClouds() {
-        disposeCloud(world.clouds_LUp);
-        disposeCloud(world.clouds_LDown);
-        disposeCloud(world.clouds_RUp);
-        disposeCloud(world.clouds_RDown);
-    }
-
-    public void disposeTrees() {
-        disposeTree(world.trees_L);
-        disposeTree(world.trees_R);
-    }
-
-    public void disposeLakes() {
-        disposeLake(world.lakes_L);
-        disposeLake(world.lakes_R);
-    }
-
-    public void disposeRing() {
-        if(!world.rings.isEmpty() && world.rings.get(0).decal.getPosition().z < camera.position.z) {
-            world.rings.remove(0);
+    public void addHills() {
+        if(world.hills_L.isEmpty() || world.hills_L.get(world.hills_L.size() - 1).stateTime >= hills_LTimer) {
+            x = MathUtils.random(-160f, 0f);
+            y = groundLevel;
+            world.hills_L.add(new Hill(x, y, spawnDistance));
+            hills_LTimer = MathUtils.random(1f, 4f - global_Multiplier * 0.3f);
+        }
+        if(world.hills_R.isEmpty() || world.hills_R.get(world.hills_R.size() - 1).stateTime >= hills_RTimer) {
+            x = MathUtils.random(0f, 160f);
+            y = groundLevel;
+            world.hills_R.add(new Hill(x, y, spawnDistance));
+            hills_RTimer = MathUtils.random(1f, 4f - global_Multiplier * 0.3f);
         }
     }
 
-    public void disposeCloud(ArrayList<Cloud> cloudArray) {
+    public void removeClouds() {
+        removeCloud(world.clouds_LUp);
+        removeCloud(world.clouds_LDown);
+        removeCloud(world.clouds_RUp);
+        removeCloud(world.clouds_RDown);
+    }
+
+    public void removeTrees() {
+        removeTree(world.trees_L);
+        removeTree(world.trees_R);
+    }
+
+    public void removeLakes() {
+        removeLake(world.lakes_L);
+        removeLake(world.lakes_R);
+    }
+
+    public void removeHills() {
+        removeHill(world.hills_L);
+        removeHill(world.hills_R);
+    }
+
+    public void removeRing() {
+        if(!world.rings.isEmpty() && world.rings.get(0).decal.getPosition().z < camera.position.z) {
+            world.rings.remove(0);
+
+            int i = world.trees_R.size()+world.trees_L.size() + world.clouds_RDown.size() +world.clouds_RUp.size()+world.clouds_LDown.size()+world.clouds_LUp.size()
+                    +world.hills_L.size()+world.hills_R.size();
+
+            System.out.println("Decals: " + i);
+        }
+    }
+
+    public void removeCloud(ArrayList<Cloud> cloudArray) {
         if(!cloudArray.isEmpty() && cloudArray.get(0).decal.getPosition().z < camera.position.z) {
             cloudArray.remove(0);
         }
     }
 
-    public void disposeTree(ArrayList<Tree> treeArray) {
-        if(!world.lakes_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width/1.75f) {
+    public void removeTree(ArrayList<Tree> treeArray) {
+
+        if(!world.lakes_L.isEmpty() && !world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width/1.75f) {
             world.trees_L.remove(world.trees_L.size()-1);
         }
-        if(!world.lakes_R.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width/1.75f) {
+        if(!world.lakes_R.isEmpty() && !world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width/1.75f) {
             world.trees_L.remove(world.trees_L.size()-1);
         }
-        if(!world.lakes_R.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width/1.75f) {
+        if(!world.lakes_R.isEmpty() && !world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width/1.75f) {
             world.trees_R.remove(world.trees_R.size()-1);
         }
-        if(!world.lakes_L.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width/1.75f) {
+        if(!world.lakes_L.isEmpty() && !world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width/1.75f) {
             world.trees_R.remove(world.trees_R.size()-1);
+        }
+
+        Vector3 pos = new Vector3(world.hills_L.get(world.hills_L.size()-1).position.cpy());
+        pos.y -= world.hills_L.get(world.hills_L.size()-1).height/2f;
+
+        if(!world.hills_L.isEmpty() && !world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size()-1).width / 1.25f) {
+            world.trees_L.remove(world.trees_L.size()-1);
+        }
+        if(!world.hills_L.isEmpty() && !world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size()-1).width / 1.25f) {
+            world.trees_R.remove(world.trees_R.size()-1);
+        }
+
+        pos = world.hills_R.get(world.hills_R.size()-1).position.cpy();
+        pos.y -= world.hills_R.get(world.hills_R.size()-1).height/2f;
+
+        if(!world.hills_R.isEmpty() && !world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size()-1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size()-1).width / 1.25f) {
+            world.trees_R.remove(world.trees_R.size()-1);
+        }
+        if(!world.hills_R.isEmpty() && !world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size()-1).width / 1.25f) {
+            world.trees_L.remove(world.trees_L.size()-1);
         }
 
         if(!treeArray.isEmpty() && treeArray.get(0).decal.getPosition().z < camera.position.z) {
@@ -252,9 +309,27 @@ public class WorldBuilder {
         }
     }
 
-    public void disposeLake(ArrayList<Lake> lakeArray) {
+    public void removeLake(ArrayList<Lake> lakeArray) {
         if(!lakeArray.isEmpty() && lakeArray.get(0).decal.getPosition().z < camera.position.z) {
             lakeArray.remove(0);
+        }
+    }
+
+    public void removeHill(ArrayList<Hill> hillArray) {
+        if(!world.lakes_L.isEmpty() && !world.hills_L.isEmpty() &&  world.hills_L.get(world.hills_L.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width) {
+            world.hills_L.remove(world.hills_L.size()-1);
+        }
+        if(!world.lakes_R.isEmpty() && !world.hills_L.isEmpty() && world.hills_L.get(world.hills_L.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width) {
+            world.hills_L.remove(world.hills_L.size()-1);
+        }
+        if(!world.lakes_L.isEmpty() && !world.hills_R.isEmpty() &&  world.hills_R.get(world.hills_R.size()-1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size()-1).position) < world.lakes_L.get(world.lakes_L.size()-1).width) {
+            world.hills_R.remove(world.hills_R.size()-1);
+        }
+        if(!world.lakes_R.isEmpty() && !world.hills_R.isEmpty() &&  world.hills_R.get(world.hills_R.size()-1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size()-1).position) < world.lakes_R.get(world.lakes_R.size()-1).width) {
+            world.hills_R.remove(world.hills_R.size()-1);
+        }
+        if(!hillArray.isEmpty() && hillArray.get(0).decal.getPosition().z < camera.position.z) {
+            hillArray.remove(0);
         }
     }
 }

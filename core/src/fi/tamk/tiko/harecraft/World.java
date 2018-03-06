@@ -18,7 +18,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
     static float finish = 1000;
-    static float end = finish + spawnDistance + 50f;
+    static float end = finish + spawnDistance + 20f;
 
     //BACKGROUND
     Decal decal_background;
@@ -44,6 +44,8 @@ public class World {
     ArrayList<Tree> trees_R = new ArrayList<Tree>();
     ArrayList<Lake> lakes_L = new ArrayList<Lake>();
     ArrayList<Lake> lakes_R = new ArrayList<Lake>();
+    ArrayList<Hill> hills_L = new ArrayList<Hill>();
+    ArrayList<Hill> hills_R = new ArrayList<Hill>();
 
     //OPPONENTS
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
