@@ -17,7 +17,7 @@ public class World {
     public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
-    static float finish = 1000;
+    static float finish = 2000;
     static float end = finish + spawnDistance + 20f;
 
     //BACKGROUND
