@@ -80,8 +80,8 @@ public class WorldBuilder {
 
     public void spawnGroundObjects() {
             addLakes();
-            addTrees();
             addHills();
+            addTrees();
     }
 
     public void spawnSkyObjects() {
