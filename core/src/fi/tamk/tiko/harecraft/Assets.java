@@ -81,9 +81,6 @@ public class Assets {
 
     public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal(path));}
 
-    public static Music loadParticles(String path) {return Gdx.audio.newMusic(Gdx.files.internal(path));}
-
-
     public static void flip(Animation<TextureRegion> animation, int frames) {
         TextureRegion regions;
 
@@ -113,5 +110,7 @@ public class Assets {
         music_default.dispose();
 
         pfx_scarf.dispose();
+
+        font.dispose();
     }
 }
