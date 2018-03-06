@@ -1,8 +1,11 @@
 package fi.tamk.tiko.harecraft;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -65,8 +68,11 @@ public class WorldRenderer {
             if(o.isDrawing || o.opacity != 0f) dBatch.add(o.decal);
         }
 
-        if(gameState == FINISH) {
-            //if(world.finishLine.isDrawing) dBatch.add(world.finishLine.decal);
+        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.1f && gameStateTime < 4.1f) || (gameStateTime > 4.2f && gameStateTime < 5.2f)
+                || (gameStateTime > 6f && gameStateTime < 7.3f))) {
+            if(world.finishLine.isDrawing) {
+                dBatch.add(world.finishLine.decal);
+            }
         }
 
         if(player.isDrawing || player.opacity != 0f) dBatch.add(player.decal);
@@ -76,7 +82,7 @@ public class WorldRenderer {
 
     public void drawParticles() {
         game.sBatch.begin();
-        if(player.velocity.x != 0f || player.velocity.y != 0f) player.pfx_scarf.draw(game.sBatch);
+        if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
         game.sBatch.end();
     }
 }

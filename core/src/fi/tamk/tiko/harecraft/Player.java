@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
@@ -35,7 +37,7 @@ public class Player extends Pilot {
         position = new Vector3();
         rotation = new Vector3();
 
-        width = Assets.texR_player.getRegionWidth()/200f;
+        width = Assets.texR_player.getRegionWidth()/100f;
         height = Assets.texR_player.getRegionHeight()/100f;
 
         decal = Decal.newDecal(width,height,Assets.texR_player, true);
@@ -47,16 +49,19 @@ public class Player extends Pilot {
 
         pfx_scarf.getEmitters().get(0).getTransparency().scale(0.0f);
 
-        decal.getVertices()[decal.U1] = width/2.5f;
+        acceleration = 1f;
+        rotation.z = (MathUtils.random(0,1) == 0) ? -30f : 30f;
+
+        /*decal.getVertices()[decal.U1] = width/2.5f;
         decal.getVertices()[decal.U3] = width/2.5f;
         decal.getVertices()[decal.U2] = width/1.22f;
-        decal.getVertices()[decal.U4] = width/1.22F;
+        decal.getVertices()[decal.U4] = width/1.22F;*/
     }
 
     public void update(float delta, float accelX, float accelY) {
         super.update(delta);
 
-        decal.getVertices()[decal.U1] -=0.002f;
+       /*decal.getVertices()[decal.U1] -=0.002f;
         decal.getVertices()[decal.U2] -=0.002f;
         decal.getVertices()[decal.U3] -=0.002f;
         decal.getVertices()[decal.U4] -=0.002f;
@@ -68,11 +73,11 @@ public class Player extends Pilot {
             decal.getVertices()[decal.U2] = width/3/1.22f;
             decal.getVertices()[decal.U3] = width/3/2.5f;
             decal.getVertices()[decal.U4] = width/3/1.22f;
-        }
+        }*/
 
 
 
-        if(gameState != END) {
+        if(gameState != END && gameState != START) {
             if (decal.getPosition().x >= WORLD_WIDTH) velocity.x = 3f;
             else if (decal.getPosition().x <= -WORLD_WIDTH) velocity.x = -3f;
 
@@ -94,16 +99,16 @@ public class Player extends Pilot {
             }
         }
 
-        rotation.z = velocity.x * 15f;
+        if(gameState == END) rotation.z = velocity.x * 15f;
 
         decal.setRotationZ(rotation.z);
 
-        if(decal.getPosition().x < WORLD_WIDTH && velocity.x < 0f || decal.getPosition().x > -WORLD_WIDTH && velocity.x > 0f) {
+        if(gameState != START && (decal.getPosition().x < WORLD_WIDTH && velocity.x < 0f || decal.getPosition().x > -WORLD_WIDTH && velocity.x > 0f))
             decal.translateX(-velocity.x * delta);
-        }
 
-        if(decal.getPosition().y < WORLD_HEIGHT_UP && velocity.y > 0f || decal.getPosition().y > -WORLD_HEIGHT_DOWN && velocity.y < 0f)
-        decal.translateY(velocity.y * delta);
+
+        if(gameState != START && (decal.getPosition().y < WORLD_HEIGHT_UP && velocity.y > 0f || decal.getPosition().y > -WORLD_HEIGHT_DOWN && velocity.y < 0f))
+            decal.translateY(velocity.y * delta);
 
         if(velocity.y != 0 && Math.abs(velocity.y) > 0f) {
             velocity.y -= Math.abs(velocity.y)/velocity.y * 0.05f;
@@ -113,6 +118,19 @@ public class Player extends Pilot {
         if(velocity.x != 0 && Math.abs(velocity.x) > 0f) {
             velocity.x -= Math.abs(velocity.x)/velocity.x * 0.05f;
             if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
+        }
+
+        if(gameState == START) {
+            acceleration -= delta * 0.7f;
+            if(acceleration > 0f) {
+                decal.translateY(-velocity.z/2.5f * delta * acceleration);
+            }
+            if(rotation.z != 0f && acceleration > 0f) {
+                rotation.z -= Math.abs(rotation.z)/rotation.z * acceleration*0.9f;
+            }
+            if(Math.abs(rotation.z)/rotation.z > 0f && rotation.z < 0f) rotation.z = 0f;
+            if(Math.abs(rotation.z)/rotation.z < 0f && rotation.z > 0f) rotation.z = 0f;
+
         }
 
         if(gameState == END) {

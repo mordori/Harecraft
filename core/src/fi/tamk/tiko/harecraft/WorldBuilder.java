@@ -43,16 +43,16 @@ public class WorldBuilder {
 
     public void update(float delta) {
         if(gameState == RACE && gameStateTime == 0f) {
-            world.rings.add(new Ring(0f, 2f, spawnDistance/3.25f));
-            world.rings.add(new Ring(2f, 0f, spawnDistance/1.35f));
+            world.rings.add(new Ring(0f, 0f, spawnDistance/3.25f));
+            world.rings.add(new Ring(2f, 2f, spawnDistance/1.35f));
             Assets.music_default.play();
             for(Opponent o : world.opponents) {
                 o.position.z = o.trueZ;
             }
         }
-        else if(gameState == FINISH && gameStateTime == 0f) {
-            world.finishLine = new FinishLine(0f,0f,spawnDistance + 50f);
-        }
+        /*else if(gameState == START && gameStateTime == 0f) {
+            world.finishLine = new FinishLine(0f,0f,50f);
+        }*/
 
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
 

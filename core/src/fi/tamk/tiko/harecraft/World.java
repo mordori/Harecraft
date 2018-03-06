@@ -61,14 +61,16 @@ public class World {
         decal_sun2.setPosition(0f,-40f,290f);
         decal_sun2.rotateZ(90f);
 
-        player = new Player(0f,-4f,0f);
+        finishLine = new FinishLine(0f,-1.35f,5f);
 
-        opponents.add(new Opponent(-3f, 2f, -70f, 85,Assets.texR_opponent_yellow,6.5f));
-        opponents.add(new Opponent(4f, -2f, -78f, 130, Assets.texR_opponent_yellow,7.5f));
-        opponents.add(new Opponent(-2f, 3f, -72f, 175, Assets.texR_opponent_yellow, 4.5f));
-        opponents.add(new Opponent(1f, 0f, -61f, 200, Assets.texR_opponent_yellow,6.5f));
-        opponents.add(new Opponent(-4f, 1f, -67f, 250f, Assets.texR_player,5.5f));
-        opponents.add(new Opponent(0f, -1f, -60f, 350f, Assets.texR_opponent_yellow,5f));
+        player = new Player(0f,-9.5f,0f);
+
+        opponents.add(new Opponent(-3f, -2f, -65f*2f, 105,Assets.texR_opponent_yellow,6.5f));
+        opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Assets.texR_opponent_yellow,7.5f));
+        opponents.add(new Opponent(0f, 2f, -59f*2f, 175, Assets.texR_opponent_yellow, 4.5f));
+        opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Assets.texR_opponent_yellow,6.5f));
+        opponents.add(new Opponent(-4f, -1f, -64f*2f, 250f, Assets.texR_player,5.5f));
+        opponents.add(new Opponent(2f, 0f, -60f*2f, 350f, Assets.texR_opponent_yellow,5f));
     }
 
     public void dispose() {

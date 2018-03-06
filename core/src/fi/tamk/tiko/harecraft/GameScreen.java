@@ -78,10 +78,11 @@ public class GameScreen extends ScreenAdapter {
             global_Multiplier = 3f;
         }
 
-        if(gameState == START && gameStateTime >= 6f) {
+        if(gameState == START && gameStateTime >= 7.3) {
             gameState = RACE;
             gameStateTime = 0f;
             player.distance = 0f;
+            player.acceleration = 0f;
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;

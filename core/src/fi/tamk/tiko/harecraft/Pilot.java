@@ -3,9 +3,12 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
@@ -26,6 +29,7 @@ abstract class Pilot extends GameObject {
     float speed;
     float drawDistance;
     boolean isDrawing;
+    float i = 0.1f;
 
     public Pilot() {
         State state = State.NORMAL;
@@ -44,7 +48,7 @@ abstract class Pilot extends GameObject {
         if(this instanceof Opponent && gameState == END) isDrawing = false;
 
         //OPACITY
-        if(isDrawing) opacity += delta;
+        if(isDrawing) opacity += this instanceof Opponent ? delta : delta * 0.7f;
         else opacity -= delta;
         if(opacity > 1f) opacity = 1f;
         else if(opacity < 0f) opacity = 0f;
@@ -53,11 +57,24 @@ abstract class Pilot extends GameObject {
 
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                -position.x * 31.5f / 1.05f + SCREEN_WIDTH * 100f /2f,
-                position.y * 31.5f / 1.15f + SCREEN_HEIGHT * 100f/2f + 10f);
+                -camera.position.x * 31.5f * 1.05f + SCREEN_WIDTH * 100f / 2f,
+                camera.position.y * 13f * 1.15f + SCREEN_HEIGHT * 100f / 2f + 12.5f);
 
-        pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x * 6f);
-        pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
+        float xs = velocity.x * 6f;
+        float ys = velocity.x * 6f;
+
+
+        if(gameState != END)pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
+
+        /*if(gameState == END) {
+            pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.y * 3f);
+
+
+            if(i <= 0f) i = 0f;
+
+            pfx_scarf.getEmitters().get(1).getTransparency().setHigh(i);
+        }*/
+
 
 
 

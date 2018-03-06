@@ -12,8 +12,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class FinishLine extends GameObject {
-    float width = Assets.texR_finishline.getRegionWidth()/15f;
-    float height = Assets.texR_finishline.getRegionHeight()/15f;
+    float width = Assets.texR_finishline.getRegionWidth()/50f;
+    float height = Assets.texR_finishline.getRegionHeight()/55f;
     boolean isDrawing;
 
     public FinishLine(float x, float y, float z) {
@@ -24,6 +24,7 @@ public class FinishLine extends GameObject {
 
         decal = Decal.newDecal(width, height, Assets.texR_finishline, true);
         decal.setPosition(x,y,z);
+        isDrawing = true;
     }
 
     @Override
