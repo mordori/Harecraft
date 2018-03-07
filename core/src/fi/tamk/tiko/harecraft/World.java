@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,8 @@ public class World {
         opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Assets.texR_opponent_yellow,6.5f));
         opponents.add(new Opponent(-4f, -1f, -64f*2f, 250f, Assets.texR_player,5.5f));
         opponents.add(new Opponent(2f, 0f, -60f*2f, 350f, Assets.texR_opponent_yellow,5f));
+
+        spawnStartObjects();
     }
 
     public void dispose() {
@@ -80,6 +83,17 @@ public class World {
 
         for(Opponent o : opponents) {
             o.dispose();
+        }
+    }
+
+    public void spawnStartObjects() {
+        for (int j = 220; j > 50; j -= MathUtils.random(10,30)) {               //Trees
+            for (int i = -100; i < 100; i += MathUtils.random(5, 40)) {
+                trees_L.add(new Tree(i, -23, j));
+                if ( i < -10 || i > 10 ) {
+                    clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
+                }
+            }
         }
     }
 }

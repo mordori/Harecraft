@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
@@ -29,15 +30,20 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class Player extends Pilot {
-    static final float ACCEL_Y_OFFSET = 5f;
+    static final float ACCEL_Y_OFFSET = 1f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
+    float []rotationsArray;
+    Vector3 keyboardDestination;
 
     public Player(float x, float y, float z) {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
+
+        rotationsArray = new float[]{0f,0f,0f,0f,0f,0f,0f,0f,0f,0f};
+        keyboardDestination = new Vector3 (0f,0f,0f);
 
 
         width = Assets.texR_player.getRegionWidth()/100f;
@@ -65,6 +71,28 @@ public class Player extends Pilot {
     public void update(float delta, float accelX, float accelY) {
         super.update(delta);
 
+        //Mikon kontrolit alkaa
+        Vector3 destination = new Vector3(accelX * -2.5f, (accelY -ACCEL_Y_OFFSET) * -2f, 0f);  //Translate
+        destination = destination.add(keyboardDestination);
+        Vector3 curPosition = new Vector3(decal.getX(),decal.getY(), 0f);
+        Vector3 direction = destination.sub(curPosition);
+        direction.x = direction.x/20;
+        direction.y = direction.y/20;
+        decal.translate(direction);
+
+        for (int i = 9; i > 0; i--) {       //Rotation
+            rotationsArray[i] = rotationsArray[i-1];
+        }
+        rotationsArray[0] = direction.x;
+        float keskiarvo = 0;
+        for (int i = 0; i < 10; i++) {
+            keskiarvo += rotationsArray[i];
+        }
+        decal.setRotationZ(-keskiarvo * 10);
+
+        checkInput(delta);  //Keyboard
+        //Mikon kontrollit loppuu
+
        /*decal.getVertices()[decal.U1] -=0.002f;
         decal.getVertices()[decal.U2] -=0.002f;
         decal.getVertices()[decal.U3] -=0.002f;
@@ -80,7 +108,7 @@ public class Player extends Pilot {
         }*/
 
 
-
+        /*
         if(gameState != END && gameState != START) {
             if (decal.getPosition().x >= WORLD_WIDTH) velocity.x = 3f;
             else if (decal.getPosition().x <= -WORLD_WIDTH) velocity.x = -3f;
@@ -122,7 +150,7 @@ public class Player extends Pilot {
         if(velocity.x != 0 && Math.abs(velocity.x) > 0f) {
             velocity.x -= Math.abs(velocity.x)/velocity.x * 0.05f;
             if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
-        }
+        } */
 
         if(gameState == START) {
             acceleration -= delta * 0.5f;
@@ -140,42 +168,47 @@ public class Player extends Pilot {
             else decal.setPosition(decal.getX(), decal.getY(), 0f);
             System.out.println(position.z);
         }
-
+/*
         if(gameState == END) {
             acceleration += delta * 2f;
             if(gameStateTime < 2.5f) {
                 decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
                 decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
             }
-        }
+        } */
+
 
         updateParticles(delta);
     }
 
     public void checkInput(float delta) {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if(velocity.x > -MAX_SPEED) {
-                velocity.x -= SPEED * delta;
-                if(velocity.x <= -MAX_SPEED) velocity.x = -MAX_SPEED;
-            }
+            //if(velocity.x > -MAX_SPEED) {
+            //    velocity.x -= SPEED * delta;
+            //    if(velocity.x <= -MAX_SPEED) velocity.x = -MAX_SPEED;
+            //}
+            keyboardDestination.x = keyboardDestination.x + 0.2f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(velocity.x < MAX_SPEED) {
-                velocity.x += SPEED * delta;
-                if(velocity.x >= MAX_SPEED) velocity.x = MAX_SPEED;
-            }
+            //if(velocity.x < MAX_SPEED) {
+            //    velocity.x += SPEED * delta;
+            //    if(velocity.x >= MAX_SPEED) velocity.x = MAX_SPEED;
+            //}
+            keyboardDestination.x = keyboardDestination.x - 0.2f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if(velocity.y < MAX_SPEED) {
-                velocity.y += SPEED * delta;
-                if(velocity.y >= MAX_SPEED) velocity.y = MAX_SPEED;
-            }
+            //if(velocity.y < MAX_SPEED) {
+            //    velocity.y += SPEED * delta;
+            //    if(velocity.y >= MAX_SPEED) velocity.y = MAX_SPEED;
+            //}
+            keyboardDestination.y = keyboardDestination.y +0.2f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if(velocity.y > -MAX_SPEED) {
-                velocity.y -= SPEED * delta;
-                if(velocity.y <= -MAX_SPEED) velocity.y = -MAX_SPEED;
-            }
+            //if(velocity.y > -MAX_SPEED) {
+             //   velocity.y -= SPEED * delta;
+            //    if(velocity.y <= -MAX_SPEED) velocity.y = -MAX_SPEED;
+            //}
+            keyboardDestination.y = keyboardDestination.y -0.2f;
         }
     }
 
