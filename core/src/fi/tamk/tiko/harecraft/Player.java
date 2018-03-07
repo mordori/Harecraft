@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
@@ -31,11 +32,13 @@ public class Player extends Pilot {
     static final float ACCEL_Y_OFFSET = 5f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
+    float accelerationZ;
 
     public Player(float x, float y, float z) {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
+
 
         width = Assets.texR_player.getRegionWidth()/100f;
         height = Assets.texR_player.getRegionHeight()/100f;
@@ -50,7 +53,8 @@ public class Player extends Pilot {
         pfx_scarf.getEmitters().get(0).getTransparency().scale(0.0f);
 
         acceleration = 1f;
-        rotation.z = (MathUtils.random(0,1) == 0) ? -30f : 30f;
+        accelerationZ = 1f;
+        rotation.z = (MathUtils.random(0,1) == 0) ? -70f : 70f;
 
         /*decal.getVertices()[decal.U1] = width/2.5f;
         decal.getVertices()[decal.U3] = width/2.5f;
@@ -121,16 +125,20 @@ public class Player extends Pilot {
         }
 
         if(gameState == START) {
-            acceleration -= delta * 0.7f;
+            acceleration -= delta * 0.5f;
+            accelerationZ += stateTime * 0.001f;
             if(acceleration > 0f) {
-                decal.translateY(-velocity.z/2.5f * delta * acceleration);
+                decal.translateY(-velocity.z/2.5f * delta * acceleration / 1.3f);
             }
-            if(rotation.z != 0f && acceleration > 0f) {
-                rotation.z -= Math.abs(rotation.z)/rotation.z * acceleration*0.9f;
+            if(rotation.z != 0f && accelerationZ > 1f) {
+                rotation.z -= Math.abs(rotation.z)/rotation.z / accelerationZ * MathUtils.random(1f, 2f);
             }
             if(Math.abs(rotation.z)/rotation.z > 0f && rotation.z < 0f) rotation.z = 0f;
             if(Math.abs(rotation.z)/rotation.z < 0f && rotation.z > 0f) rotation.z = 0f;
 
+            if(position.z < 0f) decal.translateZ(-velocity.z/20f * delta / accelerationZ);
+            else decal.setPosition(decal.getX(), decal.getY(), 0f);
+            System.out.println(position.z);
         }
 
         if(gameState == END) {

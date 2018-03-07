@@ -47,6 +47,8 @@ public class GameScreen extends ScreenAdapter {
     static float global_Multiplier = 1f;
 
     static String string = "3";
+    boolean isCountdown;
+    float volume = 0.15f;
 
     public GameScreen(GameMain game, World world) {
         this.game = game;
@@ -66,6 +68,7 @@ public class GameScreen extends ScreenAdapter {
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
         gameState = GameState.START;
+        Assets.sound_airplane.loop(volume);
     }
 
     @Override
@@ -79,12 +82,22 @@ public class GameScreen extends ScreenAdapter {
         //orthoCamera.update();
         //game.sBatch.setProjectionMatrix(orthoCamera.combined);
 
-        if(gameStateTime > 5.2f) string = "GO!";
-        else if(gameStateTime > 4.1f) string = "1";
+        if(gameStateTime > 5.4f) {
+            string = "GO!";
+            if(volume > 0f) volume -= 0.001f;
+            if(volume <= 0f) volume = 0f;
+        }
+        else if(gameStateTime > 4.2f) string = "1";
         else if(gameStateTime > 3f) string = "2";
+        if(gameStateTime > 2f && !isCountdown) {
+            Assets.sound_countdown.play(0.25f);
+            isCountdown = true;
+        }
+
+        Assets.sound_airplane.setVolume(0,volume);
 
         game.sBatch.begin();
-        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.1f && gameStateTime < 4.1f) || (gameStateTime > 4.2f && gameStateTime < 5.2f)
+        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
                 || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {
             Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);
         }
@@ -124,11 +137,13 @@ public class GameScreen extends ScreenAdapter {
     public void updateCamera() {
         camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
         //Needs work
-        camera.rotate(player.velocity.x / 20f,1f,1f,1f);
+        cameraRotation = player.velocity.x/120f;
+        camera.rotate(cameraRotation,1f,1f,1f);
         camera.lookAt(0f,0f, spawnDistance/2f);
-        camera.up.set(0f, 1f, 0f);
+        //camera.up.set(0f, 1f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
+
     }
 
     @Override

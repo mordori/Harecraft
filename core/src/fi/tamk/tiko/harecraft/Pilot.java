@@ -48,7 +48,7 @@ abstract class Pilot extends GameObject {
         if(this instanceof Opponent && gameState == END) isDrawing = false;
 
         //OPACITY
-        if(isDrawing) opacity += this instanceof Opponent ? delta : delta * 0.7f;
+        if(isDrawing) opacity += this instanceof Opponent ? delta : delta * 0.4f;
         else opacity -= delta;
         if(opacity > 1f) opacity = 1f;
         else if(opacity < 0f) opacity = 0f;
@@ -64,7 +64,7 @@ abstract class Pilot extends GameObject {
         float ys = velocity.x * 6f;
 
 
-        if(gameState != END)pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
+        if(gameState != END) pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
 
         /*if(gameState == END) {
             pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.y * 3f);

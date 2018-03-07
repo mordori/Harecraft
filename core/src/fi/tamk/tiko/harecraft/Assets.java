@@ -28,6 +28,7 @@ public class Assets {
     static TextureRegion texR_cloud;
     static TextureRegion texR_ring;
     static TextureRegion texR_tree;
+    static TextureRegion texR_tree_dark;
     static TextureRegion texR_lake;
     static TextureRegion texR_hill;
 
@@ -35,6 +36,8 @@ public class Assets {
 
     static Sound sound_cloud_hit;
     static Sound sound_ring_collected;
+    static Sound sound_countdown;
+    static Sound sound_airplane;
 
     static ParticleEffect pfx_scarf;
 
@@ -52,14 +55,18 @@ public class Assets {
         texR_cloud = new TextureRegion(loadTexture("textures/tex_cloud.png"));
         texR_ring = new TextureRegion(loadTexture("textures/tex_ring.png"));
         texR_tree = new TextureRegion(loadTexture("textures/tex_tree.png"));
+        texR_tree_dark = new TextureRegion(loadTexture("textures/tex_tree_dark.png"));
         texR_lake = new TextureRegion(loadTexture("textures/tex_lake.png"));
         texR_hill = new TextureRegion(loadTexture("textures/tex_hill.png"));
 
-        music_default = loadMusic("sound/elevator.wav");
+        music_default = loadMusic("sound/elevator.mp3");
         music_default.setLooping(true);
 
         sound_cloud_hit = loadSound("sound/Boup.wav");
         sound_ring_collected = loadSound("sound/Spring.wav");
+        sound_countdown = loadSound("sound/countdown.wav");
+        sound_airplane = loadSound("sound/airplane.wav");
+
 
         pfx_scarf = new ParticleEffect();
         pfx_scarf.load(Gdx.files.internal("pfx_scarf"), Gdx.files.internal(""));
@@ -101,11 +108,14 @@ public class Assets {
         texR_cloud.getTexture().dispose();
         texR_ring.getTexture().dispose();
         texR_tree.getTexture().dispose();
+        texR_tree_dark.getTexture().dispose();
         texR_lake.getTexture().dispose();
         texR_hill.getTexture().dispose();
 
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();
+        sound_countdown.dispose();
+        sound_airplane.dispose();
 
         music_default.dispose();
 

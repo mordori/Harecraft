@@ -65,7 +65,7 @@ public class World {
 
         finishLine = new FinishLine(0f,-1.35f,5f);
 
-        player = new Player(0f,-9.5f,0f);
+        player = new Player(0f,-11.5f,-5f);
 
         opponents.add(new Opponent(-3f, -2f, -65f*2f, 105,Assets.texR_opponent_yellow,6.5f));
         opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Assets.texR_opponent_yellow,7.5f));
