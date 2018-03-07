@@ -69,6 +69,11 @@ public class GameScreen extends ScreenAdapter {
 
         gameState = GameState.START;
         Assets.sound_airplane.loop(volume);
+
+        //Compressed audio files causes a slight delay when set to play, so better do it while the game is still loading
+        //and reset the position and volume when it is actually supposed to play.
+        Assets.music_default.play();
+        Assets.music_default.setVolume(0f);
     }
 
     @Override

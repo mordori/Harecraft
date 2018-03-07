@@ -48,7 +48,8 @@ public class WorldBuilder {
         if(gameState == RACE && gameStateTime == 0f) {
             world.rings.add(new Ring(0f, 0f, spawnDistance/3.25f));
             world.rings.add(new Ring(2f, 2f, spawnDistance/1.35f));
-            Assets.music_default.play();
+            Assets.music_default.setPosition(0f);
+            Assets.music_default.setVolume(1f);
             for(Opponent o : world.opponents) {
                 o.position.z = o.trueZ;
             }
