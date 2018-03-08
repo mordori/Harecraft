@@ -19,8 +19,8 @@ public class Lake extends GroundObject {
         height = Assets.texR_lake.getRegionHeight() / 4f;
 
         float randomSize = MathUtils.random(1f, 2.5f);
-        width = width * randomSize;
-        height = height * randomSize;
+        width *= randomSize;
+        height *= randomSize;
 
         decal = Decal.newDecal(width, height, Assets.texR_lake, true);
         decal.setPosition(x,y - 5f,z + height);

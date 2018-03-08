@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameMain extends Game {
@@ -22,5 +23,6 @@ public class GameMain extends Game {
 	public void dispose () {
 		sBatch.dispose();
 		Assets.dispose();
+        Gdx.app.log("DISPOSE","Assets");
 	}
 }

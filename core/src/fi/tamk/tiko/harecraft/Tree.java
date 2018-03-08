@@ -23,8 +23,8 @@ public class Tree extends GroundObject {
         if(MathUtils.random(0f,7f) < 1f) textureRegion = Assets.texR_tree_dark;
         else textureRegion = Assets.texR_tree;
 
-        width = textureRegion.getRegionWidth()/100f;
-        height = textureRegion.getRegionHeight()/100f;
+        width = textureRegion.getRegionWidth() / 100f;
+        height = textureRegion.getRegionHeight() / 100f;
         width *= 17f;
         height *= 17f;
 

@@ -23,8 +23,8 @@ public class Ring extends GameObject {
         direction = new Vector3();
         rotation = new Vector3();
 
-        width = Assets.texR_ring.getRegionWidth()/100f;
-        height = Assets.texR_ring.getRegionHeight()/100f;
+        width = Assets.texR_ring.getRegionWidth() / 100f;
+        height = Assets.texR_ring.getRegionHeight() / 100f;
         width *= 8.5f;
         height *= 8.5f;
 
@@ -40,9 +40,7 @@ public class Ring extends GameObject {
             if(decal.getPosition().z < 0.1f && decal.getPosition().z > -1f && position.dst(player.position) < 1.7f) {
                 isCollected = true;
 
-                if(global_Multiplier < MULTIPLIER_HIGH) {
-                    global_Multiplier += MULTIPLIER_INCREMENT;
-                }
+                if(global_Multiplier < MULTIPLIER_HIGH) {global_Multiplier += MULTIPLIER_INCREMENT;}
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
                 Assets.sound_ring_collected.play();

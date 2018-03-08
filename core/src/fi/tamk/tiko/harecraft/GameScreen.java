@@ -68,8 +68,8 @@ public class GameScreen extends ScreenAdapter {
 
         //Compressed audio files causes a slight delay when set to play, so better do it while the game is still loading
         //and reset the position and volume when it is actually supposed to play.
-        Assets.music_greenvalley.play();
-        Assets.music_greenvalley.setVolume(0f);
+        Assets.music_course_1.play();
+        Assets.music_course_1.setVolume(0f);
         Assets.sound_airplane_engine.loop(volume);
     }
 
@@ -85,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void update(float delta) {
         logger.log();
+
         updateState(delta);
         builder.update(delta);
         updateCamera();
@@ -107,10 +108,9 @@ public class GameScreen extends ScreenAdapter {
 
             if(gameStateTime > 5.4f) {
                 string = "GO!";
-                if(volume > 0f) volume -= 0.00135f;
+                if(volume > 0f) volume -= 0.08f * delta;
                 if(volume <= 0f) {
                     volume = 0f;
-                    Assets.sound_airplane_engine.stop();
                 }
             }
             else if(gameStateTime > 4.2f) string = "1";
@@ -128,6 +128,17 @@ public class GameScreen extends ScreenAdapter {
         else if(gameState == FINISH && player.distance > world.end) {
             gameState = END;
             gameStateTime = 0f;
+        }
+
+        if(gameState == RACE && gameStateTime == 0f) {
+            world.rings.add(new Ring(0f, 0f, spawnDistance/3.25f));
+            world.rings.add(new Ring(2f, 2f, spawnDistance/1.35f));
+            Assets.sound_airplane_engine.stop();
+            Assets.music_course_1.setPosition(0f);
+            Assets.music_course_1.setVolume(1f);
+            for(Opponent o : world.opponents) {
+                o.position.z = o.spawnZ;
+            }
         }
     }
 
@@ -148,6 +159,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void drawHUD() {
         game.sBatch.begin();
+        //Countdown numbers
         if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
                 || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {
             Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);

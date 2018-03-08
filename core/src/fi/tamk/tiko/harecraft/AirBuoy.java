@@ -12,8 +12,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class AirBuoy extends GameObject {
-    float width = Assets.texR_finishlinebuoy.getRegionWidth()/50f;
-    float height = Assets.texR_finishlinebuoy.getRegionHeight()/55f;
+    float width = Assets.texR_airbuoy.getRegionWidth()/50f;
+    float height = Assets.texR_airbuoy.getRegionHeight()/55f;
     boolean isDrawing;
 
     public AirBuoy(float x, float y, float z) {
@@ -22,7 +22,7 @@ public class AirBuoy extends GameObject {
         direction = new Vector3();
         rotation = new Vector3();
 
-        decal = Decal.newDecal(width, height, Assets.texR_finishlinebuoy, true);
+        decal = Decal.newDecal(width, height, Assets.texR_airbuoy, true);
         decal.setPosition(x,y,z);
         isDrawing = true;
     }

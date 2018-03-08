@@ -17,8 +17,8 @@ public class Hill extends GroundObject{
         height = Assets.texR_hill.getRegionHeight() / 7f;
 
         float randomSize = MathUtils.random(1.25f, 2.6f);
-        width = width * randomSize;
-        height = height * randomSize;
+        width *= randomSize;
+        height *= randomSize;
 
         decal = Decal.newDecal(width, height, Assets.texR_hill,true);
         decal.setPosition(x,y + height/2f - 6f,z);

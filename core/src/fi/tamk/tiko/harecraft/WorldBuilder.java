@@ -37,31 +37,25 @@ public class WorldBuilder {
     float lakes_RTimer = 10f;
     float hills_LTimer = 1f;
     float hills_RTimer = 1f;
+    Vector3 pos = new Vector3();
 
     static final int TREE = 0;
-    Vector3 pos = new Vector3();
 
     public WorldBuilder(World world) {
         this.world = world;
-        //spawnStartObjects();
+        spawnStartObjects();
     }
 
     public void update(float delta) {
-        if(gameState == RACE && gameStateTime == 0f) {
-            world.rings.add(new Ring(0f, 0f, spawnDistance/3.25f));
-            world.rings.add(new Ring(2f, 2f, spawnDistance/1.35f));
-            Assets.music_greenvalley.setPosition(0f);
-            Assets.music_greenvalley.setVolume(1f);
-            for(Opponent o : world.opponents) {
-                o.position.z = o.trueZ;
-            }
-        }
-
+        //SPAWN
+        //-------------------------------------------
         spawnGroundObjects();
         if(gameState != FINISH && gameState != END) {
             spawnSkyObjects();
         }
 
+        //UPDATE
+        //-------------------------------------------
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
         updateOpponents(delta);
         updateClouds(delta);
@@ -234,6 +228,10 @@ public class WorldBuilder {
             y = groundLevel;
             world.hills_R.add(new Hill(x, y, spawnDistance));
             hills_RTimer = MathUtils.random(1f, 4f - global_Multiplier * 0.3f);
+
+            //System.out.println("------------------------------");
+            //System.out.println(world.trees_L.size() - 1);
+            //System.out.println(world.trees_R.size() - 1);
         }
     }
 
@@ -267,8 +265,6 @@ public class WorldBuilder {
                     +world.hills_L.size()+world.hills_R.size();
 
             System.out.println("Decals: " + i);
-            System.out.println(world.trees_L.size() - 1);
-            System.out.println(world.clouds_LDown.size() - 1);
         }
     }
 

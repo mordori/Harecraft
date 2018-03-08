@@ -19,14 +19,15 @@ public class Cloud extends GameObject {
     Vector2 transposedPosition;
     boolean isCollided = false;
     boolean isTransparent = false;
+    float proximity = 1.2f;
 
     public Cloud(float x, float y, float z) {
         position = new Vector3();
         velocity = new Vector3();
         transposedPosition = new Vector2();
 
-        width = Assets.texR_cloud.getRegionWidth()/100f;
-        height = Assets.texR_cloud.getRegionHeight()/100f;
+        width = Assets.texR_cloud.getRegionWidth() / 100f;
+        height = Assets.texR_cloud.getRegionHeight() / 100f;
         width *= 13f;
         height *= 13f;
 
@@ -60,29 +61,29 @@ public class Cloud extends GameObject {
 
     public void checkCollision() {
         if(decal.getPosition().z > -0.5f) {
+            //Center
             if (position.dst(player.position) < 1.65f) {
                 decreaseSpeed();
                 return;
             }
 
-            float range = 1.1f;
+            //Left
             transposedPosition.x = position.x - width / 3.2f;
             transposedPosition.y = position.y - height / 4f;
-
-            if (transposedPosition.dst(player.position.x - player.width / 4f, player.position.y) < range) {
+            if (transposedPosition.dst(player.position.x - player.width / 4f, player.position.y) < proximity) {
                 decreaseSpeed();
                 return;
-            } else if (transposedPosition.dst(player.position.x + player.width / 4f, player.position.y) < range) {
+            } else if (transposedPosition.dst(player.position.x + player.width / 4f, player.position.y) < proximity) {
                 decreaseSpeed();
                 return;
             }
 
+            //Right
             transposedPosition.x = position.x + width / 3.2f;
-
-            if (transposedPosition.dst(player.position.x - player.width / 4f, player.position.y) < range) {
+            if (transposedPosition.dst(player.position.x - player.width / 4f, player.position.y) < proximity) {
                 decreaseSpeed();
                 return;
-            } else if (transposedPosition.dst(player.position.x + player.width / 4f, player.position.y) < range) {
+            } else if (transposedPosition.dst(player.position.x + player.width / 4f, player.position.y) < proximity) {
                 decreaseSpeed();
                 return;
             }

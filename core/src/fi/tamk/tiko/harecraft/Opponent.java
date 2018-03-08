@@ -23,24 +23,24 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class Opponent extends Pilot {
-    float trueZ;
+    float spawnZ;
 
-    public Opponent(float x, float y, float z, float trueZ, TextureRegion texR, float speed) {
+    public Opponent(float x, float y, float z, float spawnZ, TextureRegion texR, float speed) {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
 
-        width = texR.getRegionWidth()/100f;
-        height = texR.getRegionHeight()/100f;
+        width = texR.getRegionWidth() / 100f;
+        height = texR.getRegionHeight() / 100f;
+        width *= 2f;
+        height *= 2f;
 
-        decal = Decal.newDecal(width * 2f,height * 2f, texR,true);
+        decal = Decal.newDecal(width, height, texR,true);
         decal.setPosition(x,y,z);
 
-        //pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
-
-        this.trueZ = trueZ;
-        this.speed = speed;
         drawDistance = spawnDistance / 5f;
+        this.spawnZ = spawnZ;
+        this.speed = speed;
     }
 
     public void update(float delta) {
@@ -50,7 +50,7 @@ public class Opponent extends Pilot {
         else velocity.z = speed - global_Multiplier * 3f;
 
         if(gameState == RACE && gameStateTime == 0f) {
-            distance = player.distance + trueZ;
+            distance = player.distance + spawnZ;
         }
 
         if(distance > World.end) {

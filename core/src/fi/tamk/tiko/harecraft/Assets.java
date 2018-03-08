@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-
 /**
  * Created by Mika on 23.2.2018.
  */
@@ -21,7 +20,7 @@ public class Assets {
     static TextureRegion texR_background;
     static TextureRegion texR_foreground;
     static TextureRegion texR_sun;
-    static TextureRegion texR_finishlinebuoy;
+    static TextureRegion texR_airbuoy;
     static TextureRegion texR_player;
     static TextureRegion texR_opponent_yellow;
     static TextureRegion texR_cloud;
@@ -31,7 +30,7 @@ public class Assets {
     static TextureRegion texR_lake;
     static TextureRegion texR_hill;
 
-    static Music music_greenvalley;
+    static Music music_course_1;
 
     static Sound sound_cloud_hit;
     static Sound sound_ring_collected;
@@ -46,7 +45,7 @@ public class Assets {
         texR_background = loadTextureRegion("tex_background.png");
         texR_foreground = loadTextureRegion("tex_foreground.png");
         texR_sun = loadTextureRegion("tex_sun.png");
-        texR_finishlinebuoy = loadTextureRegion("tex_finishlinebuoy.png");
+        texR_airbuoy = loadTextureRegion("tex_airbuoy.png");
         texR_player = loadTextureRegion("tex_plane_red.png");
         texR_opponent_yellow = loadTextureRegion("tex_plane_yellow.png");
         texR_cloud = loadTextureRegion("tex_cloud.png");
@@ -56,8 +55,8 @@ public class Assets {
         texR_lake = loadTextureRegion("tex_lake.png");
         texR_hill = loadTextureRegion("tex_hill.png");
 
-        music_greenvalley = loadMusic("music_greenvalley.mp3");
-        music_greenvalley.setLooping(true);
+        music_course_1 = loadMusic("music_course_1.mp3");
+        music_course_1.setLooping(true);
 
         sound_cloud_hit = loadSound("sound_cloud_hit.wav");
         sound_ring_collected = loadSound("sound_ring_collected.wav");
@@ -103,7 +102,7 @@ public class Assets {
         texR_background.getTexture().dispose();
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
-        texR_finishlinebuoy.getTexture().dispose();
+        texR_airbuoy.getTexture().dispose();
         texR_player.getTexture().dispose();
         texR_opponent_yellow.getTexture().dispose();
         texR_cloud.getTexture().dispose();
@@ -113,7 +112,7 @@ public class Assets {
         texR_lake.getTexture().dispose();
         texR_hill.getTexture().dispose();
 
-        music_greenvalley.dispose();
+        music_course_1.dispose();
 
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();

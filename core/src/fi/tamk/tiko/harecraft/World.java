@@ -17,29 +17,30 @@ public class World {
     public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
+    //World length
     static float finish = 1000;
     static float end = finish + spawnDistance + 20f;
 
-    //BACKGROUND
+    //Background
     Decal decal_background;
     Decal decal_foreground;
     Decal decal_sun1;
     Decal decal_sun2;
 
-    //FINISHLINE
+    //Finishline
     AirBuoy airBuoy;
 
-    //PLAYER
+    //Player
     static Player player;
 
-    //SKY
+    //Sky
     ArrayList<Cloud> clouds_LUp = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_LDown = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_RUp = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_RDown = new ArrayList<Cloud>();
     ArrayList<Ring> rings = new ArrayList<Ring>();
 
-    //GROUND
+    //Ground
     ArrayList<Tree> trees_L = new ArrayList<Tree>();
     ArrayList<Tree> trees_R = new ArrayList<Tree>();
     ArrayList<Lake> lakes_L = new ArrayList<Lake>();
@@ -47,7 +48,7 @@ public class World {
     ArrayList<Hill> hills_L = new ArrayList<Hill>();
     ArrayList<Hill> hills_R = new ArrayList<Hill>();
 
-    //OPPONENTS
+    //Opponents
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 
     public World() {

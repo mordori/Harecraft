@@ -22,8 +22,6 @@ abstract class Pilot extends GameObject {
         NORMAL
     }
 
-    ParticleEffect pfx_scarf;
-
     float distance;
     float acceleration;
     float speed;
@@ -54,20 +52,7 @@ abstract class Pilot extends GameObject {
         decal.setColor(1f,1f,1f, opacity);
     }
 
-    public void updateParticles(float delta) {
-        pfx_scarf.setPosition(
-                -camera.position.x * 31.5f * 1.05f + SCREEN_WIDTH * 100f / 2f,
-                camera.position.y * 13f * 1.15f + SCREEN_HEIGHT * 100f / 2f + 12.5f);
+    public void updateParticles(float delta) {}
 
-        if(gameState != END) {
-            pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x * 5f);
-            pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
-        }
-
-        pfx_scarf.update(delta);
-    }
-
-    public void dispose() {
-        pfx_scarf.dispose();
-    }
+    public void dispose() {}
 }
