@@ -267,6 +267,8 @@ public class WorldBuilder {
                     +world.hills_L.size()+world.hills_R.size();
 
             System.out.println("Decals: " + i);
+            System.out.println(world.trees_L.size() - 1);
+            System.out.println(world.clouds_LDown.size() - 1);
         }
     }
 

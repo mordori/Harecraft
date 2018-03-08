@@ -61,7 +61,7 @@ abstract class Pilot extends GameObject {
 
         if(gameState != END) {
             pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x * 5f);
-            //pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
+            pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
         }
 
         pfx_scarf.update(delta);

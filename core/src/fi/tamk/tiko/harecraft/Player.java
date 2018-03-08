@@ -47,8 +47,7 @@ public class Player extends Pilot {
 
         destination = new Vector3();
         curPosition = new Vector3();
-
-        rotationsArray = new float[]{0f,0f,0f,0f,0f,0f,0f,0f,0f,0f};
+        rotationsArray = new float[10];
         keyboardDestination = new Vector3 (0f,0f,0f);
 
 
