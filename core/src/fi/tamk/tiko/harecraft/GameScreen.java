@@ -62,6 +62,7 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(0f,0f,-5f);
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
+        game.sBatch.setProjectionMatrix(orthoCamera.combined);
 
         gameState = GameState.START;
 
@@ -146,7 +147,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void drawHUD() {
-        game.sBatch.setProjectionMatrix(orthoCamera.combined);
         game.sBatch.begin();
         if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
                 || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {

@@ -7,6 +7,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.GameScreen.orthoCamera;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -81,7 +82,6 @@ public class WorldRenderer {
     }
 
     public void drawParticles() {
-        game.sBatch.setProjectionMatrix(camera.combined);
         game.sBatch.begin();
         if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
         game.sBatch.end();

@@ -29,7 +29,6 @@ abstract class Pilot extends GameObject {
     float speed;
     float drawDistance;
     boolean isDrawing;
-    float i = 0.1f;
 
     public Pilot() {
         State state = State.NORMAL;
@@ -62,23 +61,10 @@ abstract class Pilot extends GameObject {
                 -camera.position.x * 31.5f * 1.05f + SCREEN_WIDTH * 100f / 2f,
                 camera.position.y * 13f * 1.15f + SCREEN_HEIGHT * 100f / 2f + 12.5f);
 
-        float xs = velocity.x * 6f;
-        float ys = velocity.x * 6f;
-
-
-        if(gameState != END) pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
-
-        /*if(gameState == END) {
-            pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.y * 3f);
-
-
-            if(i <= 0f) i = 0f;
-
-            pfx_scarf.getEmitters().get(1).getTransparency().setHigh(i);
-        }*/
-
-
-
+        if(gameState != END) {
+            pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x * 5f);
+            //pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
+        }
 
         pfx_scarf.update(delta);
     }

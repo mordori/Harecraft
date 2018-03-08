@@ -56,12 +56,11 @@ public class Player extends Pilot {
         speed = SPEED;
         drawDistance = spawnDistance / 50f;
 
-        pfx_scarf.getEmitters().get(0).getTransparency().scale(0.0f);
-
         acceleration = 1f;
         accelerationZ = 1f;
         rotation.z = (MathUtils.random(0,1) == 0) ? -70f : 70f;
 
+        //DECAL TEXTURE SCROLLING
         /*decal.getVertices()[decal.U1] = width/2.5f;
         decal.getVertices()[decal.U3] = width/2.5f;
         decal.getVertices()[decal.U2] = width/1.22f;
@@ -81,8 +80,8 @@ public class Player extends Pilot {
             direction.y = direction.y / 20;
             decal.translate(direction);
 
-            velocity.x = destination.x;
-            velocity.y = destination.y;
+            velocity.x = direction.x * 20f;
+            velocity.y = direction.y * 20f;
 
             for (int i = 9; i > 0; i--) {       //Rotation
                 rotationsArray[i] = rotationsArray[i - 1];
@@ -99,7 +98,8 @@ public class Player extends Pilot {
         //Mikon kontrollit loppuu
 
 
-       /*decal.getVertices()[decal.U1] -=0.002f;
+        //DECAL TEXTURE SCROLLING
+        /*decal.getVertices()[decal.U1] -=0.002f;
         decal.getVertices()[decal.U2] -=0.002f;
         decal.getVertices()[decal.U3] -=0.002f;
         decal.getVertices()[decal.U4] -=0.002f;
