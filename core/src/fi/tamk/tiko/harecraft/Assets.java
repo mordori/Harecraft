@@ -81,9 +81,9 @@ public class Assets {
 
     public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal("atlases/" + path));}
 
-    public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal("sound/" + path));}
+    public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal("audio/" + path));}
 
-    public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal("sound/" + path));}
+    public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal("audio/" + path));}
 
     public static void flip(Animation<TextureRegion> animation, int frames) {
         TextureRegion regions;
