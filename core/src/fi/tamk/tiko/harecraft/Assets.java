@@ -21,8 +21,7 @@ public class Assets {
     static TextureRegion texR_background;
     static TextureRegion texR_foreground;
     static TextureRegion texR_sun;
-    static TextureRegion texR_finishline;
-
+    static TextureRegion texR_finishlinebuoy;
     static TextureRegion texR_player;
     static TextureRegion texR_opponent_yellow;
     static TextureRegion texR_cloud;
@@ -32,61 +31,59 @@ public class Assets {
     static TextureRegion texR_lake;
     static TextureRegion texR_hill;
 
-    static Music music_default;
+    static Music music_greenvalley;
 
     static Sound sound_cloud_hit;
     static Sound sound_ring_collected;
     static Sound sound_countdown;
-    static Sound sound_airplane;
+    static Sound sound_airplane_engine;
 
     static ParticleEffect pfx_scarf;
 
     static BitmapFont font;
 
     public static void load() {
-        texR_background = new TextureRegion(loadTexture("textures/tex_background.png"));
-        texR_foreground = new TextureRegion(loadTexture("textures/tex_foreground.png"));
-        texR_sun = new TextureRegion(loadTexture("textures/tex_sun.png"));
-        texR_finishline = new TextureRegion(loadTexture("textures/tex_finishline.png"));
-        texR_finishline.flip(true,false);
+        texR_background = loadTextureRegion("tex_background.png");
+        texR_foreground = loadTextureRegion("tex_foreground.png");
+        texR_sun = loadTextureRegion("tex_sun.png");
+        texR_finishlinebuoy = loadTextureRegion("tex_finishlinebuoy.png");
+        texR_player = loadTextureRegion("tex_plane_red.png");
+        texR_opponent_yellow = loadTextureRegion("tex_plane_yellow.png");
+        texR_cloud = loadTextureRegion("tex_cloud.png");
+        texR_ring = loadTextureRegion("tex_ring.png");
+        texR_tree = loadTextureRegion("tex_tree.png");
+        texR_tree_dark = loadTextureRegion("tex_tree_dark.png");
+        texR_lake = loadTextureRegion("tex_lake.png");
+        texR_hill = loadTextureRegion("tex_hill.png");
 
-        texR_player = new TextureRegion(loadTexture("textures/tex_plane_red.png"));
-        texR_opponent_yellow = new TextureRegion(loadTexture("textures/tex_plane_yellow.png"));
-        texR_cloud = new TextureRegion(loadTexture("textures/tex_cloud.png"));
-        texR_ring = new TextureRegion(loadTexture("textures/tex_ring.png"));
-        texR_tree = new TextureRegion(loadTexture("textures/tex_tree.png"));
-        texR_tree_dark = new TextureRegion(loadTexture("textures/tex_tree_dark.png"));
-        texR_lake = new TextureRegion(loadTexture("textures/tex_lake.png"));
-        texR_hill = new TextureRegion(loadTexture("textures/tex_hill.png"));
+        music_greenvalley = loadMusic("music_greenvalley.mp3");
+        music_greenvalley.setLooping(true);
 
-        music_default = loadMusic("sound/elevator.mp3");
-        music_default.setLooping(true);
-
-        sound_cloud_hit = loadSound("sound/Boup.wav");
-        sound_ring_collected = loadSound("sound/Spring.wav");
-        sound_countdown = loadSound("sound/countdown.wav");
-        sound_airplane = loadSound("sound/airplane.wav");
+        sound_cloud_hit = loadSound("sound_cloud_hit.wav");
+        sound_ring_collected = loadSound("sound_ring_collected.wav");
+        sound_countdown = loadSound("sound_countdown.wav");
+        sound_airplane_engine = loadSound("sound_airplane_engine.wav");
 
 
         pfx_scarf = new ParticleEffect();
-        pfx_scarf.load(Gdx.files.internal("pfx_scarf"), Gdx.files.internal(""));
+        pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("foo.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 128;
-        parameter.borderWidth = 2;
+        parameter.borderWidth = 4;
         parameter.color = new Color(1f,0.6f,0f,1f);
         font = generator.generateFont(parameter);
         generator.dispose();
     }
 
-    public static Texture loadTexture(String path) {return new Texture(Gdx.files.internal(path));}
+    public static TextureRegion loadTextureRegion(String path) {return flip(new TextureRegion(new Texture(Gdx.files.internal("textures/" + path))));}
 
-    public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal(path));}
+    public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal("atlases/" + path));}
 
-    public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal(path));}
+    public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal("sound/" + path));}
 
-    public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal(path));}
+    public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal("sound/" + path));}
 
     public static void flip(Animation<TextureRegion> animation, int frames) {
         TextureRegion regions;
@@ -97,12 +94,16 @@ public class Assets {
         }
     }
 
+    public static TextureRegion flip(TextureRegion texR) {
+        texR.flip(true, false);
+        return texR;
+    }
+
     public static void dispose() {
         texR_background.getTexture().dispose();
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
-        texR_finishline.getTexture().dispose();
-
+        texR_finishlinebuoy.getTexture().dispose();
         texR_player.getTexture().dispose();
         texR_opponent_yellow.getTexture().dispose();
         texR_cloud.getTexture().dispose();
@@ -112,12 +113,12 @@ public class Assets {
         texR_lake.getTexture().dispose();
         texR_hill.getTexture().dispose();
 
+        music_greenvalley.dispose();
+
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();
         sound_countdown.dispose();
-        sound_airplane.dispose();
-
-        music_default.dispose();
+        sound_airplane_engine.dispose();
 
         pfx_scarf.dispose();
 

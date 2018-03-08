@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
@@ -80,6 +81,7 @@ public class WorldRenderer {
     }
 
     public void drawParticles() {
+        game.sBatch.setProjectionMatrix(camera.combined);
         game.sBatch.begin();
         if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
         game.sBatch.end();

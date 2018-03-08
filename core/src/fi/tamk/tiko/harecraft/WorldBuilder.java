@@ -42,32 +42,26 @@ public class WorldBuilder {
 
     public WorldBuilder(World world) {
         this.world = world;
+        spawnStartObjects();
     }
 
     public void update(float delta) {
         if(gameState == RACE && gameStateTime == 0f) {
             world.rings.add(new Ring(0f, 0f, spawnDistance/3.25f));
             world.rings.add(new Ring(2f, 2f, spawnDistance/1.35f));
-            Assets.music_default.setPosition(0f);
-            Assets.music_default.setVolume(1f);
+            Assets.music_greenvalley.setPosition(0f);
+            Assets.music_greenvalley.setVolume(1f);
             for(Opponent o : world.opponents) {
                 o.position.z = o.trueZ;
             }
         }
-        /*else if(gameState == START && gameStateTime == 0f) {
-            world.finishLine = new FinishLine(0f,0f,50f);
-        }*/
-
-        player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
 
         spawnGroundObjects();
         if(gameState != FINISH && gameState != END) {
             spawnSkyObjects();
         }
-        else if(gameState == FINISH) {
-            world.finishLine.update(delta);
-        }
 
+        player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
         updateOpponents(delta);
         updateClouds(delta);
         updateRings(delta);
@@ -79,15 +73,26 @@ public class WorldBuilder {
         world.decal_sun2.rotateZ(-delta);
     }
 
+    public void spawnStartObjects() {
+        for (int j = 220; j > 50; j -= MathUtils.random(10,30)) {               //Trees
+            for (int i = -100; i < 100; i += MathUtils.random(5, 40)) {
+                world.trees_L.add(new Tree(i, groundLevel, j));
+                if ( i < -10 || i > 10 ) {
+                    world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
+                }
+            }
+        }
+    }
+
     public void spawnGroundObjects() {
-            addLakes();
-            addHills();
-            addTrees();
+        addLakes();
+        addHills();
+        addTrees();
     }
 
     public void spawnSkyObjects() {
-            addClouds();
-            addRing();
+        addClouds();
+        addRing();
     }
 
     public void updateOpponents(float delta) {

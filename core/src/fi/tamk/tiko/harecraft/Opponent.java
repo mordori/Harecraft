@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector3;
@@ -34,6 +35,8 @@ public class Opponent extends Pilot {
 
         decal = Decal.newDecal(width * 2f,height * 2f, texR,true);
         decal.setPosition(x,y,z);
+
+        pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
 
         this.trueZ = trueZ;
         this.speed = speed;

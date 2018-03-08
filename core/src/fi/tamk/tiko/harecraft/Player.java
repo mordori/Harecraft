@@ -72,26 +72,32 @@ public class Player extends Pilot {
         super.update(delta);
 
         //Mikon kontrolit alkaa
-        Vector3 destination = new Vector3(accelX * -2.5f, (accelY -ACCEL_Y_OFFSET) * -2f, 0f);  //Translate
-        destination = destination.add(keyboardDestination);
-        Vector3 curPosition = new Vector3(decal.getX(),decal.getY(), 0f);
-        Vector3 direction = destination.sub(curPosition);
-        direction.x = direction.x/20;
-        direction.y = direction.y/20;
-        decal.translate(direction);
+        if(gameState != START && gameState != END) {
+            Vector3 destination = new Vector3(accelX * -2.5f, (accelY - ACCEL_Y_OFFSET) * -2f, 0f);  //Translate
+            destination = destination.add(keyboardDestination);
+            Vector3 curPosition = new Vector3(decal.getX(), decal.getY(), 0f);
+            Vector3 direction = destination.sub(curPosition);
+            direction.x = direction.x / 20;
+            direction.y = direction.y / 20;
+            decal.translate(direction);
 
-        for (int i = 9; i > 0; i--) {       //Rotation
-            rotationsArray[i] = rotationsArray[i-1];
-        }
-        rotationsArray[0] = direction.x;
-        float keskiarvo = 0;
-        for (int i = 0; i < 10; i++) {
-            keskiarvo += rotationsArray[i];
-        }
-        decal.setRotationZ(-keskiarvo * 10);
+            velocity.x = destination.x;
+            velocity.y = destination.y;
 
-        checkInput(delta);  //Keyboard
+            for (int i = 9; i > 0; i--) {       //Rotation
+                rotationsArray[i] = rotationsArray[i - 1];
+            }
+            rotationsArray[0] = direction.x;
+            float keskiarvo = 0;
+            for (int i = 0; i < 10; i++) {
+                keskiarvo += rotationsArray[i];
+            }
+            decal.setRotationZ(-keskiarvo * 10);
+
+            checkInput(delta); //Keyboard
+        }
         //Mikon kontrollit loppuu
+
 
        /*decal.getVertices()[decal.U1] -=0.002f;
         decal.getVertices()[decal.U2] -=0.002f;
@@ -106,7 +112,6 @@ public class Player extends Pilot {
             decal.getVertices()[decal.U3] = width/3/2.5f;
             decal.getVertices()[decal.U4] = width/3/1.22f;
         }*/
-
 
         /*
         if(gameState != END && gameState != START) {
@@ -166,19 +171,15 @@ public class Player extends Pilot {
 
             if(position.z < 0f) decal.translateZ(-velocity.z/20f * delta / accelerationZ);
             else decal.setPosition(decal.getX(), decal.getY(), 0f);
-            System.out.println(position.z);
         }
-/*
+
         if(gameState == END) {
             acceleration += delta * 2f;
             if(gameStateTime < 2.5f) {
                 decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
                 decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
             }
-        } */
-
-
-        updateParticles(delta);
+        }
     }
 
     public void checkInput(float delta) {

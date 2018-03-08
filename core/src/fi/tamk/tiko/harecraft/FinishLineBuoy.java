@@ -11,18 +11,18 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  * Created by Mika on 03/03/2018.
  */
 
-public class FinishLine extends GameObject {
-    float width = Assets.texR_finishline.getRegionWidth()/50f;
-    float height = Assets.texR_finishline.getRegionHeight()/55f;
+public class FinishLineBuoy extends GameObject {
+    float width = Assets.texR_finishlinebuoy.getRegionWidth()/50f;
+    float height = Assets.texR_finishlinebuoy.getRegionHeight()/55f;
     boolean isDrawing;
 
-    public FinishLine(float x, float y, float z) {
+    public FinishLineBuoy(float x, float y, float z) {
         position = new Vector3();
         velocity = new Vector3();
         direction = new Vector3();
         rotation = new Vector3();
 
-        decal = Decal.newDecal(width, height, Assets.texR_finishline, true);
+        decal = Decal.newDecal(width, height, Assets.texR_finishlinebuoy, true);
         decal.setPosition(x,y,z);
         isDrawing = true;
     }

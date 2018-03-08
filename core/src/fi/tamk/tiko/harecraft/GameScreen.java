@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
@@ -37,7 +36,6 @@ public class GameScreen extends ScreenAdapter {
     static DecalBatch dBatch;
     static PerspectiveCamera camera;
     static OrthographicCamera orthoCamera;
-    ShapeRenderer shapeRenderer;
     static float fieldOfView = 45f;
     static float cameraRotation = 0f;
 
@@ -58,8 +56,6 @@ public class GameScreen extends ScreenAdapter {
 
         orthoCamera = new OrthographicCamera();
         orthoCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        shapeRenderer = new ShapeRenderer();
-
         camera = new PerspectiveCamera(fieldOfView, SCREEN_WIDTH, SCREEN_HEIGHT);
         camera.near = 0.1f;
         camera.far = 400f;
@@ -68,12 +64,12 @@ public class GameScreen extends ScreenAdapter {
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
         gameState = GameState.START;
-        Assets.sound_airplane.loop(volume);
 
         //Compressed audio files causes a slight delay when set to play, so better do it while the game is still loading
         //and reset the position and volume when it is actually supposed to play.
-        Assets.music_default.play();
-        Assets.music_default.setVolume(0f);
+        Assets.music_greenvalley.play();
+        Assets.music_greenvalley.setVolume(0f);
+        Assets.sound_airplane_engine.loop(volume);
     }
 
     @Override
@@ -83,48 +79,46 @@ public class GameScreen extends ScreenAdapter {
 
         update(delta);
         renderer.renderWorld();
-
-        //orthoCamera.update();
-        //game.sBatch.setProjectionMatrix(orthoCamera.combined);
-
-        if(gameStateTime > 5.4f) {
-            string = "GO!";
-            if(volume > 0f) volume -= 0.001f;
-            if(volume <= 0f) volume = 0f;
-        }
-        else if(gameStateTime > 4.2f) string = "1";
-        else if(gameStateTime > 3f) string = "2";
-        if(gameStateTime > 2f && !isCountdown) {
-            Assets.sound_countdown.play(0.25f);
-            isCountdown = true;
-        }
-
-        Assets.sound_airplane.setVolume(0,volume);
-
-        game.sBatch.begin();
-        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
-                || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {
-            Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);
-        }
-        game.sBatch.end();
+        drawHUD();
     }
 
     public void update(float delta) {
         logger.log();
+        updateState(delta);
+        builder.update(delta);
+        updateCamera();
+        updateHUD();
+    }
 
+    public void updateState(float delta) {
         gameStateTime += delta;
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
-
-        if(gameState == START) {
-            global_Multiplier = 3f;
-        }
 
         if(gameState == START && gameStateTime >= 7.3) {
             gameState = RACE;
             gameStateTime = 0f;
             player.distance = 0f;
             player.acceleration = 0f;
+        }
+        else if(gameState == START) {
+            global_Multiplier = 3f;
+
+            if(gameStateTime > 5.4f) {
+                string = "GO!";
+                if(volume > 0f) volume -= 0.00135f;
+                if(volume <= 0f) {
+                    volume = 0f;
+                    Assets.sound_airplane_engine.stop();
+                }
+            }
+            else if(gameStateTime > 4.2f) string = "1";
+            else if(gameStateTime > 3f) string = "2";
+            else if(gameStateTime > 2f && !isCountdown) {
+                Assets.sound_countdown.play(0.25f);
+                isCountdown = true;
+            }
+            Assets.sound_airplane_engine.setVolume(0,volume);
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;
@@ -134,9 +128,6 @@ public class GameScreen extends ScreenAdapter {
             gameState = END;
             gameStateTime = 0f;
         }
-
-        builder.update(delta);
-        updateCamera();
     }
 
     public void updateCamera() {
@@ -148,13 +139,25 @@ public class GameScreen extends ScreenAdapter {
         //camera.up.set(0f, 1f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
+    }
 
+    public void updateHUD() {
+
+    }
+
+    public void drawHUD() {
+        game.sBatch.setProjectionMatrix(orthoCamera.combined);
+        game.sBatch.begin();
+        if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
+                || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {
+            Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);
+        }
+        game.sBatch.end();
     }
 
     @Override
     public void dispose() {
         dBatch.dispose();
-        shapeRenderer.dispose();
         world.dispose();
     }
 }

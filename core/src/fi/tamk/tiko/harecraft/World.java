@@ -1,7 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class World {
     public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
-    static float finish = 2000;
+    static float finish = 100;
     static float end = finish + spawnDistance + 20f;
 
     //BACKGROUND
@@ -28,7 +27,7 @@ public class World {
     Decal decal_sun2;
 
     //FINISHLINE
-    FinishLine finishLine;
+    FinishLineBuoy finishLineBuoy;
 
     //PLAYER
     static Player player;
@@ -54,28 +53,21 @@ public class World {
     public World() {
         decal_background = Decal.newDecal(Assets.texR_background, true);
         decal_background.setPosition(0f,12f,300f);
-
         decal_foreground = Decal.newDecal(Assets.texR_foreground, true);
         decal_foreground.setPosition(0f,15f,287f);
-
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun1.setPosition(0f,-40f,293f);
         decal_sun2 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun2.setPosition(0f,-40f,290f);
         decal_sun2.rotateZ(90f);
 
-        finishLine = new FinishLine(0f,-1.35f,5f);
-
-        player = new Player(0f,-11.5f,-5f);
-
+        player = new Player(0f,-11f,-5f);
         opponents.add(new Opponent(-3f, -2f, -65f*2f, 105,Assets.texR_opponent_yellow,6.5f));
         opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Assets.texR_opponent_yellow,7.5f));
         opponents.add(new Opponent(0f, 2f, -59f*2f, 175, Assets.texR_opponent_yellow, 4.5f));
         opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Assets.texR_opponent_yellow,6.5f));
         opponents.add(new Opponent(-4f, -1f, -64f*2f, 250f, Assets.texR_player,5.5f));
         opponents.add(new Opponent(2f, 0f, -60f*2f, 350f, Assets.texR_opponent_yellow,5f));
-
-        spawnStartObjects();
     }
 
     public void dispose() {
@@ -83,17 +75,6 @@ public class World {
 
         for(Opponent o : opponents) {
             o.dispose();
-        }
-    }
-
-    public void spawnStartObjects() {
-        for (int j = 220; j > 50; j -= MathUtils.random(10,30)) {               //Trees
-            for (int i = -100; i < 100; i += MathUtils.random(5, 40)) {
-                trees_L.add(new Tree(i, -23, j));
-                if ( i < -10 || i > 10 ) {
-                    clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
-                }
-            }
         }
     }
 }
