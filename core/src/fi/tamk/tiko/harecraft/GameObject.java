@@ -31,7 +31,6 @@ abstract class GameObject {
 
     }
 
-    //Use this for clouds, trees, etc
     public void moveZ(float delta) {
         decal.translateZ(velocity.z * delta);
     }

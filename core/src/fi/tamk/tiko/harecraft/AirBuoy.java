@@ -11,12 +11,12 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  * Created by Mika on 03/03/2018.
  */
 
-public class FinishLineBuoy extends GameObject {
+public class AirBuoy extends GameObject {
     float width = Assets.texR_finishlinebuoy.getRegionWidth()/50f;
     float height = Assets.texR_finishlinebuoy.getRegionHeight()/55f;
     boolean isDrawing;
 
-    public FinishLineBuoy(float x, float y, float z) {
+    public AirBuoy(float x, float y, float z) {
         position = new Vector3();
         velocity = new Vector3();
         direction = new Vector3();

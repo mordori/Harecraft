@@ -79,7 +79,7 @@ public class Player extends Pilot {
         //Mikon kontrolit alkaa
         if(gameState != START && gameState != END) {
             destination.x = accelX * -2.5f;
-            destination.y = accelY - ACCEL_Y_OFFSET * -2f;
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -2f;
             destination = destination.add(keyboardDestination);
             curPosition.x = decal.getX();
             curPosition.y = decal.getY();
@@ -188,6 +188,8 @@ public class Player extends Pilot {
                 decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
             }
         }
+
+        updateParticles(delta);
     }
 
     public void checkInput(float delta) {

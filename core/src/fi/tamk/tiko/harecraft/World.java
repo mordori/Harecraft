@@ -27,7 +27,7 @@ public class World {
     Decal decal_sun2;
 
     //FINISHLINE
-    FinishLineBuoy finishLineBuoy;
+    AirBuoy airBuoy;
 
     //PLAYER
     static Player player;
