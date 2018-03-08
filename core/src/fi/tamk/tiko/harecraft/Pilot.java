@@ -53,7 +53,7 @@ abstract class Pilot extends GameObject {
         else if(opacity < 0f) opacity = 0f;
         decal.setColor(1f,1f,1f, opacity);
 
-        updateParticles(delta);
+        //updateParticles(delta);
     }
 
     public void updateParticles(float delta) {

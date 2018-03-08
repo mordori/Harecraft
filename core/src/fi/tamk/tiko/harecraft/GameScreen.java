@@ -62,7 +62,7 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(0f,0f,-5f);
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
-        game.sBatch.setProjectionMatrix(orthoCamera.combined);
+        //game.sBatch.setProjectionMatrix(orthoCamera.combined);
 
         gameState = GameState.START;
 

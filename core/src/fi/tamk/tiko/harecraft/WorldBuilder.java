@@ -39,10 +39,11 @@ public class WorldBuilder {
     float hills_RTimer = 1f;
 
     static final int TREE = 0;
+    Vector3 pos = new Vector3();
 
     public WorldBuilder(World world) {
         this.world = world;
-        spawnStartObjects();
+        //spawnStartObjects();
     }
 
     public void update(float delta) {
@@ -290,7 +291,7 @@ public class WorldBuilder {
             world.trees_R.remove(world.trees_R.size()-1);
         }
 
-        Vector3 pos = new Vector3(world.hills_L.get(world.hills_L.size()-1).position.cpy());
+        pos = (world.hills_L.get(world.hills_L.size()-1).position.cpy());
         pos.y -= world.hills_L.get(world.hills_L.size()-1).height/2f;
 
         if(!world.hills_L.isEmpty() && !world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size()-1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size()-1).width / 1.25f) {

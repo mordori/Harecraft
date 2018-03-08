@@ -36,11 +36,17 @@ public class Player extends Pilot {
     float accelerationZ;
     float []rotationsArray;
     Vector3 keyboardDestination;
+    Vector3 destination;
+    Vector3 curPosition;
 
     public Player(float x, float y, float z) {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
+        direction = new Vector3();
+
+        destination = new Vector3();
+        curPosition = new Vector3();
 
         rotationsArray = new float[]{0f,0f,0f,0f,0f,0f,0f,0f,0f,0f};
         keyboardDestination = new Vector3 (0f,0f,0f);
@@ -72,10 +78,12 @@ public class Player extends Pilot {
 
         //Mikon kontrolit alkaa
         if(gameState != START && gameState != END) {
-            Vector3 destination = new Vector3(accelX * -2.5f, (accelY - ACCEL_Y_OFFSET) * -2f, 0f);  //Translate
+            destination.x = accelX * -2.5f;
+            destination.y = accelY - ACCEL_Y_OFFSET * -2f;
             destination = destination.add(keyboardDestination);
-            Vector3 curPosition = new Vector3(decal.getX(), decal.getY(), 0f);
-            Vector3 direction = destination.sub(curPosition);
+            curPosition.x = decal.getX();
+            curPosition.y = decal.getY();
+            direction = destination.sub(curPosition);
             direction.x = direction.x / 20;
             direction.y = direction.y / 20;
             decal.translate(direction);

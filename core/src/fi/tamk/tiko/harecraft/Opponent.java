@@ -36,7 +36,7 @@ public class Opponent extends Pilot {
         decal = Decal.newDecal(width * 2f,height * 2f, texR,true);
         decal.setPosition(x,y,z);
 
-        pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
+        //pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
 
         this.trueZ = trueZ;
         this.speed = speed;
