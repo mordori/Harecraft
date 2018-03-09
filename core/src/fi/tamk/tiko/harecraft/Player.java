@@ -84,6 +84,7 @@ public class Player extends Pilot {
             float destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
             destination.y = destination.y + 6f;                 //pelaajan default postionia korkeammalle +6y
             //Gdx.app.log("TAG", "dest dist: " +destdist);
+            //kek
             destination.x = destination.x * destdist;
             destination.y = destination.y * destdist;
 
