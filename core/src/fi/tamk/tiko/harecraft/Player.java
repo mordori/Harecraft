@@ -77,14 +77,20 @@ public class Player extends Pilot {
 
         //Mikon kontrolit alkaa
         if(gameState != START && gameState != END) {
-            destination.x = accelX * -2.5f;
-            destination.y = (accelY - ACCEL_Y_OFFSET) * -2f;
+            destination.x = accelX * -5f;
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             destination = destination.add(keyboardDestination);
+
+            float destdist = 1f + destination.dst(0f,0f,0f) /100;   //100=1-1.3
+            Gdx.app.log("TAG", "dest dist: " +destdist);
+            destination.x = destination.x * destdist;
+            destination.y = destination.y * destdist;
+
             curPosition.x = decal.getX();
             curPosition.y = decal.getY();
             direction = destination.sub(curPosition);
-            direction.x = direction.x / 20f;
-            direction.y = direction.y / 20f;
+            direction.x = direction.x / 40f;
+            direction.y = direction.y / 40f;
             decal.translate(direction);
 
             velocity.x = direction.x * 20f;
@@ -98,7 +104,7 @@ public class Player extends Pilot {
             for (int i = 0; i < 10; i++) {
                 keskiarvo += rotationsArray[i];
             }
-            decal.setRotationZ(-keskiarvo * 10f);
+            decal.setRotationZ(-keskiarvo * 15f);   //10f oli alkuarvo
 
             checkInput(delta); //Keyboard
         }
