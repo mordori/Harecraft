@@ -100,13 +100,14 @@ public class Player extends Pilot {
                 rotationsArray[i] = rotationsArray[i - 1];
             }
             rotationsArray[0] = direction.x;
-            float keskiarvo = 0f;
-            for (int i = 0; i < 10; i++) {
-                keskiarvo += rotationsArray[i];
-            }
-            decal.setRotationZ(-keskiarvo * 15f);   //10f oli alkuarvo
+            //float keskiarvo = 0f;
+            //for (int i = 0; i < 10; i++) {
+            //    keskiarvo += rotationsArray[i];
+            //}
+            //decal.setRotationZ(-keskiarvo * 15f);   //10f oli alkuarvo
+            decal.setRotationZ(getRotationAverage() * -15);
 
-            checkInput(delta); //Keyboard
+            checkInput(delta); //Keyboard input
         }
         //Mikon kontrollit loppuu
 
@@ -226,6 +227,14 @@ public class Player extends Pilot {
         }
 
         pfx_scarf.update(delta);
+    }
+
+    public float getRotationAverage() {
+        float average = 0f;
+        for (int i = 0; i < 10; i++) {
+            average += rotationsArray[i];
+        }
+        return average;
     }
 
     public void dispose() {
