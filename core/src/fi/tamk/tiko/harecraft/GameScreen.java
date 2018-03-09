@@ -148,7 +148,8 @@ public class GameScreen extends ScreenAdapter {
         cameraRotation = player.velocity.x/120f;
         camera.rotate(cameraRotation,1f,1f,1f);
         camera.lookAt(0f,0f, spawnDistance/2f);
-        camera.up.set(player.getRotationAverage(), 10f, 0f);
+        camera.up.set(player.getRotationAverage(), 20f, 0f);
+        //camera.up.set(0f,1f,0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
     }

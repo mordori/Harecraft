@@ -81,7 +81,8 @@ public class Player extends Pilot {
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             destination = destination.add(keyboardDestination);
 
-            float destdist = 1f + destination.dst(0f,0f,0f) /100;   //100=1-1.3
+            float destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
+            destination.y = destination.y + 6f;                 //pelaajan default postionia korkeammalle +6y
             //Gdx.app.log("TAG", "dest dist: " +destdist);
             destination.x = destination.x * destdist;
             destination.y = destination.y * destdist;
@@ -89,8 +90,9 @@ public class Player extends Pilot {
             curPosition.x = decal.getX();
             curPosition.y = decal.getY();
             direction = destination.sub(curPosition);
-            direction.x = direction.x / 40f;
-            direction.y = direction.y / 40f;
+            direction.x = direction.x / 60f;
+            direction.y = direction.y / 60f;
+            direction.rotate(getRotationAverage(), 0f, 0f, 1f);
             decal.translate(direction);
 
             velocity.x = direction.x * 20f;
