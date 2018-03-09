@@ -82,7 +82,7 @@ public class Player extends Pilot {
             destination = destination.add(keyboardDestination);
 
             float destdist = 1f + destination.dst(0f,0f,0f) /100;   //100=1-1.3
-            Gdx.app.log("TAG", "dest dist: " +destdist);
+            //Gdx.app.log("TAG", "dest dist: " +destdist);
             destination.x = destination.x * destdist;
             destination.y = destination.y * destdist;
 
