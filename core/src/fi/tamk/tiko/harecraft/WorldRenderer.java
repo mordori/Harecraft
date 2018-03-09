@@ -86,4 +86,5 @@ public class WorldRenderer {
             if(o.isDrawing || o.opacity != 0f) dBatch.add(o.decal);
         }
     }
+
 }
