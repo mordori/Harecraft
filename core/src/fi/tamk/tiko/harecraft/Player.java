@@ -33,7 +33,7 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class Player extends Pilot {
-    static final float ACCEL_Y_OFFSET = 1f;
+    static final float ACCEL_Y_OFFSET = 4f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -63,7 +63,7 @@ public class Player extends Pilot {
         speed = SPEED;
         acceleration = 1f;
         accelerationZ = 1f;
-        rotation.z = (MathUtils.random(0,1) == 0) ? -70f : 70f;
+        rotation.z = (MathUtils.random(0,1) == 0) ? -45f : 45f;
 
         width = texR_body.getRegionWidth() / 100f;
         height = texR_body.getRegionHeight() / 100f;

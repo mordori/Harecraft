@@ -38,7 +38,7 @@ public class Ring extends GameObject {
         super.update(delta);
 
         if(!isCollected) {
-            if(decal.getPosition().z < 0.1f && decal.getPosition().z > -1f && position.dst(player.position) < 1.7f) {
+            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.position) < 1.85f) {
                 isCollected = true;
 
                 if(global_Multiplier < MULTIPLIER_HIGH) {global_Multiplier += MULTIPLIER_INCREMENT;}
