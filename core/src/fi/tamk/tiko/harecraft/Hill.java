@@ -13,8 +13,8 @@ public class Hill extends GroundObject{
         position = new Vector3();
         velocity = new Vector3();
 
-        width = Assets.texR_hill.getRegionWidth() / 7f;
-        height = Assets.texR_hill.getRegionHeight() / 7f;
+        width = Assets.texR_hill.getRegionWidth()/10f;
+        height = Assets.texR_hill.getRegionHeight()/10f;
 
         float randomSize = MathUtils.random(1.25f, 2.6f);
         width *= randomSize;

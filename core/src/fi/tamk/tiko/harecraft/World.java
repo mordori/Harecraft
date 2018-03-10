@@ -67,7 +67,7 @@ public class World {
         opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Assets.texR_opponent_yellow,7.5f));
         opponents.add(new Opponent(0f, 2f, -59f*2f, 175, Assets.texR_opponent_yellow, 4.5f));
         opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Assets.texR_opponent_yellow,6.5f));
-        opponents.add(new Opponent(-4f, -1f, -64f*2f, 250f, Assets.texR_player,5.5f));
+        opponents.add(new Opponent(-4f, -1f, -64f*2f, 250f, Assets.texR_opponent_yellow,5.5f));
         opponents.add(new Opponent(2f, 0f, -60f*2f, 350f, Assets.texR_opponent_yellow,5f));
     }
 

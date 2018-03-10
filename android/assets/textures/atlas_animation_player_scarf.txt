@@ -1,0 +1,19 @@
+atlas_animation_player_scarf.png
+size: 254, 66
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+test1
+  rotate: false
+  xy: 0, 0
+  size: 127, 66
+  orig: 127, 66
+  offset: 0, 0
+  index: -1
+test2
+  rotate: false
+  xy: 127, 0
+  size: 127, 66
+  orig: 127, 66
+  offset: 0, 0
+  index: -1

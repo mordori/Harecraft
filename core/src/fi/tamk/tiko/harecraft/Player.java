@@ -3,7 +3,9 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -40,6 +42,10 @@ public class Player extends Pilot {
     Vector3 destination;
     Vector3 curPosition;
 
+    TextureRegion texR_body = Assets.texR_player_plane_body;
+    TextureRegion texR_wings = Assets.texR_player_plane_wings;
+    TextureRegion texR_head = Assets.texR_player_plane_head;
+
     ParticleEffect pfx_scarf;
 
     public Player(float x, float y, float z) {
@@ -53,29 +59,35 @@ public class Player extends Pilot {
         rotationsArray = new float[10];
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
 
-        width = Assets.texR_player.getRegionWidth() / 100f;
-        height = Assets.texR_player.getRegionHeight() / 100f;
-        decal = Decal.newDecal(width,height,Assets.texR_player, true);
-        decal.setPosition(x,y,z);
-
         drawDistance = spawnDistance / 50f;
         speed = SPEED;
         acceleration = 1f;
         accelerationZ = 1f;
         rotation.z = (MathUtils.random(0,1) == 0) ? -70f : 70f;
 
-        //DECAL TEXTURE SCROLLING
-        /*decal.getVertices()[decal.U1] = width/2.5f;
-        decal.getVertices()[decal.U3] = width/2.5f;
-        decal.getVertices()[decal.U2] = width/1.22f;
-        decal.getVertices()[decal.U4] = width/1.22F;*/
+        width = texR_body.getRegionWidth() / 100f;
+        height = texR_body.getRegionHeight() / 100f;
+        decal_body = Decal.newDecal(width, height, texR_body,true);
+        decal_body.setPosition(x,y,z);
+
+        width = texR_head.getRegionWidth() / 100f;
+        height = texR_head.getRegionHeight() / 100f;
+        decal_head = Decal.newDecal(width, height, texR_head,true);
+        decal_head.setPosition(x,y,z + 0.1f);
+
+        width = texR_wings.getRegionWidth() / 100f;
+        height = texR_wings.getRegionHeight() / 100f;
+        decal_wings = Decal.newDecal(width, height, texR_wings,true);
+        decal_wings.setPosition(x,y,z + 0.2f);
+
+        decal = decal_body;
+
+        decal_head.rotateY(-90f);
     }
 
     public void update(float delta, float accelX, float accelY) {
         super.update(delta);
-        updateParticles(delta);
 
-        //Mikon kontrolit alkaa
         if(gameState != START && gameState != END) {
             destination.x = accelX * -5f;
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
@@ -84,7 +96,6 @@ public class Player extends Pilot {
             float destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
             destination.y = destination.y + 6f;                 //pelaajan default postionia korkeammalle +6y
             //Gdx.app.log("TAG", "dest dist: " +destdist);
-            //kek
             destination.x = destination.x * destdist;
             destination.y = destination.y * destdist;
 
@@ -112,8 +123,6 @@ public class Player extends Pilot {
 
             checkInput(delta); //Keyboard input
         }
-        //Mikon kontrollit loppuu
-
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
             acceleration -= delta * 0.5f;
@@ -138,97 +147,49 @@ public class Player extends Pilot {
             }
         }
 
-        /*if(gameState != END && gameState != START) {
-            if (decal.getPosition().x >= WORLD_WIDTH) velocity.x = 3f;
-            else if (decal.getPosition().x <= -WORLD_WIDTH) velocity.x = -3f;
-            if (decal.getPosition().y >= WORLD_HEIGHT_UP) {
-                velocity.y = -3f;
-            } else if (decal.getPosition().y <= -WORLD_HEIGHT_DOWN) {
-                velocity.y = 3f;
-            }
+        decal_head.setRotation(decal.getRotation().cpy().exp(2f));
+        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.07f);
+        decal_wings.setRotation(decal.getRotation());
+        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.14f);
+
+        //ANIMATION
+        //decal_head.setTextureRegion((TextureRegion) Assets.animation_player_scarf.getKeyFrame(stateTime,true));
+        /*if(getRotationAverage() >= 0f && Assets.animation_player_scarf.isFlipped) {
+            Assets.flip(Assets.animation_player_scarf, Assets.animation_player_scarf.getKeyFrames().length);
+            Assets.animation_player_scarf.isFlipped = false;
         }
-        if(gameState == RACE || gameState == FINISH) {
-            if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                velocity.x = accelX * 2f;
-                velocity.y = (accelY - ACCEL_Y_OFFSET) * 2f;
-                rotation.z = velocity.x * 5f;
-            } else {
-                checkInput(delta);
-                rotation.z = velocity.x * 15f;
-            }
-        }
-        if(gameState == END) rotation.z = velocity.x * 15f;
-        decal.setRotationZ(rotation.z);
-        if(gameState != START && (decal.getPosition().x < WORLD_WIDTH && velocity.x < 0f || decal.getPosition().x > -WORLD_WIDTH && velocity.x > 0f))
-            decal.translateX(-velocity.x * delta);
-        if(gameState != START && (decal.getPosition().y < WORLD_HEIGHT_UP && velocity.y > 0f || decal.getPosition().y > -WORLD_HEIGHT_DOWN && velocity.y < 0f))
-            decal.translateY(velocity.y * delta);
-        if(velocity.y != 0 && Math.abs(velocity.y) > 0f) {
-            velocity.y -= Math.abs(velocity.y)/velocity.y * 0.05f;
-            if(Math.abs(velocity.y) < 0.05f) velocity.y = 0f;
-        }
-        if(velocity.x != 0 && Math.abs(velocity.x) > 0f) {
-            velocity.x -= Math.abs(velocity.x)/velocity.x * 0.05f;
-            if(Math.abs(velocity.x) < 0.05f) velocity.x = 0f;
+        else if(getRotationAverage() < 0f && !Assets.animation_player_scarf.isFlipped) {
+            Assets.flip(Assets.animation_player_scarf, Assets.animation_player_scarf.getKeyFrames().length);
+            Assets.animation_player_scarf.isFlipped = true;
         }*/
+        //decal_head.rotateY(getRotationAverage());
 
-        //DECAL TEXTURE SCROLLING
-        /*decal.getVertices()[decal.U1] -=0.002f;
-        decal.getVertices()[decal.U2] -=0.002f;
-        decal.getVertices()[decal.U3] -=0.002f;
-        decal.getVertices()[decal.U4] -=0.002f;
-
-        if(decal.getVertices()[decal.U1] <= -0.01f) decal.getVertices()[decal.U1] = -0.01f;
-
-        if(decal.getVertices()[decal.U1] == -0.01f) {
-            decal.getVertices()[decal.U1] = width/3/2.5f;
-            decal.getVertices()[decal.U2] = width/3/1.22f;
-            decal.getVertices()[decal.U3] = width/3/2.5f;
-            decal.getVertices()[decal.U4] = width/3/1.22f;
-        }*/
+        //updateParticles(delta);
     }
 
     public void checkInput(float delta) {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            /*if(velocity.x > -MAX_SPEED) {
-                velocity.x -= SPEED * delta;
-                if(velocity.x <= -MAX_SPEED) velocity.x = -MAX_SPEED;
-            }*/
             keyboardDestination.x = keyboardDestination.x + 0.2f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            /*if(velocity.x < MAX_SPEED) {
-                velocity.x += SPEED * delta;
-                if(velocity.x >= MAX_SPEED) velocity.x = MAX_SPEED;
-            }*/
             keyboardDestination.x = keyboardDestination.x - 0.2f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            /*if(velocity.y < MAX_SPEED) {
-                velocity.y += SPEED * delta;
-                if(velocity.y >= MAX_SPEED) velocity.y = MAX_SPEED;
-            }*/
             keyboardDestination.y = keyboardDestination.y +0.2f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            /*if(velocity.y > -MAX_SPEED) {
-                velocity.y -= SPEED * delta;
-                if(velocity.y <= -MAX_SPEED) velocity.y = -MAX_SPEED;
-            }*/
             keyboardDestination.y = keyboardDestination.y -0.2f;
         }
     }
 
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                -camera.position.x * 31.5f * 1.05f + SCREEN_WIDTH * 100f / 2f,
-                camera.position.y * 13f * 1.15f + SCREEN_HEIGHT * 100f / 2f + 12.5f);
-
+                -camera.position.x  * 31.5f / 1f + SCREEN_WIDTH * 100f / 2f,
+                camera.position.y * 13f * 1.16f + SCREEN_HEIGHT * 100f / 2f + 12f);
         if(gameState != END) {
             pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x * 5f);
             pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
         }
-
         pfx_scarf.update(delta);
     }
 

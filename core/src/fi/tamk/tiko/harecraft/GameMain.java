@@ -23,6 +23,6 @@ public class GameMain extends Game {
 	public void dispose () {
 		sBatch.dispose();
 		Assets.dispose();
-        Gdx.app.log("DISPOSE","Assets");
+        Gdx.app.log("DISPOSED","Assets");
 	}
 }

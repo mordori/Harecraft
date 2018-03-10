@@ -25,10 +25,18 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 public class Opponent extends Pilot {
     float spawnZ;
 
+    TextureRegion texR_body = Assets.texR_player_plane_body;
+    TextureRegion texR_wings = Assets.texR_player_plane_wings;
+    TextureRegion texR_head = Assets.texR_player_plane_head;
+
     public Opponent(float x, float y, float z, float spawnZ, TextureRegion texR, float speed) {
         velocity = new Vector3();
         position = new Vector3();
         rotation = new Vector3();
+
+        drawDistance = spawnDistance / 5f;
+        this.spawnZ = spawnZ;
+        this.speed = speed;
 
         width = texR.getRegionWidth() / 100f;
         height = texR.getRegionHeight() / 100f;
@@ -38,9 +46,24 @@ public class Opponent extends Pilot {
         decal = Decal.newDecal(width, height, texR,true);
         decal.setPosition(x,y,z);
 
-        drawDistance = spawnDistance / 5f;
-        this.spawnZ = spawnZ;
-        this.speed = speed;
+        width = texR_body.getRegionWidth() / 100f;
+        height = texR_body.getRegionHeight() / 100f;
+        decal_body = Decal.newDecal(width, height, texR_body,true);
+        decal_body.setPosition(x,y,z);
+
+        width = texR_head.getRegionWidth() / 100f;
+        height = texR_head.getRegionHeight() / 100f;
+        decal_head = Decal.newDecal(width, height, texR_head,true);
+        decal_head.setPosition(x,y,z+0.1f);
+
+        width = texR_wings.getRegionWidth() / 100f;
+        height = texR_wings.getRegionHeight() / 100f;
+        decal_wings = Decal.newDecal(width, height, texR_wings,true);
+        decal_wings.setPosition(x,y,z+0.2f);
+
+        //decal = decal_body;
+
+        r = g = b = 1f;
     }
 
     public void update(float delta) {

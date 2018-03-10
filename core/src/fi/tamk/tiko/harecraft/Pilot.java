@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -22,14 +23,23 @@ abstract class Pilot extends GameObject {
         NORMAL
     }
 
+    Decal decal_head;
+    Decal decal_body;
+    Decal decal_wings;
+    Decal decal_tail;
+
     float distance;
     float acceleration;
     float speed;
     float drawDistance;
+    float r,g,b;
     boolean isDrawing;
 
     public Pilot() {
         State state = State.NORMAL;
+        r = 1f;
+        b = 1f;
+        g = 1f;
     }
 
     public void update(float delta) {
@@ -49,7 +59,9 @@ abstract class Pilot extends GameObject {
         else opacity -= delta;
         if(opacity > 1f) opacity = 1f;
         else if(opacity < 0f) opacity = 0f;
-        decal.setColor(1f,1f,1f, opacity);
+        decal.setColor(r,g,b, opacity);
+        decal_wings.setColor(r,g,b, opacity);
+        decal_head.setColor(r,g,b, opacity);
     }
 
     public void updateParticles(float delta) {}

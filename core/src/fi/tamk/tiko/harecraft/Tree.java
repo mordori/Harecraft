@@ -5,10 +5,6 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-
 /**
  * Created by Mika on 28/02/2018.
  */
@@ -19,9 +15,23 @@ public class Tree extends GroundObject {
         velocity = new Vector3();
 
         TextureRegion textureRegion;
+        float transposedY = y - 1f;
 
-        if(MathUtils.random(0f,7f) < 1f) textureRegion = Assets.texR_tree_dark;
-        else textureRegion = Assets.texR_tree;
+        if(MathUtils.random(0, 9) < 7) {
+            if(MathUtils.random(1,3) < 3) {
+                textureRegion = Assets.texR_tree_big_light;
+            }
+            else textureRegion = Assets.texR_tree_big_dark;
+        }
+        else {
+            if(MathUtils.random(0, 1) < 1) {
+                textureRegion = Assets.texR_tree_small_light;
+            }
+            else textureRegion = Assets.texR_tree_small_dark;
+
+            transposedY -= 1f;
+        }
+
 
         width = textureRegion.getRegionWidth() / 100f;
         height = textureRegion.getRegionHeight() / 100f;
@@ -29,7 +39,7 @@ public class Tree extends GroundObject {
         height *= 17f;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
-        decal.setPosition(x,y,z);
+        decal.setPosition(x,transposedY,z);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class WorldRenderer {
 
     public void renderWorld() {
         drawDecals();
-        drawParticles();
+        //drawParticles();
     }
 
     public void drawDecals() {
@@ -37,7 +37,11 @@ public class WorldRenderer {
 
         drawDecalLists();
 
-        if(player.isDrawing || player.opacity != 0f) dBatch.add(player.decal);
+        if(player.isDrawing || player.opacity != 0f){
+            dBatch.add(player.decal_wings);
+            dBatch.add(player.decal_head);
+            dBatch.add(player.decal);
+        }
         //////////////////////////////////////////////
         dBatch.flush();
     }
