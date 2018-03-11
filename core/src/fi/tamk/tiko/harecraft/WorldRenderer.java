@@ -26,7 +26,7 @@ public class WorldRenderer {
 
     public void renderWorld() {
         drawDecals();
-        //drawParticles();
+        drawParticles();
     }
 
     public void drawDecals() {
@@ -48,7 +48,9 @@ public class WorldRenderer {
 
     public void drawParticles() {
         game.sBatch.begin();
-        if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
+        if((player.velocity.x != 0f || player.velocity.y != 0f) ) player.pfx_scarf.draw(game.sBatch);
+        //if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_stream.draw(game.sBatch);
+        //if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_stream2.draw(game.sBatch);
         game.sBatch.end();
     }
 

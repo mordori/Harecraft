@@ -18,18 +18,18 @@ public class Tree extends GroundObject {
         float transposedY = y - 1f;
 
         if(MathUtils.random(0, 9) < 7) {
-            if(MathUtils.random(1,3) < 3) {
+            if(MathUtils.random(1,5) < 4) {
                 textureRegion = Assets.texR_tree_big_light;
             }
             else textureRegion = Assets.texR_tree_big_dark;
         }
         else {
-            if(MathUtils.random(0, 1) < 1) {
+            if(MathUtils.random(0, 2) < 2) {
                 textureRegion = Assets.texR_tree_small_light;
             }
             else textureRegion = Assets.texR_tree_small_dark;
 
-            transposedY -= 1f;
+            transposedY -= 1.5f;
         }
 
 

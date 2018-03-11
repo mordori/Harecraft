@@ -45,6 +45,7 @@ public class Assets {
     static Sound sound_airplane_engine;
 
     static ParticleEffect pfx_scarf;
+    static ParticleEffect pfx_stream;
 
     static BitmapFont font;
 
@@ -80,6 +81,9 @@ public class Assets {
 
         pfx_scarf = new ParticleEffect();
         pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
+
+        pfx_stream = new ParticleEffect();
+        pfx_stream.load(Gdx.files.internal("particles/pfx_stream"), Gdx.files.internal("particles/"));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("foo.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -140,6 +144,7 @@ public class Assets {
         sound_airplane_engine.dispose();
 
         pfx_scarf.dispose();
+        pfx_stream.dispose();
 
         font.dispose();
     }

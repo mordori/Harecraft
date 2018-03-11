@@ -42,15 +42,20 @@ public class Player extends Pilot {
     final float MAX_SPEED = 7f;
     float accelerationZ;
     float []rotationsArray;
+    float destdist;
     Vector3 keyboardDestination;
     Vector3 destination;
     Vector3 curPosition;
+    float posXTranspose;
+    float posYTranspose;
 
     TextureRegion texR_body = Assets.texR_player_plane_body;
     TextureRegion texR_wings = Assets.texR_player_plane_wings;
     TextureRegion texR_head = Assets.texR_player_plane_head;
 
     ParticleEffect pfx_scarf;
+    ParticleEffect pfx_stream;
+    ParticleEffect pfx_stream2;
 
     public Player(float x, float y, float z) {
         velocity = new Vector3();
@@ -62,6 +67,8 @@ public class Player extends Pilot {
         curPosition = new Vector3();
         rotationsArray = new float[10];
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
+        //pfx_stream = new ParticleEffect(Assets.pfx_stream);
+        //pfx_stream2 = new ParticleEffect(Assets.pfx_stream);
 
         drawDistance = spawnDistance / 50f;
         speed = SPEED;
@@ -92,12 +99,12 @@ public class Player extends Pilot {
     public void update(float delta, float accelX, float accelY) {
         super.update(delta);
 
-        if(gameState != START && gameState != END) {
+        if(gameState != START) {
             destination.x = accelX * -5f;
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             destination = destination.add(keyboardDestination);
 
-            float destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
+            destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
             destination.y = destination.y + 6f;                 //pelaajan default postionia korkeammalle +6y
             //Gdx.app.log("TAG", "dest dist: " +destdist);
             destination.x = destination.x * destdist;
@@ -125,7 +132,7 @@ public class Player extends Pilot {
             //decal.setRotationZ(-keskiarvo * 15f);   //10f oli alkuarvo
             decal.setRotationZ(getRotationAverage() * -15);
 
-            checkInput(delta); //Keyboard input
+            if(gameState != END)checkInput(); //Keyboard input
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
@@ -143,9 +150,10 @@ public class Player extends Pilot {
             if(position.z < 0f) decal.translateZ(-velocity.z/20f * delta / accelerationZ);
             else decal.setPosition(decal.getX(), decal.getY(), 0f);
         }
-        else if(gameState == END) {
-            acceleration += delta * 2f;
-            if(gameStateTime < 2.5f) {
+        if(gameState == END) {
+            acceleration += delta*0.3f;
+            System.out.println(getRotationAverage());
+            if(Math.abs(getRotationAverage()) < 0.005f) { //gameStateTime < 2.5f
                 decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
                 decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
             }
@@ -168,10 +176,10 @@ public class Player extends Pilot {
         }*/
         //decal_head.rotateY(getRotationAverage());
 
-        //updateParticles(delta);
+        updateParticles(delta);
     }
 
-    public void checkInput(float delta) {
+    public void checkInput() {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             keyboardDestination.x = keyboardDestination.x + 0.2f;
         }
@@ -188,13 +196,23 @@ public class Player extends Pilot {
 
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                -camera.position.x  * 31.5f / 1f + SCREEN_WIDTH * 100f / 2f,
-                camera.position.y * 13f * 1.16f + SCREEN_HEIGHT * 100f / 2f + 12f);
-        if(gameState != END) {
-            pfx_scarf.getEmitters().get(0).getYScale().setHigh(velocity.x * 5f);
-            pfx_scarf.getEmitters().get(1).getYScale().setHigh(velocity.x * 5f);
-        }
+                (-position.x * 31f + posTest() * 1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/12.80f) + SCREEN_WIDTH * 100f / 2f,
+                (position.y * 15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/7.20f) + SCREEN_HEIGHT * 100f / 2f + 12f);
+
+        pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x * 5f);
+        pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x * 5f);
+
         pfx_scarf.update(delta);
+
+        /*pfx_stream.setPosition(
+                (-position.x * 31f + test()*1.5f + velocity.x * Math.abs(position.y/test2 * getRotationAverage())) * (SCREEN_WIDTH/12.80f) + SCREEN_WIDTH * 100f / 2f - width*130f/2f,
+                (position.y * 15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/7.20f) + SCREEN_HEIGHT * 100f / 2f + 12f);
+        pfx_stream.update(delta);
+
+        pfx_stream2.setPosition(
+                (-position.x * 31f + test()*1.5f + velocity.x * Math.abs(position.y/test2 * getRotationAverage())) * (SCREEN_WIDTH/12.80f) + SCREEN_WIDTH * 100f / 2f + width*140f/2f,
+                (position.y * 15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/7.20f) + SCREEN_HEIGHT * 100f / 2f + 12f);
+        pfx_stream2.update(delta);*/
     }
 
     public float getRotationAverage() {
@@ -208,5 +226,23 @@ public class Player extends Pilot {
     public void dispose() {
         super.dispose();
         pfx_scarf.dispose();
+        //pfx_stream.dispose();
+        //pfx_stream2.dispose();
+    }
+
+    public float posTest() {
+        if (Math.abs(position.x) < 10f) {
+            posXTranspose = Math.abs(position.x);
+        } else if (Math.abs(position.x) > 10f) {
+            posXTranspose = 20f - Math.abs(position.x);
+        }
+
+        if(position.y >= 0f) {
+            posYTranspose = 5f;
+        }
+        else posYTranspose = 20f + position.y;
+
+        if(position.x > 0f) return posXTranspose;
+        else return -posXTranspose;
     }
 }

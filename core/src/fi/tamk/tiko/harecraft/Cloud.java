@@ -1,6 +1,8 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -25,13 +27,16 @@ public class Cloud extends GameObject {
         position = new Vector3();
         velocity = new Vector3();
         transposedPosition = new Vector2();
+        TextureRegion textureRegion = Assets.texR_cloud;
 
-        width = Assets.texR_cloud.getRegionWidth() / 100f;
-        height = Assets.texR_cloud.getRegionHeight() / 100f;
+        if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
+
+        width = textureRegion.getRegionWidth() / 100f;
+        height = textureRegion.getRegionHeight() / 100f;
         width *= 13f;
         height *= 13f;
 
-        decal = Decal.newDecal(width, height, Assets.texR_cloud, true);
+        decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);
     }
 

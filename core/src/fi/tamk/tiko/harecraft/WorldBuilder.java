@@ -190,14 +190,14 @@ public class WorldBuilder {
             x = MathUtils.random(-150f, 0f);
             y = groundLevel;
             world.trees_L.add(new Tree(x, y, spawnDistance));
-            trees_LTimer = MathUtils.random(0.15f - global_Multiplier * 0.015f, 0.35f - global_Multiplier * 0.035f);
+            trees_LTimer = MathUtils.random(0.2f - global_Multiplier * 0.015f, 0.4f - global_Multiplier * 0.035f);
         }
 
         if(world.trees_R.isEmpty() || world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer) {
             x = MathUtils.random(0f, 150f);
             y = groundLevel;
             world.trees_R.add(new Tree(x, y, spawnDistance));
-            trees_RTimer = MathUtils.random(0.15f - global_Multiplier * 0.015f, 0.35f - global_Multiplier * 0.035f);
+            trees_RTimer = MathUtils.random(0.2f - global_Multiplier * 0.015f, 0.4f - global_Multiplier * 0.035f);
         }
     }
 
@@ -228,10 +228,6 @@ public class WorldBuilder {
             y = groundLevel;
             world.hills_R.add(new Hill(x, y, spawnDistance));
             hills_RTimer = MathUtils.random(1f, 4f - global_Multiplier * 0.3f);
-
-            //System.out.println("------------------------------");
-            //System.out.println(world.trees_L.size() - 1);
-            //System.out.println(world.trees_R.size() - 1);
         }
     }
 
