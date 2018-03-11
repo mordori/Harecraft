@@ -37,7 +37,9 @@ public class WorldBuilder {
     float lakes_RTimer = 10f;
     float hills_LTimer = 1f;
     float hills_RTimer = 1f;
+    float powerup_Timer = 14f;
     Vector3 pos = new Vector3();
+    Powerup lastPowerup;
 
     static final int TREE = 0;
 
@@ -60,23 +62,13 @@ public class WorldBuilder {
         updateOpponents(delta);
         updateClouds(delta);
         updateRings(delta);
+        updatePowerups(delta);
         updateLakes(delta);
         updateTrees(delta);
         updateHills(delta);
 
         world.decal_sun1.rotateZ(delta/2f);
         world.decal_sun2.rotateZ(-delta);
-    }
-
-    public void spawnStartObjects() {
-        for (int j = 220; j > 50; j -= MathUtils.random(30,40)) {               //Z Depth step
-            for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
-                world.trees_L.add(new Tree(i, groundLevel, j));
-                if ( i < -10 || i > 10 ) {
-                    world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
-                }
-            }
-        }
     }
 
     public void spawnGroundObjects() {
@@ -88,6 +80,7 @@ public class WorldBuilder {
     public void spawnSkyObjects() {
         addClouds();
         addRing();
+        addPowerup();
     }
 
     public void updateOpponents(float delta) {
@@ -113,11 +106,17 @@ public class WorldBuilder {
     }
 
     public void updateRings(float delta) {
-
         for(Ring l : world.rings) {
             l.update(delta);
         }
         removeRing();
+    }
+
+    public void updatePowerups(float delta) {
+        for(Powerup p : world.powerups) {
+            p.update(delta);
+        }
+        removePowerup();
     }
 
     public void updateTrees(float delta) {
@@ -185,19 +184,58 @@ public class WorldBuilder {
         }
     }
 
+    public void addPowerup() {
+        if((gameState == RACE || gameState == FINISH) && ((world.powerups.isEmpty() && gameStateTime > 6f && gameStateTime < 10f) || (gameStateTime > 6f && world.powerups.get(world.powerups.size() - 1).stateTime >= powerup_Timer))) {
+            x = MathUtils.random(-3f, 3f);
+            y = -23f;
+            int random = MathUtils.random(0,2);
+            if(random == 0) {
+                if(!(lastPowerup instanceof PowerupSpeed)) {
+                    world.powerups.add(new PowerupSpeed(x,y, spawnDistance - 50f));
+                }
+                else {
+                    random = MathUtils.random(0,1);
+                    if(random == 0) world.powerups.add(new PowerupInvulnerability(x,y, spawnDistance - 50f));
+                    else if(random == 1) world.powerups.add(new PowerupSize(x,y, spawnDistance - 50f));
+                }
+            }
+            else if(random == 1) {
+                if(!(lastPowerup instanceof PowerupInvulnerability)) {
+                    world.powerups.add(new PowerupInvulnerability(x,y, spawnDistance - 50f));
+                }
+                else {
+                    random = MathUtils.random(0,1);
+                    if(random == 0) world.powerups.add(new PowerupSpeed(x,y, spawnDistance - 50f));
+                    else if(random == 1) world.powerups.add(new PowerupSize(x,y, spawnDistance - 50f));
+                }
+            }
+            else if(random == 2) {
+                if(!(lastPowerup instanceof PowerupSize)) {
+                    world.powerups.add(new PowerupSize(x,y, spawnDistance - 50f));
+                }
+                else {
+                    random = MathUtils.random(0,1);
+                    if(random == 0) world.powerups.add(new PowerupInvulnerability(x,y, spawnDistance - 50f));
+                    else if(random == 1) world.powerups.add(new PowerupSpeed(x,y, spawnDistance - 50f));
+                }
+            }
+            lastPowerup = world.powerups.get(world.powerups.size() - 1);
+        }
+    }
+
     public void addTrees() {
         if(world.trees_L.isEmpty() || world.trees_L.get(world.trees_L.size() - 1).stateTime >= trees_LTimer) {
             x = MathUtils.random(-150f, 0f);
             y = groundLevel;
             world.trees_L.add(new Tree(x, y, spawnDistance));
-            trees_LTimer = MathUtils.random(0.2f - global_Multiplier * 0.015f, 0.4f - global_Multiplier * 0.035f);
+            trees_LTimer = MathUtils.random(0.25f - global_Multiplier * 0.015f, 0.45f - global_Multiplier * 0.035f);
         }
 
         if(world.trees_R.isEmpty() || world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer) {
             x = MathUtils.random(0f, 150f);
             y = groundLevel;
             world.trees_R.add(new Tree(x, y, spawnDistance));
-            trees_RTimer = MathUtils.random(0.2f - global_Multiplier * 0.015f, 0.4f - global_Multiplier * 0.035f);
+            trees_RTimer = MathUtils.random(0.25f - global_Multiplier * 0.015f, 0.45f - global_Multiplier * 0.035f);
         }
     }
 
@@ -261,6 +299,12 @@ public class WorldBuilder {
                     +world.hills_L.size()+world.hills_R.size();
 
             System.out.println("Decals: " + i);
+        }
+    }
+
+    public void removePowerup() {
+        if(world.powerups.size() > 1 && world.powerups.get(0).decal.getPosition().z < camera.position.z) {
+            world.powerups.remove(0);
         }
     }
 
@@ -331,6 +375,17 @@ public class WorldBuilder {
         }
         if(!hillArray.isEmpty() && hillArray.get(0).decal.getPosition().z < camera.position.z) {
             hillArray.remove(0);
+        }
+    }
+
+    public void spawnStartObjects() {
+        for (int j = 220; j > 50; j -= MathUtils.random(30,40)) {               //Z Depth step
+            for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
+                world.trees_L.add(new Tree(i, groundLevel, j));
+                if ( i < -10 || i > 10 ) {
+                    world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
+                }
+            }
         }
     }
 }

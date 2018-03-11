@@ -18,7 +18,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
     //World length
-    static float finish = 1000;
+    static float finish = 2000;
     static float end = finish + spawnDistance + 20f;
 
     //Background
@@ -50,6 +50,9 @@ public class World {
 
     //Opponents
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
+
+    //Powerups
+    ArrayList<Powerup> powerups = new ArrayList<Powerup>();
 
     public World() {
         decal_background = Decal.newDecal(Assets.texR_background, true);

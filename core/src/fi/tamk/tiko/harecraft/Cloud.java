@@ -16,9 +16,9 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 public class Cloud extends GameObject {
     final float MULTIPLIER_LOW = 1f;
-    final float MULTIPLIER_DECREMENT = 1.1f;
+    final float MULTIPLIER_DECREMENT = 1.5f;
 
-    Vector2 transposedPosition;
+    Vector2 transposedPosition = new Vector2();
     boolean isCollided = false;
     boolean isTransparent = false;
     float proximity = 1.2f;
@@ -26,7 +26,6 @@ public class Cloud extends GameObject {
     public Cloud(float x, float y, float z) {
         position = new Vector3();
         velocity = new Vector3();
-        transposedPosition = new Vector2();
         TextureRegion textureRegion = Assets.texR_cloud;
 
         if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);

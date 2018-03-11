@@ -70,6 +70,9 @@ public class WorldRenderer {
         for(Ring l : world.rings) {
             dBatch.add(l.decal);
         }
+        for(Powerup p : world.powerups) {
+            dBatch.add(p.decal);
+        }
         for(Tree t : world.trees_L) {
             dBatch.add(t.decal);
         }

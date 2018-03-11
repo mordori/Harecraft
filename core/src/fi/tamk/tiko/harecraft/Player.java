@@ -105,16 +105,16 @@ public class Player extends Pilot {
             destination = destination.add(keyboardDestination);
 
             destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
-            destination.y = destination.y + 6f;                 //pelaajan default postionia korkeammalle +6y
+            destination.y += 6f;                 //pelaajan default postionia korkeammalle +6y
             //Gdx.app.log("TAG", "dest dist: " +destdist);
-            destination.x = destination.x * destdist;
-            destination.y = destination.y * destdist;
+            destination.x *= destdist;
+            destination.y *= destdist;
 
             curPosition.x = decal.getX();
             curPosition.y = decal.getY();
             direction = destination.sub(curPosition);
-            direction.x = direction.x / 60f;
-            direction.y = direction.y / 60f;
+            direction.x /= 60f;
+            direction.y /= 60f;
             direction.rotate(getRotationAverage(), 0f, 0f, 1f);
             decal.translate(direction);
 
@@ -152,7 +152,6 @@ public class Player extends Pilot {
         }
         if(gameState == END) {
             acceleration += delta*0.3f;
-            System.out.println(getRotationAverage());
             if(Math.abs(getRotationAverage()) < 0.005f) { //gameStateTime < 2.5f
                 decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
                 decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));

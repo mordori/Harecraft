@@ -21,6 +21,9 @@ public class Assets {
     static TextureRegion texR_foreground;
     static TextureRegion texR_sun;
     static TextureRegion texR_airbuoy;
+    static TextureRegion texR_powerup_red;
+    static TextureRegion texR_powerup_green;
+    static TextureRegion texR_powerup_blue;
     static TextureRegion texR_player_plane_body;
     static TextureRegion texR_player_plane_wings;
     static TextureRegion texR_player_plane_head;
@@ -54,6 +57,9 @@ public class Assets {
         texR_foreground = loadTextureRegion("tex_foreground.png");
         texR_sun = loadTextureRegion("tex_sun.png");
         texR_airbuoy = loadTextureRegion("tex_airbuoy.png");
+        texR_powerup_red = loadTextureRegion("tex_powerup_red.png");
+        texR_powerup_green = loadTextureRegion("tex_powerup_green.png");
+        texR_powerup_blue = loadTextureRegion("tex_powerup_blue.png");
         texR_player_plane_body = loadTextureRegion("tex_player_plane_body.png");
         texR_player_plane_wings = loadTextureRegion("tex_player_plane_wings.png");
         texR_player_plane_head = loadTextureRegion("tex_player_plane_head.png");
@@ -121,6 +127,9 @@ public class Assets {
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
         texR_airbuoy.getTexture().dispose();
+        texR_powerup_red.getTexture().dispose();
+        texR_powerup_green.getTexture().dispose();
+        texR_powerup_blue.getTexture().dispose();
         texR_player_plane_body.getTexture().dispose();
         texR_player_plane_wings.getTexture().dispose();
         texR_player_plane_head.getTexture().dispose();
