@@ -40,7 +40,7 @@ public class Ring extends GameObject {
         stateTime_arrows += delta;
 
         if(!isCollected) {
-            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.position) < 1.85f) {
+            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.position) < 1.9f) {
                 isCollected = true;
 
                 if(global_Multiplier < MULTIPLIER_HIGH) {global_Multiplier += MULTIPLIER_INCREMENT;}

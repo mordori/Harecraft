@@ -22,7 +22,6 @@ public class World {
     static float end = finish + spawnDistance + 20f;
 
     //Background
-    Decal decal_background;
     Decal decal_foreground;
     Decal decal_sun1;
     Decal decal_sun2;
@@ -55,8 +54,6 @@ public class World {
     ArrayList<Powerup> powerups = new ArrayList<Powerup>();
 
     public World() {
-        decal_background = Decal.newDecal(Assets.texR_background, true);
-        decal_background.setPosition(0f,12f,300f);
         decal_foreground = Decal.newDecal(Assets.texR_foreground, true);
         decal_foreground.setPosition(0f,15f,287f);
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);

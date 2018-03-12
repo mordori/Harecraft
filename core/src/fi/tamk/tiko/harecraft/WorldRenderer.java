@@ -30,7 +30,6 @@ public class WorldRenderer {
     }
 
     public void drawDecals() {
-        dBatch.add(world.decal_background);
         dBatch.add(world.decal_foreground);
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);

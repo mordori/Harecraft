@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
  */
 
 public class Assets {
-    static TextureRegion texR_background;
     static TextureRegion texR_foreground;
     static TextureRegion texR_sun;
     static TextureRegion texR_airbuoy;
@@ -54,7 +53,6 @@ public class Assets {
     static BitmapFont font;
 
     public static void load() {
-        texR_background = loadTextureRegion("tex_background.png");
         texR_foreground = loadTextureRegion("tex_foreground.png");
         texR_sun = loadTextureRegion("tex_sun.png");
         texR_airbuoy = loadTextureRegion("tex_airbuoy.png");
@@ -125,7 +123,6 @@ public class Assets {
     }
 
     public static void dispose() {
-        texR_background.getTexture().dispose();
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
         texR_airbuoy.getTexture().dispose();

@@ -74,7 +74,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+        Gdx.gl.glClearColor(104f/255f, 202f/255f, 230f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         update(delta);
@@ -96,7 +96,7 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         else global_Multiplier = 1f;
 
-        if(gameState == START && gameStateTime >= 7.3) {
+        if(gameState == START && gameStateTime >= 6.6) {
             gameState = RACE;
             gameStateTime = 0f;
             player.distance = 0f;
@@ -157,7 +157,7 @@ public class GameScreen extends ScreenAdapter {
         game.sBatch.begin();
         //Countdown numbers
         if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
-                || (gameStateTime > 6.1f && gameStateTime < 7.3f))) {
+                || (gameStateTime > 5.6f && gameStateTime < 6.6f))) {
             Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);
         }
         game.sBatch.end();
