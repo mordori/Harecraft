@@ -37,7 +37,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = -2f;
+    static final float ACCEL_Y_OFFSET = 1f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -111,7 +111,7 @@ public class Player extends Pilot {
             direction = destination.sub(curPosition);
             direction.x /= 60f;
             direction.y /= 60f;
-            direction.rotate(getRotationAverage(), 0f, 0f, 1f);
+            //direction.rotate(getRotationAverage(), 0f, 0f, 1f);
             decal.translate(direction);
 
             velocity.x = direction.x * 20f;

@@ -178,7 +178,7 @@ public class WorldBuilder {
 
     public void addRing() {
         if((gameState == RACE || gameState == FINISH) && (world.rings.isEmpty() || world.rings.get(world.rings.size() - 1).stateTime >= rings_Timer)) {
-            x = MathUtils.random(-10f, 10f);
+            x = MathUtils.random(-10f, 10f); //mikko rings
             y = MathUtils.random(-9.2f, 6.2f);
             world.rings.add(new Ring(x, y, spawnDistance - 50f));
         }
