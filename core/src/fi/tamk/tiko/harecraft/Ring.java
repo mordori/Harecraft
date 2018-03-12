@@ -17,25 +17,27 @@ public class Ring extends GameObject {
     final float MULTIPLIER_HIGH = 5.5f;
     final float MULTIPLIER_INCREMENT = 2.4f;
     boolean isCollected = false;
+    Decal decal_arrows;
+    float opacity_arrows;
+    float stateTime_arrows;
 
     public Ring(float x, float y, float z) {
-        position = new Vector3();
-        velocity = new Vector3();
-        direction = new Vector3();
-        rotation = new Vector3();
-
         width = Assets.texR_ring.getRegionWidth() / 100f;
         height = Assets.texR_ring.getRegionHeight() / 100f;
         width *= 8.5f;
         height *= 8.5f;
-
         decal = Decal.newDecal(width, height, Assets.texR_ring, true);
         decal.setPosition(x,y,z);
+
+        decal_arrows = Decal.newDecal(width, height, Assets.texR_ring_arrows, true);
+        decal_arrows.setPosition(x,y,z);
+        decal_arrows.setScale(1.5f);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        stateTime_arrows += delta;
 
         if(!isCollected) {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.position) < 1.85f) {
@@ -45,7 +47,8 @@ public class Ring extends GameObject {
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
                 Assets.sound_ring_collected.play();
-                decal.setPosition(position.x, position.y,0.1f);
+                decal.setPosition(position.x, position.y,0.5f);
+                decal_arrows.setPosition(position.x, position.y,0.5f);
             }
         }
         else {
@@ -57,17 +60,40 @@ public class Ring extends GameObject {
 
             decal.translateX(velocity.x * delta);
             decal.translateY(velocity.y * delta);
+            decal_arrows.translateY(velocity.y * delta);
+            decal_arrows.translateY(velocity.y * delta);
         }
+
+        decal_arrows.setScale(decal_arrows.getScaleX() - delta * stateTime_arrows/2f);
+
+        if(decal_arrows.getScaleX() < 0.5f && position.z > 65f) {
+            decal_arrows.setScale(1.5f);
+            stateTime_arrows = 0f;
+        }
+
 
         //Rotation
         if(!isCollected) rotation.z = delta * 50f;
-        else rotation.z = delta * 70f * (stateTime / 2);
+        else rotation.z = delta * 70f * (stateTime / 2f);
         decal.rotateZ(rotation.z);
+        decal_arrows.rotateZ(delta * 50f * (stateTime_arrows * 0.5f) + 0.51f);
 
         //Opacity
         setOpacity();
+        if(decal_arrows.getScaleX() > 0.75f && position.z > 40f) {
+            opacity_arrows = stateTime_arrows * 0.8f;
+            if(opacity_arrows > 1f) opacity_arrows = 1f;
+        }
+        else if(decal_arrows.getScaleX() < 0.75f || position.z < 40f) {
+            opacity_arrows -= delta * 2.5f;
+            if(opacity_arrows < 0f) opacity_arrows = 0f;
+        }
+        decal_arrows.setColor(1f,1f,1f, opacity_arrows);
 
         //Movement Z
-        if(!isCollected || decal.getScaleX() > 1.4f) moveZ(delta);
+        if(!isCollected || decal.getScaleX() > 1.4f) {
+            moveZ(delta);
+            decal_arrows.translateZ(velocity.z * delta);
+        }
     }
 }

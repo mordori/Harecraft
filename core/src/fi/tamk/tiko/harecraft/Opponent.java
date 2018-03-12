@@ -30,10 +30,6 @@ public class Opponent extends Pilot {
     TextureRegion texR_head = Assets.texR_player_plane_head;
 
     public Opponent(float x, float y, float z, float spawnZ, TextureRegion texR, float speed) {
-        velocity = new Vector3();
-        position = new Vector3();
-        rotation = new Vector3();
-
         drawDistance = spawnDistance / 5f;
         this.spawnZ = spawnZ;
         this.speed = speed;

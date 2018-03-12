@@ -48,7 +48,7 @@ public class WorldRenderer {
 
     public void drawParticles() {
         game.sBatch.begin();
-        if((player.velocity.x != 0f || player.velocity.y != 0f) ) player.pfx_scarf.draw(game.sBatch);
+        if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
         //if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_stream.draw(game.sBatch);
         //if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_stream2.draw(game.sBatch);
         game.sBatch.end();
@@ -69,6 +69,7 @@ public class WorldRenderer {
         }
         for(Ring l : world.rings) {
             dBatch.add(l.decal);
+            dBatch.add(l.decal_arrows);
         }
         for(Powerup p : world.powerups) {
             dBatch.add(p.decal);

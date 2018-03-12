@@ -18,10 +18,10 @@ import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 abstract class GameObject {
     Decal decal;
 
-    Vector3 velocity;
-    Vector3 direction;
-    Vector3 position;
-    Vector3 rotation;
+    Vector3 velocity = new Vector3();
+    Vector3 direction = new Vector3();
+    Vector3 position = new Vector3();
+    Vector3 rotation = new Vector3();
 
     float width;
     float height;

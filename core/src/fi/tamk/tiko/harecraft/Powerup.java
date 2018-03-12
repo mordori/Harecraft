@@ -19,12 +19,12 @@ public class Powerup extends GameObject {
     Vector2 transposedPosition = new Vector2();
     Vector2 transposedDirection = new Vector2();
     boolean isCollected = false;
+    float random;
 
     public Powerup() {
-        position = new Vector3();
-        velocity = new Vector3();
-
-        velocity.y = MathUtils.random(3.5f,5.5f);
+        velocity.y = MathUtils.random(3.5f,5.2f);
+        random = MathUtils.random(-1,1);
+        if(random == 0) random = 1;
     }
 
     @Override
@@ -51,17 +51,20 @@ public class Powerup extends GameObject {
             decal.setScale(decal.getScaleX() - delta * stateTime / 10f);
             if(decal.getScaleX() < 0f) decal.setScale(0f);
             transposedDirection = transposedPosition.cpy().sub(position.x, position.y);
-            //velocity.x = transposedDirection.nor().x * COLLECTED_SPEED * Math.abs(transposedDirection.x);
             velocity.y = transposedDirection.nor().y * COLLECTED_SPEED * Math.abs(transposedDirection.y);
 
             decal.translateX(velocity.x * delta);
             decal.translateY(velocity.y * delta);
         }
 
+        if(isCollected) rotation.z = random * delta * stateTime * 3f;
+        decal.rotateZ(rotation.z);
+
         //Opacity
         setOpacity();
 
         //Movement Z
-        if(!isCollected || decal.getScaleX() == 0f)moveZ(delta);
+        if(!isCollected || decal.getScaleX() == 0f) moveZ(delta);
+        if(isCollected && decal.getScaleX() > 0f) decal.translateZ(-velocity.z/5f * delta);
     }
 }

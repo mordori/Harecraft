@@ -12,9 +12,6 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 public class Lake extends GroundObject {
     public Lake(float x, float y, float z) {
-        position = new Vector3();
-        velocity = new Vector3();
-
         width = Assets.texR_lake.getRegionWidth() / 4f;
         height = Assets.texR_lake.getRegionHeight() / 4f;
 

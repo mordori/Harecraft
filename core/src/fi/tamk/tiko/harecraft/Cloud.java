@@ -24,10 +24,7 @@ public class Cloud extends GameObject {
     float proximity = 1.2f;
 
     public Cloud(float x, float y, float z) {
-        position = new Vector3();
-        velocity = new Vector3();
         TextureRegion textureRegion = Assets.texR_cloud;
-
         if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
 
         width = textureRegion.getRegionWidth() / 100f;

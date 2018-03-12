@@ -37,7 +37,7 @@ public class WorldBuilder {
     float lakes_RTimer = 10f;
     float hills_LTimer = 1f;
     float hills_RTimer = 1f;
-    float powerup_Timer = 14f;
+    float powerup_Timer = 2f * rings_Timer;
     Vector3 pos = new Vector3();
     Powerup lastPowerup;
 
@@ -185,8 +185,8 @@ public class WorldBuilder {
     }
 
     public void addPowerup() {
-        if((gameState == RACE || gameState == FINISH) && ((world.powerups.isEmpty() && gameStateTime > 6f && gameStateTime < 10f) || (gameStateTime > 6f && world.powerups.get(world.powerups.size() - 1).stateTime >= powerup_Timer))) {
-            x = MathUtils.random(-3f, 3f);
+        if((gameState == RACE || gameState == FINISH) && ((world.powerups.isEmpty() && gameStateTime > 5.2f && gameStateTime < 10f) || (gameStateTime > 5.2f && world.powerups.get(world.powerups.size() - 1).stateTime >= powerup_Timer))) {
+            x = MathUtils.random(-5f, 5f);
             y = -23f;
             int random = MathUtils.random(0,2);
             if(random == 0) {

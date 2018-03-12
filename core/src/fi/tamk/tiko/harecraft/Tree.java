@@ -11,9 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Tree extends GroundObject {
     public Tree(float x, float y, float z) {
-        position = new Vector3();
-        velocity = new Vector3();
-
         TextureRegion textureRegion;
         float transposedY = y - 1f;
 

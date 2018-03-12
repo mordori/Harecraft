@@ -10,9 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Hill extends GroundObject{
     public Hill(float x, float y, float z) {
-        position = new Vector3();
-        velocity = new Vector3();
-
         width = Assets.texR_hill.getRegionWidth()/10f;
         height = Assets.texR_hill.getRegionHeight()/10f;
 

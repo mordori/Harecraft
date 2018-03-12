@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 public class PowerupSize extends Powerup {
 
     public PowerupSize(float x, float y, float z) {
-
         TextureRegion textureRegion = Assets.texR_powerup_red;
 
         width = textureRegion.getRegionWidth() / 100f;

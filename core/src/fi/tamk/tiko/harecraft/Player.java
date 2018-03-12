@@ -37,7 +37,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = -2f;
+    static final float ACCEL_Y_OFFSET = 4f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -58,10 +58,6 @@ public class Player extends Pilot {
     ParticleEffect pfx_stream2;
 
     public Player(float x, float y, float z) {
-        velocity = new Vector3();
-        position = new Vector3();
-        rotation = new Vector3();
-        direction = new Vector3();
         destination = new Vector3();
         keyboardDestination = new Vector3();
         curPosition = new Vector3();
@@ -99,7 +95,7 @@ public class Player extends Pilot {
     public void update(float delta, float accelX, float accelY) {
         super.update(delta);
 
-        if(gameState != START) {
+        if(gameState != START && gameState != END) {
             destination.x = accelX * -5f;
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             destination = destination.add(keyboardDestination);
@@ -151,8 +147,8 @@ public class Player extends Pilot {
             else decal.setPosition(decal.getX(), decal.getY(), 0f);
         }
         if(gameState == END) {
-            acceleration += delta*0.3f;
-            if(Math.abs(getRotationAverage()) < 0.005f) { //gameStateTime < 2.5f
+            acceleration += delta * 2f;
+            if(gameStateTime < 2.5f) { //gameStateTime < 2.5f
                 decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
                 decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
             }

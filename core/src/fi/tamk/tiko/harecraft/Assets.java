@@ -30,6 +30,7 @@ public class Assets {
     static TextureRegion texR_opponent_yellow;
     static TextureRegion texR_cloud;
     static TextureRegion texR_ring;
+    static TextureRegion texR_ring_arrows;
     static TextureRegion texR_tree_big_light;
     static TextureRegion texR_tree_big_dark;
     static TextureRegion texR_tree_small_light;
@@ -37,8 +38,8 @@ public class Assets {
     static TextureRegion texR_lake;
     static TextureRegion texR_hill;
 
-    static TextureAtlas test_atlas;
-    static MyAnimation<TextureRegion> animation_player_scarf;
+    //static TextureAtlas test_atlas;
+    //static MyAnimation<TextureRegion> animation_player_scarf;
 
     static Music music_course_1;
 
@@ -66,6 +67,7 @@ public class Assets {
         texR_opponent_yellow = loadTextureRegion("tex_plane_yellow.png");
         texR_cloud = loadTextureRegion("tex_cloud.png");
         texR_ring = loadTextureRegion("tex_ring.png");
+        texR_ring_arrows = loadTextureRegion("tex_ring_arrows.png");
         texR_tree_big_light = loadTextureRegion("tex_tree_big_light.png");
         texR_tree_big_dark = loadTextureRegion("tex_tree_big_dark.png");
         texR_tree_small_light = loadTextureRegion("tex_tree_small_light.png");
@@ -73,9 +75,9 @@ public class Assets {
         texR_lake = loadTextureRegion("tex_lake.png");
         texR_hill = loadTextureRegion("tex_hill.png");
 
-        test_atlas = loadTextureAtlas("atlas_animation_player_scarf.txt");
-        animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
-        flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
+        //test_atlas = loadTextureAtlas("atlas_animation_player_scarf.txt");
+        //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
+        //flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
 
         music_course_1 = loadMusic("music_course_1.mp3");
         music_course_1.setLooping(true);
@@ -136,6 +138,7 @@ public class Assets {
         texR_opponent_yellow.getTexture().dispose();
         texR_cloud.getTexture().dispose();
         texR_ring.getTexture().dispose();
+        texR_ring_arrows.getTexture().dispose();
         texR_tree_big_light.getTexture().dispose();
         texR_tree_big_dark.getTexture().dispose();
         texR_tree_small_light.getTexture().dispose();
@@ -143,7 +146,7 @@ public class Assets {
         texR_lake.getTexture().dispose();
         texR_hill.getTexture().dispose();
 
-        test_atlas.dispose();
+        //test_atlas.dispose();
 
         music_course_1.dispose();
 
