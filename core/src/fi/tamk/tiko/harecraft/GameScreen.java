@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
@@ -130,8 +131,12 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if(gameState == RACE && gameStateTime == 0f) {
-            world.rings.add(new Ring(0f, 0f, spawnDistance/3.25f));
-            world.rings.add(new Ring(2f, 2f, spawnDistance/1.35f));
+            float x = MathUtils.random(-10f, 10f);
+            float y = MathUtils.random(-9.2f, 6.2f);
+            world.rings.add(new Ring(x, y, spawnDistance/3.25f));
+            x = MathUtils.random(-10f, 10f);
+            y = MathUtils.random(-9.2f, 6.2f);
+            world.rings.add(new Ring(x, y, spawnDistance/1.35f));
             Assets.sound_airplane_engine.stop();
             Assets.music_course_1.setPosition(0f);
             Assets.music_course_1.setVolume(1f);
