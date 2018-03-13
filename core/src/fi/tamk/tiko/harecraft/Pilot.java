@@ -24,9 +24,7 @@ abstract class Pilot extends GameObject {
     }
 
     Decal decal_head;
-    Decal decal_body;
     Decal decal_wings;
-    Decal decal_tail;
 
     float distance;
     float acceleration;

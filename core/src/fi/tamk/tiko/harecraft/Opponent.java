@@ -64,8 +64,8 @@ public class Opponent extends Pilot {
 
         width = texR_body.getRegionWidth() / 50f;
         height = texR_body.getRegionHeight() / 50f;
-        decal_body = Decal.newDecal(width, height, texR_body,true);
-        decal_body.setPosition(x,y,z);
+        decal = Decal.newDecal(width, height, texR_body,true);
+        decal.setPosition(x,y,z);
 
         width = texR_head.getRegionWidth() / 50f;
         height = texR_head.getRegionHeight() / 50f;
@@ -77,13 +77,13 @@ public class Opponent extends Pilot {
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z+0.2f);
 
-        decal = decal_body;
-
         decal_playerTag = Decal.newDecal(Assets.texR_playertag.getRegionWidth()/50f,Assets.texR_playertag.getRegionHeight()/50f, Assets.texR_playertag,true);
     }
 
     public void update(float delta) {
         super.update(delta);
+
+        decal_playerTag.setColor(1f,1f,1f, opacity);
 
         if(gameState == START) velocity.z = 9f * stateTime;
         else velocity.z = speed - global_Multiplier * 3f;

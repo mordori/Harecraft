@@ -22,7 +22,7 @@ public class Powerup extends GameObject {
     float random;
 
     public Powerup() {
-        velocity.y = MathUtils.random(3.5f,5.2f);
+        velocity.y = MathUtils.random(3.6f,5.2f);
         random = MathUtils.random(-1,1);
         if(random == 0) random = 1;
     }
@@ -40,7 +40,7 @@ public class Powerup extends GameObject {
         transposedPosition.y = position.y + height / 4f;
 
         if(!isCollected) {
-            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && (transposedPosition.dst(player.position.x, player.position.y) < 2f)) {
+            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && (transposedPosition.dst(player.position.x, player.position.y) < 2.2f)) {
                 isCollected = true;
 
                 Assets.sound_cloud_hit.play();

@@ -25,7 +25,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = 4f;
+    static final float ACCEL_Y_OFFSET = -2f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -62,8 +62,8 @@ public class Player extends Pilot {
 
         width = texR_body.getRegionWidth() / 100f;
         height = texR_body.getRegionHeight() / 100f;
-        decal_body = Decal.newDecal(width, height, texR_body,true);
-        decal_body.setPosition(x,y,z);
+        decal = Decal.newDecal(width, height, texR_body,true);
+        decal.setPosition(x,y,z);
 
         width = texR_head.getRegionWidth() / 100f;
         height = texR_head.getRegionHeight() / 100f;
@@ -74,8 +74,6 @@ public class Player extends Pilot {
         height = texR_wings.getRegionHeight() / 100f;
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z + 0.2f);
-
-        decal = decal_body;
 
         decal_head.rotateY(-90f);
     }
@@ -116,7 +114,7 @@ public class Player extends Pilot {
             //decal.setRotationZ(-keskiarvo * 15f);   //10f oli alkuarvo
             decal.setRotationZ(getRotationAverage() * -15);
 
-            if(gameState != END)checkInput(); //Keyboard input
+            checkInput(); //Keyboard input
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
