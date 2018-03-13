@@ -13,7 +13,7 @@ public class Hill extends GroundObject{
         width = Assets.texR_hill.getRegionWidth()/10f;
         height = Assets.texR_hill.getRegionHeight()/10f;
 
-        float randomSize = MathUtils.random(1.25f, 2.6f);
+        float randomSize = MathUtils.random(1.5f, 3f);
         width *= randomSize;
         height *= randomSize;
 

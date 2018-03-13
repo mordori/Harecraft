@@ -94,7 +94,7 @@ public class Assets {
         texR_tree_big_dark = loadTextureRegion("tex_tree_big_dark.png");
         texR_tree_small_light = loadTextureRegion("tex_tree_small_light.png");
         texR_tree_small_dark = loadTextureRegion("tex_tree_small_dark.png");
-        texR_lake = loadTextureRegion("tex_lake_tundra.png");
+        texR_lake = loadTextureRegion("tex_lake.png");
         texR_hill = loadTextureRegion("tex_hill_tundra.png");
 
         //test_atlas = loadTextureAtlas("atlas_animation_player_scarf.txt");
