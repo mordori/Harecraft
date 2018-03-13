@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class WorldBuilder {
     float powerup_Timer = 2f * rings_Timer;
     Vector3 pos = new Vector3();
     Powerup lastPowerup;
+    Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
+    int staticHold = 0;
 
     static final int TREE = 0;
 
@@ -190,9 +193,33 @@ public class WorldBuilder {
 
     public void addRing() {
         if((gameState == RACE || gameState == FINISH) && (world.rings.isEmpty() || world.rings.get(world.rings.size() - 1).stateTime >= rings_Timer)) {
-            x = MathUtils.random(-10f, 10f); //mikko rings
-            y = MathUtils.random(-9.2f, 6.2f);
-            world.rings.add(new Ring(x, y, spawnDistance - 50f));
+            //x = MathUtils.random(-10f, 10f); //mikko rings
+            //y = MathUtils.random(-9.2f, 6.2f);
+            //ringSpawnVector.rotate(MathUtils.random(1f,20f));
+            float DIFFICULTYSENSITIVITY = 0f; // 0-EASY 2-MEDIUM 4-HARD
+
+            if (MathUtils.random(1,6) == 6 || staticHold > 0) {   // d6 if static hold starts OR if static hold is running
+
+                if (staticHold == 0) {      //static hold starts
+                    staticHold = MathUtils.random(3,5);     //static hold rings amount
+                    ringSpawnVector.rotate(MathUtils.random(0f, 360f)); //randomize new vector for static hold
+                    ringSpawnVector.setLength(MathUtils.random(8f + DIFFICULTYSENSITIVITY, 14f + DIFFICULTYSENSITIVITY));  //minimum increased because static hold is useless in center
+                    rings_Timer = 1f;
+                }
+                if (staticHold > 0) {       //static hold is running
+                    world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y, spawnDistance - 50f));
+                    staticHold--;
+                }
+                if (staticHold == 0) {      //static hold ends
+                    rings_Timer = 3.5f;
+                }
+
+            }
+            else {          //Spawn basic vector Ring
+                ringSpawnVector.rotate(MathUtils.random(0f, 360f));
+                ringSpawnVector.setLength(MathUtils.random(0f + DIFFICULTYSENSITIVITY, 14f + DIFFICULTYSENSITIVITY));
+                world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y, spawnDistance - 50f));
+            }
         }
     }
 
