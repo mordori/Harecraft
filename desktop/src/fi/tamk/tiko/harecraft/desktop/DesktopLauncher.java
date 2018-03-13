@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.width = 1280;
 		config.height = 720;
 		config.title = "Harecraft";
+		config.samples = 4;
 		new LwjglApplication(new GameMain(), config);
 	}
 }

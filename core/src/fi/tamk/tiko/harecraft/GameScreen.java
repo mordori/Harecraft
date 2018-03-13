@@ -2,11 +2,13 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
@@ -34,6 +36,7 @@ public class GameScreen extends ScreenAdapter {
     World world;
     WorldBuilder builder;
     WorldRenderer renderer;
+    ShapeRenderer shapeRenderer;
     static DecalBatch dBatch;
     static PerspectiveCamera camera;
     static OrthographicCamera orthoCamera;
@@ -48,6 +51,10 @@ public class GameScreen extends ScreenAdapter {
     boolean isCountdown;
     float volume = 0.15f;
 
+    float x;
+    float red = 240f;
+    float green = 130f;
+
     public GameScreen(GameMain game, World world) {
         this.game = game;
         this.world = world;
@@ -60,6 +67,9 @@ public class GameScreen extends ScreenAdapter {
         camera.near = 0.1f;
         camera.far = 400f;
         camera.position.set(0f,0f,-5f);
+
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
         game.sBatch.setProjectionMatrix(orthoCamera.combined);
@@ -88,7 +98,7 @@ public class GameScreen extends ScreenAdapter {
 
         updateState(delta);
         builder.update(delta);
-        updateCamera();
+        updateCameras();
         updateHUD();
     }
 
@@ -146,12 +156,14 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void updateCamera() {
+    public void updateCameras() {
         camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
         camera.lookAt(0f,0f, spawnDistance/2f);
-        camera.up.set(0f, 20f, 0f); //camera.up.set(player.getRotationAverage(), 20f, 0f);
+        camera.up.set(player.getRotationAverage(), 20f, 0f); //camera.up.set(player.getRotationAverage(), 20f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
+
+        orthoCamera.update();
     }
 
     public void updateHUD() {
@@ -159,6 +171,26 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void drawHUD() {
+        Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
+        if(gameState == RACE || gameState == FINISH) {
+            x = 300f * (player.distance / world.end);
+            green = 130f + (110f * (player.distance / world.end)); //110 + 160 = 270
+            red = 240f - ((240f - 80f) * (player.distance / world.end));
+
+            if(red < 240f) red = 240f;
+            if(green > 240f) red = 240f;
+        }
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0f,0f,0f,0.3f);
+        shapeRenderer.arc(500f,662f,12f,90f,180f);
+        shapeRenderer.arc(800f,662f,12f,270f,180f);
+        shapeRenderer.rect(500f,650f,300f,24f);
+
+        shapeRenderer.setColor(red/240f,green/240f,44f/240f,0.7f);
+        shapeRenderer.arc(500f,662f,9f,90f,180f);
+        shapeRenderer.rect(500f,653f,x,18f);
+        shapeRenderer.end();
+
         game.sBatch.begin();
         //Countdown numbers
         if(gameState == START && ((gameStateTime > 2f && gameStateTime < 3f) || (gameStateTime > 3.2f && gameStateTime < 4.2f) || (gameStateTime > 4.4f && gameStateTime < 5.4f)
@@ -170,6 +202,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        shapeRenderer.dispose();
         dBatch.dispose();
         world.dispose();
     }
