@@ -75,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(104f/255f, 202f/255f, 230f/255f, 1f);
+        Gdx.gl.glClearColor(126f/255f, 180f/255f, 241f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         update(delta);
@@ -95,7 +95,7 @@ public class GameScreen extends ScreenAdapter {
     public void updateState(float delta) {
         gameStateTime += delta;
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
-        else global_Multiplier = 1f;
+        if(global_Multiplier < 1f) global_Multiplier = 1f;
 
         if(gameState == START && gameStateTime >= 6.6) {
             gameState = RACE;
@@ -149,7 +149,7 @@ public class GameScreen extends ScreenAdapter {
     public void updateCamera() {
         camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
         camera.lookAt(0f,0f, spawnDistance/2f);
-        camera.up.set(0f, 60f, 0f);
+        camera.up.set(player.getRotationAverage(), 20f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
     }

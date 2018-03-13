@@ -40,7 +40,7 @@ public class Powerup extends GameObject {
         transposedPosition.y = position.y + height / 4f;
 
         if(!isCollected) {
-            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && (transposedPosition.dst(player.position.x, player.position.y) < 1.85f)) {
+            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && (transposedPosition.dst(player.position.x, player.position.y) < 2f)) {
                 isCollected = true;
 
                 Assets.sound_cloud_hit.play();

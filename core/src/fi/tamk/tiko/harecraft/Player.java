@@ -1,31 +1,19 @@
 package fi.tamk.tiko.harecraft;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
-import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
-import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
-import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT_DOWN;
-import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT_UP;
-import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
@@ -37,7 +25,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = 1f;
+    static final float ACCEL_Y_OFFSET = -2f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -49,9 +37,9 @@ public class Player extends Pilot {
     float posXTranspose;
     float posYTranspose;
 
-    TextureRegion texR_body = Assets.texR_player_plane_body;
-    TextureRegion texR_wings = Assets.texR_player_plane_wings;
-    TextureRegion texR_head = Assets.texR_player_plane_head;
+    TextureRegion texR_body = Assets.texR_plane_2_red_body;
+    TextureRegion texR_wings = Assets.texR_plane_2_red_wings;
+    TextureRegion texR_head = Assets.texR_character_hare_head;
 
     ParticleEffect pfx_scarf;
     ParticleEffect pfx_stream;

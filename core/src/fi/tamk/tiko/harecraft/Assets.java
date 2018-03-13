@@ -20,16 +20,28 @@ public class Assets {
     static TextureRegion texR_foreground;
     static TextureRegion texR_sun;
     static TextureRegion texR_airbuoy;
+    static TextureRegion texR_playertag;
+
     static TextureRegion texR_powerup_red;
     static TextureRegion texR_powerup_green;
     static TextureRegion texR_powerup_blue;
-    static TextureRegion texR_player_plane_body;
-    static TextureRegion texR_player_plane_wings;
-    static TextureRegion texR_player_plane_head;
-    static TextureRegion texR_opponent_yellow;
+
+    static TextureRegion texR_plane_2_red_body;
+    static TextureRegion texR_plane_2_red_wings;
+    static TextureRegion texR_plane_2_orange_body;
+    static TextureRegion texR_plane_2_orange_wings;
+    static TextureRegion texR_plane_2_blue_body;
+    static TextureRegion texR_plane_2_blue_wings;
+    static TextureRegion texR_plane_2_pink_body;
+    static TextureRegion texR_plane_2_pink_wings;
+
+    static TextureRegion texR_character_hare_head;
+    static TextureRegion texR_character_default_head;
+
     static TextureRegion texR_cloud;
     static TextureRegion texR_ring;
     static TextureRegion texR_ring_arrows;
+
     static TextureRegion texR_tree_big_light;
     static TextureRegion texR_tree_big_dark;
     static TextureRegion texR_tree_small_light;
@@ -53,25 +65,37 @@ public class Assets {
     static BitmapFont font;
 
     public static void load() {
-        texR_foreground = loadTextureRegion("tex_foreground.png");
+        texR_foreground = loadTextureRegion("tex_foreground_tundra.png");
         texR_sun = loadTextureRegion("tex_sun.png");
         texR_airbuoy = loadTextureRegion("tex_airbuoy.png");
+        texR_playertag = loadTextureRegion("tex_playertag.png");
+
         texR_powerup_red = loadTextureRegion("tex_powerup_red.png");
         texR_powerup_green = loadTextureRegion("tex_powerup_green.png");
         texR_powerup_blue = loadTextureRegion("tex_powerup_blue.png");
-        texR_player_plane_body = loadTextureRegion("tex_player_plane_body.png");
-        texR_player_plane_wings = loadTextureRegion("tex_player_plane_wings.png");
-        texR_player_plane_head = loadTextureRegion("tex_player_plane_head.png");
-        texR_opponent_yellow = loadTextureRegion("tex_plane_yellow.png");
+
+        texR_plane_2_red_body = loadTextureRegion("tex_plane_2_red_body.png");
+        texR_plane_2_red_wings = loadTextureRegion("tex_plane_2_red_wings.png");
+        texR_plane_2_orange_body = loadTextureRegion("tex_plane_2_orange_body.png");
+        texR_plane_2_orange_wings = loadTextureRegion("tex_plane_2_orange_wings.png");
+        texR_plane_2_blue_body = loadTextureRegion("tex_plane_2_blue_body.png");
+        texR_plane_2_blue_wings = loadTextureRegion("tex_plane_2_blue_wings.png");
+        texR_plane_2_pink_body = loadTextureRegion("tex_plane_2_pink_body.png");
+        texR_plane_2_pink_wings = loadTextureRegion("tex_plane_2_pink_wings.png");
+
+        texR_character_default_head = loadTextureRegion("tex_character_default_head.png");
+        texR_character_hare_head = loadTextureRegion("tex_character_hare_head.png");
+
         texR_cloud = loadTextureRegion("tex_cloud.png");
         texR_ring = loadTextureRegion("tex_ring.png");
         texR_ring_arrows = loadTextureRegion("tex_ring_arrows.png");
+
         texR_tree_big_light = loadTextureRegion("tex_tree_big_light.png");
         texR_tree_big_dark = loadTextureRegion("tex_tree_big_dark.png");
         texR_tree_small_light = loadTextureRegion("tex_tree_small_light.png");
         texR_tree_small_dark = loadTextureRegion("tex_tree_small_dark.png");
-        texR_lake = loadTextureRegion("tex_lake.png");
-        texR_hill = loadTextureRegion("tex_hill.png");
+        texR_lake = loadTextureRegion("tex_lake_tundra.png");
+        texR_hill = loadTextureRegion("tex_hill_tundra.png");
 
         //test_atlas = loadTextureAtlas("atlas_animation_player_scarf.txt");
         //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
@@ -100,7 +124,18 @@ public class Assets {
         generator.dispose();
     }
 
-    public static TextureRegion loadTextureRegion(String path) {return flip(new TextureRegion(new Texture(Gdx.files.internal("textures/" + path))));}
+    public static Texture loadTexture(String path) {
+        Texture texture = new Texture(Gdx.files.internal("textures/" + path));
+        texture.setFilter(Texture.TextureFilter.Nearest,Texture.TextureFilter.Nearest);
+        return texture;
+    }
+
+    public static TextureRegion loadTextureRegion(String path) {return flip(new TextureRegion(loadTexture(path)));}
+
+    public static TextureRegion flip(TextureRegion texR) {
+        texR.flip(true, false);
+        return texR;
+    }
 
     public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal("textures/" + path));}
 
@@ -117,25 +152,33 @@ public class Assets {
         }
     }
 
-    public static TextureRegion flip(TextureRegion texR) {
-        texR.flip(true, false);
-        return texR;
-    }
-
     public static void dispose() {
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
+
         texR_airbuoy.getTexture().dispose();
+        texR_playertag.getTexture().dispose();
+
         texR_powerup_red.getTexture().dispose();
         texR_powerup_green.getTexture().dispose();
         texR_powerup_blue.getTexture().dispose();
-        texR_player_plane_body.getTexture().dispose();
-        texR_player_plane_wings.getTexture().dispose();
-        texR_player_plane_head.getTexture().dispose();
-        texR_opponent_yellow.getTexture().dispose();
+
+        texR_plane_2_red_body.getTexture().dispose();
+        texR_plane_2_red_wings.getTexture().dispose();
+        texR_plane_2_orange_body.getTexture().dispose();
+        texR_plane_2_orange_wings.getTexture().dispose();
+        texR_plane_2_blue_body.getTexture().dispose();
+        texR_plane_2_blue_wings.getTexture().dispose();
+        texR_plane_2_pink_body.getTexture().dispose();
+        texR_plane_2_pink_wings.getTexture().dispose();
+
+        texR_character_hare_head.getTexture().dispose();
+        texR_character_default_head.getTexture().dispose();
+
         texR_cloud.getTexture().dispose();
         texR_ring.getTexture().dispose();
         texR_ring_arrows.getTexture().dispose();
+
         texR_tree_big_light.getTexture().dispose();
         texR_tree_big_dark.getTexture().dispose();
         texR_tree_small_light.getTexture().dispose();

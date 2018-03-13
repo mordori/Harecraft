@@ -18,7 +18,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
     //World length
-    static float finish = 2000;
+    static float finish = 3000;
     static float end = finish + spawnDistance + 20f;
 
     //Background
@@ -54,21 +54,26 @@ public class World {
     ArrayList<Powerup> powerups = new ArrayList<Powerup>();
 
     public World() {
-        decal_foreground = Decal.newDecal(Assets.texR_foreground, true);
-        decal_foreground.setPosition(0f,15f,287f);
+        float width = Assets.texR_foreground.getRegionWidth()/1.5f;
+        float height = Assets.texR_foreground.getRegionHeight()/1.5f;
+        decal_foreground = Decal.newDecal(width, height,Assets.texR_foreground, true);
+        decal_foreground.setPosition(0f,-80f,275f);
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
-        decal_sun1.setPosition(0f,-40f,293f);
+        decal_sun1.setPosition(0f,-40f,294f);
         decal_sun2 = Decal.newDecal(Assets.texR_sun, true);
-        decal_sun2.setPosition(0f,-40f,290f);
+        decal_sun2.setPosition(0f,-40f,298f);
         decal_sun2.rotateZ(90f);
 
         player = new Player(0f,-11f,-5f);
-        opponents.add(new Opponent(-3f, -2f, -65f*2f, 105,Assets.texR_opponent_yellow,6.5f));
-        opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Assets.texR_opponent_yellow,7.5f));
-        opponents.add(new Opponent(0f, 2f, -59f*2f, 175, Assets.texR_opponent_yellow, 4.5f));
-        opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Assets.texR_opponent_yellow,6.5f));
-        opponents.add(new Opponent(-4f, -1f, -64f*2f, 250f, Assets.texR_opponent_yellow,5.5f));
-        opponents.add(new Opponent(2f, 0f, -60f*2f, 350f, Assets.texR_opponent_yellow,5f));
+        opponents.add(new Opponent(-3f, -2f, -65f*2f, 2000, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE,6.5f));
+        opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE,7.5f));
+        opponents.add(new Opponent(0f, 4f, -52f*2f, 90, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7f));
+        opponents.add(new Opponent(4f, 2f, -55f*2f, 500, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8.5f));
+        opponents.add(new Opponent(3f, -5f, -61f*2f, 1000, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 5f));
+        opponents.add(new Opponent(2f, 5f, -56f*2f, 750, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7.5f));
+        opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE,9f));
+        opponents.add(new Opponent(-4f, -1f, -64f*2f, 1500f, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE,10f));
+        opponents.add(new Opponent(2f, 1f, -60f*2f, 350f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE,6f));
     }
 
     public void dispose() {

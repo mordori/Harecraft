@@ -92,7 +92,13 @@ public class WorldRenderer {
             dBatch.add(l.decal);
         }
         for(Opponent o : world.opponents) {
-            if(o.isDrawing || o.opacity != 0f) dBatch.add(o.decal);
+            if(o.isDrawing || o.opacity != 0f) {
+                dBatch.add(o.decal_wings);
+                dBatch.add(o.decal_head);
+                dBatch.add(o.decal);
+                dBatch.add(o.decal_playerTag);
+
+            }
         }
     }
 

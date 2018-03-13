@@ -32,14 +32,23 @@ abstract class Pilot extends GameObject {
     float acceleration;
     float speed;
     float drawDistance;
-    float r,g,b;
     boolean isDrawing;
+
+    static final int COLOR_RED = 0;
+    static final int COLOR_BLUE = 1;
+    static final int COLOR_ORANGE = 2;
+    static final int COLOR_PINK = 3;
+
+    static final int PLANE_1 = 1;
+    static final int PLANE_2 = 2;
+    static final int PLANE_3 = 3;
+
+    static final int CHARACTER_DEF = 0;
+    static final int CHARACTER_HARE = 1;
+
 
     public Pilot() {
         State state = State.NORMAL;
-        r = 1f;
-        b = 1f;
-        g = 1f;
     }
 
     public void update(float delta) {
@@ -59,9 +68,9 @@ abstract class Pilot extends GameObject {
         else opacity -= delta;
         if(opacity > 1f) opacity = 1f;
         else if(opacity < 0f) opacity = 0f;
-        decal.setColor(r,g,b, opacity);
-        decal_wings.setColor(r,g,b, opacity);
-        decal_head.setColor(r,g,b, opacity);
+        decal.setColor(1f,1f,1f, opacity);
+        decal_wings.setColor(1f,1f,1f, opacity);
+        decal_head.setColor(1f,1f,1f, opacity);
     }
 
     public void updateParticles(float delta) {}
