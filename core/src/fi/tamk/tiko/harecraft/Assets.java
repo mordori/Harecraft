@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -8,9 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Mika on 23.2.2018.
@@ -49,8 +52,10 @@ public class Assets {
     static TextureRegion texR_lake;
     static TextureRegion texR_hill;
 
-    //static TextureAtlas test_atlas;
-    //static MyAnimation<TextureRegion> animation_player_scarf;
+    static TextureAtlas atlas_text_positions;
+    static TextureAtlas atlas_text_race_states;
+    static Array<Sprite> sprites_text_race_states;
+    //static MyAnimation<TextureRegion> animation_text_race_states;
 
     static Music music_course_1;
 
@@ -97,7 +102,8 @@ public class Assets {
         texR_lake = loadTextureRegion("tex_lake.png");
         texR_hill = loadTextureRegion("tex_hill_tundra.png");
 
-        //test_atlas = loadTextureAtlas("atlas_animation_player_scarf.txt");
+        atlas_text_positions = loadTextureAtlas("atlas_text_positions.txt");
+        atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
         //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
         //flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
 
@@ -122,6 +128,8 @@ public class Assets {
         parameter.color = new Color(1f,0.6f,0f,1f);
         font = generator.generateFont(parameter);
         generator.dispose();
+
+        sprites_text_race_states = atlas_text_race_states.createSprites();
     }
 
     public static Texture loadTexture(String path) {
@@ -186,7 +194,8 @@ public class Assets {
         texR_lake.getTexture().dispose();
         texR_hill.getTexture().dispose();
 
-        //test_atlas.dispose();
+        atlas_text_positions.dispose();
+        atlas_text_race_states.dispose();
 
         music_course_1.dispose();
 

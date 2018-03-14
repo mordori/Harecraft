@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -62,6 +63,8 @@ public class Ring extends GameObject {
             decal.translateY(velocity.y * delta);
             decal_arrows.translateY(velocity.y * delta);
             decal_arrows.translateY(velocity.y * delta);
+
+            increaseFOV(delta);
         }
 
         decal_arrows.setScale(decal_arrows.getScaleX() - delta * stateTime_arrows/2f);
@@ -95,5 +98,10 @@ public class Ring extends GameObject {
             moveZ(delta);
             decal_arrows.translateZ(velocity.z * delta);
         }
+    }
+
+    public void increaseFOV(float delta) {
+        fieldOfView += delta * 35f / stateTime;
+        if(fieldOfView > 50f) fieldOfView = 50f;
     }
 }
