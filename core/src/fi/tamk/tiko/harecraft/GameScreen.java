@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
@@ -106,11 +107,7 @@ public class GameScreen extends ScreenAdapter {
         logger.log();
         updateState(delta);
         builder.update(delta);
-        updateCameras();
-
-        fieldOfView -= delta;
-        if(fieldOfView < 45f) fieldOfView = 45f;
-        System.out.println(fieldOfView);
+        updateCameras(delta);
     }
 
     public void updateState(float delta) {
@@ -167,7 +164,11 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void updateCameras() {
+    public void updateCameras(float delta) {
+        fieldOfView -= delta;
+        if(fieldOfView < 45f) fieldOfView = 45f;
+        //System.out.println(fieldOfView);
+
         camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
         camera.lookAt(0f,0f, spawnDistance/2f);
         camera.up.set(player.getRotationAverage(), 20f, 0f); //camera.up.set(player.getRotationAverage(), 20f, 0f);
@@ -193,7 +194,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void drawHUD() {
-        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0f,0f,0f,0.3f);
         shapeRenderer.arc(500f,662f,12f,90f,180f);
