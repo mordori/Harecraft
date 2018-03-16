@@ -39,7 +39,7 @@ public class GameScreen extends ScreenAdapter {
     World world;
     WorldBuilder builder;
     WorldRenderer renderer;
-    ShapeRenderer shapeRenderer;
+    HUD HUD;
     static DecalBatch dBatch;
     static PerspectiveCamera camera;
     static OrthographicCamera orthoCamera;
@@ -51,17 +51,9 @@ public class GameScreen extends ScreenAdapter {
     static float global_Multiplier = 1f;
 
     static String string = "3";
-    boolean isCountdown;
+    static boolean isCountdown;
     float volume = 0.15f;
 
-    float x;
-    float red = 240f;
-    float green = 130f;
-
-    Sprite icon_hare = new Sprite(Assets.texR_character_hare_head);
-    Sprite text_gameStates = new Sprite();
-    float text_opacity = 0f;
-    int index = 0;
 
     public GameScreen(GameMain game, World world) {
         this.game = game;
@@ -76,8 +68,7 @@ public class GameScreen extends ScreenAdapter {
         camera.far = 400f;
         camera.position.set(0f,0f,-5f);
 
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
+        HUD = new HUD(world, game);
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
         game.sBatch.setProjectionMatrix(orthoCamera.combined);
@@ -93,14 +84,15 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(126f/255f, 180f/255f, 241f/255f, 1f);
+        //Gdx.gl.glClearColor(126f/255f, 180f/255f, 41f/255f, 1f);
+        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         update(delta);
         renderer.renderWorld();
 
-        updateHUD(delta);
-        drawHUD();
+        HUD.update(delta);
+        HUD.draw();
     }
 
     public void update(float delta) {
@@ -177,108 +169,12 @@ public class GameScreen extends ScreenAdapter {
         orthoCamera.update();
     }
 
-    public void updateHUD(float delta) {
-        Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
-        //game.sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-        if(gameState == RACE || gameState == FINISH) {
-            x = 300f * (player.distance / world.end);
-            green = 130f + (110f * (player.distance / world.end)); //110 + 160 = 270
-            red = 240f - ((240f - 80f) * (player.distance / world.end));
-
-            if(red < 240f) red = 240f;
-            if(green > 240f) red = 240f;
-        }
-
-        //icon_hare.setPosition(500f + x + 1 - icon_hare.getWidth() / 2f, 642f - icon_hare.getHeight() + 44f);
-
-    }
-
-    public void drawHUD() {
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0f,0f,0f,0.3f);
-        shapeRenderer.arc(500f,662f,12f,90f,180f);
-        shapeRenderer.arc(800f,662f,12f,270f,180f);
-        shapeRenderer.rect(500f,650f,300f,24f);
-
-        shapeRenderer.setColor(red/240f,green/240f,44f/240f,0.7f);
-        shapeRenderer.arc(500f,662f,9f,90f,180f);
-        shapeRenderer.rect(500f,653f,x,18f);
-        shapeRenderer.arc(500f + x,662f,9f,270f,180f);
 
 
-        shapeRenderer.setColor(240f,240f,240f,0.45f);
-        shapeRenderer.circle(500f + x,662f,9f);
-        shapeRenderer.end();
-
-
-        game.sBatch.begin();
-        //Countdown numbers
-        if(isCountdown || (gameState == END && gameStateTime < 2f)) {
-            //Assets.font.draw(game.sBatch, string,orthoCamera.viewportWidth/2f - Assets.font.getSpaceWidth() * string.length(),orthoCamera.viewportHeight/2f + 150f);
-
-            if(gameState == START) {
-                if (gameStateTime < 3.3f) {
-                    if(gameStateTime < 2f) text_opacity = 0f;
-                    index = 2;
-
-                } else if (gameStateTime < 4.6f) {
-                    if(index == 2) text_opacity = 0f;
-                    index = 1;
-
-                } else if (gameStateTime < 5.9f) {
-                    if(index == 1) text_opacity = 0f;
-                    index = 0;
-
-                } else {
-                    if(index == 0) text_opacity = 0f;
-                    index = 4;
-                }
-            }
-            else if(gameState == END) {
-                if(index == 4) text_opacity = 0f;
-                index = 3;
-            }
-            if(gameState == START) {
-                text_opacity += Gdx.graphics.getDeltaTime();
-                if(text_opacity > 1f) text_opacity = 1f;
-            }
-
-            if(gameState == RACE) {
-                text_opacity -= Gdx.graphics.getDeltaTime();
-                if(text_opacity < 0f) text_opacity = 0f;
-                if(text_opacity == 0f) isCountdown = false;
-            }
-
-            text_gameStates = Assets.sprites_text_race_states.get(index);
-            float width = text_gameStates.getRegionHeight()/1.5f;
-            float height = text_gameStates.getRegionWidth()/1.5f;
-
-            if(index == 3) {
-                float temp = width;
-                width = height;
-                height = temp;
-            }
-
-            text_gameStates.setOriginCenter();
-            text_gameStates.scale(gameStateTime/300f);
-            text_gameStates.setColor(1f,1f,1f, text_opacity);
-            //text_gameStates.rotate(200f / (gameStateTime*2f)+0.01f);
-
-            text_gameStates.setBounds(0f,0f, width, height);
-            text_gameStates.setPosition(SCREEN_WIDTH*100f/2f - width/2f, SCREEN_HEIGHT*100f/2f - height/2f);
-
-            text_gameStates.draw(game.sBatch);
-        }
-
-        //icon_hare.draw(game.sBatch);
-
-        game.sBatch.end();
-    }
 
     @Override
     public void dispose() {
-        shapeRenderer.dispose();
+        HUD.dispose();
         dBatch.dispose();
         world.dispose();
     }

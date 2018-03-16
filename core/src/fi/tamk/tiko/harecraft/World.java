@@ -18,7 +18,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
 
     //World length
-    static float finish = 3000;
+    static float finish = 100;
     static float end = finish + spawnDistance + 20f;
 
     //Background
@@ -27,7 +27,7 @@ public class World {
     Decal decal_sun2;
 
     //Finishline
-    AirBuoy airBuoy;
+    ArrayList<HotAirBalloon> hotAirBalloons = new ArrayList<HotAirBalloon>();
 
     //Player
     static Player player;
@@ -64,16 +64,15 @@ public class World {
         decal_sun2.setPosition(0f,-40f,298f);
         decal_sun2.rotateZ(90f);
 
-        player = new Player(0f,-11f,-5f);
+        hotAirBalloons.add(new HotAirBalloon(-25f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(25f, -23f, spawnDistance + 30f));
+
+        player = new Player(0f,-7f,-5f);
         opponents.add(new Opponent(-3f, -2f, -65f*2f, 2000, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE,6.5f));
         opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE,7.5f));
         opponents.add(new Opponent(0f, 4f, -52f*2f, 90, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7f));
         opponents.add(new Opponent(4f, 2f, -55f*2f, 500, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8.5f));
         opponents.add(new Opponent(3f, -5f, -61f*2f, 1000, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 5f));
-        opponents.add(new Opponent(2f, 5f, -56f*2f, 750, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7.5f));
-        opponents.add(new Opponent(-3f, 1f, -63f*2f, 200, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE,9f));
-        opponents.add(new Opponent(-4f, -1f, -64f*2f, 1500f, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE,10f));
-        opponents.add(new Opponent(2f, 1f, -60f*2f, 350f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE,6f));
     }
 
     public void dispose() {

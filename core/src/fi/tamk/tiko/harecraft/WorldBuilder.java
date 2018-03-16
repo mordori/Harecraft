@@ -16,6 +16,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT_UP;
+import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -76,6 +77,16 @@ public class WorldBuilder {
 
         world.decal_sun1.rotateZ(delta/2f);
         world.decal_sun2.rotateZ(-delta);
+
+        if(gameState == FINISH || gameState == END) {
+            for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
+                hotAirBalloon.update(delta);
+            }
+
+            if(!world.hotAirBalloons.isEmpty() && world.hotAirBalloons.get(0).decal.getPosition().z < camera.position.z) {
+                world.hotAirBalloons.remove(0);
+            }
+        }
     }
 
     public void spawnGroundObjects() {
@@ -381,12 +392,12 @@ public class WorldBuilder {
             pos = (world.hills_L.get(world.hills_L.size() - 1).position.cpy());
             pos.y -= world.hills_L.get(world.hills_L.size() - 1).height / 2f;
 
-            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 1.25f) {
+            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 2.25f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
                 Gdx.app.log("REMOVED", "Tree, left");
             }
-            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 1.25f) {
+            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 2.25f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
                 Gdx.app.log("REMOVED", "Tree, right");
@@ -397,12 +408,12 @@ public class WorldBuilder {
             pos = world.hills_R.get(world.hills_R.size() - 1).position.cpy();
             pos.y -= world.hills_R.get(world.hills_R.size() - 1).height / 2f;
 
-            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.25f) {
+            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 2.25f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
                 Gdx.app.log("REMOVED", "Tree, left");
             }
-            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.25f) {
+            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 2.25f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
                 Gdx.app.log("REMOVED", "Tree, left");

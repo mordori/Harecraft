@@ -22,8 +22,12 @@ import com.badlogic.gdx.utils.Array;
 public class Assets {
     static TextureRegion texR_foreground;
     static TextureRegion texR_sun;
-    static TextureRegion texR_airbuoy;
+    static TextureRegion texR_hotairballoon;
+    static TextureRegion texR_ribbons;
     static TextureRegion texR_playertag;
+
+    static TextureRegion texR_portrait_hare;
+    static TextureRegion texR_speedometer;
 
     static TextureRegion texR_powerup_red;
     static TextureRegion texR_powerup_green;
@@ -52,9 +56,10 @@ public class Assets {
     static TextureRegion texR_lake;
     static TextureRegion texR_hill;
 
-    static TextureAtlas atlas_text_positions;
+    static TextureAtlas atlas_text_race_positions;
     static TextureAtlas atlas_text_race_states;
     static Array<Sprite> sprites_text_race_states;
+    static Array<Sprite> sprites_text_race_positions;
     //static MyAnimation<TextureRegion> animation_text_race_states;
 
     static Music music_course_1;
@@ -72,8 +77,11 @@ public class Assets {
     public static void load() {
         texR_foreground = loadTextureRegion("tex_foreground_tundra.png");
         texR_sun = loadTextureRegion("tex_sun.png");
-        texR_airbuoy = loadTextureRegion("tex_airbuoy.png");
+        texR_hotairballoon = loadTextureRegion("tex_hotairballoon.png");
+        texR_ribbons = loadTextureRegion("tex_ribbons.png");
         texR_playertag = loadTextureRegion("tex_playertag.png");
+        texR_portrait_hare = loadTextureRegion("tex_portrait_hare.png");
+        texR_speedometer = loadTextureRegion("tex_speedometer.png");
 
         texR_powerup_red = loadTextureRegion("tex_powerup_red.png");
         texR_powerup_green = loadTextureRegion("tex_powerup_green.png");
@@ -102,7 +110,7 @@ public class Assets {
         texR_lake = loadTextureRegion("tex_lake.png");
         texR_hill = loadTextureRegion("tex_hill_tundra.png");
 
-        atlas_text_positions = loadTextureAtlas("atlas_text_positions.txt");
+        atlas_text_race_positions = loadTextureAtlas("atlas_text_positions.txt");
         atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
         //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
         //flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
@@ -130,6 +138,7 @@ public class Assets {
         generator.dispose();
 
         sprites_text_race_states = atlas_text_race_states.createSprites();
+        sprites_text_race_positions = atlas_text_race_positions.createSprites();
     }
 
     public static Texture loadTexture(String path) {
@@ -163,9 +172,12 @@ public class Assets {
     public static void dispose() {
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
+        texR_hotairballoon.getTexture().dispose();
+        texR_ribbons.getTexture().dispose();
 
-        texR_airbuoy.getTexture().dispose();
         texR_playertag.getTexture().dispose();
+        texR_portrait_hare.getTexture().dispose();
+        texR_speedometer.getTexture().dispose();
 
         texR_powerup_red.getTexture().dispose();
         texR_powerup_green.getTexture().dispose();
@@ -194,7 +206,7 @@ public class Assets {
         texR_lake.getTexture().dispose();
         texR_hill.getTexture().dispose();
 
-        atlas_text_positions.dispose();
+        atlas_text_race_positions.dispose();
         atlas_text_race_states.dispose();
 
         music_course_1.dispose();

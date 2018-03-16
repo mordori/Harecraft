@@ -34,6 +34,13 @@ public class WorldRenderer {
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
 
+        if(gameState == FINISH || gameState == END) {
+            for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
+                dBatch.add(hotAirBalloon.decal);
+                if(hotAirBalloon == world.hotAirBalloons.get(0)) dBatch.add(hotAirBalloon.decal_ribbons);
+            }
+        }
+
         drawDecalLists();
 
         if(player.isDrawing || player.opacity != 0f){
@@ -101,5 +108,4 @@ public class WorldRenderer {
             }
         }
     }
-
 }
