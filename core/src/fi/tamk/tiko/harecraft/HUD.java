@@ -74,6 +74,7 @@ public class HUD {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
         }
+        //icon_hare.setPosition();
     }
 
     public void draw() {
