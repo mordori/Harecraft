@@ -54,24 +54,24 @@ public class Player extends Pilot {
         //pfx_stream = new ParticleEffect(Assets.pfx_stream);
         //pfx_stream2 = new ParticleEffect(Assets.pfx_stream);
 
-        drawDistance = spawnDistance / 50f;
+        drawDistance = spawnDistance/50f;
         speed = SPEED;
         acceleration = 1f;
         accelerationZ = 1f;
         rotation.z = (MathUtils.random(0,1) == 0) ? -45f : 45f;
 
-        width = texR_body.getRegionWidth() / 100f;
-        height = texR_body.getRegionHeight() / 100f;
+        width = texR_body.getRegionWidth()/100f;
+        height = texR_body.getRegionHeight()/100f;
         decal = Decal.newDecal(width, height, texR_body,true);
         decal.setPosition(x,y,z);
 
-        width = texR_head.getRegionWidth() / 100f;
-        height = texR_head.getRegionHeight() / 100f;
+        width = texR_head.getRegionWidth()/100f;
+        height = texR_head.getRegionHeight()/100f;
         decal_head = Decal.newDecal(width, height, texR_head,true);
         decal_head.setPosition(x,y,z + 0.1f);
 
-        width = texR_wings.getRegionWidth() / 100f;
-        height = texR_wings.getRegionHeight() / 100f;
+        width = texR_wings.getRegionWidth()/100f;
+        height = texR_wings.getRegionHeight()/100f;
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z + 0.2f);
 
@@ -82,11 +82,11 @@ public class Player extends Pilot {
         super.update(delta);
 
         if(gameState != START && gameState != END) {
-            destination.x = accelX * -5f * (960 / (SCREEN_WIDTH * 100f));
-            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960 / (SCREEN_WIDTH * 100f));
+            destination.x = accelX * -5f * (960/SCREEN_WIDTH);
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
             destination = destination.add(keyboardDestination);
 
-            destdist = 1f + destination.dst(0f,6f,0f) /100;   //100=1-1.3   reunanopeuden nollapiste +6y
+            destdist = 1f + destination.dst(0f, 6f, 0f)/100;   //100=1-1.3   reunanopeuden nollapiste +6y
             destination.y += 6f;                 //pelaajan default postionia korkeammalle +6y
             //Gdx.app.log("TAG", "dest dist: " +destdist);
             destination.x *= destdist;
@@ -121,7 +121,7 @@ public class Player extends Pilot {
             acceleration -= delta * 0.5f;
             accelerationZ += stateTime * 0.001f;
             if(acceleration > 0f) {
-                decal.translateY(-velocity.z/2.5f * delta * acceleration / 1.3f);
+                decal.translateY(-velocity.z/2.5f * delta * acceleration/1.3f);
             }
             if(rotation.z != 0f && accelerationZ > 1f) {
                 rotation.z -= Math.abs(rotation.z)/rotation.z / accelerationZ * MathUtils.random(1f, 2f);
@@ -133,10 +133,10 @@ public class Player extends Pilot {
             else decal.setPosition(decal.getX(), decal.getY(), 0f);
         }
         if(gameState == END) {
-            acceleration += delta * 2f;
-            if(gameStateTime < 2.5f) { //gameStateTime < 2.5f
-                decal.translateZ(-velocity.z/10f * delta * (acceleration * 2.5f));
-                decal.translateY(-velocity.z/6f * delta * (acceleration / 1.5f));
+            acceleration += delta*2f;
+            if(gameStateTime < 2.5f) {
+                decal.translateZ(-velocity.z/10f * delta * (acceleration*2.5f));
+                decal.translateY(-velocity.z/6f * delta * (acceleration/1.5f));
             }
         }
 
@@ -180,8 +180,8 @@ public class Player extends Pilot {
                 (-position.x*31f + posTest()*1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
                 (position.y*15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/720f) + SCREEN_HEIGHT/2f + 12f);
 
-        pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x * 5f);
-        pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x * 5f);
+        pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
+        pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
 
         pfx_scarf.update(delta);
     }

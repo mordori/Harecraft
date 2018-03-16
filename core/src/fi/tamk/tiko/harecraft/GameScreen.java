@@ -50,7 +50,6 @@ public class GameScreen extends ScreenAdapter {
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
 
-    static String string = "3";
     static boolean isCountdown;
     float volume = 0.15f;
 
@@ -117,14 +116,11 @@ public class GameScreen extends ScreenAdapter {
             global_Multiplier = 3f;
 
             if(gameStateTime > 5.4f) {
-                string = "GO!";
                 if(volume > 0f) volume -= 0.08f * delta;
                 if(volume <= 0f) {
                     volume = 0f;
                 }
             }
-            else if(gameStateTime > 4.2f) string = "1";
-            else if(gameStateTime > 3f) string = "2";
             else if(gameStateTime > 2f && !isCountdown) {
                 Assets.sound_countdown.play(0.25f);
                 isCountdown = true;
@@ -147,6 +143,7 @@ public class GameScreen extends ScreenAdapter {
             x = MathUtils.random(-10f, 10f);
             y = MathUtils.random(-9.2f, 6.2f);
             world.rings.add(new Ring(x, y, spawnDistance/1.35f));
+
             Assets.sound_airplane_engine.stop();
             Assets.music_course_1.setPosition(0f);
             Assets.music_course_1.setVolume(1f);

@@ -49,7 +49,7 @@ public class HUD {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
-        portrait_hare.setBounds(0f,0f,portrait_hare.getWidth()/2f,portrait_hare.getHeight()/2f);
+        portrait_hare.setBounds(0f, 0f, portrait_hare.getWidth()/2f, portrait_hare.getHeight()/2f);
         portrait_hare.setPosition(25f, 700f - portrait_hare.getHeight());
 
         //speedometer.setBounds(0f,0f,speedometer.getWidth()/2f,speedometer.getHeight()/2f);
