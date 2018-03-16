@@ -28,8 +28,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 public class GameScreen extends ScreenAdapter {
     FPSLogger logger = new FPSLogger();
 
-    public static final float SCREEN_WIDTH = Gdx.graphics.getWidth() / 100f;
-    public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight() / 100f;
+    public static final float SCREEN_WIDTH = Gdx.graphics.getWidth();
+    public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
     enum GameState {
         START, RACE, FINISH, END
@@ -168,9 +168,6 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
         orthoCamera.update();
     }
-
-
-
 
     @Override
     public void dispose() {

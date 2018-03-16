@@ -13,12 +13,12 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class World {
-    public static final float WORLD_WIDTH = SCREEN_WIDTH;
-    public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT * 1.5f;
-    public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT * 2f;
+    public static final float WORLD_WIDTH = SCREEN_WIDTH / 100f;
+    public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT / 100f * 1.5f;
+    public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT / 100f * 2f;
 
     //World length
-    static float finish = 100;
+    static float finish = 500;
     static float end = finish + spawnDistance + 20f;
 
     //Background

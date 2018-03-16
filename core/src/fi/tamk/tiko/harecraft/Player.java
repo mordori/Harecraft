@@ -177,23 +177,13 @@ public class Player extends Pilot {
 
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                (-position.x * 31f + posTest() * 1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/12.80f) + SCREEN_WIDTH * 100f / 2f,
-                (position.y * 15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/7.20f) + SCREEN_HEIGHT * 100f / 2f + 12f);
+                (-position.x*31f + posTest()*1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
+                (position.y*15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/720f) + SCREEN_HEIGHT/2f + 12f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x * 5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x * 5f);
 
         pfx_scarf.update(delta);
-
-        /*pfx_stream.setPosition(
-                (-position.x * 31f + test()*1.5f + velocity.x * Math.abs(position.y/test2 * getRotationAverage())) * (SCREEN_WIDTH/12.80f) + SCREEN_WIDTH * 100f / 2f - width*130f/2f,
-                (position.y * 15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/7.20f) + SCREEN_HEIGHT * 100f / 2f + 12f);
-        pfx_stream.update(delta);
-
-        pfx_stream2.setPosition(
-                (-position.x * 31f + test()*1.5f + velocity.x * Math.abs(position.y/test2 * getRotationAverage())) * (SCREEN_WIDTH/12.80f) + SCREEN_WIDTH * 100f / 2f + width*140f/2f,
-                (position.y * 15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/7.20f) + SCREEN_HEIGHT * 100f / 2f + 12f);
-        pfx_stream2.update(delta);*/
     }
 
     public float getRotationAverage() {
