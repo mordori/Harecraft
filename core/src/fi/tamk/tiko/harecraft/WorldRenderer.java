@@ -1,5 +1,10 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;

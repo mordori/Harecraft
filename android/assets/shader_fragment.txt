@@ -1,0 +1,41 @@
+#ifdef GL_ES
+    precision mediump float;
+#endif
+
+varying vec4 v_color;
+varying vec2 v_texCoord0;
+
+uniform sampler2D u_sampler2D;
+uniform vec2 u_resolution;
+uniform float u_stateTime;
+
+const float outerRadius = 0.9;
+const float innerRadius = 0.4;
+const float intensity = 0.9;
+
+const vec3 SEPIA = vec3(1.2, 1.0, 0.6);
+
+
+void main() {
+    vec4 color = texture2D(u_sampler2D, v_texCoord0) * v_color;
+
+    vec2 relativePosition = (gl_FragCoord.xy / u_resolution.xy) - vec2(0.5);
+
+    relativePosition.x *= u_resolution.x / u_resolution.y;
+    //relativePosition.y *= u_resolution.y / u_resolution.x;
+
+    float len = length(relativePosition);
+    float vignette = smoothstep(outerRadius, innerRadius, len);
+
+    //color.rgb = (color.r + color.g + color.b) / 3.0;
+
+    color.rgb = mix(color.rgb, color.rgb * vignette, (intensity - u_stateTime));
+    //color.rgb = vignette;
+
+    float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+    vec3 sepiaColor = vec3(gray) * SEPIA;
+
+    color.rgb = mix(color.rgb, sepiaColor, intensity - u_stateTime);
+
+	gl_FragColor = color * v_color;
+}

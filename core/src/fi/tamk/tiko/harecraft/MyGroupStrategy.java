@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import java.util.Comparator;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
@@ -10,8 +11,11 @@ import com.badlogic.gdx.graphics.g3d.decals.GroupStrategy;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
+
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 
 /** <p>
  * Minimalistic grouping strategy that splits decals into opaque and transparent ones enabling and disabling blending as needed.
@@ -67,6 +71,7 @@ import com.badlogic.gdx.utils.Pool;
 public class MyGroupStrategy implements GroupStrategy, Disposable {
     private static final int GROUP_OPAQUE = 0;
     private static final int GROUP_BLEND = 1;
+    static ShaderProgram myShader;
 
     Pool<Array<Decal>> arrayPool = new Pool<Array<Decal>>(16) {
         @Override
@@ -95,8 +100,8 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     public MyGroupStrategy (Camera camera, Comparator<Decal> sorter) {
         this.camera = camera;
         this.cameraSorter = sorter;
-        createDefaultShader();
-
+        //createDefaultShader();
+        myShader();
     }
 
     public void setCamera (Camera camera) {
@@ -151,14 +156,15 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public void beforeGroups () {
         //Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        shader.begin();
-        shader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-        shader.setUniformi("u_texture", 0);
+        myShader.begin();
+        myShader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+        myShader.setUniformi("u_texture", 0);
+        if(GameScreen.gameStateTime > 2f && GameScreen.gameState == START) myShader.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f)/5f);
     }
 
     @Override
     public void afterGroups () {
-        shader.end();
+        myShader.end();
         //DISABLED
         //Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
     }
@@ -195,12 +201,20 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
 
     @Override
     public ShaderProgram getGroupShader (int group) {
-        return shader;
+        return myShader;
     }
 
     @Override
     public void dispose () {
         if (shader != null) shader.dispose();
+    }
+
+    private void myShader() {
+        ShaderProgram.pedantic = false;
+        FileHandle VERTEX = Gdx.files.internal("shader_vertex.txt");
+        FileHandle FRAGMENT = Gdx.files.internal("shader_fragment.txt");
+        myShader = new ShaderProgram(VERTEX, FRAGMENT);
+        if (!myShader.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader.getLog());
     }
 }
 

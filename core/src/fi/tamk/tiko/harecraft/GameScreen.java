@@ -172,4 +172,14 @@ public class GameScreen extends ScreenAdapter {
         dBatch.dispose();
         world.dispose();
     }
+
+    @Override
+    public void resize (int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight= height;
+
+        MyGroupStrategy.myShader.begin();
+        MyGroupStrategy.myShader.setUniformf("u_resolution", width, height);
+        MyGroupStrategy.myShader.end();
+    }
 }
