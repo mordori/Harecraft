@@ -18,6 +18,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.myShader_sea;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -53,6 +54,7 @@ public class GameScreen extends ScreenAdapter {
     static boolean isCountdown;
     float volume = 0.15f;
 
+    static float tick;
 
     public GameScreen(GameMain game, World world) {
         this.game = game;
@@ -79,12 +81,13 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.play();
         Assets.music_course_1.setVolume(0f);
         Assets.sound_airplane_engine.loop(volume);
+
+        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     @Override
     public void render(float delta) {
         //Gdx.gl.glClearColor(126f/255f, 180f/255f, 41f/255f, 1f);
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         update(delta);
@@ -99,6 +102,12 @@ public class GameScreen extends ScreenAdapter {
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
+
+        tick += Gdx.graphics.getDeltaTime();
+
+        myShader_sea.begin();
+        myShader_sea.setUniformf("time", tick);
+        myShader_sea.end();
     }
 
     public void updateState(float delta) {
@@ -178,8 +187,8 @@ public class GameScreen extends ScreenAdapter {
         camera.viewportWidth = width;
         camera.viewportHeight= height;
 
-        MyGroupStrategy.myShader.begin();
-        MyGroupStrategy.myShader.setUniformf("u_resolution", width, height);
-        MyGroupStrategy.myShader.end();
+        MyGroupStrategy.myShader_vignette.begin();
+        MyGroupStrategy.myShader_vignette.setUniformf("u_resolution", width, height);
+        MyGroupStrategy.myShader_vignette.end();
     }
 }

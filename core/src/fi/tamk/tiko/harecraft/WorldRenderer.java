@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
@@ -23,6 +24,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 public class WorldRenderer {
     GameMain game;
     World world;
+    static boolean myShader_vignette;
+    static boolean myShader_sea;
 
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
@@ -35,9 +38,18 @@ public class WorldRenderer {
     }
 
     public void drawDecals() {
+        if(gameState == START) myShader_vignette = true;
+        else myShader_vignette = false;
+
         dBatch.add(world.decal_foreground);
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
+        dBatch.flush();
+
+        if(gameState != START) myShader_sea = true;
+        dBatch.add(world.sea);
+        dBatch.flush();
+        myShader_sea = false;
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -46,7 +58,8 @@ public class WorldRenderer {
             }
         }
 
-        drawDecalLists();
+
+        if(camera.position.y > -28f)drawDecalLists();
 
         if(player.isDrawing || player.opacity != 0f){
             dBatch.add(player.decal_wings);

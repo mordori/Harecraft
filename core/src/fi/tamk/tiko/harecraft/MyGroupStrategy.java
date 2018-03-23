@@ -15,6 +15,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
 
+import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE0;
+import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE1;
+import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE2;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 
 /** <p>
@@ -71,7 +74,9 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 public class MyGroupStrategy implements GroupStrategy, Disposable {
     private static final int GROUP_OPAQUE = 0;
     private static final int GROUP_BLEND = 1;
-    static ShaderProgram myShader;
+    static ShaderProgram myShader_vignette;
+    static ShaderProgram myShader_sea;
+
 
     Pool<Array<Decal>> arrayPool = new Pool<Array<Decal>>(16) {
         @Override
@@ -100,8 +105,24 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     public MyGroupStrategy (Camera camera, Comparator<Decal> sorter) {
         this.camera = camera;
         this.cameraSorter = sorter;
-        //createDefaultShader();
-        myShader();
+        createDefaultShader();
+
+        ShaderProgram.pedantic = false;
+        createMyShader_Vignette();
+        createMyShader_Sea();
+
+        myShader_sea.begin();
+        myShader_sea.setUniformi("u_texture1", 1);
+        myShader_sea.setUniformi("u_mask", 2);
+        myShader_sea.setUniformf("time", GameScreen.tick);
+        myShader_sea.end();
+
+        Gdx.gl.glActiveTexture(GL_TEXTURE2);
+        World.mask.bind();
+        Gdx.gl.glActiveTexture(GL_TEXTURE1);
+        World.tex1.bind();
+        Gdx.gl.glActiveTexture(GL_TEXTURE0);
+        World.tex0.bind();
     }
 
     public void setCamera (Camera camera) {
@@ -156,15 +177,32 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public void beforeGroups () {
         //Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        myShader.begin();
-        myShader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-        myShader.setUniformi("u_texture", 0);
-        if(GameScreen.gameStateTime > 2f && GameScreen.gameState == START) myShader.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f)/5f);
+        if(!WorldRenderer.myShader_vignette) {
+            shader.begin();
+            shader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+            shader.setUniformi("u_texture", 0);
+        }
+
+        if(WorldRenderer.myShader_vignette) {
+            myShader_vignette.begin();
+            myShader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+            myShader_vignette.setUniformi("u_texture", 0);
+            if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START)
+                myShader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 5f);
+        }
+
+        if(WorldRenderer.myShader_sea) {
+            myShader_sea.begin();
+            myShader_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+            myShader_sea.setUniformi("u_texture", 0);
+        }
     }
 
     @Override
     public void afterGroups () {
-        myShader.end();
+        if(!WorldRenderer.myShader_vignette) shader.end();
+
+        if(WorldRenderer.myShader_vignette) myShader_vignette.end();
         //DISABLED
         //Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
     }
@@ -201,7 +239,9 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
 
     @Override
     public ShaderProgram getGroupShader (int group) {
-        return myShader;
+        if(WorldRenderer.myShader_vignette) return myShader_vignette;
+        else if(WorldRenderer.myShader_sea) return myShader_sea;
+        else return shader;
     }
 
     @Override
@@ -209,12 +249,17 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         if (shader != null) shader.dispose();
     }
 
-    private void myShader() {
-        ShaderProgram.pedantic = false;
+    private void createMyShader_Vignette() {
         FileHandle VERTEX = Gdx.files.internal("shader_vertex.txt");
         FileHandle FRAGMENT = Gdx.files.internal("shader_fragment.txt");
-        myShader = new ShaderProgram(VERTEX, FRAGMENT);
-        if (!myShader.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader.getLog());
+        myShader_vignette = new ShaderProgram(VERTEX, FRAGMENT);
+        if (!myShader_vignette.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + myShader_vignette.getLog());
+    }
+    private void createMyShader_Sea() {
+        FileHandle VERTEX = Gdx.files.internal("vert2.txt");
+        FileHandle FRAGMENT = Gdx.files.internal("frag2.txt");
+        myShader_sea = new ShaderProgram(VERTEX, FRAGMENT);
+        if (!myShader_sea.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + myShader_sea.getLog());
     }
 }
 

@@ -1,5 +1,8 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 
 import java.util.ArrayList;
@@ -25,6 +28,12 @@ public class World {
     Decal decal_foreground;
     Decal decal_sun1;
     Decal decal_sun2;
+    Decal sea;
+    Decal foam;
+    Decal dmask;
+    static Texture tex0;
+    static Texture tex1;
+    static Texture mask;
 
     //Finishline
     ArrayList<HotAirBalloon> hotAirBalloons = new ArrayList<HotAirBalloon>();
@@ -63,6 +72,23 @@ public class World {
         decal_sun2 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun2.setPosition(0f, -40f, 298f);
         decal_sun2.rotateZ(90f);
+
+        tex0 = new Texture(Gdx.files.internal("sea.png"));
+        tex0.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex0.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        sea = Decal.newDecal(new TextureRegion(tex0,0,0, 600, 270), true);
+        sea.setPosition(0f, -28f, 125f);
+        sea.rotateX(90f);
+
+        tex1 = new Texture(Gdx.files.internal("dirt.png"));
+        tex1.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex1.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+
+        mask = new Texture(Gdx.files.internal("mask.png"));
+        mask.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        mask.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
 
         hotAirBalloons.add(new HotAirBalloon(-25f, -23f, spawnDistance + 30f));
         hotAirBalloons.add(new HotAirBalloon(25f, -23f, spawnDistance + 30f));
