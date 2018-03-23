@@ -21,7 +21,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT / 100f * 2f;
 
     //World length
-    static float finish = 2000;
+    static float finish = 100;
     static float end = finish + spawnDistance + 20f;
 
     //Background
@@ -29,8 +29,6 @@ public class World {
     Decal decal_sun1;
     Decal decal_sun2;
     Decal sea;
-    Decal foam;
-    Decal dmask;
     static Texture tex0;
     static Texture tex1;
     static Texture mask;
@@ -84,11 +82,9 @@ public class World {
         tex1.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex1.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
 
-
         mask = new Texture(Gdx.files.internal("shaders/tex_sea_mask.png"));
         mask.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         mask.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
 
         hotAirBalloons.add(new HotAirBalloon(-25f, -23f, spawnDistance + 30f));
         hotAirBalloons.add(new HotAirBalloon(25f, -23f, spawnDistance + 30f));

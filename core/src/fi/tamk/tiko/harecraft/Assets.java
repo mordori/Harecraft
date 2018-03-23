@@ -127,7 +127,7 @@ public class Assets {
         pfx_stream = new ParticleEffect();
         pfx_stream.load(Gdx.files.internal("particles/pfx_stream"), Gdx.files.internal("particles/"));
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("foo.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/foo.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 128;
         parameter.borderWidth = 4;

@@ -53,18 +53,19 @@ public class HUD {
     }
 
     public void update(float delta) {
-        //game.sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         if(gameState == RACE || gameState == FINISH) {
             HUD_opacity += delta;
             if(HUD_opacity > 1f) HUD_opacity = 1f;
-
-            updateProgressLine(delta);
-            updateSpeedometer(delta);
-            updatePlacementNumber(delta);
         }
-        if(gameState == END) {
+        else if(gameState == END) {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
+        }
+
+        if(gameState != START) {
+            if(gameState != END) updateProgressLine(delta);
+            updateSpeedometer(delta);
+            updatePlacementNumber(delta);
         }
     }
 
