@@ -34,11 +34,9 @@ public class HUD {
     float progressline_arc_radius = 9f;
     float HUD_opacity;
 
-    Sprite icon_hare = new Sprite(Assets.texR_character_hare_head);
-    Sprite portrait_hare = new Sprite(Assets.flip(Assets.texR_portrait_hare));
     Sprite speedometer = new Sprite(Assets.flip(Assets.texR_speedometer));
     Sprite text_gameStates = new Sprite();
-    Sprite text_racePlacement = new Sprite();
+    Sprite text_placementNumber = new Sprite();
 
     float text_opacity = 0f;
     int index = 0;
@@ -49,9 +47,6 @@ public class HUD {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
-        portrait_hare.setBounds(0f, 0f, portrait_hare.getWidth()/2f, portrait_hare.getHeight()/2f);
-        portrait_hare.setPosition(25f, 700f - portrait_hare.getHeight());
-
         //speedometer.setBounds(0f,0f,speedometer.getWidth()/2f,speedometer.getHeight()/2f);
         //speedometer.setBounds(0f,0f,speedometer.getWidth()/1.5f,speedometer.getHeight()/1.5f);
         speedometer.setPosition(SCREEN_WIDTH - speedometer.getWidth(),0f);
@@ -60,31 +55,35 @@ public class HUD {
     public void update(float delta) {
         //game.sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         if(gameState == RACE || gameState == FINISH) {
-            progressline_x = 300f * (player.distance / world.end);
-            progressline_color_green = (130f + (125f * (player.distance / world.end))) / 255f; //110 + 160 = 270
-            progressline_color_red = (255f - ((255f - 95f) * (player.distance / world.end))) / 255f;
-
-            if(progressline_color_red < 0f) progressline_color_red = 0f;
-            if(progressline_color_green > 1f) progressline_color_green = 1f;
-
             HUD_opacity += delta;
             if(HUD_opacity > 1f) HUD_opacity = 1f;
+
+            updateProgressLine(delta);
+            updateSpeedometer(delta);
+            updatePlacementNumber(delta);
         }
         if(gameState == END) {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
         }
-        //icon_hare.setPosition();
     }
 
     public void draw() {
         drawCountdown();
         if(gameState != START) {
             drawProgressLine();
-            //drawPortrait();
-            drawRacePlacement();
+            drawPlacementNumber();
             drawSpeedometer();
         }
+    }
+
+    public void updateProgressLine(float delta) {
+        progressline_x = 300f * (player.distance / world.end);
+        progressline_color_green = (130f + (125f * (player.distance / world.end))) / 255f; //110 + 160 = 270
+        progressline_color_red = (255f - ((255f - 95f) * (player.distance / world.end))) / 255f;
+
+        if(progressline_color_red < 0f) progressline_color_red = 0f;
+        if(progressline_color_green > 1f) progressline_color_green = 1f;
     }
 
     public void drawProgressLine() {
@@ -169,27 +168,26 @@ public class HUD {
             text_gameStates.draw(game.sBatch);
         }
 
-        //icon_hare.draw(game.sBatch);
         game.sBatch.end();
     }
 
-    public void drawPortrait() {
+    public void updatePlacementNumber(float delta) {
+        text_placementNumber = Assets.sprites_text_race_positions.get(index);
+        text_placementNumber.setPosition(10f, 10f);
+        text_placementNumber.setColor(1f, 1f, 1f, HUD_opacity);
+    }
+
+    public void drawPlacementNumber() {
         game.sBatch.begin();
-        portrait_hare.draw(game.sBatch);
+        text_placementNumber.draw(game.sBatch);
         game.sBatch.end();
     }
 
-    public void drawRacePlacement() {
-        text_racePlacement = Assets.sprites_text_race_positions.get(index);
-        text_racePlacement.setPosition(10f, 10f);
-        text_racePlacement.setColor(1f, 1f, 1f, HUD_opacity);
-        game.sBatch.begin();
-        text_racePlacement.draw(game.sBatch);
-        game.sBatch.end();
+    public void updateSpeedometer(float delta) {
+        speedometer.setColor(1f, 1f, 1f, HUD_opacity);
     }
 
     public void drawSpeedometer() {
-        speedometer.setColor(1f, 1f, 1f, HUD_opacity);
         game.sBatch.begin();
         speedometer.draw(game.sBatch);
         game.sBatch.end();

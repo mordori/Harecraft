@@ -1,10 +1,5 @@
 package fi.tamk.tiko.harecraft;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -12,10 +7,11 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.GameScreen.orthoCamera;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_DEFAULT;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_SEA;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_VIGNETTE;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
 import static fi.tamk.tiko.harecraft.World.player;
-import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 01/03/2018.
@@ -24,8 +20,6 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 public class WorldRenderer {
     GameMain game;
     World world;
-    static boolean myShader_vignette;
-    static boolean myShader_sea;
 
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
@@ -38,18 +32,18 @@ public class WorldRenderer {
     }
 
     public void drawDecals() {
-        if(gameState == START) myShader_vignette = true;
-        else myShader_vignette = false;
+        if(gameState == START) activeShader = SHADER_VIGNETTE;
+        else activeShader = SHADER_DEFAULT;
 
         dBatch.add(world.decal_foreground);
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        if(gameState != START) myShader_sea = true;
+        if(gameState != START) activeShader = SHADER_SEA;
         dBatch.add(world.sea);
         dBatch.flush();
-        myShader_sea = false;
+        activeShader = SHADER_DEFAULT;
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -58,14 +52,14 @@ public class WorldRenderer {
             }
         }
 
-
-        if(camera.position.y > -28f)drawDecalLists();
+        if(camera.position.y > -28f) drawDecalLists();
 
         if(player.isDrawing || player.opacity != 0f){
             dBatch.add(player.decal_wings);
             dBatch.add(player.decal_head);
             dBatch.add(player.decal);
         }
+
         //////////////////////////////////////////////
         dBatch.flush();
     }

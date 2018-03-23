@@ -2,23 +2,22 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.myShader_sea;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_SEA;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_VIGNETTE;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader_sea;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader_vignette;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -83,12 +82,12 @@ public class GameScreen extends ScreenAdapter {
         Assets.sound_airplane_engine.loop(volume);
 
         Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
 
     @Override
     public void render(float delta) {
         //Gdx.gl.glClearColor(126f/255f, 180f/255f, 41f/255f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         update(delta);
         renderer.renderWorld();
@@ -102,12 +101,23 @@ public class GameScreen extends ScreenAdapter {
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
+        updateShaders(delta);
+    }
 
-        tick += Gdx.graphics.getDeltaTime();
+    public void updateShaders(float delta) {
+        switch(activeShader) {
+            case SHADER_VIGNETTE:
+                break;
+            case SHADER_SEA:
+                tick += delta;
 
-        myShader_sea.begin();
-        myShader_sea.setUniformf("time", tick);
-        myShader_sea.end();
+                shader_sea.begin();
+                shader_sea.setUniformf("time", tick);
+                shader_sea.end();
+                break;
+            default:
+                break;
+        }
     }
 
     public void updateState(float delta) {
@@ -185,10 +195,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void resize (int width, int height) {
         camera.viewportWidth = width;
-        camera.viewportHeight= height;
+        camera.viewportHeight = height;
+        orthoCamera.viewportWidth = width;
+        orthoCamera.viewportHeight = height;
 
-        MyGroupStrategy.myShader_vignette.begin();
-        MyGroupStrategy.myShader_vignette.setUniformf("u_resolution", width, height);
-        MyGroupStrategy.myShader_vignette.end();
+        shader_vignette.begin();
+        shader_vignette.setUniformf("u_resolution", width, height);
+        shader_vignette.end();
     }
 }

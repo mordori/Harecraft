@@ -26,7 +26,6 @@ public class Assets {
     static TextureRegion texR_ribbons;
     static TextureRegion texR_playertag;
 
-    static TextureRegion texR_portrait_hare;
     static TextureRegion texR_speedometer;
 
     static TextureRegion texR_powerup_red;
@@ -80,7 +79,6 @@ public class Assets {
         texR_hotairballoon = loadTextureRegion("tex_hotairballoon.png");
         texR_ribbons = loadTextureRegion("tex_ribbons.png");
         texR_playertag = loadTextureRegion("tex_playertag.png");
-        texR_portrait_hare = loadTextureRegion("tex_portrait_hare.png");
         texR_speedometer = loadTextureRegion("tex_speedometer.png");
 
         texR_powerup_red = loadTextureRegion("tex_powerup_red.png");
@@ -176,7 +174,6 @@ public class Assets {
         texR_ribbons.getTexture().dispose();
 
         texR_playertag.getTexture().dispose();
-        texR_portrait_hare.getTexture().dispose();
         texR_speedometer.getTexture().dispose();
 
         texR_powerup_red.getTexture().dispose();

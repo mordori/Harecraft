@@ -20,63 +20,11 @@ import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE1;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE2;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 
-/** <p>
- * Minimalistic grouping strategy that splits decals into opaque and transparent ones enabling and disabling blending as needed.
- * Opaque decals are rendered first (decal color is ignored in opacity check).<br/>
- * Use this strategy only if the vast majority of your decals are opaque and the few transparent ones are unlikely to overlap.
- * </p>
- * <p>
- * Can produce invisible artifacts when transparent decals overlap each other.
- * </p>
- * <p>
- * Needs to be explicitly disposed as it might allocate a ShaderProgram when GLSL 2.0 is used.
- * </p>
- * <p>
- * States (* = any, EV = entry value - same as value before flush):<br/>
- * <table>
- * <tr>
- * <td></td>
- * <td>expects</td>
- * <td>exits on</td>
- * </tr>
- * <tr>
- * <td>glDepthMask</td>
- * <td>true</td>
- * <td>EV</td>
- * </tr>
- * <tr>
- * <td>GL_DEPTH_TEST</td>
- * <td>enabled</td>
- * <td>EV</td>
- * </tr>
- * <tr>
- * <td>glDepthFunc</td>
- * <td>GL_LESS | GL_LEQUAL</td>
- * <td>EV</td>
- * </tr>
- * <tr>
- * <td>GL_BLEND</td>
- * <td>disabled</td>
- * <td>EV | disabled</td>
- * </tr>
- * <tr>
- * <td>glBlendFunc</td>
- * <td>*</td>
- * <td>*</td>
- * </tr>
- * <tr>
- * <td>GL_TEXTURE_2D</td>
- * <td>*</td>
- * <td>disabled</td>
- * </tr>
- * </table>
- * </p> */
+
+
 public class MyGroupStrategy implements GroupStrategy, Disposable {
     private static final int GROUP_OPAQUE = 0;
     private static final int GROUP_BLEND = 1;
-    static ShaderProgram myShader_vignette;
-    static ShaderProgram myShader_sea;
-
 
     Pool<Array<Decal>> arrayPool = new Pool<Array<Decal>>(16) {
         @Override
@@ -108,14 +56,14 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         createDefaultShader();
 
         ShaderProgram.pedantic = false;
-        createMyShader_Vignette();
-        createMyShader_Sea();
+        createShader_Vignette();
+        createShader_Sea();
 
-        myShader_sea.begin();
-        myShader_sea.setUniformi("u_texture1", 1);
-        myShader_sea.setUniformi("u_mask", 2);
-        myShader_sea.setUniformf("time", GameScreen.tick);
-        myShader_sea.end();
+        shader_sea.begin();
+        shader_sea.setUniformi("u_texture1", 1);
+        shader_sea.setUniformi("u_mask", 2);
+        shader_sea.setUniformf("time", GameScreen.tick);
+        shader_sea.end();
 
         Gdx.gl.glActiveTexture(GL_TEXTURE2);
         World.mask.bind();
@@ -176,35 +124,40 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
 
     @Override
     public void beforeGroups () {
-        //Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        if(!WorldRenderer.myShader_vignette) {
-            shader.begin();
-            shader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-            shader.setUniformi("u_texture", 0);
-        }
-
-        if(WorldRenderer.myShader_vignette) {
-            myShader_vignette.begin();
-            myShader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-            myShader_vignette.setUniformi("u_texture", 0);
-            if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START)
-                myShader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 5f);
-        }
-
-        if(WorldRenderer.myShader_sea) {
-            myShader_sea.begin();
-            myShader_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-            myShader_sea.setUniformi("u_texture", 0);
+        switch(activeShader) {
+            case SHADER_VIGNETTE:
+                shader_vignette.begin();
+                shader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+                shader_vignette.setUniformi("u_texture", 0);
+                if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START)
+                    shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 5f);
+                break;
+            case SHADER_SEA:
+                shader_sea.begin();
+                shader_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+                shader_sea.setUniformi("u_texture", 0);
+                break;
+            default:
+                shader.begin();
+                shader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+                shader.setUniformi("u_texture", 0);
+                break;
         }
     }
 
     @Override
     public void afterGroups () {
-        if(!WorldRenderer.myShader_vignette) shader.end();
-
-        if(WorldRenderer.myShader_vignette) myShader_vignette.end();
-        //DISABLED
-        //Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+        switch(activeShader) {
+            case SHADER_VIGNETTE:
+                shader_vignette.end();
+                break;
+            case SHADER_SEA:
+                shader_sea.end();
+                break;
+            default:
+                shader.end();
+                break;
+        }
     }
 
     private void createDefaultShader () {
@@ -239,28 +192,43 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
 
     @Override
     public ShaderProgram getGroupShader (int group) {
-        if(WorldRenderer.myShader_vignette) return myShader_vignette;
-        else if(WorldRenderer.myShader_sea) return myShader_sea;
-        else return shader;
+        switch(activeShader) {
+            case SHADER_VIGNETTE:
+                return shader_vignette;
+            case SHADER_SEA:
+                return shader_sea;
+            default:
+                return shader;
+        }
     }
 
     @Override
     public void dispose () {
-        if (shader != null) shader.dispose();
+        if(shader != null) shader.dispose();
+        if(shader_vignette != null) shader_vignette.dispose();
+        if(shader_sea != null) shader_sea.dispose();
     }
 
-    private void createMyShader_Vignette() {
-        FileHandle VERTEX = Gdx.files.internal("shader_vertex.txt");
-        FileHandle FRAGMENT = Gdx.files.internal("shader_fragment.txt");
-        myShader_vignette = new ShaderProgram(VERTEX, FRAGMENT);
-        if (!myShader_vignette.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + myShader_vignette.getLog());
+    private void createShader_Vignette() {
+        FileHandle VERTEX = Gdx.files.internal("shaders/shader_vignette_vertex.txt");
+        FileHandle FRAGMENT = Gdx.files.internal("shaders/shader_vignette_fragment.txt");
+        shader_vignette = new ShaderProgram(VERTEX, FRAGMENT);
+        if(!shader_vignette.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader_vignette.getLog());
     }
-    private void createMyShader_Sea() {
-        FileHandle VERTEX = Gdx.files.internal("vert2.txt");
-        FileHandle FRAGMENT = Gdx.files.internal("frag2.txt");
-        myShader_sea = new ShaderProgram(VERTEX, FRAGMENT);
-        if (!myShader_sea.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + myShader_sea.getLog());
+    private void createShader_Sea() {
+        FileHandle VERTEX = Gdx.files.internal("shaders/shader_sea_vertex.txt");
+        FileHandle FRAGMENT = Gdx.files.internal("shaders/shader_sea_fragment.txt");
+        shader_sea = new ShaderProgram(VERTEX, FRAGMENT);
+        if(!shader_sea.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader_sea.getLog());
     }
+
+    public static int activeShader;
+    public static final int SHADER_DEFAULT = 0;
+    public static final int SHADER_VIGNETTE = 1;
+    public static final int SHADER_SEA = 2;
+
+    static ShaderProgram shader_vignette;
+    static ShaderProgram shader_sea;
 }
 
 
