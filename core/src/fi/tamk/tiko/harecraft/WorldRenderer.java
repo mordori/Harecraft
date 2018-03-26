@@ -1,9 +1,18 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.dBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
@@ -20,15 +29,33 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class WorldRenderer {
     GameMain game;
     World world;
+    FrameBuffer fbo;
+    Sprite texture = new Sprite();
 
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
         this.game = game;
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, (int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, true);
     }
 
     public void renderWorld() {
+        fbo.begin();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         drawDecals();
         drawParticles();
+        fbo.end();
+
+        renderToTexture();
+    }
+
+    public void renderToTexture() {
+        texture.setTexture(fbo.getColorBufferTexture());
+        texture.setRegion(fbo.getColorBufferTexture());
+        texture.flip(false,true);
+
+        game.sBatch.begin();
+        game.sBatch.draw(texture,0,0);
+        game.sBatch.end();
     }
 
     public void drawDecals() {
@@ -121,5 +148,9 @@ public class WorldRenderer {
 
             }
         }
+    }
+
+    public void dispose() {
+        fbo.dispose();
     }
 }

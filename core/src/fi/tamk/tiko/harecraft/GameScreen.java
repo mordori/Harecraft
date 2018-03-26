@@ -38,7 +38,7 @@ public class GameScreen extends ScreenAdapter {
     GameMain game;
     World world;
     WorldBuilder builder;
-    WorldRenderer renderer;
+    WorldRenderer worldRenderer;
     HUD HUD;
     static DecalBatch dBatch;
     static PerspectiveCamera camera;
@@ -59,7 +59,7 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.world = world;
         builder = new WorldBuilder(world);
-        renderer = new WorldRenderer(world, game);
+        worldRenderer = new WorldRenderer(world, game);
 
         orthoCamera = new OrthographicCamera();
         orthoCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -82,15 +82,15 @@ public class GameScreen extends ScreenAdapter {
         Assets.sound_airplane_engine.loop(volume);
 
         //Gdx.gl.glClearColor(126f/255f, 180f/255f, 41f/255f, 1f);
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         update(delta);
-        renderer.renderWorld();
+        worldRenderer.renderWorld();
         HUD.update(delta);
         HUD.draw();
     }
@@ -180,6 +180,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         HUD.dispose();
         dBatch.dispose();
+        worldRenderer.dispose();
         world.dispose();
     }
 
@@ -189,6 +190,7 @@ public class GameScreen extends ScreenAdapter {
         camera.viewportHeight = height;
         orthoCamera.viewportWidth = width;
         orthoCamera.viewportHeight = height;
+
 
         shader_vignette.begin();
         shader_vignette.setUniformf("u_resolution", width, height);
