@@ -106,15 +106,6 @@ public class GameScreen extends ScreenAdapter {
     public void updateShaders(float delta) {
         tick += delta;
 
-        switch(activeShader) {
-            case SHADER_VIGNETTE:
-                break;
-            case SHADER_SEA:
-                break;
-            default:
-                break;
-        }
-
         shader_sea.begin();
         shader_sea.setUniformf("time", tick);
         shader_sea.end();

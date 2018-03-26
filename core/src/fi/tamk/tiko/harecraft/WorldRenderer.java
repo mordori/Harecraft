@@ -40,10 +40,12 @@ public class WorldRenderer {
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        if(gameState != START) activeShader = SHADER_SEA;
+        activeShader = SHADER_SEA;
         dBatch.add(world.sea);
         dBatch.flush();
-        activeShader = SHADER_DEFAULT;
+
+        if(gameState == START) activeShader = SHADER_VIGNETTE;
+        else activeShader = SHADER_DEFAULT;
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
