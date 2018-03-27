@@ -207,7 +207,7 @@ public class WorldBuilder {
             //x = MathUtils.random(-10f, 10f); //mikko rings
             //y = MathUtils.random(-9.2f, 6.2f);
             //ringSpawnVector.rotate(MathUtils.random(1f,20f));
-            float DIFFICULTYSENSITIVITY = 4f; // 0-EASY 2-MEDIUM 4-HARD
+            float DIFFICULTYSENSITIVITY = 0f; // 0-EASY 2-MEDIUM 4-HARD
 
             if (MathUtils.random(1,6) == 6 || staticHold > 0) {   // d6 if static hold starts OR if static hold is running
 
