@@ -78,7 +78,7 @@ void main(void) {
 
 	//pertube texcoord by x and y
 	vec2 distort = 0.05 * vec2(snoise(v_texCoord0 + vec2(time/5.0, 0.0)) ,
-                              snoise(v_texCoord0 + vec2(0.0, time/5.0)) - time * 5.0);
+                              snoise(v_texCoord0 + vec2(0.0, time/5.0)));
 
 	//get the mask; we will only use the alpha channel
 	float mask = texture2D(u_mask, v_texCoord0 + distort).a * 0.3;

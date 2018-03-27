@@ -29,33 +29,15 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class WorldRenderer {
     GameMain game;
     World world;
-    FrameBuffer fbo;
-    Sprite texture = new Sprite();
 
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
         this.game = game;
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, (int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, true);
     }
 
     public void renderWorld() {
-        fbo.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         drawDecals();
         drawParticles();
-        fbo.end();
-
-        renderToTexture();
-    }
-
-    public void renderToTexture() {
-        texture.setTexture(fbo.getColorBufferTexture());
-        texture.setRegion(fbo.getColorBufferTexture());
-        texture.flip(false,true);
-
-        game.sBatch.begin();
-        game.sBatch.draw(texture,0,0);
-        game.sBatch.end();
     }
 
     public void drawDecals() {
@@ -68,7 +50,7 @@ public class WorldRenderer {
         dBatch.flush();
 
         activeShader = SHADER_SEA;
-        //dBatch.add(world.sea);
+        dBatch.add(world.sea);
         dBatch.flush();
 
         if(gameState == START) activeShader = SHADER_VIGNETTE;
@@ -81,7 +63,7 @@ public class WorldRenderer {
             }
         }
 
-        if(camera.position.y > -28f) drawDecalLists();
+        drawDecalLists();
 
         if(player.isDrawing || player.opacity != 0f){
             dBatch.add(player.decal_wings);
@@ -148,9 +130,5 @@ public class WorldRenderer {
 
             }
         }
-    }
-
-    public void dispose() {
-        fbo.dispose();
     }
 }

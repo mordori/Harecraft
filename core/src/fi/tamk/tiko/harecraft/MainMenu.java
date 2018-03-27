@@ -47,11 +47,6 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
         game.sBatch.end();
     }
 
-    public void dispose () {
-        game.sBatch.dispose();
-        Assets.dispose();
-    }
-
     @Override
     public boolean keyDown(int keycode) {
         return false;

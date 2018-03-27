@@ -83,8 +83,8 @@ public class Player extends Pilot {
 
         if(gameState != START && gameState != END) {
             //destination.x = accelX * -5f * (960/SCREEN_WIDTH);
-            destination.x = accelX * -5f;
             //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
+            destination.x = accelX * -5f;
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             destination = destination.add(keyboardDestination);
 
