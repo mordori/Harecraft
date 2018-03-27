@@ -68,7 +68,7 @@ public class WorldRenderer {
         dBatch.flush();
 
         activeShader = SHADER_SEA;
-        dBatch.add(world.sea);
+        //dBatch.add(world.sea);
         dBatch.flush();
 
         if(gameState == START) activeShader = SHADER_VIGNETTE;
