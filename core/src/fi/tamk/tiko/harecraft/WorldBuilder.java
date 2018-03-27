@@ -207,18 +207,18 @@ public class WorldBuilder {
             //x = MathUtils.random(-10f, 10f); //mikko rings
             //y = MathUtils.random(-9.2f, 6.2f);
             //ringSpawnVector.rotate(MathUtils.random(1f,20f));
-            float DIFFICULTYSENSITIVITY = 0f; // 0-EASY 2-MEDIUM 4-HARD
+            float DIFFICULTYSENSITIVITY = 4f; // 0-EASY 2-MEDIUM 4-HARD
 
             if (MathUtils.random(1,6) == 6 || staticHold > 0) {   // d6 if static hold starts OR if static hold is running
 
                 if (staticHold == 0) {      //static hold starts
                     staticHold = MathUtils.random(3,5);     //static hold rings amount
                     ringSpawnVector.rotate(MathUtils.random(0f, 360f)); //randomize new vector for static hold
-                    ringSpawnVector.setLength(MathUtils.random(8f + DIFFICULTYSENSITIVITY, 14f + DIFFICULTYSENSITIVITY));  //minimum increased because static hold is useless in center
+                    ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY, 6f + (DIFFICULTYSENSITIVITY*2)));  //minimum increased because static hold is useless in center
                     rings_Timer = 1f;
                 }
                 if (staticHold > 0) {       //static hold is running
-                    world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y, spawnDistance - 50f));
+                    world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f));  //-2 modifier for y spawn
                     staticHold--;
                 }
                 if (staticHold == 0) {      //static hold ends
@@ -228,8 +228,8 @@ public class WorldBuilder {
             }
             else {          //Spawn basic vector Ring
                 ringSpawnVector.rotate(MathUtils.random(0f, 360f));
-                ringSpawnVector.setLength(MathUtils.random(0f + DIFFICULTYSENSITIVITY, 14f + DIFFICULTYSENSITIVITY));
-                world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y, spawnDistance - 50f));
+                ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY, 6f + (DIFFICULTYSENSITIVITY*2) ));
+                world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f)); //-2f modifier for y spawn
             }
         }
     }
