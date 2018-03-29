@@ -26,6 +26,7 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
     Button playButton;
     Button settingsButton;
     Button scoreButton;
+    Boolean touchUp = false;
 
     public MainMenu(GameMain game) {
         this.game = game;
@@ -47,6 +48,13 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
         settingsButton.drawMe(game.sBatch);
         scoreButton.drawMe(game.sBatch);
         game.sBatch.end();
+        if (playButton.getButtonRectangle().contains(Gdx.input.getX(), Gdx.input.getY()) && touchUp == true) {
+            game.setScreen(new GameScreen(game, new World()));
+        }
+        if (settingsButton.getButtonRectangle().contains(Gdx.input.getX(), Gdx.input.getY()) && touchUp == true) {
+            game.setScreen(new SettingsMenu(game));
+        }
+        touchUp = false;
     }
 
     @Override
@@ -69,12 +77,7 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (playButton.getButtonRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
-            game.setScreen(new GameScreen(game, new World()));
-        }
-        if (settingsButton.getButtonRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
-            game.setScreen(new SettingsMenu(game));
-        }
+        touchUp = true;
         return false;
     }
 
