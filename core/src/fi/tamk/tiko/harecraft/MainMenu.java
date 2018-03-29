@@ -3,7 +3,9 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -63,9 +65,7 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {return false;}
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -73,7 +73,7 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
             game.setScreen(new GameScreen(game, new World()));
         }
         if (settingsButton.getButtonRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
-
+            game.setScreen(new SettingsMenu(game));
         }
         return false;
     }
@@ -103,8 +103,10 @@ class Button {
     Boolean isPressed;
     int offsetPosition;
     GlyphLayout textMeasures;
+    Sound buttonSound;
 
     public Button(String bText, int offsetY) {
+        buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/sound_cloud_hit.wav"));
         textMeasures= new GlyphLayout();
         isPressed = false;
         buttonText = bText;
@@ -119,7 +121,8 @@ class Button {
     public void drawMe(SpriteBatch batch) {
 
         if (Gdx.input.isTouched()) {
-            if (buttonRectangle.contains(Gdx.input.getX(), Gdx.input.getY())) {
+            if (buttonRectangle.contains(Gdx.input.getX(), Gdx.input.getY()) && isPressed == false) {
+                buttonSound.play();
                 isPressed = true;
             }
         }
@@ -130,7 +133,9 @@ class Button {
         else {
             batch.draw(buttonTexture, Gdx.graphics.getWidth() / 2 - 150, (Gdx.graphics.getHeight() / 2 - 50) -offsetPosition, 300, 100);
         }
-        isPressed = false;
+        if (!buttonRectangle.contains(Gdx.input.getX(), Gdx.input.getY())) {
+            isPressed = false;
+        }
         Assets.font.draw(batch,buttonText,Gdx.graphics.getWidth()/2 -textMeasures.width/2,Gdx.graphics.getHeight()/2 +75 -50 -offsetPosition );
 
     }
