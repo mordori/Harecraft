@@ -25,7 +25,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = 1f;
+    static final float ACCEL_Y_OFFSET = 4f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -42,8 +42,6 @@ public class Player extends Pilot {
     TextureRegion texR_head = Assets.texR_character_hare_head;
 
     ParticleEffect pfx_scarf;
-    ParticleEffect pfx_stream;
-    ParticleEffect pfx_stream2;
 
     public Player(float x, float y, float z) {
         destination = new Vector3();
@@ -51,8 +49,6 @@ public class Player extends Pilot {
         curPosition = new Vector3();
         rotationsArray = new float[10];
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
-        //pfx_stream = new ParticleEffect(Assets.pfx_stream);
-        //pfx_stream2 = new ParticleEffect(Assets.pfx_stream);
 
         drawDistance = spawnDistance/50f;
         speed = SPEED;
@@ -82,15 +78,12 @@ public class Player extends Pilot {
         super.update(delta);
 
         if(gameState != START && gameState != END) {
-            //destination.x = accelX * -5f * (960/SCREEN_WIDTH);
-            //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
-            destination.x = accelX * -5f;
-            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
+            destination.x = accelX * -5f * (960/SCREEN_WIDTH);
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
             destination = destination.add(keyboardDestination);
 
             destdist = 1f + destination.dst(0f, 6f, 0f)/100;   //100=1-1.3   reunanopeuden nollapiste +6y
             destination.y += 6f;                 //pelaajan default postionia korkeammalle +6y
-            //Gdx.app.log("TAG", "dest dist: " +destdist);
             destination.x *= destdist;
             destination.y *= destdist;
 
@@ -99,7 +92,6 @@ public class Player extends Pilot {
             direction = destination.sub(curPosition);
             direction.x /= 60f;
             direction.y /= 60f;
-            //direction.rotate(getRotationAverage(), 0f, 0f, 1f);
             decal.translate(direction);
 
             velocity.x = direction.x * 20f;
@@ -109,11 +101,6 @@ public class Player extends Pilot {
                 rotationsArray[i] = rotationsArray[i - 1];
             }
             rotationsArray[0] = direction.x;
-            //float keskiarvo = 0f;
-            //for (int i = 0; i < 10; i++) {
-            //    keskiarvo += rotationsArray[i];
-            //}
-            //decal.setRotationZ(-keskiarvo * 15f);   //10f oli alkuarvo
             decal.setRotationZ(getRotationAverage() * -15);
 
             checkInput(); //Keyboard input
@@ -180,7 +167,7 @@ public class Player extends Pilot {
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
                 (-position.x*31f + posTest()*1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
-                (position.y*15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/720f) + SCREEN_HEIGHT/2f + 12f);
+                (position.y*15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/800f) + SCREEN_HEIGHT/2f + 12f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
@@ -199,8 +186,6 @@ public class Player extends Pilot {
     public void dispose() {
         super.dispose();
         pfx_scarf.dispose();
-        //pfx_stream.dispose();
-        //pfx_stream2.dispose();
     }
 
     public float posTest() {

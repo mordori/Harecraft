@@ -101,7 +101,6 @@ class Button {
     Texture buttonTexture;
     Texture buttonTexturePressed;
     String buttonText = "";
-    BitmapFont font;
     Rectangle buttonRectangle;
     Boolean isPressed;
     int offsetPosition;
@@ -116,7 +115,6 @@ class Button {
         offsetPosition = offsetY;
         buttonTexture = new Texture("textures/playbutton.png");
         buttonTexturePressed = new Texture("textures/playbutton2.png");
-        font = new BitmapFont();
         textMeasures.setText(Assets.font, buttonText);
         buttonRectangle = new Rectangle(Gdx.graphics.getWidth()/2 -150,(Gdx.graphics.getHeight()/2 -50) +offsetPosition ,300,100);
     }
@@ -140,7 +138,6 @@ class Button {
             isPressed = false;
         }
         Assets.font.draw(batch,buttonText,Gdx.graphics.getWidth()/2 -textMeasures.width/2,Gdx.graphics.getHeight()/2 +75 -50 -offsetPosition );
-
     }
 
     public Rectangle getButtonRectangle() {

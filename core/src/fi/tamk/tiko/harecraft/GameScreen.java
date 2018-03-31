@@ -88,7 +88,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
         update(delta);
         worldRenderer.renderWorld();
         HUD.update(delta);
@@ -104,7 +103,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateShaders(float delta) {
-        tick += delta;
+        tick += 0.02;
+        System.out.println(tick);
         shader_sea.begin();
         shader_sea.setUniformf("time", tick);
         shader_sea.end();

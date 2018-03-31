@@ -4,6 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+//      ^__^
+//      (oo)\_______
+//      (__)\       )\/\
+//          ||----w |
+//          ||     ||
+
 public class GameMain extends Game {
 	SpriteBatch sBatch;
 	

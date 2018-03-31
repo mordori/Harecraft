@@ -136,6 +136,7 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
                 shader_sea.begin();
                 shader_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
                 shader_sea.setUniformi("u_texture", 0);
+                shader_sea.setUniformi("u_mask", 2);
                 break;
             default:
                 shader.begin();
