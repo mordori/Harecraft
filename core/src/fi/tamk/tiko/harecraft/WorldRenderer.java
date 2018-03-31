@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
+import java.util.ArrayList;
+
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -78,21 +80,34 @@ public class WorldRenderer {
     public void drawParticles() {
         game.sBatch.begin();
         if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
+
+        for(Cloud c : world.clouds_RDown) {
+            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+        }
+        for(Cloud c : world.clouds_RUp) {
+            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+        }
+        for(Cloud c : world.clouds_LDown) {
+            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+        }
+        for(Cloud c : world.clouds_LUp) {
+            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+        }
         game.sBatch.end();
     }
 
     public void drawDecalLists() {
         for(Cloud c : world.clouds_LUp) {
-            dBatch.add(c.decal);
+            if(!c.isCollided) dBatch.add(c.decal);
         }
         for(Cloud c : world.clouds_LDown) {
-            dBatch.add(c.decal);
+            if(!c.isCollided) dBatch.add(c.decal);
         }
         for(Cloud c : world.clouds_RUp) {
-            dBatch.add(c.decal);
+            if(!c.isCollided) dBatch.add(c.decal);
         }
         for(Cloud c : world.clouds_RDown) {
-            dBatch.add(c.decal);
+            if(!c.isCollided) dBatch.add(c.decal);
         }
         for(Ring l : world.rings) {
             dBatch.add(l.decal);

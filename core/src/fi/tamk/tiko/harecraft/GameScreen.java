@@ -104,7 +104,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void updateShaders(float delta) {
         tick += 0.02;
-        System.out.println(tick);
+        //System.out.println(tick);
         shader_sea.begin();
         shader_sea.setUniformf("time", tick);
         shader_sea.end();

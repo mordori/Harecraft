@@ -35,11 +35,11 @@ public class MainMenu extends ScreenAdapter implements InputProcessor {
         settingsButton = new Button("Settings", 100);
         scoreButton = new Button("Scores", 200);
         Gdx.input.setInputProcessor(this);
+        Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.sBatch.begin();
@@ -108,7 +108,7 @@ class Button {
     Sound buttonSound;
 
     public Button(String bText, int offsetY) {
-        buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/sound_cloud_hit.wav"));
+        buttonSound = Assets.sound_cloud_hit;
         textMeasures= new GlyphLayout();
         isPressed = false;
         buttonText = bText;

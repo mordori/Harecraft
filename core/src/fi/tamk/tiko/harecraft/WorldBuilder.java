@@ -364,7 +364,7 @@ public class WorldBuilder {
 
     public void removeCloud(ArrayList<Cloud> cloudArray) {
         if(!cloudArray.isEmpty() && cloudArray.get(0).decal.getPosition().z < camera.position.z) {
-            cloudArray.remove(0);
+            if(!cloudArray.get(0).isCollided || cloudArray.get(0).pfx_dispersion.isComplete())cloudArray.remove(0);
         }
     }
 
@@ -375,7 +375,6 @@ public class WorldBuilder {
                     || !world.lakes_R.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width / 1.75f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
-                Gdx.app.log("REMOVED", "Tree, left");
             }
         }
 
@@ -384,7 +383,6 @@ public class WorldBuilder {
                     || !world.lakes_L.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width / 1.75f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
-                Gdx.app.log("REMOVED", "Tree, right");
             }
         }
 
@@ -395,12 +393,10 @@ public class WorldBuilder {
             if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 2.25f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
-                Gdx.app.log("REMOVED", "Tree, left");
             }
             if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 2.25f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
-                Gdx.app.log("REMOVED", "Tree, right");
             }
         }
 
@@ -411,12 +407,10 @@ public class WorldBuilder {
             if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 2.25f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
-                Gdx.app.log("REMOVED", "Tree, left");
             }
             if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 2.25f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
-                Gdx.app.log("REMOVED", "Tree, left");
             }
         }
 
@@ -438,7 +432,6 @@ public class WorldBuilder {
 
                 world.hills_L.remove(world.hills_L.size() - 1);
                 hills_LRemoveTimer = 1f;
-                Gdx.app.log("REMOVED", "Hill, left");
             }
         }
 
@@ -448,7 +441,6 @@ public class WorldBuilder {
 
                 world.hills_R.remove(world.hills_R.size() - 1);
                 hills_RRemoveTimer = 1f;
-                Gdx.app.log("REMOVED", "Hill, right");
             }
         }
 

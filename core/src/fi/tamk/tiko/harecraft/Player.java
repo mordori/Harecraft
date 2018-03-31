@@ -25,7 +25,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = 4f;
+    static final float ACCEL_Y_OFFSET = -2f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -164,6 +164,7 @@ public class Player extends Pilot {
         }
     }
 
+    @Override
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
                 (-position.x*31f + posTest()*1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,

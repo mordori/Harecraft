@@ -46,4 +46,6 @@ abstract class GameObject {
         position = decal.getPosition();
         if(!(this instanceof Opponent)) velocity.z = global_Speed - global_Multiplier * 3f;
     }
+
+    public void updateParticles(float delta) {}
 }

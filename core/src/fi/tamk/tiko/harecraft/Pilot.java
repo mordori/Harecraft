@@ -71,6 +71,7 @@ abstract class Pilot extends GameObject {
         decal_head.setColor(1f,1f,1f, opacity);
     }
 
+    @Override
     public void updateParticles(float delta) {}
 
     public void dispose() {}

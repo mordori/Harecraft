@@ -1,11 +1,14 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -23,6 +26,8 @@ public class Cloud extends GameObject {
     boolean isTransparent = false;
     float proximity = 1.2f;
 
+    ParticleEffect pfx_dispersion;
+
     public Cloud(float x, float y, float z) {
         TextureRegion textureRegion = Assets.texR_cloud;
         if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
@@ -34,6 +39,8 @@ public class Cloud extends GameObject {
 
         decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);
+
+        pfx_dispersion = new ParticleEffect(Assets.pfx_cloud_dispersion);
     }
 
     @Override
@@ -56,12 +63,16 @@ public class Cloud extends GameObject {
         }
         decal.setColor(1f,1f,1f, opacity);
 
+        if(isCollided) {
+            updateParticles(delta);
+        }
+
         //Movement Z
         moveZ(delta);
     }
 
     public void checkCollision() {
-        if(decal.getPosition().z > -0.5f) {
+        if(decal.getPosition().z < 3f && decal.getPosition().z > -0.5f) {
             //Center
             if (position.dst(player.position) < 1.65f) {
                 decreaseSpeed();
@@ -97,6 +108,25 @@ public class Cloud extends GameObject {
         }
         if(global_Multiplier < MULTIPLIER_LOW) global_Multiplier = MULTIPLIER_LOW;
         Assets.sound_cloud_hit.play();
+        pfx_dispersion.start();
+        pfx_dispersion.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
+        for(int i = 10; i > 0; i--) {
+            if(MathUtils.random(0,1) == 0) pfx_dispersion.getEmitters().get(0).getRotation().setHigh(-60f);
+            else pfx_dispersion.getEmitters().get(0).getRotation().setHigh(60f);
+            pfx_dispersion.getEmitters().get(0).getAngle().setLow(0f + i * 45f);
+            pfx_dispersion.getEmitters().get(0).addParticle();
+        }
         isCollided = true;
+    }
+
+    @Override
+    public void updateParticles(float delta) {
+        pfx_dispersion.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
+
+        pfx_dispersion.update(delta);
+    }
+
+    public void dispose() {
+        pfx_dispersion.dispose();
     }
 }
