@@ -54,7 +54,7 @@ public class Powerup extends GameObject {
                 decal.setPosition(position.x, position.y,0.5f);
 
                 pfx_hit.start();
-                pfx_hit.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f);
+                pfx_hit.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f + 30f);
                 for(int i = 5; i > 0; i--) {
                     pfx_hit.getEmitters().get(0).getAngle().setLow(-45f + i * 45f);
                     pfx_hit.getEmitters().get(0).addParticle();

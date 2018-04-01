@@ -57,18 +57,18 @@ public class Player extends Pilot {
         accelerationZ = 1f;
         rotation.z = (MathUtils.random(0,1) == 0) ? -45f : 45f;
 
-        width = texR_body.getRegionWidth()/100f;
-        height = texR_body.getRegionHeight()/100f;
+        width = texR_body.getRegionWidth()/250f;
+        height = texR_body.getRegionHeight()/250f;
         decal = Decal.newDecal(width, height, texR_body,true);
         decal.setPosition(x,y,z);
 
-        width = texR_head.getRegionWidth()/100f;
-        height = texR_head.getRegionHeight()/100f;
+        width = texR_head.getRegionWidth()/250f;
+        height = texR_head.getRegionHeight()/250f;
         decal_head = Decal.newDecal(width, height, texR_head,true);
         decal_head.setPosition(x,y,z + 0.1f);
 
-        width = texR_wings.getRegionWidth()/100f;
-        height = texR_wings.getRegionHeight()/100f;
+        width = texR_wings.getRegionWidth()/250f;
+        height = texR_wings.getRegionHeight()/250f;
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z + 0.2f);
 
@@ -169,7 +169,7 @@ public class Player extends Pilot {
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
                 (-position.x*34f + posTest()*1.5f + velocity.x * Math.abs(posYTranspose * getRotationAverage())) * fieldOfView/45f + SCREEN_WIDTH/2f,
-                (position.y*17f + (velocity.x*position.x/2f) ) * fieldOfView/45f + SCREEN_HEIGHT/2f + 12f);
+                (position.y*17f + (velocity.x*position.x/2f) ) * fieldOfView/45f + SCREEN_HEIGHT/2f - 10f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);

@@ -80,14 +80,10 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.play();
         Assets.music_course_1.setVolume(0f);
         Assets.sound_airplane_engine.loop(volume);
-
-        //Gdx.gl.glClearColor(126f/255f, 180f/255f, 41f/255f, 1f);
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         update(delta);
         worldRenderer.renderWorld();
         HUD.update(delta);

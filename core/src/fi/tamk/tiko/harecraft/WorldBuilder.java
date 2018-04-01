@@ -11,10 +11,13 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
+import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 import static fi.tamk.tiko.harecraft.World.WORLD_HEIGHT_UP;
 import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -87,6 +90,8 @@ public class WorldBuilder {
                 world.hotAirBalloons.remove(0);
             }
         }
+
+        updateWorldParticles(delta);
     }
 
     public void spawnGroundObjects() {
@@ -453,6 +458,13 @@ public class WorldBuilder {
         if(!hillArray.isEmpty() && hillArray.get(0).decal.getPosition().z < camera.position.z) {
             hillArray.remove(0);
         }
+    }
+
+    public void updateWorldParticles(float delta) {
+        world.pfx_speed_lines.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
+        System.out.println(world.pfx_speed_lines.getEmitters().get(0).getTransparency().getHighMax());
+        world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 2f);
+        world.pfx_speed_lines.update(delta);
     }
 
     public void spawnStartObjects() {

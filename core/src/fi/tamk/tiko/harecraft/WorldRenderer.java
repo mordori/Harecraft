@@ -35,9 +35,11 @@ public class WorldRenderer {
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
         this.game = game;
+        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     public void renderWorld() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         drawDecals();
         drawParticles();
     }
@@ -51,12 +53,12 @@ public class WorldRenderer {
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        activeShader = SHADER_SEA;
+        /*activeShader = SHADER_SEA;
         dBatch.add(world.sea);
         dBatch.flush();
 
         if(gameState == START) activeShader = SHADER_VIGNETTE;
-        else activeShader = SHADER_DEFAULT;
+        else activeShader = SHADER_DEFAULT;*/
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -97,6 +99,8 @@ public class WorldRenderer {
         for(Powerup p : world.powerups) {
             if(p.isCollected) p.pfx_hit.draw(game.sBatch);
         }
+
+        world.pfx_speed_lines.draw(game.sBatch);
         game.sBatch.end();
     }
 

@@ -62,18 +62,18 @@ public class Opponent extends Pilot {
                 texR_head = Assets.texR_character_default_head;
         }
 
-        width = texR_body.getRegionWidth() / 50f;
-        height = texR_body.getRegionHeight() / 50f;
+        width = texR_body.getRegionWidth() / 200f;
+        height = texR_body.getRegionHeight() / 200f;
         decal = Decal.newDecal(width, height, texR_body,true);
         decal.setPosition(x,y,z);
 
-        width = texR_head.getRegionWidth() / 50f;
-        height = texR_head.getRegionHeight() / 50f;
+        width = texR_head.getRegionWidth() / 200f;
+        height = texR_head.getRegionHeight() / 200f;
         decal_head = Decal.newDecal(width, height, texR_head,true);
         decal_head.setPosition(x,y,z+0.1f);
 
-        width = texR_wings.getRegionWidth() / 50f;
-        height = texR_wings.getRegionHeight() / 50f;
+        width = texR_wings.getRegionWidth() / 200f;
+        height = texR_wings.getRegionHeight() / 200f;
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z+0.2f);
 

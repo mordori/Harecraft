@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 
@@ -23,6 +24,8 @@ public class World {
     //World length
     static float finish = 3000;
     static float end = finish + spawnDistance + 20f;
+
+    ParticleEffect pfx_speed_lines;
 
     //Background
     Decal decal_foreground;
@@ -90,11 +93,13 @@ public class World {
         hotAirBalloons.add(new HotAirBalloon(25f, -23f, spawnDistance + 30f));
 
         player = new Player(0f,-7f,-5f);
-        opponents.add(new Opponent(-3f, -2f, -65f*2f, 2000, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 6.5f));
-        opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7.5f));
-        opponents.add(new Opponent(0f, 4f, -52f*2f, 90, Pilot.COLOR_BLUE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7f));
-        opponents.add(new Opponent(4f, 2f, -55f*2f, 500, Pilot.COLOR_PINK, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8.5f));
-        opponents.add(new Opponent(3f, -5f, -61f*2f, 1000, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 5f));
+        opponents.add(new Opponent(-3f, -2f, -65f*2f, 2000, Pilot.COLOR_RED, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 6.5f));
+        opponents.add(new Opponent(4f, -2f, -61f*2f, 130, Pilot.COLOR_RED, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7.5f));
+        opponents.add(new Opponent(0f, 4f, -52f*2f, 90, Pilot.COLOR_RED, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7f));
+        opponents.add(new Opponent(4f, 2f, -55f*2f, 500, Pilot.COLOR_RED, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8.5f));
+        opponents.add(new Opponent(3f, -5f, -61f*2f, 1000, Pilot.COLOR_RED, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 5f));
+
+        pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
     }
 
     public void dispose() {
