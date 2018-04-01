@@ -358,13 +358,19 @@ public class WorldBuilder {
 
     public void removePowerup() {
         if(world.powerups.size() > 1 && world.powerups.get(0).decal.getPosition().z < camera.position.z) {
-            world.powerups.remove(0);
+            if(!world.powerups.get(0).isCollected || world.powerups.get(0).pfx_hit.isComplete()) {
+                world.powerups.get(0).dispose();
+                world.powerups.remove(0);
+            }
         }
     }
 
     public void removeCloud(ArrayList<Cloud> cloudArray) {
         if(!cloudArray.isEmpty() && cloudArray.get(0).decal.getPosition().z < camera.position.z) {
-            if(!cloudArray.get(0).isCollided || cloudArray.get(0).pfx_dispersion.isComplete())cloudArray.remove(0);
+            if(!cloudArray.get(0).isCollided || cloudArray.get(0).pfx_dispersion.isComplete()) {
+                cloudArray.get(0).dispose();
+                cloudArray.remove(0);
+            }
         }
     }
 

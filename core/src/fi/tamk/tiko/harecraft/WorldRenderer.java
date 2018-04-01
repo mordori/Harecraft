@@ -93,6 +93,10 @@ public class WorldRenderer {
         for(Cloud c : world.clouds_LUp) {
             if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
         }
+
+        for(Powerup p : world.powerups) {
+            if(p.isCollected) p.pfx_hit.draw(game.sBatch);
+        }
         game.sBatch.end();
     }
 

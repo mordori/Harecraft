@@ -1,5 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Interpolation;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -21,10 +24,14 @@ public class Powerup extends GameObject {
     boolean isCollected = false;
     float random;
 
+    ParticleEffect pfx_hit;
+
     public Powerup() {
         velocity.y = MathUtils.random(3.6f,5.2f);
         random = MathUtils.random(-1,1);
         if(random == 0) random = 1;
+
+        pfx_hit = new ParticleEffect(Assets.pfx_balloon_hit);
     }
 
     @Override
@@ -45,6 +52,13 @@ public class Powerup extends GameObject {
 
                 Assets.sound_cloud_hit.play();
                 decal.setPosition(position.x, position.y,0.5f);
+
+                pfx_hit.start();
+                pfx_hit.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f);
+                for(int i = 5; i > 0; i--) {
+                    pfx_hit.getEmitters().get(0).getAngle().setLow(-45f + i * 45f);
+                    pfx_hit.getEmitters().get(0).addParticle();
+                }
             }
         }
         else {
@@ -63,8 +77,20 @@ public class Powerup extends GameObject {
         //Opacity
         setOpacity();
 
+        if(isCollected) {
+            updateParticles(delta);
+        }
+
         //Movement Z
         if(!isCollected || decal.getScaleX() == 0f) moveZ(delta);
         if(isCollected && decal.getScaleX() > 0f) decal.translateZ(-velocity.z/5f * delta);
+    }
+
+    public void updateParticles(float delta) {
+        pfx_hit.update(delta);
+    }
+
+    public void dispose() {
+        pfx_hit.dispose();
     }
 }

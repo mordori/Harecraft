@@ -32,10 +32,8 @@ public class Cloud extends GameObject {
         TextureRegion textureRegion = Assets.texR_cloud;
         if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
 
-        width = textureRegion.getRegionWidth() / 100f;
-        height = textureRegion.getRegionHeight() / 100f;
-        width *= 13f;
-        height *= 13f;
+        width = textureRegion.getRegionWidth() / 80f;
+        height = textureRegion.getRegionHeight() / 80f;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);
@@ -109,20 +107,18 @@ public class Cloud extends GameObject {
         if(global_Multiplier < MULTIPLIER_LOW) global_Multiplier = MULTIPLIER_LOW;
         Assets.sound_cloud_hit.play();
         pfx_dispersion.start();
-        pfx_dispersion.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-        for(int i = 10; i > 0; i--) {
+        pfx_dispersion.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f);
+        /*for(int i = 15; i > 0; i--) {
             if(MathUtils.random(0,1) == 0) pfx_dispersion.getEmitters().get(0).getRotation().setHigh(-60f);
             else pfx_dispersion.getEmitters().get(0).getRotation().setHigh(60f);
             pfx_dispersion.getEmitters().get(0).getAngle().setLow(0f + i * 45f);
             pfx_dispersion.getEmitters().get(0).addParticle();
-        }
+        }*/
         isCollided = true;
     }
 
     @Override
     public void updateParticles(float delta) {
-        pfx_dispersion.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-
         pfx_dispersion.update(delta);
     }
 

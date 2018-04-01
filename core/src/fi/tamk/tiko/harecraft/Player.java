@@ -12,6 +12,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
@@ -167,8 +168,8 @@ public class Player extends Pilot {
     @Override
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                (-position.x*31f + posTest()*1.5f + velocity.x * Math.abs(position.y/posYTranspose * getRotationAverage())) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
-                (position.y*15f + (velocity.x*position.x/2f) ) * (SCREEN_HEIGHT/800f) + SCREEN_HEIGHT/2f + 12f);
+                (-position.x*34f + posTest()*1.5f + velocity.x * Math.abs(posYTranspose * getRotationAverage())) * fieldOfView/45f + SCREEN_WIDTH/2f,
+                (position.y*17f + (velocity.x*position.x/2f) ) * fieldOfView/45f + SCREEN_HEIGHT/2f + 12f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
@@ -197,9 +198,9 @@ public class Player extends Pilot {
         }
 
         if(position.y >= 0f) {
-            posYTranspose = 5f;
+            posYTranspose = position.y / 5f;
         }
-        else posYTranspose = 20f + position.y;
+        else posYTranspose = position.y / (200f * position.y);
 
         if(position.x > 0f) return posXTranspose;
         else return -posXTranspose;
