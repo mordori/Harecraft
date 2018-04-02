@@ -108,6 +108,20 @@ public class GameScreen extends ScreenAdapter {
         shader_sea.setUniformf("time", tick);
         shader_sea.setUniformf("velocity", velocity);
         shader_sea.end();
+
+        shader_vignette.begin();
+        //shader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+        shader_vignette.setUniformi("u_texture", 0);
+        if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
+            shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
+            if((gameStateTime - 2f) / 4f > 0.8f) shader_vignette.setUniformf("u_stateTime", 0.8f);
+        }
+
+        if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
+            shader_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
+            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader_vignette.setUniformf("u_stateTime", 0f);
+        }
+        shader_vignette.end();
     }
 
     public void updateState(float delta) {
@@ -179,6 +193,7 @@ public class GameScreen extends ScreenAdapter {
         HUD.dispose();
         dBatch.dispose();
         world.dispose();
+        worldRenderer.dispose();
     }
 
     @Override

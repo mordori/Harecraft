@@ -112,7 +112,7 @@ public class Ring extends GameObject {
 
     public void increaseFOV(float delta) {
         fieldOfView += delta * 35f / stateTime;
-        if(fieldOfView > 50f) fieldOfView = 50f;
+        if(fieldOfView > 55f) fieldOfView = 55f;
     }
 
     public void updateParticles(float delta) {

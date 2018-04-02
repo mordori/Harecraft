@@ -38,7 +38,7 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     ObjectMap<DecalMaterial, Array<Decal>> materialGroups = new ObjectMap<DecalMaterial, Array<Decal>>();
 
     Camera camera;
-    ShaderProgram shader;
+    static ShaderProgram shader;
     private final Comparator<Decal> cameraSorter;
 
     public MyGroupStrategy (final Camera camera) {
@@ -137,10 +137,12 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         switch(activeShader) {
             case SHADER_VIGNETTE:
                 shader_vignette.begin();
-                shader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+                //shader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
                 shader_vignette.setUniformi("u_texture", 0);
-                if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START)
+                if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
                     shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 5f);
+                    System.out.println((GameScreen.gameStateTime - 2f) / 5f);
+                }
                 break;
             case SHADER_SEA:
                 shader_sea.begin();

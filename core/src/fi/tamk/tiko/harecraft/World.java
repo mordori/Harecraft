@@ -22,7 +22,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT / 100f * 2f;
 
     //World length
-    static float finish = 3000;
+    static float finish = 1000;
     static float end = finish + spawnDistance + 20f;
 
     ParticleEffect pfx_speed_lines;

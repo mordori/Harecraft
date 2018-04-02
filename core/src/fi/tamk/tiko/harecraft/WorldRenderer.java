@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import java.util.ArrayList;
 
@@ -31,34 +32,50 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class WorldRenderer {
     GameMain game;
     World world;
+    FrameBuffer fbo;
+    Sprite texture = new Sprite(new Texture((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT,Pixmap.Format.RGB565));
 
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
         this.game = game;
+        fbo = new FrameBuffer(Pixmap.Format.RGB565, (int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, true);
+        texture.flip(false, true);
         Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     public void renderWorld() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        if(gameState != START && gameState != END) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        if(gameState == START || gameState == END) {
+            fbo.begin();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        }
         drawDecals();
         drawParticles();
+        if(gameState == START || gameState == END) {
+            fbo.end();
+            renderToTexture();
+        }
     }
 
     public void drawDecals() {
-        if(gameState == START) activeShader = SHADER_VIGNETTE;
-        else activeShader = SHADER_DEFAULT;
+        //if(gameState == START) activeShader = SHADER_VIGNETTE;
+        //else activeShader = SHADER_DEFAULT;
 
-        //dBatch.add(world.decal_foreground);
+        activeShader = SHADER_DEFAULT;
+
+        dBatch.add(world.decal_foreground);
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        activeShader = SHADER_SEA;
+        /*activeShader = SHADER_SEA;
         dBatch.add(world.sea);
         dBatch.flush();
 
-        if(gameState == START) activeShader = SHADER_VIGNETTE;
-        else activeShader = SHADER_DEFAULT;
+        //if(gameState == START) activeShader = SHADER_VIGNETTE;
+        //else activeShader = SHADER_DEFAULT;
+
+        activeShader = SHADER_DEFAULT;*/
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -77,6 +94,14 @@ public class WorldRenderer {
 
         //////////////////////////////////////////////
         dBatch.flush();
+    }
+
+    public void renderToTexture() {
+        texture.setTexture(fbo.getColorBufferTexture());
+        if(gameState == START || gameState == END) game.sBatch.setShader(MyGroupStrategy.shader_vignette);
+        game.sBatch.begin();
+        texture.draw(game.sBatch);
+        game.sBatch.end();
     }
 
     public void drawParticles() {
@@ -128,7 +153,7 @@ public class WorldRenderer {
         for(Powerup p : world.powerups) {
             dBatch.add(p.decal);
         }
-        /*for(Tree t : world.trees_L) {
+        for(Tree t : world.trees_L) {
             dBatch.add(t.decal);
         }
         for(Tree t : world.trees_R) {
@@ -145,7 +170,7 @@ public class WorldRenderer {
         }
         for(Lake l : world.lakes_R) {
             dBatch.add(l.decal);
-        }*/
+        }
         for(Opponent o : world.opponents) {
             if(o.isDrawing || o.opacity != 0f) {
                 dBatch.add(o.decal_wings);
@@ -155,5 +180,10 @@ public class WorldRenderer {
 
             }
         }
+    }
+
+    public void dispose() {
+        fbo.dispose();
+        texture.getTexture().dispose();
     }
 }
