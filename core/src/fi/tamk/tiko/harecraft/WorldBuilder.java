@@ -324,10 +324,6 @@ public class WorldBuilder {
         }
     }
 
-    public boolean isHillRemoved() {
-        return false;
-    }
-
     public void removeClouds() {
         removeCloud(world.clouds_LUp);
         removeCloud(world.clouds_LDown);
@@ -462,7 +458,6 @@ public class WorldBuilder {
 
     public void updateWorldParticles(float delta) {
         world.pfx_speed_lines.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-        System.out.println(world.pfx_speed_lines.getEmitters().get(0).getTransparency().getHighMax());
         world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 2f);
         world.pfx_speed_lines.update(delta);
     }

@@ -146,5 +146,5 @@ behind: false
 premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
-tex_hit.png
+particle_hit.png
 

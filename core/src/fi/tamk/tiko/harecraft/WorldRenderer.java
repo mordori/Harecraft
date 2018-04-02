@@ -106,16 +106,16 @@ public class WorldRenderer {
 
     public void drawDecalLists() {
         for(Cloud c : world.clouds_LUp) {
-            if(!c.isCollided) dBatch.add(c.decal);
+            dBatch.add(c.decal);
         }
         for(Cloud c : world.clouds_LDown) {
-            if(!c.isCollided) dBatch.add(c.decal);
+            dBatch.add(c.decal);
         }
         for(Cloud c : world.clouds_RUp) {
-            if(!c.isCollided) dBatch.add(c.decal);
+            dBatch.add(c.decal);
         }
         for(Cloud c : world.clouds_RDown) {
-            if(!c.isCollided) dBatch.add(c.decal);
+            dBatch.add(c.decal);
         }
         for(Ring l : world.rings) {
             dBatch.add(l.decal);

@@ -48,7 +48,7 @@ public class Cloud extends GameObject {
         //Opacity && Collision
         if(!isTransparent) {
             opacity = stateTime < 1f ? stateTime : 1f;
-            if(decal.getPosition().z < 0.1f) {
+            if (decal.getPosition().z < 0.1f) {
                 if (position.dst(player.position) < 2.8f) {
                     isTransparent = true;
                 }
@@ -63,10 +63,12 @@ public class Cloud extends GameObject {
 
         if(isCollided) {
             updateParticles(delta);
+            decal.setScale(decal.getScaleX() - delta * stateTime / 3.25f);
+            if(decal.getScaleX() < 0f) decal.setScale(0f);
         }
 
         //Movement Z
-        moveZ(delta);
+        if(!isCollided || decal.getScaleX() == 0f) moveZ(delta);
     }
 
     public void checkCollision() {
