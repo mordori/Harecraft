@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * Created by musta on 29.3.2018.
  */
 
-public class SettingsMenu extends ScreenAdapter implements InputProcessor {
+public class SettingsMenu extends ScreenAdapter {
 
     GameMain game;
     Skin skin;
@@ -28,7 +28,7 @@ public class SettingsMenu extends ScreenAdapter implements InputProcessor {
     Stage stage;
     Boolean returnToMainMenu = false;
 
-    public SettingsMenu(final GameMain game) {
+    public SettingsMenu(GameMain game) {
         this.game = game;
         skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
         camera = new OrthographicCamera();
@@ -64,7 +64,7 @@ public class SettingsMenu extends ScreenAdapter implements InputProcessor {
         button.addListener(new InputListener() {
             Boolean touched = false;
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 touched = true;
                 return true;
             }
@@ -76,7 +76,6 @@ public class SettingsMenu extends ScreenAdapter implements InputProcessor {
             {
                 touched = false;
             }
-
         });
     }
 
@@ -91,45 +90,5 @@ public class SettingsMenu extends ScreenAdapter implements InputProcessor {
         //Assets.font.draw(game.sBatch, "Difficulty", 730,750);
         game.sBatch.end();
         if (returnToMainMenu) game.setScreen(new MainMenu(game));
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }
