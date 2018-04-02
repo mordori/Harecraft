@@ -75,6 +75,7 @@ public class GameScreen extends ScreenAdapter {
         game.sBatch.setProjectionMatrix(orthoCamera.combined);
 
         gameState = GameState.START;
+        gameStateTime = 0f;
 
         //Compressed audio files causes a slight delay when set to play, so better do it while the game is still loading
         //and reset the position and volume when it is actually supposed to play.
@@ -89,6 +90,11 @@ public class GameScreen extends ScreenAdapter {
         worldRenderer.renderWorld();
         HUD.update(delta);
         HUD.draw();
+
+        if(gameState == END && gameStateTime > 5f) {
+            dispose();
+            game.setScreen(new MainMenu(game));
+        }
     }
 
     public void update(float delta) {
@@ -159,6 +165,7 @@ public class GameScreen extends ScreenAdapter {
             gameStateTime = 0f;
         }
 
+
         if(gameState == RACE && gameStateTime == 0f) {
             float x = MathUtils.random(-10f, 10f);
             float y = MathUtils.random(-9.2f, 6.2f);
@@ -190,6 +197,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        System.out.println("ASDSADASDSADSAD");
         HUD.dispose();
         dBatch.dispose();
         world.dispose();

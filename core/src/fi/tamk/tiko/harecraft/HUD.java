@@ -34,7 +34,7 @@ public class HUD {
     float progressline_arc_radius = 9f;
     float HUD_opacity;
 
-    Sprite speedometer = new Sprite(Assets.flip(Assets.texR_speedometer));
+    Sprite speedometer = new Sprite(Assets.texR_speedometer);
     Sprite text_gameStates = new Sprite();
     Sprite text_placementNumber = new Sprite();
 
@@ -159,7 +159,7 @@ public class HUD {
             }
 
             text_gameStates.setOriginCenter();
-            text_gameStates.scale(gameStateTime/300f);
+            //text_gameStates.scale(gameStateTime/300f);
             text_gameStates.setColor(1f, 1f, 1f, text_opacity);
             //text_gameStates.rotate(200f / (gameStateTime*20f)+0.01f);
 
