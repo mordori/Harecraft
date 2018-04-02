@@ -1,9 +1,12 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
@@ -21,6 +24,7 @@ public class Ring extends GameObject {
     Decal decal_arrows;
     float opacity_arrows;
     float stateTime_arrows;
+    ParticleEffect pfx_speed_up;
 
     public Ring(float x, float y, float z) {
         width = Assets.texR_ring.getRegionWidth() / 100f;
@@ -33,6 +37,8 @@ public class Ring extends GameObject {
         decal_arrows = Decal.newDecal(width, height, Assets.texR_ring_arrows, true);
         decal_arrows.setPosition(x,y,z);
         decal_arrows.setScale(1.5f);
+
+        pfx_speed_up = new ParticleEffect(Assets.pfx_speed_up);
     }
 
     @Override
@@ -50,6 +56,9 @@ public class Ring extends GameObject {
                 Assets.sound_ring_collected.play();
                 decal.setPosition(position.x, position.y,0.5f);
                 decal_arrows.setPosition(position.x, position.y,0.5f);
+
+                pfx_speed_up.start();
+                pfx_speed_up.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f);
             }
         }
         else {
@@ -65,6 +74,7 @@ public class Ring extends GameObject {
             decal_arrows.translateY(velocity.y * delta);
 
             increaseFOV(delta);
+            updateParticles(delta);
         }
 
         decal_arrows.setScale(decal_arrows.getScaleX() - delta * stateTime_arrows/2f);
@@ -103,5 +113,13 @@ public class Ring extends GameObject {
     public void increaseFOV(float delta) {
         fieldOfView += delta * 35f / stateTime;
         if(fieldOfView > 50f) fieldOfView = 50f;
+    }
+
+    public void updateParticles(float delta) {
+        pfx_speed_up.update(delta);
+    }
+
+    public void dispose() {
+        pfx_speed_up.dispose();
     }
 }

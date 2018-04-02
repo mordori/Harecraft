@@ -48,17 +48,17 @@ public class WorldRenderer {
         if(gameState == START) activeShader = SHADER_VIGNETTE;
         else activeShader = SHADER_DEFAULT;
 
-        dBatch.add(world.decal_foreground);
+        //dBatch.add(world.decal_foreground);
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        /*activeShader = SHADER_SEA;
+        activeShader = SHADER_SEA;
         dBatch.add(world.sea);
         dBatch.flush();
 
         if(gameState == START) activeShader = SHADER_VIGNETTE;
-        else activeShader = SHADER_DEFAULT;*/
+        else activeShader = SHADER_DEFAULT;
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -100,6 +100,10 @@ public class WorldRenderer {
             if(p.isCollected) p.pfx_hit.draw(game.sBatch);
         }
 
+        for(Ring r : world.rings) {
+            if(r.isCollected) r.pfx_speed_up.draw(game.sBatch);
+        }
+
         world.pfx_speed_lines.draw(game.sBatch);
         game.sBatch.end();
     }
@@ -124,7 +128,7 @@ public class WorldRenderer {
         for(Powerup p : world.powerups) {
             dBatch.add(p.decal);
         }
-        for(Tree t : world.trees_L) {
+        /*for(Tree t : world.trees_L) {
             dBatch.add(t.decal);
         }
         for(Tree t : world.trees_R) {
@@ -141,7 +145,7 @@ public class WorldRenderer {
         }
         for(Lake l : world.lakes_R) {
             dBatch.add(l.decal);
-        }
+        }*/
         for(Opponent o : world.opponents) {
             if(o.isDrawing || o.opacity != 0f) {
                 dBatch.add(o.decal_wings);

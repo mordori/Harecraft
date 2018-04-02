@@ -7,9 +7,12 @@ varying vec2 v_texCoord0;
 
 uniform sampler2D u_texture;
 uniform sampler2D u_texture1;
+uniform sampler2D u_texture2;
 uniform sampler2D u_mask;
+uniform sampler2D u_mask2;
 
 uniform float time;
+uniform float velocity;
 
 
 vec3 mod289(vec3 x) {
@@ -75,13 +78,17 @@ float snoise(vec2 v) {
 void main(void) {
 	vec4 texColor0 = texture2D(u_texture, v_texCoord0);
 	vec4 texColor1 = texture2D(u_texture1, v_texCoord0);
+	vec4 texColor2 = texture2D(u_texture2, v_texCoord0);
 
-	//pertube texcoord by x and y
-	vec2 distort = 0.05 * vec2(snoise(v_texCoord0 + vec2(time/5.0, 0.0)) ,
-                              snoise(v_texCoord0 + vec2(0.0, time/5.0)));
+	vec2 distort = 0.05 * vec2(snoise(v_texCoord0 + vec2(time/500.0, 0.0)) ,
+                              snoise(v_texCoord0 + vec2(0.0, time/500.0)));
 
-	float mask = texture2D(u_mask, v_texCoord0 + distort).a * 0.3;
 
-	//interpolate the colours based on the mask
-	gl_FragColor = v_color * mix(texColor0, texColor1, mask);
+	float mask2 = texture2D(u_mask2, vec2(v_texCoord0.x, v_texCoord0.y + velocity/150.0*0.05) + distort).a * 0.2;
+
+	float mask = texture2D(u_mask, vec2(v_texCoord0.x, v_texCoord0.y + velocity/150.0*0.05) + distort).a;
+
+	vec4 color = v_color * mix(texColor0, texColor2, mask2);
+
+	gl_FragColor = color * mix(texColor0, texColor1, mask);
 }

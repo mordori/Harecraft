@@ -54,7 +54,7 @@ public class Powerup extends GameObject {
                 decal.setPosition(position.x, position.y,0.5f);
 
                 pfx_hit.start();
-                pfx_hit.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f + 30f);
+                pfx_hit.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f + 20f);
                 for(int i = 5; i > 0; i--) {
                     pfx_hit.getEmitters().get(0).getAngle().setLow(-45f + i * 45f);
                     pfx_hit.getEmitters().get(0).addParticle();
@@ -69,17 +69,16 @@ public class Powerup extends GameObject {
 
             decal.translateX(velocity.x * delta);
             decal.translateY(velocity.y * delta);
+
+            rotation.z = random * delta * stateTime * 3f;
+            updateParticles(delta);
         }
 
-        if(isCollected) rotation.z = random * delta * stateTime * 3f;
         decal.rotateZ(rotation.z);
 
         //Opacity
         setOpacity();
 
-        if(isCollected) {
-            updateParticles(delta);
-        }
 
         //Movement Z
         if(!isCollected || decal.getScaleX() == 0f) moveZ(delta);

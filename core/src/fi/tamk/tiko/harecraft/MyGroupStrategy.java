@@ -18,8 +18,10 @@ import com.badlogic.gdx.utils.Pool;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE0;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE1;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE2;
+import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE3;
+import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE4;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-
+import static fi.tamk.tiko.harecraft.World.player;
 
 
 public class MyGroupStrategy implements GroupStrategy, Disposable {
@@ -60,13 +62,21 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         createShader_Sea();
 
         shader_sea.begin();
+        shader_sea.setUniformi("u_texture", 0);
         shader_sea.setUniformi("u_texture1", 1);
-        shader_sea.setUniformi("u_mask", 2);
+        shader_sea.setUniformi("u_texture2", 2);
+        shader_sea.setUniformi("u_mask1", 3);
+        shader_sea.setUniformi("u_mask2", 4);
         shader_sea.setUniformf("time", GameScreen.tick);
+        shader_sea.setUniformf("velocity", GameScreen.velocity);
         shader_sea.end();
 
-        Gdx.gl.glActiveTexture(GL_TEXTURE2);
+        Gdx.gl.glActiveTexture(GL_TEXTURE4);
         World.mask.bind();
+        Gdx.gl.glActiveTexture(GL_TEXTURE3);
+        World.mask2.bind();
+        Gdx.gl.glActiveTexture(GL_TEXTURE2);
+        World.tex2.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE1);
         World.tex1.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE0);
@@ -136,7 +146,10 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
                 shader_sea.begin();
                 shader_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
                 shader_sea.setUniformi("u_texture", 0);
-                shader_sea.setUniformi("u_mask", 2);
+                shader_sea.setUniformi("u_texture1", 1);
+                shader_sea.setUniformi("u_texture2", 2);
+                shader_sea.setUniformi("u_mask2", 3);
+                shader_sea.setUniformi("u_mask", 4);
                 break;
             default:
                 shader.begin();

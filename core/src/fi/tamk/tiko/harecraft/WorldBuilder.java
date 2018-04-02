@@ -348,12 +348,15 @@ public class WorldBuilder {
 
     public void removeRing() {
         if(!world.rings.isEmpty() && world.rings.get(0).decal.getPosition().z < camera.position.z) {
-            world.rings.remove(0);
+            if(!world.rings.get(0).isCollected || world.rings.get(0).pfx_speed_up.isComplete()) {
+                world.rings.get(0).dispose();
+                world.rings.remove(0);
 
-            int i = world.trees_R.size()+world.trees_L.size() + world.clouds_RDown.size() +world.clouds_RUp.size()+world.clouds_LDown.size()+world.clouds_LUp.size()
-                    +world.hills_L.size()+world.hills_R.size();
+                int i = world.trees_R.size()+world.trees_L.size() + world.clouds_RDown.size() +world.clouds_RUp.size()+world.clouds_LDown.size()+world.clouds_LUp.size()
+                        +world.hills_L.size()+world.hills_R.size();
 
-            System.out.println("Decals: " + i);
+                System.out.println("Decals: " + i);
+            }
         }
     }
 

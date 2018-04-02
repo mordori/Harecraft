@@ -72,6 +72,7 @@ public class Assets {
     static ParticleEffect pfx_cloud_dispersion;
     static ParticleEffect pfx_balloon_hit;
     static ParticleEffect pfx_speed_lines;
+    static ParticleEffect pfx_speed_up;
 
     static BitmapFont font;
 
@@ -131,6 +132,8 @@ public class Assets {
         pfx_balloon_hit.load(Gdx.files.internal("particles/pfx_balloon_hit"), Gdx.files.internal("particles/"));
         pfx_speed_lines = new ParticleEffect();
         pfx_speed_lines.load(Gdx.files.internal("particles/pfx_speed_lines"), Gdx.files.internal("particles/"));
+        pfx_speed_up = new ParticleEffect();
+        pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/foo.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -222,6 +225,7 @@ public class Assets {
         pfx_cloud_dispersion.dispose();
         pfx_balloon_hit.dispose();
         pfx_speed_lines.dispose();
+        pfx_speed_up.dispose();
 
         font.dispose();
     }

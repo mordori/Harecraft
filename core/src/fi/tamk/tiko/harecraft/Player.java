@@ -26,7 +26,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = -2f;
+    static final float ACCEL_Y_OFFSET = 4f;
     final float SPEED = 15f;
     final float MAX_SPEED = 7f;
     float accelerationZ;
@@ -168,8 +168,8 @@ public class Player extends Pilot {
     @Override
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                (-position.x*34f + posTest()*1.5f + velocity.x * Math.abs(posYTranspose * getRotationAverage())) * fieldOfView/45f + SCREEN_WIDTH/2f,
-                (position.y*17f + (velocity.x*position.x/2f) ) * fieldOfView/45f + SCREEN_HEIGHT/2f - 10f);
+                (-position.x*34f + posTest()*1.5f + velocity.x * Math.abs(posYTranspose * getRotationAverage())) * fieldOfView/45f * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
+                (position.y*17f + (velocity.x*position.x/2f) ) * fieldOfView/45f * (SCREEN_HEIGHT/800f) + SCREEN_HEIGHT/2f - 10f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);

@@ -62,8 +62,8 @@ public class Cloud extends GameObject {
         decal.setColor(1f,1f,1f, opacity);
 
         if(isCollided) {
-            updateParticles(delta);
-            decal.setScale(decal.getScaleX() - delta * stateTime / 3.25f);
+            if(decal.getScaleX() < 0.7f) updateParticles(delta);
+            decal.setScale(decal.getScaleX() - delta * stateTime / 2f);
             if(decal.getScaleX() < 0f) decal.setScale(0f);
         }
 

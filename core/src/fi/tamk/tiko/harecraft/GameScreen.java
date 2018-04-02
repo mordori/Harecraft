@@ -54,6 +54,7 @@ public class GameScreen extends ScreenAdapter {
     float volume = 0.15f;
 
     static float tick;
+    static float velocity;
 
     public GameScreen(GameMain game, World world) {
         this.game = game;
@@ -99,10 +100,13 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateShaders(float delta) {
-        tick += 0.02;
-        //System.out.println(tick);
+        tick += delta;
+        velocity += player.velocity.z;
+        velocity %= 3000f;
+
         shader_sea.begin();
         shader_sea.setUniformf("time", tick);
+        shader_sea.setUniformf("velocity", velocity);
         shader_sea.end();
     }
 
@@ -161,11 +165,10 @@ public class GameScreen extends ScreenAdapter {
     public void updateCameras(float delta) {
         fieldOfView -= delta;
         if(fieldOfView < 45f) fieldOfView = 45f;
-        //System.out.println(fieldOfView);
 
         camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
         camera.lookAt(0f,0f, spawnDistance/2f);
-        camera.up.set(player.getRotationAverage(), 20f, 0f); //camera.up.set(player.getRotationAverage(), 20f, 0f);
+        camera.up.set(player.getRotationAverage(), 20f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
         orthoCamera.update();
