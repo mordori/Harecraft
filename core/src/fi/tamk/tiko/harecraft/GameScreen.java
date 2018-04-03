@@ -61,14 +61,11 @@ public class GameScreen extends ScreenAdapter {
         this.world = world;
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world, game);
-
         HUD = new HUD(world, game);
 
         gameState = GameState.START;
         gameStateTime = 0f;
 
-        //Compressed audio files causes a slight delay when set to play, so better do it while the game is still loading
-        //and reset the position and volume when it is actually supposed to play.
         Assets.music_course_1.play();
         Assets.music_course_1.setVolume(0f);
         Assets.sound_airplane_engine.loop(volume);
@@ -105,13 +102,11 @@ public class GameScreen extends ScreenAdapter {
         shader_sea.end();
 
         shader_vignette.begin();
-        //shader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
         shader_vignette.setUniformi("u_texture", 0);
         if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
             shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
             if((gameStateTime - 2f) / 4f > 0.8f) shader_vignette.setUniformf("u_stateTime", 0.8f);
         }
-
         if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
             shader_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
             if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader_vignette.setUniformf("u_stateTime", 0f);
@@ -203,8 +198,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        HUD.dispose();
         world.dispose();
-        worldRenderer.dispose();
+        HUD.dispose();
     }
 }

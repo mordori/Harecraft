@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
+import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -29,14 +31,10 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class WorldRenderer {
     GameMain game;
     World world;
-    FrameBuffer fbo;
-    Sprite texture = new Sprite(new Texture((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT,Pixmap.Format.RGB565));
 
     public WorldRenderer(World world, GameMain game) {
         this.world = world;
         this.game = game;
-        fbo = new FrameBuffer(Pixmap.Format.RGB565, (int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, true);
-        texture.flip(false, true);
         Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
@@ -55,9 +53,6 @@ public class WorldRenderer {
     }
 
     public void drawDecals() {
-        //if(gameState == START) activeShader = SHADER_VIGNETTE;
-        //else activeShader = SHADER_DEFAULT;
-
         activeShader = SHADER_DEFAULT;
 
         dBatch.add(world.decal_foreground);
@@ -65,14 +60,11 @@ public class WorldRenderer {
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        /*activeShader = SHADER_SEA;
+        activeShader = SHADER_SEA;
         dBatch.add(world.sea);
         dBatch.flush();
 
-        //if(gameState == START) activeShader = SHADER_VIGNETTE;
-        //else activeShader = SHADER_DEFAULT;
-
-        activeShader = SHADER_DEFAULT;*/
+        activeShader = SHADER_DEFAULT;
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -177,10 +169,5 @@ public class WorldRenderer {
 
             }
         }
-    }
-
-    public void dispose() {
-        fbo.dispose();
-        texture.getTexture().dispose();
     }
 }

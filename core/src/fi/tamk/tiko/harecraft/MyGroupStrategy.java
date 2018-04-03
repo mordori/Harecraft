@@ -63,10 +63,10 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
 
         shader_sea.begin();
         shader_sea.setUniformi("u_texture", 0);
-        shader_sea.setUniformi("u_texture1", 1);
-        shader_sea.setUniformi("u_texture2", 2);
-        shader_sea.setUniformi("u_mask1", 3);
-        shader_sea.setUniformi("u_mask2", 4);
+        shader_sea.setUniformi("u_texture_foam", 1);
+        shader_sea.setUniformi("u_texture_sea_deep", 2);
+        shader_sea.setUniformi("u_mask_foam", 3);
+        shader_sea.setUniformi("u_mask_sea_deep", 4);
         shader_sea.setUniformf("time", GameScreen.tick);
         shader_sea.setUniformf("velocity", GameScreen.velocity);
         shader_sea.end();
