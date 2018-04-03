@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -14,7 +15,6 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.isCountdown;
-import static fi.tamk.tiko.harecraft.GameScreen.orthoCamera;
 import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
 

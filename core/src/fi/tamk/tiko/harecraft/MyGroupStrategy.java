@@ -72,15 +72,15 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         shader_sea.end();
 
         Gdx.gl.glActiveTexture(GL_TEXTURE4);
-        World.mask.bind();
+        Assets.tex_mask_foam.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE3);
-        World.mask2.bind();
+        Assets.tex_mask_sea_deep.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE2);
-        World.tex2.bind();
+        Assets.tex_sea_deep.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE1);
-        World.tex1.bind();
+        Assets.tex_foam.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE0);
-        World.tex0.bind();
+        Assets.tex_sea.bind();
     }
 
     public void setCamera (Camera camera) {

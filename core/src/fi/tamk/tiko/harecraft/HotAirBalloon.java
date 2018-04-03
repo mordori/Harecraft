@@ -3,12 +3,8 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector3;
 
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.GameScreen.camera;
-import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
+import static fi.tamk.tiko.harecraft.GameMain.camera;
+
 
 /**
  * Created by Mika on 03/03/2018.

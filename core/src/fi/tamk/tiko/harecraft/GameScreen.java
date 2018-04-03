@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.MathUtils;
 
+import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -40,12 +42,10 @@ public class GameScreen extends ScreenAdapter {
     WorldBuilder builder;
     WorldRenderer worldRenderer;
     HUD HUD;
-    static DecalBatch dBatch;
-    static PerspectiveCamera camera;
-    static OrthographicCamera orthoCamera;
-    static float fieldOfView = 45f;
 
     static GameState gameState;
+
+    static float fieldOfView = 45f;
     static float gameStateTime;
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
@@ -62,17 +62,7 @@ public class GameScreen extends ScreenAdapter {
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world, game);
 
-        orthoCamera = new OrthographicCamera();
-        orthoCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera = new PerspectiveCamera(fieldOfView, SCREEN_WIDTH, SCREEN_HEIGHT);
-        camera.near = 0.1f;
-        camera.far = 400f;
-        camera.position.set(0f,0f,-5f);
-
         HUD = new HUD(world, game);
-
-        dBatch = new DecalBatch(new MyGroupStrategy(camera));
-        game.sBatch.setProjectionMatrix(orthoCamera.combined);
 
         gameState = GameState.START;
         gameStateTime = 0f;
@@ -92,7 +82,6 @@ public class GameScreen extends ScreenAdapter {
         HUD.draw();
 
         if(gameState == END && gameStateTime > 5f) {
-            dispose();
             game.setScreen(new MainMenu(game));
         }
     }
@@ -196,15 +185,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void dispose() {
-        System.out.println("ASDSADASDSADSAD");
-        HUD.dispose();
-        dBatch.dispose();
-        world.dispose();
-        worldRenderer.dispose();
-    }
-
-    @Override
     public void resize (int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
@@ -214,5 +194,17 @@ public class GameScreen extends ScreenAdapter {
         shader_vignette.begin();
         shader_vignette.setUniformf("u_resolution", width, height);
         shader_vignette.end();
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        HUD.dispose();
+        world.dispose();
+        worldRenderer.dispose();
     }
 }

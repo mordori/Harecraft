@@ -1,18 +1,10 @@
 package fi.tamk.tiko.harecraft;
 
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
-import static fi.tamk.tiko.harecraft.GameScreen.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
-import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 28/02/2018.

@@ -32,11 +32,6 @@ public class World {
     Decal decal_sun1;
     Decal decal_sun2;
     Decal sea;
-    static Texture tex0;
-    static Texture tex1;
-    static Texture tex2;
-    static Texture mask;
-    static Texture mask2;
 
     //Finishline
     ArrayList<HotAirBalloon> hotAirBalloons = new ArrayList<HotAirBalloon>();
@@ -76,28 +71,9 @@ public class World {
         decal_sun2.setPosition(0f, -40f, 298f);
         decal_sun2.rotateZ(45f);
 
-        tex0 = new Texture(Gdx.files.internal("shaders/tex_sea.png"));
-        tex0.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex0.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        sea = Decal.newDecal(new TextureRegion(tex0,0,0, 600, 330), true);
+        sea = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
         sea.setPosition(0f, -28f, 125f);
         sea.rotateX(90f);
-
-        tex1 = new Texture(Gdx.files.internal("shaders/tex_foam.png"));
-        tex1.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex1.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
-        tex2 = new Texture(Gdx.files.internal("shaders/tex_sea_deep.png"));
-        tex2.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex2.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
-        mask = new Texture(Gdx.files.internal("shaders/tex_sea_mask.png"));
-        mask.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        mask.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
-        mask2 = new Texture(Gdx.files.internal("shaders/tex_sea_deep_mask.png"));
-        mask2.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        mask2.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
 
         hotAirBalloons.add(new HotAirBalloon(-25f, -23f, spawnDistance + 30f));
         hotAirBalloons.add(new HotAirBalloon(25f, -23f, spawnDistance + 30f));
