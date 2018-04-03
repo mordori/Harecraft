@@ -60,8 +60,8 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.world = world;
         builder = new WorldBuilder(world);
-        worldRenderer = new WorldRenderer(world, game);
-        HUD = new HUD(world, game);
+        worldRenderer = new WorldRenderer(world);
+        HUD = new HUD(world);
 
         gameState = GameState.START;
         gameStateTime = 0f;
@@ -85,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void update(float delta) {
         logger.log();
+
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
@@ -102,7 +103,6 @@ public class GameScreen extends ScreenAdapter {
         shader_sea.end();
 
         shader_vignette.begin();
-        shader_vignette.setUniformi("u_texture", 0);
         if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
             shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
             if((gameStateTime - 2f) / 4f > 0.8f) shader_vignette.setUniformf("u_stateTime", 0.8f);
@@ -199,6 +199,5 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         world.dispose();
-        HUD.dispose();
     }
 }

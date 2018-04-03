@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
@@ -24,8 +25,11 @@ import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 public class GameMain extends Game {
 	static SpriteBatch sBatch;
     static DecalBatch dBatch;
+
     static PerspectiveCamera camera;
     static OrthographicCamera orthoCamera;
+
+    static ShapeRenderer shapeRenderer;
 
     static FrameBuffer fbo;
     static Sprite texture;
@@ -46,6 +50,9 @@ public class GameMain extends Game {
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
+
         fbo = new FrameBuffer(Pixmap.Format.RGB565, (int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, true);
         texture = new Sprite(new Texture((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, Pixmap.Format.RGB565));
         texture.flip(false, true);
@@ -62,8 +69,10 @@ public class GameMain extends Game {
 	public void dispose () {
 		sBatch.dispose();
         dBatch.dispose();
+        shapeRenderer.dispose();
         fbo.dispose();
         texture.getTexture().dispose();
+
 		Assets.dispose();
         Gdx.app.log("DISPOSED","Assets");
 	}

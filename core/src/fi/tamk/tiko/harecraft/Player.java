@@ -28,7 +28,6 @@ public class Player extends Pilot {
     //Tablet chair = 1f
     static final float ACCEL_Y_OFFSET = -2f;
     final float SPEED = 15f;
-    final float MAX_SPEED = 7f;
     float accelerationZ;
     float []rotationsArray;
     float destdist;

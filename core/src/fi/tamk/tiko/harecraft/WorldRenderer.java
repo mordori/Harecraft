@@ -2,25 +2,16 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_SEA;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_VIGNETTE;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -32,9 +23,8 @@ public class WorldRenderer {
     GameMain game;
     World world;
 
-    public WorldRenderer(World world, GameMain game) {
+    public WorldRenderer(World world) {
         this.world = world;
-        this.game = game;
         Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
@@ -87,39 +77,39 @@ public class WorldRenderer {
 
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
-        if(gameState == START || gameState == END) game.sBatch.setShader(MyGroupStrategy.shader_vignette);
-        game.sBatch.begin();
-        texture.draw(game.sBatch);
-        game.sBatch.end();
+        if(gameState == START || gameState == END) sBatch.setShader(MyGroupStrategy.shader_vignette);
+        sBatch.begin();
+        texture.draw(sBatch);
+        sBatch.end();
     }
 
     public void drawParticles() {
-        game.sBatch.begin();
-        if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(game.sBatch);
+        sBatch.begin();
+        if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(sBatch);
 
         for(Cloud c : world.clouds_RDown) {
-            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         }
         for(Cloud c : world.clouds_RUp) {
-            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         }
         for(Cloud c : world.clouds_LDown) {
-            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         }
         for(Cloud c : world.clouds_LUp) {
-            if(c.isCollided) c.pfx_dispersion.draw(game.sBatch);
+            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         }
 
         for(Powerup p : world.powerups) {
-            if(p.isCollected) p.pfx_hit.draw(game.sBatch);
+            if(p.isCollected) p.pfx_hit.draw(sBatch);
         }
 
         for(Ring r : world.rings) {
-            if(r.isCollected) r.pfx_speed_up.draw(game.sBatch);
+            if(r.isCollected) r.pfx_speed_up.draw(sBatch);
         }
 
-        world.pfx_speed_lines.draw(game.sBatch);
-        game.sBatch.end();
+        world.pfx_speed_lines.draw(sBatch);
+        sBatch.end();
     }
 
     public void drawDecalLists() {

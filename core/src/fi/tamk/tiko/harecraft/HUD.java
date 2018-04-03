@@ -1,11 +1,11 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
+import static fi.tamk.tiko.harecraft.GameMain.sBatch;
+import static fi.tamk.tiko.harecraft.GameMain.shapeRenderer;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -15,7 +15,6 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.isCountdown;
-import static fi.tamk.tiko.harecraft.World.WORLD_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -24,8 +23,7 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 public class HUD {
     World world;
-    GameMain game;
-    ShapeRenderer shapeRenderer;
+
     float progressline_x;
     float progressline_y = SCREEN_HEIGHT - 75f;
     float progressline_color_red = 255f;
@@ -41,11 +39,8 @@ public class HUD {
     float text_opacity = 0f;
     int index = 0;
 
-    public HUD(World world, GameMain game) {
-        this.game = game;
+    public HUD(World world) {
         this.world = world;
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
         //speedometer.setBounds(0f,0f,speedometer.getWidth()/2f,speedometer.getHeight()/2f);
         //speedometer.setBounds(0f,0f,speedometer.getWidth()/1.5f,speedometer.getHeight()/1.5f);
@@ -70,12 +65,16 @@ public class HUD {
     }
 
     public void draw() {
-        drawCountdown();
         if(gameState != START) {
             drawProgressLine();
+        }
+        sBatch.begin();
+        drawCountdown();
+        if(gameState != START) {
             drawPlacementNumber();
             drawSpeedometer();
         }
+        sBatch.end();
     }
 
     public void updateProgressLine(float delta) {
@@ -109,7 +108,6 @@ public class HUD {
     }
 
     public void drawCountdown() {
-        game.sBatch.begin();
         //Countdown numbers
         if(isCountdown || (gameState == END && gameStateTime < 4f)) {
             if(gameState == START) {
@@ -159,17 +157,12 @@ public class HUD {
             }
 
             text_gameStates.setOriginCenter();
-            //text_gameStates.scale(gameStateTime/300f);
             text_gameStates.setColor(1f, 1f, 1f, text_opacity);
-            //text_gameStates.rotate(200f / (gameStateTime*20f)+0.01f);
-
             text_gameStates.setBounds(0f, 0f, width, height);
             text_gameStates.setPosition(SCREEN_WIDTH/2f - width/2f, SCREEN_HEIGHT/2f - height/2f);
 
-            text_gameStates.draw(game.sBatch);
+            text_gameStates.draw(sBatch);
         }
-
-        game.sBatch.end();
     }
 
     public void updatePlacementNumber(float delta) {
@@ -179,9 +172,7 @@ public class HUD {
     }
 
     public void drawPlacementNumber() {
-        game.sBatch.begin();
-        text_placementNumber.draw(game.sBatch);
-        game.sBatch.end();
+        text_placementNumber.draw(sBatch);
     }
 
     public void updateSpeedometer(float delta) {
@@ -189,12 +180,6 @@ public class HUD {
     }
 
     public void drawSpeedometer() {
-        game.sBatch.begin();
-        speedometer.draw(game.sBatch);
-        game.sBatch.end();
-    }
-
-    public void dispose() {
-        shapeRenderer.dispose();
+        speedometer.draw(sBatch);
     }
 }

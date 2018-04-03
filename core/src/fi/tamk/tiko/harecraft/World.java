@@ -94,3 +94,11 @@ public class World {
         }
     }
 }
+
+class WorldForest extends World{
+
+}
+
+class WorldSea extends World{
+
+}
