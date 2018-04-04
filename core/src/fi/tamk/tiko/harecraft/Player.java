@@ -130,9 +130,9 @@ public class Player extends Pilot {
         }
 
         decal_head.setRotation(decal.getRotation().cpy().exp(2f));
-        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.07f);
+        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.07f);
         decal_wings.setRotation(decal.getRotation());
-        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.14f);
+        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.14f);
 
         //ANIMATION
         //decal_head.setTextureRegion((TextureRegion) Assets.animation_player_scarf.getKeyFrame(stateTime,true));
@@ -166,9 +166,13 @@ public class Player extends Pilot {
 
     @Override
     public void updateParticles(float delta) {
+        /*pfx_scarf.setPosition(
+                ((-position.x*33.5f + (posTest()*1.5f + velocity.x) * Math.abs(posYTranspose * getRotationAverage())) * 45f/fieldOfView) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
+                ((position.y*16.5f + (velocity.x*position.x/2f) ) * 45f/fieldOfView) * (SCREEN_HEIGHT/800f) + SCREEN_HEIGHT/2f - 10f);
+        */
         pfx_scarf.setPosition(
-                (-position.x*33f * (SCREEN_WIDTH/1280f) + posTest()*1.5f + velocity.x * Math.abs(posYTranspose * getRotationAverage())) * 45f/fieldOfView * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
-                (position.y*16.5f * (SCREEN_HEIGHT/800f) + (velocity.x*position.x/2f) ) * 45f/fieldOfView * (SCREEN_HEIGHT/800f) + SCREEN_HEIGHT/2f - 10f);
+                -position.x*33.5f + SCREEN_WIDTH/2f,
+                position.y*16.5f + SCREEN_HEIGHT/2f - 10f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
@@ -199,7 +203,7 @@ public class Player extends Pilot {
         if(position.y >= 0f) {
             posYTranspose = position.y / 5f;
         }
-        else posYTranspose = position.y / (200f * position.y);
+        else posYTranspose = position.y / 200f;
 
         if(position.x > 0f) return posXTranspose;
         else return -posXTranspose;

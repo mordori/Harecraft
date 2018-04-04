@@ -14,7 +14,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.GameScreen.isCountdown;
+import static fi.tamk.tiko.harecraft.GameScreen.countdown;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -104,12 +104,22 @@ public class HUD {
         //White
         shapeRenderer.setColor(1f, 1f, 1f, 0.6f * HUD_opacity);
         shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius);
+
+        //White
+        shapeRenderer.setColor(0f, 1f, 0f, 1f);
+        //shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius);
+        shapeRenderer.circle(
+
+                -player.position.x + SCREEN_WIDTH/2f,
+                player.position.y + SCREEN_HEIGHT/2f,
+                progressline_arc_radius);
+
         shapeRenderer.end();
     }
 
     public void drawCountdown() {
         //Countdown numbers
-        if(isCountdown || (gameState == END && gameStateTime < 4f)) {
+        if(countdown || (gameState == END && gameStateTime < 4f)) {
             if(gameState == START) {
                 if (gameStateTime < 3.3f) {
                     if(gameStateTime < 2f) text_opacity = 0f;
@@ -143,7 +153,7 @@ public class HUD {
             if(gameState == RACE) {
                 text_opacity -= Gdx.graphics.getDeltaTime();
                 if(text_opacity < 0f) text_opacity = 0f;
-                if(text_opacity == 0f) isCountdown = false;
+                if(text_opacity == 0f) countdown = false;
             }
 
             text_gameStates = Assets.sprites_text_race_states.get(index);

@@ -1,5 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
@@ -20,7 +21,7 @@ public class World {
     public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT / 100f * 2f;
 
     //World length
-    static float finish = 100;
+    static float finish = 1000;
     static float end = finish + spawnDistance + 20f;
 
     ParticleEffect pfx_speed_lines;
@@ -57,6 +58,10 @@ public class World {
 
     //Powerups
     ArrayList<Powerup> powerups = new ArrayList<Powerup>();
+
+    public World(int index) {
+
+    }
 
     public World() {
         float width = Assets.texR_foreground.getRegionWidth()/1.5f;
@@ -95,10 +100,12 @@ public class World {
     }
 }
 
-class WorldForest extends World{
+class WorldForest extends World {
+    public WorldForest() {
 
+    }
 }
 
-class WorldSea extends World{
+class WorldSea extends World {
 
 }

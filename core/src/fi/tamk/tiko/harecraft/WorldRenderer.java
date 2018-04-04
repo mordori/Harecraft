@@ -20,8 +20,8 @@ import static fi.tamk.tiko.harecraft.World.player;
  */
 
 public class WorldRenderer {
-    GameMain game;
     World world;
+    boolean isFBOEnabled;
 
     public WorldRenderer(World world) {
         this.world = world;
@@ -29,14 +29,17 @@ public class WorldRenderer {
     }
 
     public void renderWorld() {
-        if(gameState != START && gameState != END) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        if(gameState == START || gameState == END) {
+        if(gameState == START || gameState == END) isFBOEnabled = true;
+
+        if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        if(isFBOEnabled) {
             fbo.begin();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
         drawDecals();
         drawParticles();
-        if(gameState == START || gameState == END) {
+        if(isFBOEnabled) {
             fbo.end();
             renderToTexture();
         }

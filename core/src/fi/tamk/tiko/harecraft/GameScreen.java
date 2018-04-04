@@ -28,8 +28,6 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class GameScreen extends ScreenAdapter {
-    FPSLogger logger = new FPSLogger();
-
     public static final float SCREEN_WIDTH = Gdx.graphics.getWidth();
     public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
@@ -42,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
     WorldBuilder builder;
     WorldRenderer worldRenderer;
     HUD HUD;
+    FPSLogger logger = new FPSLogger();
 
     static GameState gameState;
 
@@ -50,9 +49,10 @@ public class GameScreen extends ScreenAdapter {
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
 
-    static boolean isCountdown;
-    float volume = 0.15f;
+    static boolean countdown;
+    float volume;
 
+    //Shader parameters
     static float tick;
     static float velocity;
 
@@ -68,6 +68,7 @@ public class GameScreen extends ScreenAdapter {
 
         Assets.music_course_1.play();
         Assets.music_course_1.setVolume(0f);
+        volume = 0.15f;
         Assets.sound_airplane_engine.loop(volume);
     }
 
@@ -75,7 +76,6 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         update(delta);
         worldRenderer.renderWorld();
-        HUD.update(delta);
         HUD.draw();
 
         if(gameState == END && gameStateTime > 5f) {
@@ -90,6 +90,7 @@ public class GameScreen extends ScreenAdapter {
         builder.update(delta);
         updateCameras(delta);
         updateShaders(delta);
+        HUD.update(delta);
     }
 
     public void updateShaders(float delta) {
@@ -134,9 +135,9 @@ public class GameScreen extends ScreenAdapter {
                     volume = 0f;
                 }
             }
-            else if(gameStateTime > 2f && !isCountdown) {
+            else if(gameStateTime > 2f && !countdown) {
                 Assets.sound_countdown.play(0.25f);
-                isCountdown = true;
+                countdown = true;
             }
             Assets.sound_airplane_engine.setVolume(0,volume);
         }
