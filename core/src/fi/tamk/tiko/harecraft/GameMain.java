@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
@@ -53,8 +54,18 @@ public class GameMain extends Game {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
-        fbo = new FrameBuffer(Pixmap.Format.RGB565, (int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, true);
-        texture = new Sprite(new Texture((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, Pixmap.Format.RGB565));
+        Pixmap.Format format;
+        /*try {
+            fbo = new FrameBuffer(Pixmap.Format.RGBA8888, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
+            texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, Pixmap.Format.RGBA8888));
+            Gdx.app.log("FORMAT", "RGBA8888");
+        }
+        catch(GdxRuntimeException e) {*/
+            fbo = new FrameBuffer(Pixmap.Format.RGB565, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
+            texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, Pixmap.Format.RGB565));
+            Gdx.app.log("FORMAT", "RGB565");
+
+        //}
         texture.flip(false, true);
 
 		setScreen(new MainMenu(this));

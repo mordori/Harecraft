@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 
 
+import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
@@ -56,7 +57,9 @@ public class Ring extends GameObject {
                 decal_arrows.setPosition(position.x, position.y,0.5f);
 
                 pfx_speed_up.start();
-                pfx_speed_up.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f);
+                pfx_speed_up.setPosition(
+                        camera.project(player.curPosition.cpy()).x,
+                        camera.project(player.curPosition.cpy()).y);
             }
         }
         else {

@@ -104,16 +104,6 @@ public class HUD {
         //White
         shapeRenderer.setColor(1f, 1f, 1f, 0.6f * HUD_opacity);
         shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius);
-
-        //White
-        shapeRenderer.setColor(0f, 1f, 0f, 1f);
-        //shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius);
-        shapeRenderer.circle(
-
-                -player.position.x + SCREEN_WIDTH/2f,
-                player.position.y + SCREEN_HEIGHT/2f,
-                progressline_arc_radius);
-
         shapeRenderer.end();
     }
 

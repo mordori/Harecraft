@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
+import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
@@ -166,13 +168,9 @@ public class Player extends Pilot {
 
     @Override
     public void updateParticles(float delta) {
-        /*pfx_scarf.setPosition(
-                ((-position.x*33.5f + (posTest()*1.5f + velocity.x) * Math.abs(posYTranspose * getRotationAverage())) * 45f/fieldOfView) * (SCREEN_WIDTH/1280f) + SCREEN_WIDTH/2f,
-                ((position.y*16.5f + (velocity.x*position.x/2f) ) * 45f/fieldOfView) * (SCREEN_HEIGHT/800f) + SCREEN_HEIGHT/2f - 10f);
-        */
         pfx_scarf.setPosition(
-                -position.x*33.5f + SCREEN_WIDTH/2f,
-                position.y*16.5f + SCREEN_HEIGHT/2f - 10f);
+                camera.project(curPosition.cpy()).x,
+                camera.project(curPosition.cpy()).y);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);

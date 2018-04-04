@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class Assets {
-    static int[][] worldsArr = new int[2][2];
+    //static int[][] worldsArr = new int[2][2];
 
     static Texture tex_sea;
     static Texture tex_foam;
@@ -79,14 +79,12 @@ public class Assets {
 
     public static void load() {
         //FILES
-        FileHandle handle = Gdx.files.internal("files/worlds.txt");
+        /*FileHandle handle = Gdx.files.internal("files/worlds.txt");
         String str = handle.readString();
         String[] strWorlds = str.split("-");
         String[] temp;
         int index = 0;
         int index1 = 0;
-
-        System.out.println(strWorlds);
 
         for(String s : strWorlds) {
             temp = s.split("\n");
@@ -95,9 +93,7 @@ public class Assets {
                 index1++;
             }
             index++;
-        }
-
-        System.out.println(worldsArr);
+        }*/
 
         //TEXTURES
         tex_sea = new Texture(Gdx.files.internal("shaders/tex_sea.png"));

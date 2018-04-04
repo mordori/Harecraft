@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -49,7 +50,9 @@ public class Powerup extends GameObject {
                 decal.setPosition(position.x, position.y,0.5f);
 
                 pfx_hit.start();
-                pfx_hit.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f + 20f);
+                pfx_hit.setPosition(
+                        camera.project(player.curPosition.cpy()).x,
+                        camera.project(player.curPosition.cpy()).y);
                 for(int i = 5; i > 0; i--) {
                     pfx_hit.getEmitters().get(0).getAngle().setLow(-45f + i * 45f);
                     pfx_hit.getEmitters().get(0).addParticle();

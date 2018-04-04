@@ -108,7 +108,9 @@ public class Cloud extends GameObject {
         if(global_Multiplier < MULTIPLIER_LOW) global_Multiplier = MULTIPLIER_LOW;
         Assets.sound_cloud_hit.play();
         pfx_dispersion.start();
-        pfx_dispersion.setPosition(SCREEN_WIDTH/2f - position.x * 31f, SCREEN_HEIGHT/2f + position.y * 15f);
+        pfx_dispersion.setPosition(
+                camera.project(player.curPosition.cpy()).x,
+                camera.project(player.curPosition.cpy()).y);
         /*for(int i = 15; i > 0; i--) {
             if(MathUtils.random(0,1) == 0) pfx_dispersion.getEmitters().get(0).getRotation().setHigh(-60f);
             else pfx_dispersion.getEmitters().get(0).getRotation().setHigh(60f);

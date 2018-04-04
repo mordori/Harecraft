@@ -30,6 +30,7 @@ public class WorldRenderer {
 
     public void renderWorld() {
         if(gameState == START || gameState == END) isFBOEnabled = true;
+        else isFBOEnabled = false;
 
         if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -47,6 +48,7 @@ public class WorldRenderer {
 
     public void drawDecals() {
         activeShader = SHADER_DEFAULT;
+        //----------------------------
 
         dBatch.add(world.decal_foreground);
         dBatch.add(world.decal_sun1);
@@ -54,10 +56,12 @@ public class WorldRenderer {
         dBatch.flush();
 
         activeShader = SHADER_SEA;
+        //----------------------------
         dBatch.add(world.sea);
         dBatch.flush();
 
         activeShader = SHADER_DEFAULT;
+        //----------------------------
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
@@ -68,7 +72,7 @@ public class WorldRenderer {
 
         drawDecalLists();
 
-        if(player.isDrawing || player.opacity != 0f){
+        if(player.isDrawing || player.opacity != 0f) {
             dBatch.add(player.decal_wings);
             dBatch.add(player.decal_head);
             dBatch.add(player.decal);
@@ -80,7 +84,9 @@ public class WorldRenderer {
 
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
-        if(gameState == START || gameState == END) sBatch.setShader(MyGroupStrategy.shader_vignette);
+
+        if(isFBOEnabled) sBatch.setShader(MyGroupStrategy.shader_vignette);
+        //------------------------------------------------
         sBatch.begin();
         texture.draw(sBatch);
         sBatch.end();
@@ -88,7 +94,7 @@ public class WorldRenderer {
 
     public void drawParticles() {
         sBatch.begin();
-        if((player.velocity.x != 0f || player.velocity.y != 0f) && gameState != END) player.pfx_scarf.draw(sBatch);
+        if(!isFBOEnabled) player.pfx_scarf.draw(sBatch);
 
         for(Cloud c : world.clouds_RDown) {
             if(c.isCollided) c.pfx_dispersion.draw(sBatch);
