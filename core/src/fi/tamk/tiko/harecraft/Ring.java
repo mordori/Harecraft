@@ -46,7 +46,7 @@ public class Ring extends GameObject {
         stateTime_arrows += delta;
 
         if(!isCollected) {
-            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.position) < 2.5f) {
+            if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.curPosition) < 2.5f) {
                 isCollected = true;
 
                 if(global_Multiplier < MULTIPLIER_HIGH) {global_Multiplier += MULTIPLIER_INCREMENT;}
@@ -65,7 +65,7 @@ public class Ring extends GameObject {
         else {
             decal.setScale(decal.getScaleX() + delta * stateTime / 4f);
 
-            direction = player.position.cpy().sub(position);
+            direction = player.curPosition.cpy().sub(position);
             velocity.x = direction.nor().x * COLLECTED_SPEED * Math.abs(direction.x);
             velocity.y = direction.nor().y * COLLECTED_SPEED * Math.abs(direction.y);
 

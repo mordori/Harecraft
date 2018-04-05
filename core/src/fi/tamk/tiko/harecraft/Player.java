@@ -28,7 +28,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = 4f;
+    static final float ACCEL_Y_OFFSET = -2f;
     final float SPEED = 15f;
     float accelerationZ;
     float []rotationsArray;
@@ -170,7 +170,7 @@ public class Player extends Pilot {
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
                 camera.project(curPosition.cpy()).x,
-                camera.project(curPosition.cpy()).y);
+                camera.project(curPosition.cpy()).y - 10f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);

@@ -1,5 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,11 +12,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
+import static fi.tamk.tiko.harecraft.Shaders2D.create2DShaders;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 
 //      ^__^
 //      (oo)\_______
@@ -48,24 +50,26 @@ public class GameMain extends Game {
 
         sBatch = new SpriteBatch();
         sBatch.setProjectionMatrix(orthoCamera.combined);
+        create2DShaders();
+        sBatch.setShader(shader2D_default);
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
-        Pixmap.Format format;
-        /*try {
+
+        if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
             fbo = new FrameBuffer(Pixmap.Format.RGBA8888, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
             texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, Pixmap.Format.RGBA8888));
             Gdx.app.log("FORMAT", "RGBA8888");
         }
-        catch(GdxRuntimeException e) {*/
+        else if(Gdx.app.getType() == Application.ApplicationType.Android) {
             fbo = new FrameBuffer(Pixmap.Format.RGB565, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
             texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, Pixmap.Format.RGB565));
             Gdx.app.log("FORMAT", "RGB565");
 
-        //}
+        }
         texture.flip(false, true);
 
 		setScreen(new MainMenu(this));
@@ -83,6 +87,7 @@ public class GameMain extends Game {
         shapeRenderer.dispose();
         fbo.dispose();
         texture.getTexture().dispose();
+        Shaders2D.dispose();
 
 		Assets.dispose();
         Gdx.app.log("DISPOSED","Assets");

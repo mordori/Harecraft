@@ -71,9 +71,9 @@ public class Cloud extends GameObject {
     }
 
     public void checkCollision() {
-        if(decal.getPosition().z < 3f && decal.getPosition().z > -0.5f) {
+        if(decal.getPosition().z < 2f && decal.getPosition().z > -0.5f) {
             //Center
-            if (position.dst(player.position) < 1.65f) {
+            if (position.dst(player.curPosition) < 1.65f) {
                 decreaseSpeed();
                 return;
             }
@@ -81,20 +81,20 @@ public class Cloud extends GameObject {
             //Left
             transposedPosition.x = position.x - width / 3.2f;
             transposedPosition.y = position.y - height / 4f;
-            if (transposedPosition.dst(player.position.x - player.width / 4f, player.position.y) < proximity) {
+            if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
                 return;
-            } else if (transposedPosition.dst(player.position.x + player.width / 4f, player.position.y) < proximity) {
+            } else if (transposedPosition.dst(player.curPosition.x + player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
                 return;
             }
 
             //Right
             transposedPosition.x = position.x + width / 3.2f;
-            if (transposedPosition.dst(player.position.x - player.width / 4f, player.position.y) < proximity) {
+            if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
                 return;
-            } else if (transposedPosition.dst(player.position.x + player.width / 4f, player.position.y) < proximity) {
+            } else if (transposedPosition.dst(player.curPosition.x + player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
                 return;
             }

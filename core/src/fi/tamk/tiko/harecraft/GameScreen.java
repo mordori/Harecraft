@@ -3,23 +3,18 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
+import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_SEA;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_VIGNETTE;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader_sea;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader_vignette;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -56,6 +51,9 @@ public class GameScreen extends ScreenAdapter {
     static float tick;
     static float velocity;
 
+    float cameraPanY = 60f;
+    float panAccelY = 1f;
+
     public GameScreen(GameMain game, World world) {
         this.game = game;
         this.world = world;
@@ -79,6 +77,7 @@ public class GameScreen extends ScreenAdapter {
         HUD.draw();
 
         if(gameState == END && gameStateTime > 5f) {
+            sBatch.setShader(shader2D_default);
             game.setScreen(new MainMenu(game));
         }
     }
@@ -98,21 +97,21 @@ public class GameScreen extends ScreenAdapter {
         velocity += player.velocity.z;
         velocity %= 3000f;
 
-        shader_sea.begin();
-        shader_sea.setUniformf("time", tick);
-        shader_sea.setUniformf("velocity", velocity);
-        shader_sea.end();
+        shader3D_sea.begin();
+        shader3D_sea.setUniformf("time", tick);
+        shader3D_sea.setUniformf("velocity", velocity);
+        shader3D_sea.end();
 
-        shader_vignette.begin();
+        shader2D_vignette.begin();
         if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
-            shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
-            if((gameStateTime - 2f) / 4f > 0.8f) shader_vignette.setUniformf("u_stateTime", 0.8f);
+            shader2D_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
+            if((gameStateTime - 2f) / 4f > 0.8f) shader2D_vignette.setUniformf("u_stateTime", 0.8f);
         }
         if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
-            shader_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
-            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader_vignette.setUniformf("u_stateTime", 0f);
+            shader2D_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
+            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader2D_vignette.setUniformf("u_stateTime", 0f);
         }
-        shader_vignette.end();
+        shader2D_vignette.end();
     }
 
     public void updateState(float delta) {
@@ -171,9 +170,13 @@ public class GameScreen extends ScreenAdapter {
     public void updateCameras(float delta) {
         fieldOfView -= delta;
         if(fieldOfView < 45f) fieldOfView = 45f;
+        panAccelY -= delta / 3f;
+        if(panAccelY < 0f) panAccelY = 0f;
+        cameraPanY -= (delta * 40f) * panAccelY;
+        if(cameraPanY < 0f) cameraPanY = 0f;
 
-        camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.05f,-5f);
-        camera.lookAt(0f,0f, spawnDistance/2f);
+        camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
+        camera.lookAt(0f, cameraPanY, spawnDistance/2f);
         camera.up.set(player.getRotationAverage(), 20f, 0f);
         camera.fieldOfView = fieldOfView;
         camera.update();
@@ -187,9 +190,9 @@ public class GameScreen extends ScreenAdapter {
         orthoCamera.viewportWidth = width;
         orthoCamera.viewportHeight = height;
 
-        shader_vignette.begin();
-        shader_vignette.setUniformf("u_resolution", width, height);
-        shader_vignette.end();
+        shader2D_vignette.begin();
+        shader2D_vignette.setUniformf("u_resolution", width, height);
+        shader2D_vignette.end();
     }
 
     @Override
@@ -198,7 +201,5 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void dispose() {
-        world.dispose();
-    }
+    public void dispose() { world.dispose(); }
 }

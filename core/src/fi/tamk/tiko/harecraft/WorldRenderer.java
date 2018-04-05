@@ -2,17 +2,18 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_DEFAULT;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER_SEA;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -29,7 +30,7 @@ public class WorldRenderer {
     }
 
     public void renderWorld() {
-        if(gameState == START || gameState == END) isFBOEnabled = true;
+        if(gameState == END) isFBOEnabled = true;
         else isFBOEnabled = false;
 
         if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -47,7 +48,7 @@ public class WorldRenderer {
     }
 
     public void drawDecals() {
-        activeShader = SHADER_DEFAULT;
+        activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
         dBatch.add(world.decal_foreground);
@@ -55,12 +56,12 @@ public class WorldRenderer {
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        activeShader = SHADER_SEA;
+        activeShader = SHADER3D_SEA;
         //----------------------------
         dBatch.add(world.sea);
         dBatch.flush();
 
-        activeShader = SHADER_DEFAULT;
+        activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
         if(gameState == FINISH || gameState == END) {
@@ -85,7 +86,7 @@ public class WorldRenderer {
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
 
-        if(isFBOEnabled) sBatch.setShader(MyGroupStrategy.shader_vignette);
+        if(isFBOEnabled) sBatch.setShader(shader2D_vignette);
         //------------------------------------------------
         sBatch.begin();
         texture.draw(sBatch);

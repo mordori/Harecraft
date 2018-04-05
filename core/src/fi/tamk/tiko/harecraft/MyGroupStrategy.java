@@ -58,18 +58,17 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         createDefaultShader();
 
         ShaderProgram.pedantic = false;
-        createShader_Vignette();
         createShader_Sea();
 
-        shader_sea.begin();
-        shader_sea.setUniformi("u_texture", 0);
-        shader_sea.setUniformi("u_texture_foam", 1);
-        shader_sea.setUniformi("u_texture_sea_deep", 2);
-        shader_sea.setUniformi("u_mask_foam", 3);
-        shader_sea.setUniformi("u_mask_sea_deep", 4);
-        shader_sea.setUniformf("time", GameScreen.tick);
-        shader_sea.setUniformf("velocity", GameScreen.velocity);
-        shader_sea.end();
+        shader3D_sea.begin();
+        shader3D_sea.setUniformi("u_texture", 0);
+        shader3D_sea.setUniformi("u_texture_foam", 1);
+        shader3D_sea.setUniformi("u_texture_sea_deep", 2);
+        shader3D_sea.setUniformi("u_mask_foam", 3);
+        shader3D_sea.setUniformi("u_mask_sea_deep", 4);
+        shader3D_sea.setUniformf("time", GameScreen.tick);
+        shader3D_sea.setUniformf("velocity", GameScreen.velocity);
+        shader3D_sea.end();
 
         Gdx.gl.glActiveTexture(GL_TEXTURE4);
         Assets.tex_mask_foam.bind();
@@ -135,23 +134,14 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public void beforeGroups () {
         switch(activeShader) {
-            case SHADER_VIGNETTE:
-                shader_vignette.begin();
-                //shader_vignette.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-                shader_vignette.setUniformi("u_texture", 0);
-                if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
-                    shader_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 5f);
-                    System.out.println((GameScreen.gameStateTime - 2f) / 5f);
-                }
-                break;
-            case SHADER_SEA:
-                shader_sea.begin();
-                shader_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
-                shader_sea.setUniformi("u_texture", 0);
-                shader_sea.setUniformi("u_texture1", 1);
-                shader_sea.setUniformi("u_texture2", 2);
-                shader_sea.setUniformi("u_mask2", 3);
-                shader_sea.setUniformi("u_mask", 4);
+            case SHADER3D_SEA:
+                shader3D_sea.begin();
+                shader3D_sea.setUniformMatrix("u_projectionViewMatrix", camera.combined);
+                shader3D_sea.setUniformi("u_texture", 0);
+                shader3D_sea.setUniformi("u_texture1", 1);
+                shader3D_sea.setUniformi("u_texture2", 2);
+                shader3D_sea.setUniformi("u_mask2", 3);
+                shader3D_sea.setUniformi("u_mask", 4);
                 break;
             default:
                 shader.begin();
@@ -164,11 +154,8 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public void afterGroups () {
         switch(activeShader) {
-            case SHADER_VIGNETTE:
-                shader_vignette.end();
-                break;
-            case SHADER_SEA:
-                shader_sea.end();
+            case SHADER3D_SEA:
+                shader3D_sea.end();
                 break;
             default:
                 shader.end();
@@ -209,10 +196,8 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public ShaderProgram getGroupShader (int group) {
         switch(activeShader) {
-            case SHADER_VIGNETTE:
-                return shader_vignette;
-            case SHADER_SEA:
-                return shader_sea;
+            case SHADER3D_SEA:
+                return shader3D_sea;
             default:
                 return shader;
         }
@@ -221,30 +206,21 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     @Override
     public void dispose () {
         if(shader != null) shader.dispose();
-        if(shader_vignette != null) shader_vignette.dispose();
-        if(shader_sea != null) shader_sea.dispose();
+        if(shader3D_sea != null) shader3D_sea.dispose();
     }
 
-    private void createShader_Vignette() {
-        FileHandle VERTEX = Gdx.files.internal("shaders/shader_vignette_vertex.txt");
-        FileHandle FRAGMENT = Gdx.files.internal("shaders/shader_vignette_fragment.txt");
-        shader_vignette = new ShaderProgram(VERTEX, FRAGMENT);
-        if(!shader_vignette.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader_vignette.getLog());
-    }
     private void createShader_Sea() {
-        FileHandle VERTEX = Gdx.files.internal("shaders/shader_sea_vertex.txt");
-        FileHandle FRAGMENT = Gdx.files.internal("shaders/shader_sea_fragment.txt");
-        shader_sea = new ShaderProgram(VERTEX, FRAGMENT);
-        if(!shader_sea.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader_sea.getLog());
+        FileHandle VERTEX = Gdx.files.internal("shaders/shader3D_sea_vertex.txt");
+        FileHandle FRAGMENT = Gdx.files.internal("shaders/shader3D_sea_fragment.txt");
+        shader3D_sea = new ShaderProgram(VERTEX, FRAGMENT);
+        if(!shader3D_sea.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader3D_sea.getLog());
     }
 
     public static int activeShader;
-    public static final int SHADER_DEFAULT = 0;
-    public static final int SHADER_VIGNETTE = 1;
-    public static final int SHADER_SEA = 2;
+    public static final int SHADER3D_DEFAULT = 0;
+    public static final int SHADER3D_SEA = 1;
 
-    static ShaderProgram shader_vignette;
-    static ShaderProgram shader_sea;
+    static ShaderProgram shader3D_sea;
 }
 
 

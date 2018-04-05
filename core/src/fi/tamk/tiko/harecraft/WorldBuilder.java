@@ -465,7 +465,7 @@ public class WorldBuilder {
     }
 
     public void spawnStartObjects() {
-        for (int j = 0; j < 220; j += MathUtils.random(30,40)) {               //Z Depth step
+        for (int j = 100; j < 220; j += MathUtils.random(30,40)) {               //Z Depth step
             for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
                 world.trees_L.add(new Tree(i, groundLevel, j));
                 if ( i < -10 || i > 10 ) {
@@ -474,15 +474,4 @@ public class WorldBuilder {
             }
         }
     }
-    /*
-    public void spawnStartObjects() {
-        for (int j = 220; j > 50; j -= MathUtils.random(30,40)) {               //Z Depth step
-            for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
-                world.trees_L.add(new Tree(i, groundLevel, j));
-                if ( i < -10 || i > 10 ) {
-                    world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
-                }
-            }
-        }
-    }*/
 }
