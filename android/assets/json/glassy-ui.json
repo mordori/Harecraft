@@ -1,7 +1,7 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
-		file: font-export.fnt
+		file: font-big-export.fnt
 	}
 	font-big: {
 		file: font-big-export.fnt

@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
@@ -19,9 +20,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by musta on 26.3.2018.
@@ -37,6 +42,8 @@ public class MainMenu extends ScreenAdapter {
     Boolean startGame = false;
     Boolean settingsMenu = false;
     Boolean scoresMenu = false;
+    Preferences profilesData;
+    ArrayList<String> profiles;
 
     public MainMenu(GameMain game) {
         this.game = game;
@@ -45,6 +52,24 @@ public class MainMenu extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
+        profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
+        profiles = new ArrayList<String>();
+        for (int i = 0; i<200; i++) {
+            String tempName;
+            tempName = profilesData.getString("username" +i, "novalue");
+            if (!tempName.equals("novalue")) {
+                profiles.add(tempName);
+            }
+            else {
+                break;
+            }
+        }
+
+        profilesData.putString("username" +0,"Mikko");   //create profiles on disk
+        profilesData.putString("username" +1,"Henna");
+        profilesData.flush();
+
+        //profiles.add("Mikko"); //profiileissa 1 järjestysnumero 2 profiilin nimi
         Gdx.input.setInputProcessor(stage);
 
         TextButton playButton = new TextButton("Play", skin);
@@ -91,24 +116,51 @@ public class MainMenu extends ScreenAdapter {
 
         TextButton scoresButton = new TextButton("Scores", skin);
         scoresButton.setPosition(640 -scoresButton.getWidth()/2,50);
-        scoresButton.setName("settingsbutton");
+        scoresButton.setName("scoresbutton");
+
+        skin.getFont("font").getData().setScale(1f); //set skin font size
+        SelectBox profileBox = new SelectBox(skin);
+        profileBox.setName("profileBox");
+        //profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso", "tyyppi", "tyyppi2", "tyyppi3", "tyypi4"});
+        Collections.sort(profiles);
+        profileBox.setItems(profiles.toArray());
+        profileBox.setPosition(850,50);
+        //profileBox.setScale(100f); isontaa buttonia mutta ei grafiikkaa
+        profileBox.setWidth(400);
+        profileBox.setSelected(ProfileInfo.selectedPlayerProfile);
+        //profileBox.setSelected("MikkoK");
+        //profileBox.getSelected();
 
         stage.addActor(playButton);
         stage.addActor(settingsButton);
         stage.addActor(scoresButton);
+        stage.addActor(profileBox);
     }
 
     public void render (float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act();
-        stage.draw();
         game.sBatch.begin();
         game.sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
         game.sBatch.end();
-        if (startGame) game.setScreen(new GameScreen(game, new World()));
-        if (settingsMenu) game.setScreen(new SettingsMenu(game));
+        stage.act();
+        stage.draw();
+        if (startGame) {
+            setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
+            ProfileInfo.load();
+            game.setScreen(new GameScreen(game, new World()));
+        }
+        if (settingsMenu) {
+            setCurrentPlayerProfile();
+            game.setScreen(new SettingsMenu(game));
+        }
+    }
+
+    private void setCurrentPlayerProfile() {
+        SelectBox tempActor = stage.getRoot().findActor("profileBox");  //Set selected playerprofile to gamescreen.
+        String string = (String) tempActor.getSelected();
+        ProfileInfo.selectedPlayerProfile = string;
     }
 }
 

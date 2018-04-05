@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,6 +28,8 @@ public class SettingsMenu extends ScreenAdapter {
     OrthographicCamera camera;
     Stage stage;
     Boolean returnToMainMenu = false;
+    //String currentProfile;
+    Preferences profilesData;
 
     public SettingsMenu(GameMain game) {
         this.game = game;
@@ -34,32 +37,41 @@ public class SettingsMenu extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
+        profilesData = Gdx.app.getPreferences("ProfileFile"); //aseta tiedosto preferencesislle
+        //currentProfile = ProfileInfo.selectedPlayerProfile;    //aseta aktiivinen pelaajaprofiili muutujaan
 
         Gdx.input.setInputProcessor(stage);
 
-        TextButton button = new TextButton("Back", skin);
+        TextButton button = new TextButton("Save", skin);
         button.setPosition(900,50);
         button.setName("backbutton");
+        //button.getLabel().setFontScale(2f);
+        //button.setStyle(skin.get("small", TextButton.TextButtonStyle.class));
+        //button.setHeight(50);
+        //button.setWidth(100);
 
         Slider slider = new Slider(0,4,1,false,skin);
         slider.setPosition(650,650);
-        slider.setValue(3);     //set value to current difficultylevel when loading
+        //profilesData.getInteger(""+currentProfile +"Difficulty", 2);
+        slider.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"Difficulty", 2));     //set value to current difficultylevel when loading
         slider.setWidth(500);
         slider.setName("difficultyslider");
 
         Label tarra1 = new Label("Difficulty", skin);
         tarra1.setPosition(830,700);
-        tarra1.setFontScale(2);
+        tarra1.setFontScale(1);
         stage.addActor(tarra1);
 
-        SelectBox profileBox = new SelectBox(skin);
-        profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso"});
-        profileBox.setPosition(100,500);
-        profileBox.setWidth(200);
+        //skin.getFont("font").getData().setScale(1.5f); //set skin font size
+        //SelectBox profileBox = new SelectBox(skin);
+        //profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso", "tyyppi", "tyyppi2", "tyyppi3", "tyypi4"});
+        //profileBox.setPosition(100,50);
+        //profileBox.setScale(100f); isontaa buttonia mutta ei grafiikkaa
+        //profileBox.setWidth(400);
 
         stage.addActor(slider);
         stage.addActor(button);
-        stage.addActor(profileBox);
+        //stage.addActor(profileBox);
 
         button.addListener(new InputListener() {
             Boolean touched = false;
@@ -89,6 +101,15 @@ public class SettingsMenu extends ScreenAdapter {
         game.sBatch.begin();
         //Assets.font.draw(game.sBatch, "Difficulty", 730,750);
         game.sBatch.end();
-        if (returnToMainMenu) game.setScreen(new MainMenu(game));
+        if (returnToMainMenu) { //Tallennetaan muutokset aktiiviseen profiiliin
+
+            Slider tmpActor = stage.getRoot().findActor("difficultyslider");    //etsi difficulty sliderin value ja tallenna
+            int tmpInt = (int) tmpActor.getValue();
+            profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Difficulty", tmpInt );
+            profilesData.flush();
+
+            game.setScreen(new MainMenu(game));
+        }
+        Gdx.app.log("Kenen profiili on valittuna", ""+ProfileInfo.selectedPlayerProfile);
     }
 }
