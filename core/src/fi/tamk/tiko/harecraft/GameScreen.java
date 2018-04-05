@@ -172,7 +172,7 @@ public class GameScreen extends ScreenAdapter {
         fieldOfView -= delta;
         if(fieldOfView < 45f) fieldOfView = 45f;
 
-        camera.position.set(player.decal.getPosition().x/1.15f, player.decal.getPosition().y/1.05f,-5f);
+        camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.05f,-5f);
         camera.lookAt(0f,0f, spawnDistance/2f);
         camera.up.set(player.getRotationAverage(), 20f, 0f);
         camera.fieldOfView = fieldOfView;
