@@ -63,7 +63,20 @@ public abstract class World {
     Decal decal_sun2;
 
     public World() {
-        finish = MathUtils.random(100f, 3000f);
+        switch (MathUtils.random(0,3)) {
+            case 0:
+                finish = 1500f;
+                break;
+            case 1:
+                finish = 2000f;
+                break;
+            case 2:
+                finish = 2500f;
+                break;
+            case 3:
+                finish = 3000f;
+                break;
+        }
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);

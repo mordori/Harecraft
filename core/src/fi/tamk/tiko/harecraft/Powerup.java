@@ -20,14 +20,10 @@ public class Powerup extends GameObject {
     boolean isCollected = false;
     float random;
 
-    ParticleEffect pfx_hit;
-
     public Powerup() {
         velocity.y = MathUtils.random(3.6f,5.2f);
         random = MathUtils.random(-1,1);
         if(random == 0) random = 1;
-
-        pfx_hit = new ParticleEffect(Assets.pfx_balloon_hit);
     }
 
     @Override
@@ -48,15 +44,6 @@ public class Powerup extends GameObject {
 
                 Assets.sound_cloud_hit.play();
                 decal.setPosition(position.x, position.y,0.5f);
-
-                pfx_hit.start();
-                pfx_hit.setPosition(
-                        player.projPosition.x,
-                        player.projPosition.y);
-                for(int i = 3; i > 0; i--) {
-                    pfx_hit.getEmitters().get(0).getAngle().setLow(i * 45f);
-                    pfx_hit.getEmitters().get(0).addParticle();
-                }
             }
         }
         else {
@@ -81,13 +68,5 @@ public class Powerup extends GameObject {
         //Movement Z
         if(!isCollected || decal.getScaleX() == 0f) moveZ(delta);
         if(isCollected && decal.getScaleX() > 0f) decal.translateZ(-velocity.z/5f * delta);
-    }
-
-    public void updateParticles(float delta) {
-        pfx_hit.update(delta);
-    }
-
-    public void dispose() {
-        pfx_hit.dispose();
     }
 }

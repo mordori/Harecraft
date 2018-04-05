@@ -28,8 +28,14 @@ public class WorldRenderer {
 
     public WorldRenderer(World world) {
         this.world = world;
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
-        if(world instanceof WorldSea) isSeaEnabled = true;
+
+        if(world instanceof WorldForest) {
+            Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+        }
+        if(world instanceof WorldSea) {
+            Gdx.gl.glClearColor(154/255f, 42/255f, 105/255f, 1f);
+            isSeaEnabled = true;
+        }
     }
 
     public void renderWorld() {
@@ -113,10 +119,6 @@ public class WorldRenderer {
         for(Cloud c : world.clouds_LUp) {
             if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         }
-
-        /*for(Powerup p : world.powerups) {
-            if(p.isCollected) p.pfx_hit.draw(sBatch);
-        }*/
 
         for(Ring r : world.rings) {
             if(r.isCollected) r.pfx_speed_up.draw(sBatch);

@@ -54,9 +54,9 @@ public class GameScreen extends ScreenAdapter {
     float cameraPanY = 60f;
     float panAccelY = 1f;
 
-    public GameScreen(GameMain game) {
+    public GameScreen(GameMain game, int index) {
         this.game = game;
-        randomizeWorld();
+        randomizeWorld(index);
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
         HUD = new HUD(world);
@@ -70,8 +70,8 @@ public class GameScreen extends ScreenAdapter {
         Assets.sound_airplane_engine.loop(volume);
     }
 
-    public void randomizeWorld() {
-        switch (MathUtils.random(0,1)) {
+    public void randomizeWorld(int index) {
+        switch (index) {
             case 0:
                 world = new WorldForest();
                 break;
@@ -91,6 +91,7 @@ public class GameScreen extends ScreenAdapter {
             sBatch.setShader(shader2D_default);
             game.setScreen(new MainMenu(game));
         }
+        System.out.println(player.velocity.z);
     }
 
     public void update(float delta) {

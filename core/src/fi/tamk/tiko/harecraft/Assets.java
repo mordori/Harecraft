@@ -72,7 +72,6 @@ public class Assets {
 
     static ParticleEffect pfx_scarf;
     static ParticleEffect pfx_cloud_dispersion;
-    static ParticleEffect pfx_balloon_hit;
     static ParticleEffect pfx_speed_lines;
     static ParticleEffect pfx_speed_up;
 
@@ -169,8 +168,6 @@ public class Assets {
         pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
         pfx_cloud_dispersion = new ParticleEffect();
         pfx_cloud_dispersion.load(Gdx.files.internal("particles/pfx_cloud_dispersion"), Gdx.files.internal("particles/"));
-        pfx_balloon_hit = new ParticleEffect();
-        pfx_balloon_hit.load(Gdx.files.internal("particles/pfx_balloon_hit"), Gdx.files.internal("particles/"));
         pfx_speed_lines = new ParticleEffect();
         pfx_speed_lines.load(Gdx.files.internal("particles/pfx_speed_lines"), Gdx.files.internal("particles/"));
         pfx_speed_up = new ParticleEffect();
@@ -264,7 +261,6 @@ public class Assets {
 
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();
-        pfx_balloon_hit.dispose();
         pfx_speed_lines.dispose();
         pfx_speed_up.dispose();
 

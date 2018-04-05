@@ -373,8 +373,7 @@ public class WorldBuilder {
 
     public void removePowerup() {
         if(world.powerups.size() > 1 && world.powerups.get(0).decal.getPosition().z < camera.position.z) {
-            if(!world.powerups.get(0).isCollected || world.powerups.get(0).pfx_hit.isComplete()) {
-                world.powerups.get(0).dispose();
+            if(!world.powerups.get(0).isCollected) {
                 world.powerups.remove(0);
             }
         }

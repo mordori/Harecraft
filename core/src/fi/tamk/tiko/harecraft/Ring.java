@@ -20,7 +20,7 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class Ring extends GameObject {
     final float COLLECTED_SPEED = 10f;
     final float MULTIPLIER_HIGH = 5.5f;
-    final float MULTIPLIER_INCREMENT = 2.4f;
+    final float MULTIPLIER_INCREMENT = 2.1f;
     boolean isCollected = false;
     Decal decal_arrows;
     float opacity_arrows;
@@ -62,11 +62,11 @@ public class Ring extends GameObject {
                 pfx_speed_up.setPosition(
                         player.projPosition.x,
                         player.projPosition.y);
-                float randomAngle = MathUtils.random(0f, 40f);
+                float randomAngle = MathUtils.random(0f, 18f);
                 for(int i = 0; i < 20; i++) {
                     pfx_speed_up.getEmitters().get(0).getAngle().setLow(randomAngle + i * 360f/20f);
-                    pfx_speed_up.getEmitters().get(0).getXOffsetValue().setLow(250f * MathUtils.cosDeg(pfx_speed_up.getEmitters().get(0).getAngle().getLowMin()));
-                    pfx_speed_up.getEmitters().get(0).getYOffsetValue().setLow(250f * MathUtils.sinDeg(pfx_speed_up.getEmitters().get(0).getAngle().getLowMin()));
+                    pfx_speed_up.getEmitters().get(0).getXOffsetValue().setLow((i % 2 == 0 ? 250f : 240) * MathUtils.cosDeg(pfx_speed_up.getEmitters().get(0).getAngle().getLowMin()));
+                    pfx_speed_up.getEmitters().get(0).getYOffsetValue().setLow((i % 2 == 0 ? 250f : 240) * MathUtils.sinDeg(pfx_speed_up.getEmitters().get(0).getAngle().getLowMin()));
                     pfx_speed_up.getEmitters().get(0).addParticle();
                 }
             }

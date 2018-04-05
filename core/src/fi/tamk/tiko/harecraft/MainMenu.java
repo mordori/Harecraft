@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -44,6 +45,7 @@ public class MainMenu extends ScreenAdapter {
     Boolean scoresMenu = false;
     Preferences profilesData;
     ArrayList<String> profiles;
+    int index;
 
     public MainMenu(GameMain game) {
         this.game = game;
@@ -136,7 +138,15 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(scoresButton);
         stage.addActor(profileBox);
 
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+        index = MathUtils.random(0,1);
+        switch(index) {
+            case 0:
+                Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+                break;
+            case 1:
+                Gdx.gl.glClearColor(154/255f, 42/255f, 105/255f, 1f);
+                break;
+        }
     }
 
     public void render (float delta) {
@@ -150,7 +160,7 @@ public class MainMenu extends ScreenAdapter {
         if (startGame) {
             setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
             ProfileInfo.load();
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameScreen(game, index));
         }
         if (settingsMenu) {
             setCurrentPlayerProfile();
