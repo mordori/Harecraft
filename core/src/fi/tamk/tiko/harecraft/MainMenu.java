@@ -150,7 +150,7 @@ public class MainMenu extends ScreenAdapter {
         if (startGame) {
             setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
             ProfileInfo.load();
-            game.setScreen(new GameScreen(game, new World()));
+            game.setScreen(new GameScreen(game));
         }
         if (settingsMenu) {
             setCurrentPlayerProfile();

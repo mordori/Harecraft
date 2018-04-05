@@ -109,14 +109,8 @@ public class Cloud extends GameObject {
         Assets.sound_cloud_hit.play();
         pfx_dispersion.start();
         pfx_dispersion.setPosition(
-                camera.project(player.curPosition.cpy()).x,
-                camera.project(player.curPosition.cpy()).y);
-        /*for(int i = 15; i > 0; i--) {
-            if(MathUtils.random(0,1) == 0) pfx_dispersion.getEmitters().get(0).getRotation().setHigh(-60f);
-            else pfx_dispersion.getEmitters().get(0).getRotation().setHigh(60f);
-            pfx_dispersion.getEmitters().get(0).getAngle().setLow(0f + i * 45f);
-            pfx_dispersion.getEmitters().get(0).addParticle();
-        }*/
+                player.projPosition.x,
+                player.projPosition.y);
         isCollided = true;
     }
 

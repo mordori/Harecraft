@@ -36,8 +36,7 @@ public class Player extends Pilot {
     Vector3 keyboardDestination;
     Vector3 destination;
     Vector3 curPosition;
-    float posXTranspose;
-    float posYTranspose;
+    Vector3 projPosition;
 
     TextureRegion texR_body = Assets.texR_plane_2_red_body;
     TextureRegion texR_wings = Assets.texR_plane_2_red_wings;
@@ -148,6 +147,7 @@ public class Player extends Pilot {
         }*/
         //decal_head.rotateY(getRotationAverage());
 
+        projPosition = camera.project(curPosition.cpy());
         updateParticles(delta);
     }
 
@@ -169,8 +169,8 @@ public class Player extends Pilot {
     @Override
     public void updateParticles(float delta) {
         pfx_scarf.setPosition(
-                camera.project(curPosition.cpy()).x,
-                camera.project(curPosition.cpy()).y - 10f);
+                projPosition.x,
+                projPosition.y - 10f);
 
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
@@ -189,21 +189,5 @@ public class Player extends Pilot {
     public void dispose() {
         super.dispose();
         pfx_scarf.dispose();
-    }
-
-    public float posTest() {
-        if (Math.abs(position.x) < 10f) {
-            posXTranspose = Math.abs(position.x);
-        } else if (Math.abs(position.x) > 10f) {
-            posXTranspose = 20f - Math.abs(position.x);
-        }
-
-        if(position.y >= 0f) {
-            posYTranspose = position.y / 5f;
-        }
-        else posYTranspose = position.y / 200f;
-
-        if(position.x > 0f) return posXTranspose;
-        else return -posXTranspose;
     }
 }

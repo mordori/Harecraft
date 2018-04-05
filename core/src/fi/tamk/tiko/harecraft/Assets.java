@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 public class Assets {
     //static int[][] worldsArr = new int[2][2];
 
+    static Texture tex_grass;
     static Texture tex_sea;
     static Texture tex_foam;
     static Texture tex_sea_deep;
@@ -96,6 +97,8 @@ public class Assets {
         }*/
 
         //TEXTURES
+        tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
+        tex_grass.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_sea = new Texture(Gdx.files.internal("shaders/tex_sea.png"));
         tex_sea.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_sea.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -214,6 +217,13 @@ public class Assets {
     }
 
     public static void dispose() {
+        tex_grass.dispose();
+        tex_sea.dispose();
+        tex_foam.dispose();
+        tex_sea_deep.dispose();
+        tex_mask_foam.dispose();
+        tex_mask_sea_deep.dispose();
+
         texR_foreground.getTexture().dispose();
         texR_sun.getTexture().dispose();
         texR_hotairballoon.getTexture().dispose();

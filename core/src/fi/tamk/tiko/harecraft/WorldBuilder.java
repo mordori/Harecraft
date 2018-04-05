@@ -48,8 +48,7 @@ public class WorldBuilder {
     Powerup lastPowerup;
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
-
-    static final int TREE = 0;
+    float DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty; // 0-EASY 2-MEDIUM 4-HARD
 
     public WorldBuilder(World world) {
         this.world = world;
@@ -67,13 +66,21 @@ public class WorldBuilder {
         //UPDATE
         //-------------------------------------------
         player.update(delta, Gdx.input.getAccelerometerY(), Gdx.input.getAccelerometerZ());
+
         updateOpponents(delta);
         updateClouds(delta);
         updateRings(delta);
         updatePowerups(delta);
-        updateLakes(delta);
-        updateTrees(delta);
-        updateHills(delta);
+
+
+        if(world instanceof WorldForest) {
+            updateLakes(delta);
+            updateTrees(delta);
+            updateHills(delta);
+        }
+        else if(world instanceof WorldSea) {
+
+        }
 
         world.decal_sun1.rotateZ(delta/2f);
         world.decal_sun2.rotateZ(-delta);
@@ -92,9 +99,14 @@ public class WorldBuilder {
     }
 
     public void spawnGroundObjects() {
-        addLakes();
-        addHills();
-        addTrees();
+        if(world instanceof WorldForest) {
+            addLakes();
+            addHills();
+            addTrees();
+        }
+        else if(world instanceof WorldSea) {
+
+        }
     }
 
     public void spawnSkyObjects() {
@@ -209,11 +221,11 @@ public class WorldBuilder {
             //x = MathUtils.random(-10f, 10f); //mikko rings
             //y = MathUtils.random(-9.2f, 6.2f);
             //ringSpawnVector.rotate(MathUtils.random(1f,20f));
-            float DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty; // 0-EASY 2-MEDIUM 4-HARD
-            Gdx.app.log("Profiili", ""+ProfileInfo.selectedPlayerProfile);
-            Gdx.app.log("vaikeus", ""+ProfileInfo.selectedDifficulty);
 
-            if (MathUtils.random(1,6) == 6 || staticHold > 0) {   // d6 if static hold starts OR if static hold is running
+            //Gdx.app.log("Profiili", ""+ProfileInfo.selectedPlayerProfile);
+            //Gdx.app.log("vaikeus", ""+ProfileInfo.selectedDifficulty);
+
+            if (staticHold > 0 || MathUtils.random(1,6) == 6) {   // d6 if static hold starts OR if static hold is running
 
                 if (staticHold == 0) {      //static hold starts
                     staticHold = MathUtils.random(2,4);     //static hold rings amount
@@ -221,14 +233,14 @@ public class WorldBuilder {
                     ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY, 6f + (DIFFICULTYSENSITIVITY*2)));  //minimum increased because static hold is useless in center
                     rings_Timer = 1f;
                 }
-                if (staticHold > 0) {       //static hold is running
+                else if (staticHold > 0) {       //static hold is running
                     world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f));  //-2 modifier for y spawn
                     staticHold--;
                 }
+
                 if (staticHold == 0) {      //static hold ends
                     rings_Timer = 3.5f;
                 }
-
             }
             else {          //Spawn basic vector Ring
                 ringSpawnVector.rotate(MathUtils.random(0f, 360f));
@@ -460,14 +472,14 @@ public class WorldBuilder {
 
     public void updateWorldParticles(float delta) {
         world.pfx_speed_lines.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-        world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 2f);
+        world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 1f);
         world.pfx_speed_lines.update(delta);
     }
 
     public void spawnStartObjects() {
         for (int j = 100; j < 220; j += MathUtils.random(30,40)) {               //Z Depth step
             for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
-                world.trees_L.add(new Tree(i, groundLevel, j));
+                if(world instanceof  WorldForest) world.trees_L.add(new Tree(i, groundLevel, j));
                 if ( i < -10 || i > 10 ) {
                     world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
                 }

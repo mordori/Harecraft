@@ -3,13 +3,12 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by Mika on 28/02/2018.
  */
 
-public class Tree extends GroundObject {
+public class Tree extends GameObject {
     public Tree(float x, float y, float z) {
         TextureRegion textureRegion;
         float transposedY = y - 1f;

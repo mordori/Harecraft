@@ -2,6 +2,8 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
@@ -49,7 +51,7 @@ public class Ring extends GameObject {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.curPosition) < 2.5f) {
                 isCollected = true;
 
-                if(global_Multiplier < MULTIPLIER_HIGH) {global_Multiplier += MULTIPLIER_INCREMENT;}
+                if(global_Multiplier < MULTIPLIER_HIGH) global_Multiplier += MULTIPLIER_INCREMENT;
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
                 Assets.sound_ring_collected.play();
@@ -58,8 +60,15 @@ public class Ring extends GameObject {
 
                 pfx_speed_up.start();
                 pfx_speed_up.setPosition(
-                        camera.project(player.curPosition.cpy()).x,
-                        camera.project(player.curPosition.cpy()).y);
+                        player.projPosition.x,
+                        player.projPosition.y);
+                float randomAngle = MathUtils.random(0f, 40f);
+                for(int i = 0; i < 20; i++) {
+                    pfx_speed_up.getEmitters().get(0).getAngle().setLow(randomAngle + i * 360f/20f);
+                    pfx_speed_up.getEmitters().get(0).getXOffsetValue().setLow(250f * MathUtils.cosDeg(pfx_speed_up.getEmitters().get(0).getAngle().getLowMin()));
+                    pfx_speed_up.getEmitters().get(0).getYOffsetValue().setLow(250f * MathUtils.sinDeg(pfx_speed_up.getEmitters().get(0).getAngle().getLowMin()));
+                    pfx_speed_up.getEmitters().get(0).addParticle();
+                }
             }
         }
         else {

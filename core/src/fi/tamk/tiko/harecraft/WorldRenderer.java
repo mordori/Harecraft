@@ -9,6 +9,7 @@ import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
@@ -23,10 +24,12 @@ import static fi.tamk.tiko.harecraft.World.player;
 public class WorldRenderer {
     World world;
     boolean isFBOEnabled;
+    boolean isSeaEnabled;
 
     public WorldRenderer(World world) {
         this.world = world;
         Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+        if(world instanceof WorldSea) isSeaEnabled = true;
     }
 
     public void renderWorld() {
@@ -51,17 +54,18 @@ public class WorldRenderer {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
-        dBatch.add(world.decal_foreground);
+        if(!isSeaEnabled) dBatch.add(world.decal_background);
+
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
-        activeShader = SHADER3D_SEA;
+        if(isSeaEnabled) activeShader = SHADER3D_SEA;
         //----------------------------
-        dBatch.add(world.sea);
+        dBatch.add(world.ground);
         dBatch.flush();
 
-        activeShader = SHADER3D_DEFAULT;
+        if(isSeaEnabled) activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
         if(gameState == FINISH || gameState == END) {
@@ -110,9 +114,9 @@ public class WorldRenderer {
             if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         }
 
-        for(Powerup p : world.powerups) {
+        /*for(Powerup p : world.powerups) {
             if(p.isCollected) p.pfx_hit.draw(sBatch);
-        }
+        }*/
 
         for(Ring r : world.rings) {
             if(r.isCollected) r.pfx_speed_up.draw(sBatch);

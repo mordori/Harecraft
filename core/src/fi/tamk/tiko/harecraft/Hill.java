@@ -2,13 +2,12 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by Mika on 06/03/2018.
  */
 
-public class Hill extends GroundObject{
+public class Hill extends GameObject {
     public Hill(float x, float y, float z) {
         width = Assets.texR_hill.getRegionWidth()/10f;
         height = Assets.texR_hill.getRegionHeight()/10f;

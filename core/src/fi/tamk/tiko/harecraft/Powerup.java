@@ -51,10 +51,10 @@ public class Powerup extends GameObject {
 
                 pfx_hit.start();
                 pfx_hit.setPosition(
-                        camera.project(player.curPosition.cpy()).x,
-                        camera.project(player.curPosition.cpy()).y);
-                for(int i = 5; i > 0; i--) {
-                    pfx_hit.getEmitters().get(0).getAngle().setLow(-45f + i * 45f);
+                        player.projPosition.x,
+                        player.projPosition.y);
+                for(int i = 3; i > 0; i--) {
+                    pfx_hit.getEmitters().get(0).getAngle().setLow(i * 45f);
                     pfx_hit.getEmitters().get(0).addParticle();
                 }
             }

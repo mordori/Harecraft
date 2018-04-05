@@ -54,9 +54,9 @@ public class GameScreen extends ScreenAdapter {
     float cameraPanY = 60f;
     float panAccelY = 1f;
 
-    public GameScreen(GameMain game, World world) {
+    public GameScreen(GameMain game) {
         this.game = game;
-        this.world = world;
+        randomizeWorld();
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
         HUD = new HUD(world);
@@ -68,6 +68,17 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.setVolume(0f);
         volume = 0.15f;
         Assets.sound_airplane_engine.loop(volume);
+    }
+
+    public void randomizeWorld() {
+        switch (MathUtils.random(0,1)) {
+            case 0:
+                world = new WorldForest();
+                break;
+            case 1:
+                world = new WorldSea();
+                break;
+        }
     }
 
     @Override
@@ -124,6 +135,7 @@ public class GameScreen extends ScreenAdapter {
             gameStateTime = 0f;
             player.distance = 0f;
             player.acceleration = 0f;
+            world.pfx_speed_lines.start();
         }
         else if(gameState == START) {
             global_Multiplier = 3f;
@@ -170,10 +182,13 @@ public class GameScreen extends ScreenAdapter {
     public void updateCameras(float delta) {
         fieldOfView -= delta;
         if(fieldOfView < 45f) fieldOfView = 45f;
-        panAccelY -= delta / 3f;
-        if(panAccelY < 0f) panAccelY = 0f;
-        cameraPanY -= (delta * 40f) * panAccelY;
-        if(cameraPanY < 0f) cameraPanY = 0f;
+
+        if(gameState == START) {
+            panAccelY -= delta / 3f;
+            if (panAccelY < 0f) panAccelY = 0f;
+            cameraPanY -= (delta * 40f) * panAccelY;
+            if (cameraPanY < 0f) cameraPanY = 0f;
+        }
 
         camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
         camera.lookAt(0f, cameraPanY, spawnDistance/2f);
