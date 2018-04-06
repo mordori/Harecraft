@@ -53,7 +53,7 @@ public class MainMenu extends ScreenAdapter {
     Preferences profilesData;
     ArrayList<String> profiles;
     int index;
-    float opacity = 1f;
+    float opacity = 0f;
 
     public MainMenu(GameMain game) {
         this.game = game;
@@ -172,6 +172,7 @@ public class MainMenu extends ScreenAdapter {
         fbo.end();
         renderToTexture();
 
+
         if (startGame) {
             opacity -= Gdx.graphics.getDeltaTime() * 1.5f;
             if(opacity < 0f) opacity = 0f;
@@ -180,6 +181,10 @@ public class MainMenu extends ScreenAdapter {
                 ProfileInfo.load();
                 game.setScreen(new GameScreen(game, index));
             }
+        }
+        else {
+            opacity += Gdx.graphics.getDeltaTime();
+            if(opacity > 1f) opacity = 1f;
         }
         if (settingsMenu) {
             setCurrentPlayerProfile();

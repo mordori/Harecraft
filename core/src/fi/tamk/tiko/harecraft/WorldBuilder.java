@@ -85,6 +85,8 @@ public class WorldBuilder {
         }
 
         if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
+        else if(gameState == END && gameStateTime > 4f) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
+
         world.decal_sun1.rotateZ(delta/2f);
         world.decal_sun1.setColor(1f,1f,1f, opacity);
 
@@ -481,6 +483,7 @@ public class WorldBuilder {
         world.pfx_speed_lines.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
         world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 1f);
         world.pfx_speed_lines.update(delta);
+        if(gameState == END) world.pfx_speed_lines.allowCompletion();
     }
 
     public void spawnStartObjects() {

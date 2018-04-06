@@ -56,7 +56,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
-        randomizeWorld(index);
+        selectWorld(index);
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
         HUD = new HUD(world);
@@ -68,10 +68,9 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.setVolume(0f);
         volume = 0.15f;
         Assets.sound_airplane_engine.loop(volume);
-        System.out.println("QWDS");
     }
 
-    public void randomizeWorld(int index) {
+    public void selectWorld(int index) {
         switch (index) {
             case 0:
                 world = new WorldForest();
@@ -91,10 +90,11 @@ public class GameScreen extends ScreenAdapter {
         if(gameState == END && gameStateTime > 4f) {
             Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
         }
-        if(gameState == END && gameStateTime > 5f) {
+        if(gameState == END && gameStateTime > 5.5f) {
             //Assets.music_course_1.stop();
             sBatch.setShader(shader2D_default);
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
+            //game.setScreen(new MainMenu(game));
         }
         System.out.println(player.velocity.z);
     }
@@ -195,6 +195,12 @@ public class GameScreen extends ScreenAdapter {
             if (panAccelY < 0f) panAccelY = 0f;
             cameraPanY -= (delta * 40f) * panAccelY;
             if (cameraPanY < 0f) cameraPanY = 0f;
+        }
+        else if(gameState == END && gameStateTime > 2f) {
+            panAccelY += delta / 2f;
+            if (panAccelY > 1f) panAccelY = 1f;
+            cameraPanY += (delta * 40f) * panAccelY;
+            if (cameraPanY > 80f) cameraPanY = 80f;
         }
 
         camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);

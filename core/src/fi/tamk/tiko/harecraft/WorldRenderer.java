@@ -98,7 +98,7 @@ public class WorldRenderer {
         texture.setTexture(fbo.getColorBufferTexture());
 
         if(gameState == END) {
-            sBatch.setShader(shader2D_vignette);
+            //sBatch.setShader(shader2D_vignette);
         }
         //------------------------------------------------
         sBatch.begin();

@@ -107,8 +107,6 @@ public abstract class World {
 }
 
 class WorldForest extends World {
-
-
     public WorldForest() {
         float width = Assets.texR_foreground.getRegionWidth()/1.5f;
         float height = Assets.texR_foreground.getRegionHeight()/1.5f;
@@ -122,8 +120,6 @@ class WorldForest extends World {
 }
 
 class WorldSea extends World {
-
-
     public WorldSea() {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
         ground.setPosition(0f, -28f, 125f);
