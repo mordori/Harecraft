@@ -11,6 +11,7 @@ import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
@@ -49,6 +50,7 @@ public class WorldBuilder {
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
     float DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty; // 0-EASY 2-MEDIUM 4-HARD
+    float opacity;
 
     public WorldBuilder(World world) {
         this.world = world;
@@ -82,8 +84,14 @@ public class WorldBuilder {
 
         }
 
+        if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
         world.decal_sun1.rotateZ(delta/2f);
+        world.decal_sun1.setColor(1f,1f,1f, opacity);
+
         world.decal_sun2.rotateZ(-delta);
+        world.decal_sun2.setColor(1f,1f,1f, opacity);
+
+        if(world.decal_background != null) world.decal_background.setColor(1f,1f,1f, opacity);
 
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {

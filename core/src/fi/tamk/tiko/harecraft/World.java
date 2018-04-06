@@ -63,18 +63,15 @@ public abstract class World {
     Decal decal_sun2;
 
     public World() {
-        switch (MathUtils.random(0,3)) {
+        switch (MathUtils.random(0,2)) {
             case 0:
-                finish = 1500f;
+                finish = 100f;
                 break;
             case 1:
-                finish = 2000f;
+                finish = 200f;
                 break;
             case 2:
-                finish = 2500f;
-                break;
-            case 3:
-                finish = 3000f;
+                finish = 300f;
                 break;
         }
         end = finish + spawnDistance + 20f;

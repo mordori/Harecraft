@@ -14,6 +14,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -33,7 +34,7 @@ public class WorldRenderer {
             Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
         }
         if(world instanceof WorldSea) {
-            Gdx.gl.glClearColor(154/255f, 42/255f, 105/255f, 1f);
+            Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
             isSeaEnabled = true;
         }
     }
@@ -42,7 +43,7 @@ public class WorldRenderer {
         if(gameState == END) isFBOEnabled = true;
         else isFBOEnabled = false;
 
-        if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        if(gameState != END) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if(isFBOEnabled) {
             fbo.begin();
@@ -96,7 +97,9 @@ public class WorldRenderer {
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
 
-        if(isFBOEnabled) sBatch.setShader(shader2D_vignette);
+        if(gameState == END) {
+            sBatch.setShader(shader2D_vignette);
+        }
         //------------------------------------------------
         sBatch.begin();
         texture.draw(sBatch);

@@ -68,6 +68,7 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.setVolume(0f);
         volume = 0.15f;
         Assets.sound_airplane_engine.loop(volume);
+        System.out.println("QWDS");
     }
 
     public void randomizeWorld(int index) {
@@ -87,7 +88,11 @@ public class GameScreen extends ScreenAdapter {
         worldRenderer.renderWorld();
         HUD.draw();
 
+        if(gameState == END && gameStateTime > 4f) {
+            Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
+        }
         if(gameState == END && gameStateTime > 5f) {
+            //Assets.music_course_1.stop();
             sBatch.setShader(shader2D_default);
             game.setScreen(new MainMenu(game));
         }
@@ -152,6 +157,7 @@ public class GameScreen extends ScreenAdapter {
                 countdown = true;
             }
             Assets.sound_airplane_engine.setVolume(0,volume);
+            Assets.sound_airplane_engine.setPitch(0,1f + volume);
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;

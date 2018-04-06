@@ -29,6 +29,13 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.sBatch;
+import static fi.tamk.tiko.harecraft.GameMain.texture;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
+
 /**
  * Created by musta on 26.3.2018.
  */
@@ -46,6 +53,7 @@ public class MainMenu extends ScreenAdapter {
     Preferences profilesData;
     ArrayList<String> profiles;
     int index;
+    float opacity = 1f;
 
     public MainMenu(GameMain game) {
         this.game = game;
@@ -140,11 +148,13 @@ public class MainMenu extends ScreenAdapter {
 
         index = MathUtils.random(0,1);
         switch(index) {
+            //FOREST
             case 0:
                 Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
                 break;
+            //SEA
             case 1:
-                Gdx.gl.glClearColor(154/255f, 42/255f, 105/255f, 1f);
+                Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
                 break;
         }
     }
@@ -152,15 +162,24 @@ public class MainMenu extends ScreenAdapter {
     public void render (float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.sBatch.begin();
-        game.sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
-        game.sBatch.end();
+        fbo.begin();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        sBatch.begin();
+        sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
+        sBatch.end();
         stage.act();
         stage.draw();
+        fbo.end();
+        renderToTexture();
+
         if (startGame) {
-            setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
-            ProfileInfo.load();
-            game.setScreen(new GameScreen(game, index));
+            opacity -= Gdx.graphics.getDeltaTime() * 1.5f;
+            if(opacity < 0f) opacity = 0f;
+            if(opacity == 0f) {
+                setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
+                ProfileInfo.load();
+                game.setScreen(new GameScreen(game, index));
+            }
         }
         if (settingsMenu) {
             setCurrentPlayerProfile();
@@ -172,6 +191,15 @@ public class MainMenu extends ScreenAdapter {
         SelectBox tempActor = stage.getRoot().findActor("profileBox");  //Set selected playerprofile to gamescreen.
         String string = (String) tempActor.getSelected();
         ProfileInfo.selectedPlayerProfile = string;
+    }
+
+    public void renderToTexture() {
+        texture.setTexture(fbo.getColorBufferTexture());
+
+        //------------------------------------------------
+        sBatch.begin();
+        texture.draw(sBatch, opacity);
+        sBatch.end();
     }
 }
 
