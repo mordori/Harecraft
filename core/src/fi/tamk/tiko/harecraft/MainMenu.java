@@ -52,7 +52,6 @@ public class MainMenu extends ScreenAdapter {
     Boolean scoresMenu = false;
     Preferences profilesData;
     ArrayList<String> profiles;
-    int index;
     float opacity = 0f;
 
     public MainMenu(GameMain game) {
@@ -146,17 +145,7 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(scoresButton);
         stage.addActor(profileBox);
 
-        index = MathUtils.random(0,1);
-        switch(index) {
-            //FOREST
-            case 0:
-                Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
-                break;
-            //SEA
-            case 1:
-                Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
-                break;
-        }
+        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     public void render (float delta) {
@@ -179,7 +168,7 @@ public class MainMenu extends ScreenAdapter {
             if(opacity == 0f) {
                 setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
                 ProfileInfo.load();
-                game.setScreen(new GameScreen(game, index));
+                game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
             }
         }
         else {

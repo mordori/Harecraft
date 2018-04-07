@@ -58,18 +58,14 @@ public class GameMain extends Game {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
+        Pixmap.Format format = Pixmap.Format.RGB565;
+        if(Gdx.app.getType() == Application.ApplicationType.Desktop) format = Pixmap.Format.RGBA8888;
 
-        if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
-            fbo = new FrameBuffer(Pixmap.Format.RGBA8888, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
-            texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, Pixmap.Format.RGBA8888));
-            Gdx.app.log("FORMAT", "RGBA8888");
-        }
-        else if(Gdx.app.getType() == Application.ApplicationType.Android) {
-            fbo = new FrameBuffer(Pixmap.Format.RGB565, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
-            texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, Pixmap.Format.RGB565));
-            Gdx.app.log("FORMAT", "RGB565");
+        if(format == Pixmap.Format.RGBA8888) Gdx.app.log("FORMAT", "RGBA8888");
+        else Gdx.app.log("FORMAT", "RGB565");
 
-        }
+        fbo = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
+        texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, format));
         texture.flip(false, true);
 
 		setScreen(new MainMenu(this));

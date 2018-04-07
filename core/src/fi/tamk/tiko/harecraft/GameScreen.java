@@ -96,7 +96,8 @@ public class GameScreen extends ScreenAdapter {
             game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
             //game.setScreen(new MainMenu(game));
         }
-        System.out.println(player.velocity.z);
+
+        //System.out.println(player.velocity.z);
     }
 
     public void update(float delta) {

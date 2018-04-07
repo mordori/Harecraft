@@ -40,10 +40,10 @@ public class WorldRenderer {
     }
 
     public void renderWorld() {
-        if(gameState == END) isFBOEnabled = true;
-        else isFBOEnabled = false;
+        //if(gameState == END) isFBOEnabled = true;
+        //else isFBOEnabled = false;
 
-        if(gameState != END) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if(isFBOEnabled) {
             fbo.begin();
@@ -108,7 +108,7 @@ public class WorldRenderer {
 
     public void drawParticles() {
         sBatch.begin();
-        if(!isFBOEnabled) player.pfx_scarf.draw(sBatch);
+        if(gameState != START && gameState != END) player.pfx_scarf.draw(sBatch);
 
         for(Cloud c : world.clouds_RDown) {
             if(c.isCollided) c.pfx_dispersion.draw(sBatch);
