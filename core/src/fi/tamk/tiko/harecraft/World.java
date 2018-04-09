@@ -78,13 +78,13 @@ public abstract class World {
     public World() {
         switch (MathUtils.random(0,2)) {
             case 0:
-                finish = 1000f;
+                finish = 2000f;
                 break;
             case 1:
                 finish = 2000f;
                 break;
             case 2:
-                finish = 1000f;
+                finish = 3000f;
                 break;
         }
         end = finish + spawnDistance + 20f;
