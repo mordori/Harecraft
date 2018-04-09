@@ -76,7 +76,10 @@ public abstract class World {
     float opacity;
 
     public World() {
-        switch (MathUtils.random(0,2)) {
+        if(this instanceof WorldSea) finish = 2000f;
+        else if(this instanceof WorldForest) finish = 3000f;
+
+        /*switch (MathUtils.random(0,2)) {
             case 0:
                 finish = 2000f;
                 break;
@@ -86,7 +89,7 @@ public abstract class World {
             case 2:
                 finish = 3000f;
                 break;
-        }
+        }*/
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
