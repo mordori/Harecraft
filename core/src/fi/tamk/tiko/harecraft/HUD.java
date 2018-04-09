@@ -31,6 +31,7 @@ public class HUD {
     float progressline_width = 300f;
     float progressline_arc_radius = 9f;
     float HUD_opacity;
+    float yPos = SCREEN_HEIGHT/1.5f;
 
     Sprite speedometer = new Sprite(Assets.texR_speedometer);
     Sprite text_gameStates = new Sprite();
@@ -112,23 +113,38 @@ public class HUD {
         if(countdown || (gameState == END && gameStateTime < 4f)) {
             if(gameState == START) {
                 if (gameStateTime < 3.3f) {
-                    if(gameStateTime < 2f) text_opacity = 0f;
+                    if(gameStateTime < 2f) {
+                        yPos = SCREEN_HEIGHT/1.5f;
+                        text_opacity = 0f;
+                    }
                     index = 2;
                 } else if (gameStateTime < 4.6f) {
-                    if(index == 2) text_opacity = 0f;
+                    if(index == 2) {
+                        yPos = SCREEN_HEIGHT/1.5f;
+                        text_opacity = 0f;
+                    }
                     index = 1;
                 } else if (gameStateTime < 5.9f) {
-                    if(index == 1) text_opacity = 0f;
+                    if(index == 1) {
+                        yPos = SCREEN_HEIGHT/1.5f;
+                        text_opacity = 0f;
+                    }
                     index = 0;
                 } else {
-                    if(index == 0) text_opacity = 0f;
+                    if(index == 0) {
+                        yPos = SCREEN_HEIGHT/1.5f;
+                        text_opacity = 0f;
+                    }
                     index = 4;
                 }
                 text_opacity += Gdx.graphics.getDeltaTime();
                 if(text_opacity > 1f) text_opacity = 1f;
             }
             else if(gameState == END) {
-                if (index == 4) text_opacity = 0f;
+                if (index == 4) {
+                    yPos = SCREEN_HEIGHT/1.5f;
+                    text_opacity = 0f;
+                }
                 index = 3;
 
                 if(gameStateTime < 1.7f) {
@@ -147,8 +163,8 @@ public class HUD {
             }
 
             text_gameStates = Assets.sprites_text_race_states.get(index);
-            float width = text_gameStates.getRegionHeight()/1.5f;
-            float height = text_gameStates.getRegionWidth()/1.5f;
+            float width = text_gameStates.getRegionHeight() * 1.25f;
+            float height = text_gameStates.getRegionWidth() * 1.25f;
 
             if(index == 3) {
                 float temp = width;
@@ -156,17 +172,27 @@ public class HUD {
                 height = temp;
             }
 
+            yPos -= Gdx.graphics.getDeltaTime() * 20f / text_opacity;
+
             text_gameStates.setOriginCenter();
             text_gameStates.setColor(1f, 1f, 1f, text_opacity);
             text_gameStates.setBounds(0f, 0f, width, height);
-            text_gameStates.setPosition(SCREEN_WIDTH/2f - width/2f, SCREEN_HEIGHT/2f - height/2f);
+            text_gameStates.setPosition(SCREEN_WIDTH/2f - width/2f, yPos - height/2f);
 
             text_gameStates.draw(sBatch);
         }
     }
 
     public void updatePlacementNumber(float delta) {
-        text_placementNumber = Assets.sprites_text_race_positions.get(index);
+        int pos = 0;
+        int placement = 0;
+
+        for(Opponent o : world.opponents) {
+            if(o.distance > player.distance) pos++;
+        }
+
+
+        text_placementNumber = Assets.sprites_text_race_positions.get(pos);
         text_placementNumber.setPosition(10f, 10f);
         text_placementNumber.setColor(1f, 1f, 1f, HUD_opacity);
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
@@ -53,12 +54,10 @@ public class WorldBuilder {
     Powerup lastPowerup;
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
-    static float DIFFICULTYSENSITIVITY; // 0-EASY 2-MEDIUM 4-HARD
 
 
     public WorldBuilder(World world) {
         this.world = world;
-        DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
         spawnStartObjects();
     }
 
@@ -214,7 +213,7 @@ public class WorldBuilder {
                 if (staticHold == 0) {      //static hold starts
                     staticHold = MathUtils.random(2,4);     //static hold rings amount
                     ringSpawnVector.rotate(MathUtils.random(0f, 360f)); //randomize new vector for static hold
-                    ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY) + (4f - DIFFICULTYSENSITIVITY)*0.5f));  //minimum increased because static hold is useless in center
+                    ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));  //minimum increased because static hold is useless in center
                     rings_Timer = 1f;
                 }
                 else if (staticHold > 0) {       //static hold is running
@@ -228,7 +227,7 @@ public class WorldBuilder {
             }
             else {          //Spawn basic vector Ring
                 ringSpawnVector.rotate(MathUtils.random(0f, 360f));
-                ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY) + (4f - DIFFICULTYSENSITIVITY)*0.5f));
+                ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));
                 world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f)); //-2f modifier for y spawn
             }
         }

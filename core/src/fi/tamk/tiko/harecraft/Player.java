@@ -28,7 +28,7 @@ public class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static final float ACCEL_Y_OFFSET = -2f;
+    static final float ACCEL_Y_OFFSET = 1f;
     final float SPEED = 15f;
     float accelerationZ;
     float []rotationsArray;
@@ -79,8 +79,10 @@ public class Player extends Pilot {
         super.update(delta);
 
         if(gameState != START && gameState != END) {
-            destination.x = accelX * -5f * (960/SCREEN_WIDTH);
-            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
+            destination.x = accelX * -5f;
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
+            //destination.x = accelX * -5f * (960/SCREEN_WIDTH);
+            //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
             destination = destination.add(keyboardDestination);
 
             destdist = 1f + destination.dst(0f, 6f, 0f)/100;   //100=1-1.3   reunanopeuden nollapiste +6y

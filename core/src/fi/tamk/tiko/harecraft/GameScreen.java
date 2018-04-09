@@ -26,6 +26,8 @@ public class GameScreen extends ScreenAdapter {
     public static final float SCREEN_WIDTH = Gdx.graphics.getWidth();
     public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
+    static float DIFFICULTYSENSITIVITY; // 0-EASY 2-MEDIUM 4-HARD
+
     enum GameState {
         START, RACE, FINISH, END
     }
@@ -51,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
+        DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
         selectWorld(index);
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
@@ -81,7 +84,8 @@ public class GameScreen extends ScreenAdapter {
         worldRenderer.renderWorld();
         HUD.draw();
 
-        if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
+        if(newGame) game.setScreen(new MainMenu(game));
+        //if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
         //System.out.println(player.velocity.z);
     }
 
@@ -171,9 +175,22 @@ public class GameScreen extends ScreenAdapter {
             if (cameraPanY > 80f) cameraPanY = 80f;
         }
 
+        /*if(gameState == START || gameState == END) {
+            camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
+            camera.lookAt(0f, cameraPanY, spawnDistance/2f);
+        }
+        else {
+            camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
+            camera.lookAt(player.decal.getPosition());
+        }
+        camera.up.set(player.getRotationAverage(), 20f, 0f);
+        */
+
         camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
         camera.lookAt(0f, cameraPanY, spawnDistance/2f);
         camera.up.set(player.getRotationAverage(), 20f, 0f);
+
+
         camera.fieldOfView = fieldOfView;
         camera.update();
         orthoCamera.update();

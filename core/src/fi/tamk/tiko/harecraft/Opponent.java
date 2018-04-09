@@ -77,7 +77,7 @@ public class Opponent extends Pilot {
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z+0.2f);
 
-        decal_playerTag = Decal.newDecal(Assets.texR_playertag.getRegionWidth()/50f,Assets.texR_playertag.getRegionHeight()/50f, Assets.texR_playertag,true);
+        decal_playerTag = Decal.newDecal(Assets.texR_playertag.getRegionWidth()/70f,Assets.texR_playertag.getRegionHeight()/70f, Assets.texR_playertag,true);
     }
 
     public void update(float delta) {
@@ -100,9 +100,9 @@ public class Opponent extends Pilot {
         else moveZ(delta);
 
         decal_head.setRotation(decal.getRotation().cpy().exp(2f));
-        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.07f);
+        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.04f);
         decal_wings.setRotation(decal.getRotation());
-        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.14f);
+        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.08f);
 
         decal_playerTag.setPosition(decal.getPosition().x, decal.getPosition().y + 1f, decal.getPosition().z);
     }
