@@ -10,11 +10,13 @@ import com.badlogic.gdx.Preferences;
 public class ProfileInfo {
     static String selectedPlayerProfile; //tätä muutetaan muualta
     static int selectedDifficulty;
+    static int selectedStaticHolds;
     static Preferences profilesData;
 
     public static void load() {     //load from prefs based on selected profile
          profilesData = Gdx.app.getPreferences("ProfileFile");
          selectedDifficulty = profilesData.getInteger(selectedPlayerProfile +"Difficulty", 2);
+         selectedStaticHolds = profilesData.getInteger(selectedPlayerProfile +"StaticHolds", 1); // 0-5
         //selectedDifficulty = tmp;
     }
 }

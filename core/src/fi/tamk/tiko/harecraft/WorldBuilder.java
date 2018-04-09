@@ -250,7 +250,7 @@ public class WorldBuilder {
             //Gdx.app.log("Profiili", ""+ProfileInfo.selectedPlayerProfile);
             //Gdx.app.log("vaikeus", ""+ProfileInfo.selectedDifficulty);
 
-            if (staticHold > 0 || MathUtils.random(1,6) == 6) {   // d6 if static hold starts OR if static hold is running
+            if (staticHold > 0 || MathUtils.random(1,5) <= ProfileInfo.selectedStaticHolds) {   // d6 if static hold starts OR if static hold is running 0 off 5 100%
 
                 if (staticHold == 0) {      //static hold starts
                     staticHold = MathUtils.random(2,4);     //static hold rings amount

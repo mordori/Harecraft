@@ -58,9 +58,18 @@ public class SettingsMenu extends ScreenAdapter {
         slider.setName("difficultyslider");
 
         Label tarra1 = new Label("Difficulty", skin);
-        tarra1.setPosition(830,700);
+        tarra1.setPosition(800,700);
         tarra1.setFontScale(1);
-        stage.addActor(tarra1);
+
+        Slider slider2 = new Slider(0,5, 1, false,skin);
+        slider2.setPosition(650, 500);;
+        slider2.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"StaticHolds", 1));
+        slider2.setWidth(500);
+        slider2.setName("staticholdsslider");
+
+        Label tarra2 = new Label("Static Holds", skin);
+        tarra2.setPosition(770,550);
+        tarra2.setFontScale(1);
 
         //skin.getFont("font").getData().setScale(1.5f); //set skin font size
         //SelectBox profileBox = new SelectBox(skin);
@@ -70,6 +79,9 @@ public class SettingsMenu extends ScreenAdapter {
         //profileBox.setWidth(400);
 
         stage.addActor(slider);
+        stage.addActor(slider2);
+        stage.addActor(tarra1);
+        stage.addActor(tarra2);
         stage.addActor(button);
         //stage.addActor(profileBox);
 
@@ -106,6 +118,11 @@ public class SettingsMenu extends ScreenAdapter {
             Slider tmpActor = stage.getRoot().findActor("difficultyslider");    //etsi difficulty sliderin value ja tallenna
             int tmpInt = (int) tmpActor.getValue();
             profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Difficulty", tmpInt );
+            profilesData.flush();
+
+            tmpActor = stage.getRoot().findActor("staticholdsslider");    //etsi static holds sliderin value ja tallenna
+            tmpInt = (int) tmpActor.getValue();
+            profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"StaticHolds", tmpInt );
             profilesData.flush();
 
             game.setScreen(new MainMenu(game));
