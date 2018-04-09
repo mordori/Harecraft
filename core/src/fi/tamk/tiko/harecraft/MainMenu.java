@@ -49,7 +49,7 @@ public class MainMenu extends ScreenAdapter {
     Texture logo;
     Boolean startGame = false;
     Boolean settingsMenu = false;
-    Boolean scoresMenu = false;
+    Boolean profilesMenu = false;
     Preferences profilesData;
     ArrayList<String> profiles;
     float opacity = 0f;
@@ -69,14 +69,11 @@ public class MainMenu extends ScreenAdapter {
             if (!tempName.equals("novalue")) {
                 profiles.add(tempName);
             }
-            else {
-                break;
-            }
         }
 
-        profilesData.putString("username" +0,"Mikko");   //create profiles on disk
-        profilesData.putString("username" +1,"Henna");
-        profilesData.flush();
+        //profilesData.putString("username" +0,"Mikko");   //create profiles on disk
+        //profilesData.putString("username" +3,"Henna");
+        //profilesData.flush();
 
         //profiles.add("Mikko"); //profiileissa 1 järjestysnumero 2 profiilin nimi
         Gdx.input.setInputProcessor(stage);
@@ -123,10 +120,29 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        TextButton scoresButton = new TextButton("Scores", skin);
-        scoresButton.setPosition(640 -scoresButton.getWidth()/2,50);
-        scoresButton.setName("scoresbutton");
+        TextButton profilesButton = new TextButton("Profiles", skin);
+        profilesButton.setPosition(640 -profilesButton.getWidth()/2,50);
+        profilesButton.setName("profilesbutton");
 
+        profilesButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    profilesMenu = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+
+        //User valintaboxin luominen alkaa
         skin.getFont("font").getData().setScale(1f); //set skin font size
         SelectBox profileBox = new SelectBox(skin);
         profileBox.setName("profileBox");
@@ -142,7 +158,7 @@ public class MainMenu extends ScreenAdapter {
 
         stage.addActor(playButton);
         stage.addActor(settingsButton);
-        stage.addActor(scoresButton);
+        stage.addActor(profilesButton);
         stage.addActor(profileBox);
 
         Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
@@ -178,6 +194,9 @@ public class MainMenu extends ScreenAdapter {
         if (settingsMenu) {
             setCurrentPlayerProfile();
             game.setScreen(new SettingsMenu(game));
+        }
+        if (profilesMenu) {
+            game.setScreen(new CreateUser(game));
         }
     }
 
