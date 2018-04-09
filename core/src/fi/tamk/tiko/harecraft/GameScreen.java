@@ -138,11 +138,11 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if(gameState == RACE && gameStateTime == 0f) {
-            float x = MathUtils.random(-10f, 10f);
-            float y = MathUtils.random(-9.2f, 6.2f);
+            float x = MathUtils.random(-7f, 7f);
+            float y = MathUtils.random(-7.2f, 4.2f);
             world.rings.add(new Ring(x, y, spawnDistance/3.25f));
-            x = MathUtils.random(-10f, 10f);
-            y = MathUtils.random(-9.2f, 6.2f);
+            x = MathUtils.random(-7f, 7f);
+            y = MathUtils.random(-7.2f, 4.2f);
             world.rings.add(new Ring(x, y, spawnDistance/1.35f));
 
             Assets.sound_airplane_engine.stop();

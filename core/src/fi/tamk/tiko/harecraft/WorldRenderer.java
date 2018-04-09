@@ -137,9 +137,6 @@ public class WorldRenderer {
         for(Lake l : world.lakes_L) dBatch.add(l.decal);
         for(Lake l : world.lakes_R) dBatch.add(l.decal);
 
-        for(Wave w : world.waves_L) dBatch.add(w.decal);
-        for(Wave w : world.waves_R) dBatch.add(w.decal);
-
         for(Opponent o : world.opponents) {
             if(o.isDrawing || o.opacity != 0f) {
                 dBatch.add(o.decal_wings);

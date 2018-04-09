@@ -73,14 +73,14 @@ public class Cloud extends GameObject {
     public void checkCollision() {
         if(decal.getPosition().z < 2f && decal.getPosition().z > -0.5f) {
             //Center
-            if (position.dst(player.curPosition) < 1.65f) {
+            if(position.dst(player.curPosition) < 1.65f) {
                 decreaseSpeed();
                 return;
             }
 
             //Left
             transposedPosition.x = position.x - width / 3.2f;
-            transposedPosition.y = position.y - height / 4f;
+            transposedPosition.y = position.y;
             if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
                 return;

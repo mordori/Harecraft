@@ -53,11 +53,12 @@ public class WorldBuilder {
     Powerup lastPowerup;
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
-    float DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty; // 0-EASY 2-MEDIUM 4-HARD
+    static float DIFFICULTYSENSITIVITY; // 0-EASY 2-MEDIUM 4-HARD
 
 
     public WorldBuilder(World world) {
         this.world = world;
+        DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
         spawnStartObjects();
     }
 
@@ -84,7 +85,7 @@ public class WorldBuilder {
             updateHills(delta);
         }
         else if(world instanceof WorldSea) {
-            updateWaves(delta);
+
         }
 
         if(gameState == FINISH || gameState == END) {
@@ -108,7 +109,7 @@ public class WorldBuilder {
             addTrees();
         }
         else if(world instanceof WorldSea) {
-            if(((WorldSea) world).isWaves) addWaves();
+
         }
     }
 
@@ -141,48 +142,6 @@ public class WorldBuilder {
         for(Powerup p : world.powerups) p.update(delta);
 
         removePowerup();
-    }
-
-    public void updateWaves(float delta) {
-        for(Wave w : world.waves_L) w.update(delta);
-        for(Wave w : world.waves_R) w.update(delta);
-
-        removeWaves();
-    }
-
-    public void addWaves() {
-        if(world.waves_L.isEmpty() || world.waves_L.get(world.waves_L.size() - 1).stateTime >= waves_LTimer) {
-            x = MathUtils.random(-150f, 0f);
-            y = groundLevel;
-            z = MathUtils.random(100f, spawnDistance);
-            world.waves_L.add(new Wave(x, y, z));
-            waves_LTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
-        }
-
-        if(world.waves_R.isEmpty() || world.waves_R.get(world.waves_R.size() - 1).stateTime >= waves_RTimer) {
-            x = MathUtils.random(0f, 150f);
-            y = groundLevel;
-            z = MathUtils.random(100f, spawnDistance);
-            world.waves_R.add(new Wave(x, y, z));
-            waves_RTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
-        }
-    }
-
-    public void removeWaves() {
-        removeWave(world.waves_L);
-        removeWave(world.waves_R);
-    }
-
-    public void removeWave(ArrayList<Wave> waveArray) {
-        if(!waveArray.isEmpty() && waveArray.get(0).decal.getPosition().z < camera.position.z) {
-            waveArray.remove(0);
-        }
-
-        for(int i = 0; i < waveArray.size(); i++) {
-            if(waveArray.get(i).currentState == 3) {
-                waveArray.remove(i);
-            }
-        }
     }
 
     public void updateTrees(float delta) {
@@ -219,25 +178,25 @@ public class WorldBuilder {
             x = MathUtils.random(-40f,0f);
             y = MathUtils.random(0f,6.2f);
             world.clouds_LUp.add(new Cloud(x, y, spawnDistance));
-            clouds_LUpTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
+            clouds_LUpTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
         }
         if(world.clouds_LDown.isEmpty() || world.clouds_LDown.get(world.clouds_LDown.size() - 1).stateTime >= clouds_LDownTimer) {
             x = MathUtils.random(-40f,0f);
             y = MathUtils.random(0f,-6.2f);
             world.clouds_LDown.add(new Cloud(x, y, spawnDistance));
-            clouds_LDownTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
+            clouds_LDownTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
         }
         if(world.clouds_RUp.isEmpty() || world.clouds_RUp.get(world.clouds_RUp.size() - 1).stateTime >= clouds_RUpTimer) {
             x = MathUtils.random(0f,40f);
             y = MathUtils.random(0f,6.2f);
             world.clouds_RUp.add(new Cloud(x, y, spawnDistance));
-            clouds_RUpTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
+            clouds_RUpTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
         }
         if(world.clouds_RDown.isEmpty() || world.clouds_RDown.get(world.clouds_RDown.size() - 1).stateTime >= clouds_RDownTimer) {
             x = MathUtils.random(0f,40f);
             y = MathUtils.random(0f,-6.2f);
             world.clouds_RDown.add(new Cloud(x, y, spawnDistance));
-            clouds_RDownTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
+            clouds_RDownTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
         }
     }
 
@@ -255,7 +214,7 @@ public class WorldBuilder {
                 if (staticHold == 0) {      //static hold starts
                     staticHold = MathUtils.random(2,4);     //static hold rings amount
                     ringSpawnVector.rotate(MathUtils.random(0f, 360f)); //randomize new vector for static hold
-                    ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY, 6f + (DIFFICULTYSENSITIVITY*2)));  //minimum increased because static hold is useless in center
+                    ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY) + (4f - DIFFICULTYSENSITIVITY)*0.5f));  //minimum increased because static hold is useless in center
                     rings_Timer = 1f;
                 }
                 else if (staticHold > 0) {       //static hold is running
@@ -269,7 +228,7 @@ public class WorldBuilder {
             }
             else {          //Spawn basic vector Ring
                 ringSpawnVector.rotate(MathUtils.random(0f, 360f));
-                ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY, 6f + (DIFFICULTYSENSITIVITY*2) ));
+                ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY) + (4f - DIFFICULTYSENSITIVITY)*0.5f));
                 world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f)); //-2f modifier for y spawn
             }
         }

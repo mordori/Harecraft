@@ -11,13 +11,13 @@ import static fi.tamk.tiko.harecraft.GameMain.camera;
  */
 
 public class HotAirBalloon extends GameObject {
-    float width = Assets.texR_hotairballoon.getRegionWidth()/10f;
-    float height = Assets.texR_hotairballoon.getRegionHeight()/10f;
     static Decal decal_ribbons;
-    boolean isDrawing;
     Vector3 up = new Vector3(0f,1f,0f);
 
     public HotAirBalloon(float x, float y, float z) {
+        width = Assets.texR_hotairballoon.getRegionWidth()/12f;
+        height = Assets.texR_hotairballoon.getRegionHeight()/12f;
+
         decal = Decal.newDecal(width, height, Assets.texR_hotairballoon, true);
         decal.setPosition(x,y,z);
 

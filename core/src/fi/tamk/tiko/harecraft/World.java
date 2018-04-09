@@ -56,8 +56,9 @@ public abstract class World {
     ArrayList<Hill> hills_R = new ArrayList<Hill>();
 
     //Sea Objects
-    ArrayList<Wave> waves_L = new ArrayList<Wave>();
-    ArrayList<Wave> waves_R = new ArrayList<Wave>();
+    ArrayList<Boat> boats = new ArrayList<Boat>();
+    ArrayList<Whale> whales = new ArrayList<Whale>();
+    ArrayList<Island> islands = new ArrayList<Island>();
 
     //Sky
     ArrayList<Cloud> clouds_LUp = new ArrayList<Cloud>();
@@ -79,10 +80,10 @@ public abstract class World {
                 finish = 1000f;
                 break;
             case 1:
-                finish = 2000f;
+                finish = 1000f;
                 break;
             case 2:
-                finish = 3000f;
+                finish = 1000f;
                 break;
         }
         end = finish + spawnDistance + 20f;
@@ -102,8 +103,8 @@ public abstract class World {
         decal_sun2.setPosition(0f, -40f, 298f);
         decal_sun2.rotateZ(45f);
 
-        hotAirBalloons.add(new HotAirBalloon(-25f, -23f, spawnDistance + 30f));
-        hotAirBalloons.add(new HotAirBalloon(25f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 30f));
     }
 
     public void dispose() {
@@ -163,10 +164,6 @@ class WorldForest extends World {
 }
 
 class WorldSea extends World {
-    float seaTimer = MathUtils.random(25f, 45f);
-    boolean isWaves;
-
-    float seaOpacity = 1f;
     float tick;
     float velocity;
 
@@ -174,11 +171,6 @@ class WorldSea extends World {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
         ground.setPosition(0f, -28f, 125f);
         ground.rotateX(90f);
-
-        if(MathUtils.random(0,1) != 0) {
-            isWaves = true;
-            seaOpacity = 0f;
-        }
     }
 
     public void update(float delta) {
@@ -189,31 +181,10 @@ class WorldSea extends World {
         tick += delta;
         velocity += player.velocity.z;
         velocity %= 3000f;
-        seaTimer -= delta;
-        if(seaTimer < 0f) seaTimer = 0f;
-        if(seaTimer == 0f) {
-            if(isWaves) {
-                seaOpacity += delta/3f;
-                if(seaOpacity > 1f) seaOpacity = 1f;
-                if(seaOpacity == 1f) {
-                    seaTimer = MathUtils.random(25f, 45f);
-                    isWaves = !isWaves;
-                }
-            }
-            else {
-                seaOpacity -= delta/3f;
-                if(seaOpacity < 0f) seaOpacity = 0f;
-                if(seaOpacity == 0f) {
-                    seaTimer = MathUtils.random(25f, 45f);
-                    isWaves = !isWaves;
-                }
-            }
-        }
 
         shader3D_sea.begin();
         shader3D_sea.setUniformf("time", tick);
         shader3D_sea.setUniformf("velocity", velocity);
-        shader3D_sea.setUniformf("opacity", seaOpacity);
         shader3D_sea.end();
     }
 }
