@@ -55,6 +55,10 @@ public abstract class World {
     ArrayList<Hill> hills_L = new ArrayList<Hill>();
     ArrayList<Hill> hills_R = new ArrayList<Hill>();
 
+    //Sea Objects
+    ArrayList<Wave> waves_L = new ArrayList<Wave>();
+    ArrayList<Wave> waves_R = new ArrayList<Wave>();
+
     //Sky
     ArrayList<Cloud> clouds_LUp = new ArrayList<Cloud>();
     ArrayList<Cloud> clouds_LDown = new ArrayList<Cloud>();

@@ -26,7 +26,7 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 public class WorldBuilder {
     World world;
-    float x, y;
+    float x, y, z;
     static float spawnDistance = 250;
     static float groundLevel = -25f;
     float rings_Timer = 3.5f;
@@ -34,6 +34,11 @@ public class WorldBuilder {
     float clouds_LDownTimer = 1f;
     float clouds_RUpTimer = 1f;
     float clouds_RDownTimer = 1f;
+    float powerup_Timer = 2f * rings_Timer;
+
+    float waves_LTimer = 1f;
+    float waves_RTimer = 1f;
+
     float trees_LTimer = 1f;
     float trees_RTimer = 1f;
     float lakes_LTimer = 10f;
@@ -44,7 +49,6 @@ public class WorldBuilder {
     float hills_RRemoveTimer;
     float trees_LRemoveTimer;
     float trees_RRemoveTimer;
-    float powerup_Timer = 2f * rings_Timer;
     Vector3 pos = new Vector3();
     Powerup lastPowerup;
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
@@ -80,7 +84,7 @@ public class WorldBuilder {
             updateHills(delta);
         }
         else if(world instanceof WorldSea) {
-
+            updateWaves(delta);
         }
 
         if(gameState == FINISH || gameState == END) {
@@ -104,7 +108,7 @@ public class WorldBuilder {
             addTrees();
         }
         else if(world instanceof WorldSea) {
-
+            if(((WorldSea) world).isWaves) addWaves();
         }
     }
 
@@ -116,7 +120,6 @@ public class WorldBuilder {
 
     public void updateOpponents(float delta) {
         for(Opponent o : world.opponents) o.update(delta);
-
     }
 
     public void updateClouds(float delta) {
@@ -138,6 +141,48 @@ public class WorldBuilder {
         for(Powerup p : world.powerups) p.update(delta);
 
         removePowerup();
+    }
+
+    public void updateWaves(float delta) {
+        for(Wave w : world.waves_L) w.update(delta);
+        for(Wave w : world.waves_R) w.update(delta);
+
+        removeWaves();
+    }
+
+    public void addWaves() {
+        if(world.waves_L.isEmpty() || world.waves_L.get(world.waves_L.size() - 1).stateTime >= waves_LTimer) {
+            x = MathUtils.random(-150f, 0f);
+            y = groundLevel;
+            z = MathUtils.random(100f, spawnDistance);
+            world.waves_L.add(new Wave(x, y, z));
+            waves_LTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
+        }
+
+        if(world.waves_R.isEmpty() || world.waves_R.get(world.waves_R.size() - 1).stateTime >= waves_RTimer) {
+            x = MathUtils.random(0f, 150f);
+            y = groundLevel;
+            z = MathUtils.random(100f, spawnDistance);
+            world.waves_R.add(new Wave(x, y, z));
+            waves_RTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f);
+        }
+    }
+
+    public void removeWaves() {
+        removeWave(world.waves_L);
+        removeWave(world.waves_R);
+    }
+
+    public void removeWave(ArrayList<Wave> waveArray) {
+        if(!waveArray.isEmpty() && waveArray.get(0).decal.getPosition().z < camera.position.z) {
+            waveArray.remove(0);
+        }
+
+        for(int i = 0; i < waveArray.size(); i++) {
+            if(waveArray.get(i).currentState == 3) {
+                waveArray.remove(i);
+            }
+        }
     }
 
     public void updateTrees(float delta) {
