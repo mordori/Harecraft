@@ -30,19 +30,14 @@ public class WorldRenderer {
     public WorldRenderer(World world) {
         this.world = world;
 
-        if(world instanceof WorldForest) {
-            Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
-        }
         if(world instanceof WorldSea) {
-            Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
             isSeaEnabled = true;
         }
+
+        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
     }
 
     public void renderWorld() {
-        //if(gameState == END) isFBOEnabled = true;
-        //else isFBOEnabled = false;
-
         if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if(isFBOEnabled) {
@@ -97,9 +92,8 @@ public class WorldRenderer {
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
 
-        if(gameState == END) {
-            //sBatch.setShader(shader2D_vignette);
-        }
+        if(gameState == END) //sBatch.setShader(shader2D_vignette);
+
         //------------------------------------------------
         sBatch.begin();
         texture.draw(sBatch);
@@ -110,65 +104,39 @@ public class WorldRenderer {
         sBatch.begin();
         if(gameState != START && gameState != END) player.pfx_scarf.draw(sBatch);
 
-        for(Cloud c : world.clouds_RDown) {
-            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
-        }
-        for(Cloud c : world.clouds_RUp) {
-            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
-        }
-        for(Cloud c : world.clouds_LDown) {
-            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
-        }
-        for(Cloud c : world.clouds_LUp) {
-            if(c.isCollided) c.pfx_dispersion.draw(sBatch);
-        }
+        for(Cloud c : world.clouds_RDown) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
+        for(Cloud c : world.clouds_RUp) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
+        for(Cloud c : world.clouds_LDown) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
+        for(Cloud c : world.clouds_LUp) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
 
-        for(Ring r : world.rings) {
-            if(r.isCollected) r.pfx_speed_up.draw(sBatch);
-        }
+        for(Ring r : world.rings) if(r.isCollected) r.pfx_speed_up.draw(sBatch);
 
         world.pfx_speed_lines.draw(sBatch);
         sBatch.end();
     }
 
     public void drawDecalLists() {
-        for(Cloud c : world.clouds_LUp) {
-            dBatch.add(c.decal);
-        }
-        for(Cloud c : world.clouds_LDown) {
-            dBatch.add(c.decal);
-        }
-        for(Cloud c : world.clouds_RUp) {
-            dBatch.add(c.decal);
-        }
-        for(Cloud c : world.clouds_RDown) {
-            dBatch.add(c.decal);
-        }
+        for(Cloud c : world.clouds_LUp) dBatch.add(c.decal);
+        for(Cloud c : world.clouds_LDown) dBatch.add(c.decal);
+        for(Cloud c : world.clouds_RUp) dBatch.add(c.decal);
+        for(Cloud c : world.clouds_RDown) dBatch.add(c.decal);
+
         for(Ring l : world.rings) {
             dBatch.add(l.decal);
             dBatch.add(l.decal_arrows);
         }
-        for(Powerup p : world.powerups) {
-            dBatch.add(p.decal);
-        }
-        for(Tree t : world.trees_L) {
-            dBatch.add(t.decal);
-        }
-        for(Tree t : world.trees_R) {
-            dBatch.add(t.decal);
-        }
-        for(Hill h : world.hills_L) {
-            dBatch.add(h.decal);
-        }
-        for(Hill h : world.hills_R) {
-            dBatch.add(h.decal);
-        }
-        for(Lake l : world.lakes_L) {
-            dBatch.add(l.decal);
-        }
-        for(Lake l : world.lakes_R) {
-            dBatch.add(l.decal);
-        }
+
+        for(Powerup p : world.powerups) dBatch.add(p.decal);
+
+        for(Tree t : world.trees_L) dBatch.add(t.decal);
+        for(Tree t : world.trees_R) dBatch.add(t.decal);
+
+        for(Hill h : world.hills_L) dBatch.add(h.decal);
+        for(Hill h : world.hills_R) dBatch.add(h.decal);
+
+        for(Lake l : world.lakes_L) dBatch.add(l.decal);
+        for(Lake l : world.lakes_R) dBatch.add(l.decal);
+
         for(Opponent o : world.opponents) {
             if(o.isDrawing || o.opacity != 0f) {
                 dBatch.add(o.decal_wings);

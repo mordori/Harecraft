@@ -50,7 +50,7 @@ public class WorldBuilder {
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
     float DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty; // 0-EASY 2-MEDIUM 4-HARD
-    float opacity;
+
 
     public WorldBuilder(World world) {
         this.world = world;
@@ -74,7 +74,6 @@ public class WorldBuilder {
         updateRings(delta);
         updatePowerups(delta);
 
-
         if(world instanceof WorldForest) {
             updateLakes(delta);
             updateTrees(delta);
@@ -84,27 +83,17 @@ public class WorldBuilder {
 
         }
 
-        if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
-        else if(gameState == END && gameStateTime > 4f) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
-
-        world.decal_sun1.rotateZ(delta/2f);
-        world.decal_sun1.setColor(1f,1f,1f, opacity);
-
-        world.decal_sun2.rotateZ(-delta);
-        world.decal_sun2.setColor(1f,1f,1f, opacity);
-
-        if(world.decal_background != null) world.decal_background.setColor(1f,1f,1f, opacity);
-
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
                 hotAirBalloon.update(delta);
             }
-
             if(!world.hotAirBalloons.isEmpty() && world.hotAirBalloons.get(0).decal.getPosition().z < camera.position.z) {
                 world.hotAirBalloons.remove(0);
             }
         }
 
+        world.update(delta);
+        world.updateShaders(delta);
         updateWorldParticles(delta);
     }
 
@@ -126,48 +115,35 @@ public class WorldBuilder {
     }
 
     public void updateOpponents(float delta) {
-        for(Opponent o : world.opponents) {
-            o.update(delta);
-        }
+        for(Opponent o : world.opponents) o.update(delta);
+
     }
 
     public void updateClouds(float delta) {
-        for(Cloud c : world.clouds_LUp) {
-            c.update(delta);
-        }
-        for(Cloud c : world.clouds_LDown) {
-            c.update(delta);
-        }
-        for(Cloud c : world.clouds_RUp) {
-            c.update(delta);
-        }
-        for(Cloud c : world.clouds_RDown) {
-            c.update(delta);
-        }
+        for(Cloud c : world.clouds_LUp) c.update(delta);
+        for(Cloud c : world.clouds_LDown) c.update(delta);
+        for(Cloud c : world.clouds_RUp) c.update(delta);
+        for(Cloud c : world.clouds_RDown) c.update(delta);
+
         removeClouds();
     }
 
     public void updateRings(float delta) {
-        for(Ring l : world.rings) {
-            l.update(delta);
-        }
+        for(Ring l : world.rings) l.update(delta);
+
         removeRing();
     }
 
     public void updatePowerups(float delta) {
-        for(Powerup p : world.powerups) {
-            p.update(delta);
-        }
+        for(Powerup p : world.powerups) p.update(delta);
+
         removePowerup();
     }
 
     public void updateTrees(float delta) {
-        for(Tree t : world.trees_L) {
-            t.update(delta);
-        }
-        for(Tree t : world.trees_R) {
-            t.update(delta);
-        }
+        for(Tree t : world.trees_L) t.update(delta);
+        for(Tree t : world.trees_R) t.update(delta);
+
         trees_RRemoveTimer -= delta;
         if(trees_RRemoveTimer < 0f) trees_RRemoveTimer = 0f;
         trees_LRemoveTimer -= delta;
@@ -176,22 +152,16 @@ public class WorldBuilder {
     }
 
     public void updateLakes(float delta) {
-        for(Lake l : world.lakes_L) {
-            l.update(delta);
-        }
-        for(Lake l : world.lakes_R) {
-            l.update(delta);
-        }
+        for(Lake l : world.lakes_L) l.update(delta);
+        for(Lake l : world.lakes_R) l.update(delta);
+
         removeLakes();
     }
 
     public void updateHills(float delta) {
-        for(Hill h : world.hills_L) {
-            h.update(delta);
-        }
-        for(Hill h : world.hills_R) {
-            h.update(delta);
-        }
+        for(Hill h : world.hills_L) h.update(delta);
+        for(Hill h : world.hills_R) h.update(delta);
+
         hills_LRemoveTimer -= delta;
         if(hills_LRemoveTimer < 0f) hills_LRemoveTimer = 0f;
         hills_RRemoveTimer -= delta;
@@ -258,6 +228,25 @@ public class WorldBuilder {
                 world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f)); //-2f modifier for y spawn
             }
         }
+
+        /*if(!world.rings.isEmpty()) {
+            for (int i = 0; i < world.clouds_LDown.size(); i++) {
+                if (world.clouds_LDown.get(i).position.dst(world.rings.get(world.rings.size() - 1).position) < world.rings.get(world.rings.size() - 1).width * 2f)
+                    world.clouds_LDown.remove(i);
+            }
+            for (int i = 0; i < world.clouds_RDown.size(); i++) {
+                if (world.clouds_RDown.get(i).position.dst(world.rings.get(world.rings.size() - 1).position) < world.rings.get(world.rings.size() - 1).width * 2f)
+                    world.clouds_RDown.remove(i);
+            }
+            for (int i = 0; i < world.clouds_LUp.size(); i++) {
+                if (world.clouds_LUp.get(i).position.dst(world.rings.get(world.rings.size() - 1).position) < world.rings.get(world.rings.size() - 1).width * 2f)
+                    world.clouds_LUp.remove(i);
+            }
+            for (int i = 0; i < world.clouds_RUp.size(); i++) {
+                if (world.clouds_RUp.get(i).position.dst(world.rings.get(world.rings.size() - 1).position) < world.rings.get(world.rings.size() - 1).width * 2f)
+                    world.clouds_RUp.remove(i);
+            }
+        }*/
     }
 
     public void addPowerup() {
@@ -401,16 +390,16 @@ public class WorldBuilder {
     public void removeTree(ArrayList<Tree> treeArray) {
 
         if(!world.trees_L.isEmpty()) {
-            if (!world.lakes_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width / 1.75f
-                    || !world.lakes_R.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width / 1.75f) {
+            if (!world.lakes_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width / 1.75f
+                    || !world.lakes_R.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width / 1.75f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
             }
         }
 
         if(!world.trees_R.isEmpty()) {
-            if (!world.lakes_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width / 1.75f
-                    || !world.lakes_L.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width / 1.75f) {
+            if (!world.lakes_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width / 1.75f
+                    || !world.lakes_L.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width / 1.75f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
             }
@@ -420,11 +409,11 @@ public class WorldBuilder {
             pos = (world.hills_L.get(world.hills_L.size() - 1).position.cpy());
             pos.y -= world.hills_L.get(world.hills_L.size() - 1).height / 2f;
 
-            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 2.25f) {
+            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 1.25f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
             }
-            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 2.25f) {
+            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 1.25f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
             }
@@ -434,11 +423,11 @@ public class WorldBuilder {
             pos = world.hills_R.get(world.hills_R.size() - 1).position.cpy();
             pos.y -= world.hills_R.get(world.hills_R.size() - 1).height / 2f;
 
-            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 2.25f) {
+            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.25f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
             }
-            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.cpy().dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 2.25f) {
+            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.25f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
             }
@@ -457,8 +446,8 @@ public class WorldBuilder {
 
     public void removeHill(ArrayList<Hill> hillArray) {
         if(!world.hills_L.isEmpty()) {
-            if (!world.lakes_L.isEmpty() && world.hills_L.get(world.hills_L.size() - 1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
-                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_L.get(world.hills_L.size() - 1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
+            if (!world.lakes_L.isEmpty() && world.hills_L.get(world.hills_L.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
+                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_L.get(world.hills_L.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
 
                 world.hills_L.remove(world.hills_L.size() - 1);
                 hills_LRemoveTimer = 1f;
@@ -466,8 +455,8 @@ public class WorldBuilder {
         }
 
         if(!world.hills_R.isEmpty()) {
-            if (!world.lakes_L.isEmpty() && world.hills_R.get(world.hills_R.size() - 1).position.cpy().dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
-                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_R.get(world.hills_R.size() - 1).position.cpy().dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
+            if (!world.lakes_L.isEmpty() && world.hills_R.get(world.hills_R.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
+                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_R.get(world.hills_R.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
 
                 world.hills_R.remove(world.hills_R.size() - 1);
                 hills_RRemoveTimer = 1f;

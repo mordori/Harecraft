@@ -36,23 +36,18 @@ public class GameScreen extends ScreenAdapter {
     WorldRenderer worldRenderer;
     HUD HUD;
     FPSLogger logger = new FPSLogger();
-
     static GameState gameState;
 
     static float fieldOfView = 45f;
     static float gameStateTime;
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
-
-    static boolean countdown;
     float volume;
-
-    //Shader parameters
-    static float tick;
-    static float velocity;
-
     float cameraPanY = 60f;
     float panAccelY = 1f;
+
+    static boolean countdown;
+    boolean newGame;
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
@@ -63,7 +58,6 @@ public class GameScreen extends ScreenAdapter {
 
         gameState = GameState.START;
         gameStateTime = 0f;
-
         Assets.music_course_1.play();
         Assets.music_course_1.setVolume(0f);
         volume = 0.15f;
@@ -87,51 +81,17 @@ public class GameScreen extends ScreenAdapter {
         worldRenderer.renderWorld();
         HUD.draw();
 
-        if(gameState == END && gameStateTime > 4f) {
-            Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
-        }
-        if(gameState == END && gameStateTime > 5.5f) {
-            //Assets.music_course_1.stop();
-            sBatch.setShader(shader2D_default);
-            game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
-            //game.setScreen(new MainMenu(game));
-        }
-
+        if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
         //System.out.println(player.velocity.z);
     }
 
     public void update(float delta) {
         logger.log();
-
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
-        updateShaders(delta);
         HUD.update(delta);
     }
-
-    public void updateShaders(float delta) {
-        tick += delta;
-        velocity += player.velocity.z;
-        velocity %= 3000f;
-
-        shader3D_sea.begin();
-        shader3D_sea.setUniformf("time", tick);
-        shader3D_sea.setUniformf("velocity", velocity);
-        shader3D_sea.end();
-
-        shader2D_vignette.begin();
-        if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
-            shader2D_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
-            if((gameStateTime - 2f) / 4f > 0.8f) shader2D_vignette.setUniformf("u_stateTime", 0.8f);
-        }
-        if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
-            shader2D_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
-            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader2D_vignette.setUniformf("u_stateTime", 0f);
-        }
-        shader2D_vignette.end();
-    }
-
     public void updateState(float delta) {
         gameStateTime += delta;
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
@@ -168,7 +128,14 @@ public class GameScreen extends ScreenAdapter {
             gameState = END;
             gameStateTime = 0f;
         }
-
+        else if(gameState == END && gameStateTime > 5.5f) {
+            //Assets.music_course_1.stop();
+            sBatch.setShader(shader2D_default);
+            newGame = true;
+        }
+        else if(gameState == END && gameStateTime > 4f) {
+            Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
+        }
 
         if(gameState == RACE && gameStateTime == 0f) {
             float x = MathUtils.random(-10f, 10f);
@@ -219,9 +186,11 @@ public class GameScreen extends ScreenAdapter {
         orthoCamera.viewportWidth = width;
         orthoCamera.viewportHeight = height;
 
+        /*
         shader2D_vignette.begin();
         shader2D_vignette.setUniformf("u_resolution", width, height);
         shader2D_vignette.end();
+        */
     }
 
     @Override

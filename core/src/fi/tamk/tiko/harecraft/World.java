@@ -8,8 +8,13 @@ import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
@@ -62,16 +67,18 @@ public abstract class World {
     Decal decal_sun1;
     Decal decal_sun2;
 
+    float opacity;
+
     public World() {
         switch (MathUtils.random(0,2)) {
             case 0:
-                finish = 100f;
+                finish = 1000f;
                 break;
             case 1:
-                finish = 200f;
+                finish = 2000f;
                 break;
             case 2:
-                finish = 300f;
+                finish = 3000f;
                 break;
         }
         end = finish + spawnDistance + 20f;
@@ -104,6 +111,18 @@ public abstract class World {
 
         pfx_speed_lines.dispose();
     }
+
+    public abstract void updateShaders(float delta);
+    public void update(float delta) {
+        if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
+        else if(gameState == END && gameStateTime > 4f) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
+
+        decal_sun1.rotateZ(delta/2f);
+        decal_sun1.setColor(1f,1f,1f, opacity);
+
+        decal_sun2.rotateZ(-delta);
+        decal_sun2.setColor(1f,1f,1f, opacity);
+    }
 }
 
 class WorldForest extends World {
@@ -117,12 +136,80 @@ class WorldForest extends World {
         ground.setPosition(0f, -28f, 125f);
         ground.rotateX(90f);
     }
+
+    public void update(float delta) {
+        super.update(delta);
+        decal_background.setColor(1f,1f,1f, opacity);
+    }
+
+    public void updateShaders(float delta) {
+        /*shader2D_vignette.begin();
+        if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
+            shader2D_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
+            if((gameStateTime - 2f) / 4f > 0.8f) shader2D_vignette.setUniformf("u_stateTime", 0.8f);
+        }
+        if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
+            shader2D_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
+            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader2D_vignette.setUniformf("u_stateTime", 0f);
+        }
+        shader2D_vignette.end();
+        */
+    }
+
 }
 
 class WorldSea extends World {
+    float seaTimer = MathUtils.random(25f, 45f);
+    boolean isWaves;
+
+    float seaOpacity = 1f;
+    float tick;
+    float velocity;
+
     public WorldSea() {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
         ground.setPosition(0f, -28f, 125f);
         ground.rotateX(90f);
+
+        if(MathUtils.random(0,1) != 0) {
+            isWaves = true;
+            seaOpacity = 0f;
+        }
+    }
+
+    public void update(float delta) {
+        super.update(delta);
+    }
+
+    public void updateShaders(float delta) {
+        tick += delta;
+        velocity += player.velocity.z;
+        velocity %= 3000f;
+        seaTimer -= delta;
+        if(seaTimer < 0f) seaTimer = 0f;
+        if(seaTimer == 0f) {
+            if(isWaves) {
+                seaOpacity += delta/3f;
+                if(seaOpacity > 1f) seaOpacity = 1f;
+                if(seaOpacity == 1f) {
+                    seaTimer = MathUtils.random(25f, 45f);
+                    isWaves = !isWaves;
+                }
+            }
+            else {
+                seaOpacity -= delta/3f;
+                if(seaOpacity < 0f) seaOpacity = 0f;
+                if(seaOpacity == 0f) {
+                    seaTimer = MathUtils.random(25f, 45f);
+                    isWaves = !isWaves;
+                }
+            }
+        }
+
+        shader3D_sea.begin();
+        shader3D_sea.setUniformf("time", tick);
+        shader3D_sea.setUniformf("velocity", velocity);
+        shader3D_sea.setUniformf("opacity", seaOpacity);
+        shader3D_sea.end();
     }
 }

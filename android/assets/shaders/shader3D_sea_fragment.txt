@@ -13,6 +13,7 @@ uniform sampler2D u_mask_sea_deep;
 
 uniform float time;
 uniform float velocity;
+uniform float opacity;
 
 
 vec3 mod289(vec3 x) {
@@ -83,9 +84,9 @@ void main(void) {
 	vec2 distort = 0.05 * vec2(snoise(v_texCoord0 + vec2(time/500.0, 0.0)) ,
                               snoise(v_texCoord0 + vec2(0.0, time/500.0)));
 
-	float mask_sea_deep = texture2D(u_mask_sea_deep, vec2(v_texCoord0.x, v_texCoord0.y + velocity/150.0*0.05) + distort).a * 0.2;
+	float mask_sea_deep = texture2D(u_mask_sea_deep, vec2(v_texCoord0.x, v_texCoord0.y + velocity/150.0*0.05) + distort).a * 0.2 * opacity;
 
-	float mask_foam = texture2D(u_mask_foam, vec2(v_texCoord0.x, v_texCoord0.y + velocity/150.0*0.05) + distort).a;
+	float mask_foam = texture2D(u_mask_foam, vec2(v_texCoord0.x, v_texCoord0.y + velocity/150.0*0.05) + distort).a * opacity;
 
 	vec4 color = v_color * mix(texColor0, texColor2, mask_sea_deep);
 

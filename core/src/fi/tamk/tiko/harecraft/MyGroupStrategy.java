@@ -55,9 +55,9 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     public MyGroupStrategy (Camera camera, Comparator<Decal> sorter) {
         this.camera = camera;
         this.cameraSorter = sorter;
-        createDefaultShader();
 
         ShaderProgram.pedantic = false;
+        createDefaultShader();
         createShader_Sea();
 
         shader3D_sea.begin();
@@ -66,8 +66,6 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         shader3D_sea.setUniformi("u_texture_sea_deep", 2);
         shader3D_sea.setUniformi("u_mask_foam", 3);
         shader3D_sea.setUniformi("u_mask_sea_deep", 4);
-        shader3D_sea.setUniformf("time", GameScreen.tick);
-        shader3D_sea.setUniformf("velocity", GameScreen.velocity);
         shader3D_sea.end();
 
         Gdx.gl.glActiveTexture(GL_TEXTURE4);
