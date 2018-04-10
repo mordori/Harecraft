@@ -180,6 +180,8 @@ public class HUD {
             text_gameStates.setPosition(SCREEN_WIDTH/2f - width/2f, yPos - height/2f);
 
             text_gameStates.draw(sBatch);
+
+            Assets.font.draw(sBatch, "" + player.ACCEL_Y_OFFSET, 500, 500);
         }
     }
 

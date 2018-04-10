@@ -107,6 +107,10 @@ public class GameScreen extends ScreenAdapter {
             player.distance = 0f;
             player.acceleration = 0f;
             world.pfx_speed_lines.start();
+
+            player.avarageY = player.sumY / player.countY;
+            player.ACCEL_Y_OFFSET = player.avarageY - 1.8f;
+            System.out.println(player.ACCEL_Y_OFFSET);
         }
         else if(gameState == START) {
             global_Multiplier = 3f;
