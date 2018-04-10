@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Created by musta on 6.4.2018.
@@ -31,14 +32,16 @@ public class CreateUser extends ScreenAdapter {
 
     public CreateUser(GameMain game) {
         this.game = game;
-        stage = new Stage();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 1280, 800);
+        stage = new Stage(new StretchViewport(1280, 800, camera));
         skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
         profilesData = Gdx.app.getPreferences("ProfileFile");
         textField = new TextField("" ,skin);
         textField.setWidth(500);
         //button.getLabel().setFontScale(2f);
         //textField.setHeight(200);
-        textField.setPosition(Gdx.graphics.getWidth()/2 - textField.getWidth()/2,Gdx.graphics.getHeight()/1.5f);
+        textField.setPosition(1280/2 - textField.getWidth()/2,800/1.5f);
         textField.setName("textfield");
         //Gdx.input.setOnscreenKeyboardVisible(true);
         textField.setTextFieldListener(new TextField.TextFieldListener() {
@@ -56,7 +59,7 @@ public class CreateUser extends ScreenAdapter {
     }
 
     public void render (float delta) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 1f, 1);
+        Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Gdx.app.log("nabbi", Gdx.input.isKeyPressed());
 

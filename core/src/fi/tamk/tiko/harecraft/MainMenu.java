@@ -196,7 +196,7 @@ public class MainMenu extends ScreenAdapter {
             game.setScreen(new SettingsMenu(game));
         }
         if (profilesMenu) {
-            game.setScreen(new CreateUser(game));
+            game.setScreen(new ProfileMenu(game));
         }
     }
 
