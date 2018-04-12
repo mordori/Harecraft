@@ -116,24 +116,28 @@ public class HUD {
                     if(gameStateTime < 2f) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
+                        //Assets.sound_countdown.play(0.45f);
                     }
                     index = 2;
                 } else if (gameStateTime < 4.6f) {
                     if(index == 2) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
+                        Assets.sound_countdown.play(0.45f);
                     }
                     index = 1;
                 } else if (gameStateTime < 5.9f) {
                     if(index == 1) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
+                        Assets.sound_countdown.play(0.45f);
                     }
                     index = 0;
                 } else {
                     if(index == 0) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
+                        //Assets.sound_countdown_end.play(0.85f);
                     }
                     index = 4;
                 }

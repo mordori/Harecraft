@@ -60,7 +60,7 @@ public class Balloon extends GameObject {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && (transposedPosition.dst(player.curPosition.x, player.curPosition.y) < 2.2f)) {
                 isCollected = true;
 
-                //Assets.sound_ring_collected.play();
+                Assets.sound_balloon_collected.play();
                 decal.setPosition(position.x, position.y,0.5f);
             }
         }

@@ -117,7 +117,7 @@ public class GameScreen extends ScreenAdapter {
 
             Assets.sound_airplane_engine.stop();
             Assets.music_course_1.setPosition(0f);
-            Assets.music_course_1.setVolume(0.8f);
+            Assets.music_course_1.setVolume(0.7f);
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnZ;
             }
@@ -140,7 +140,7 @@ public class GameScreen extends ScreenAdapter {
                 countdown = true;
             }
             Assets.sound_airplane_engine.setVolume(0,volume);
-            Assets.sound_airplane_engine.setPitch(0,1f + volume);
+            //Assets.sound_airplane_engine.setPitch(0, 3f);
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;
@@ -149,6 +149,7 @@ public class GameScreen extends ScreenAdapter {
         else if(gameState == FINISH && player.distance > world.end) {
             gameState = END;
             gameStateTime = 0f;
+            Assets.sound_applause.play(0.4f);
         }
         else if(gameState == END && gameStateTime > 5.5f) {
             //Assets.music_course_1.stop();

@@ -67,8 +67,11 @@ public class Assets {
     static Music music_course_1;
     static Sound sound_cloud_hit;
     static Sound sound_ring_collected;
+    static Sound sound_balloon_collected;
     static Sound sound_countdown;
+    static Sound sound_countdown_end;
     static Sound sound_airplane_engine;
+    static Sound sound_applause;
 
     static ParticleEffect pfx_scarf;
     static ParticleEffect pfx_cloud_dispersion;
@@ -160,8 +163,11 @@ public class Assets {
         music_course_1.setLooping(true);
         sound_cloud_hit = loadSound("sound_cloud_hit.wav");
         sound_ring_collected = loadSound("sound_ring_collected.wav");
+        sound_balloon_collected = loadSound("sound_balloon_collected.wav");
         sound_countdown = loadSound("sound_countdown.wav");
+        sound_countdown_end = loadSound("sound_countdown_end.wav");
         sound_airplane_engine = loadSound("sound_airplane_engine.wav");
+        sound_applause = loadSound("sound_applause.wav");
 
         //PARTICLES
         pfx_scarf = new ParticleEffect();
@@ -257,7 +263,10 @@ public class Assets {
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();
         sound_countdown.dispose();
+        sound_countdown_end.dispose();
         sound_airplane_engine.dispose();
+        sound_applause.dispose();
+        sound_balloon_collected.dispose();
 
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();
