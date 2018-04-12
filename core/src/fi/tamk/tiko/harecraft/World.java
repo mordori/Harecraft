@@ -40,7 +40,7 @@ public abstract class World {
     ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 
     //Powerups
-    ArrayList<Powerup> powerups = new ArrayList<Powerup>();
+    ArrayList<Balloon> balloons = new ArrayList<Balloon>();
 
     //HotAirBalloons
     ArrayList<HotAirBalloon> hotAirBalloons = new ArrayList<HotAirBalloon>();

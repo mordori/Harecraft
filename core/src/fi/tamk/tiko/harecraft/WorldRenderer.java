@@ -34,7 +34,7 @@ public class WorldRenderer {
             isSeaEnabled = true;
         }
 
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
     }
 
     public void renderWorld() {
@@ -56,7 +56,7 @@ public class WorldRenderer {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
-        if(!isSeaEnabled) dBatch.add(world.decal_background);
+        //if(!isSeaEnabled) dBatch.add(world.decal_background);
 
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
@@ -126,7 +126,7 @@ public class WorldRenderer {
             dBatch.add(l.decal_arrows);
         }
 
-        for(Powerup p : world.powerups) dBatch.add(p.decal);
+        for(Balloon b : world.balloons) dBatch.add(b.decal);
 
         for(Tree t : world.trees_L) dBatch.add(t.decal);
         for(Tree t : world.trees_R) dBatch.add(t.decal);

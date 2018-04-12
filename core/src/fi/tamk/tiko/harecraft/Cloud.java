@@ -106,7 +106,7 @@ public class Cloud extends GameObject {
             global_Multiplier -= MULTIPLIER_DECREMENT;
         }
         if(global_Multiplier < MULTIPLIER_LOW) global_Multiplier = MULTIPLIER_LOW;
-        Assets.sound_cloud_hit.play();
+        Assets.sound_cloud_hit.play(0.5f);
         pfx_dispersion.start();
         pfx_dispersion.setPosition(
                 player.projPosition.x,

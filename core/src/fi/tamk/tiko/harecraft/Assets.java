@@ -35,9 +35,9 @@ public class Assets {
     static TextureRegion texR_ribbons;
     static TextureRegion texR_playertag;
     static TextureRegion texR_speedometer;
-    static TextureRegion texR_powerup_red;
-    static TextureRegion texR_powerup_green;
-    static TextureRegion texR_powerup_blue;
+    static TextureRegion texR_balloon_red;
+    static TextureRegion texR_balloon_green;
+    static TextureRegion texR_balloon_blue;
     static TextureRegion texR_plane_2_red_body;
     static TextureRegion texR_plane_2_red_wings;
     static TextureRegion texR_plane_2_orange_body;
@@ -120,9 +120,9 @@ public class Assets {
         texR_hotairballoon = loadDecalTextureRegion("tex_hotairballoon.png");
         texR_ribbons = loadDecalTextureRegion("tex_ribbons.png");
         texR_playertag = loadDecalTextureRegion("tex_playertag.png");
-        texR_powerup_red = loadDecalTextureRegion("tex_powerup_red.png");
-        texR_powerup_green = loadDecalTextureRegion("tex_powerup_green.png");
-        texR_powerup_blue = loadDecalTextureRegion("tex_powerup_blue.png");
+        texR_balloon_red = loadDecalTextureRegion("tex_balloon_red.png");
+        texR_balloon_green = loadDecalTextureRegion("tex_balloon_green.png");
+        texR_balloon_blue = loadDecalTextureRegion("tex_balloon_blue.png");
         texR_plane_2_red_body = loadDecalTextureRegion("tex_plane_2_red_body.png");
         texR_plane_2_red_wings = loadDecalTextureRegion("tex_plane_2_red_wings.png");
         texR_plane_2_orange_body = loadDecalTextureRegion("tex_plane_2_orange_body.png");
@@ -141,7 +141,7 @@ public class Assets {
         texR_tree_small_light = loadDecalTextureRegion("tex_tree_small_light.png");
         texR_tree_small_dark = loadDecalTextureRegion("tex_tree_small_dark.png");
         texR_lake = loadDecalTextureRegion("tex_lake.png");
-        texR_hill = loadDecalTextureRegion("tex_hill_tundra.png");
+        texR_hill = loadDecalTextureRegion("tex_hill.png");
 
         //SPRITES
         texR_speedometer = loadTextureRegion("tex_speedometer.png");
@@ -176,8 +176,8 @@ public class Assets {
         //FONTS
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/foo.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 64;
-        parameter.borderWidth = 4;
+        parameter.size = 40;
+        parameter.borderWidth = 2;
         parameter.color = new Color(1f,0.6f,0f,1f);
         font = generator.generateFont(parameter);
         generator.dispose();
@@ -227,9 +227,9 @@ public class Assets {
         texR_ribbons.getTexture().dispose();
         texR_playertag.getTexture().dispose();
         texR_speedometer.getTexture().dispose();
-        texR_powerup_red.getTexture().dispose();
-        texR_powerup_green.getTexture().dispose();
-        texR_powerup_blue.getTexture().dispose();
+        texR_balloon_red.getTexture().dispose();
+        texR_balloon_green.getTexture().dispose();
+        texR_balloon_blue.getTexture().dispose();
         texR_plane_2_red_body.getTexture().dispose();
         texR_plane_2_red_wings.getTexture().dispose();
         texR_plane_2_orange_body.getTexture().dispose();

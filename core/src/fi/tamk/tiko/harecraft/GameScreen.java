@@ -63,7 +63,7 @@ public class GameScreen extends ScreenAdapter {
         gameStateTime = 0f;
         Assets.music_course_1.play();
         Assets.music_course_1.setVolume(0f);
-        volume = 0.15f;
+        volume = 0.3f;
         Assets.sound_airplane_engine.loop(volume);
     }
 
@@ -108,6 +108,20 @@ public class GameScreen extends ScreenAdapter {
             player.acceleration = 0f;
             world.pfx_speed_lines.start();
 
+            float x = MathUtils.random(-7f, 7f);
+            float y = MathUtils.random(-7.2f, 4.2f);
+            world.rings.add(new Ring(x, y, spawnDistance/3.25f));
+            x = MathUtils.random(-7f, 7f);
+            y = MathUtils.random(-7.2f, 4.2f);
+            world.rings.add(new Ring(x, y, spawnDistance/1.35f));
+
+            Assets.sound_airplane_engine.stop();
+            Assets.music_course_1.setPosition(0f);
+            Assets.music_course_1.setVolume(0.8f);
+            for(Opponent o : world.opponents) {
+                o.position.z = o.spawnZ;
+            }
+
             player.avarageY = player.sumY / player.countY;
             player.ACCEL_Y_OFFSET = player.avarageY - 1.8f;
             System.out.println(player.ACCEL_Y_OFFSET);
@@ -116,13 +130,13 @@ public class GameScreen extends ScreenAdapter {
             global_Multiplier = 3f;
 
             if(gameStateTime > 5.4f) {
-                if(volume > 0f) volume -= 0.08f * delta;
+                if(volume > 0f) volume -= 0.15f * delta;
                 if(volume <= 0f) {
                     volume = 0f;
                 }
             }
             else if(gameStateTime > 2f && !countdown) {
-                Assets.sound_countdown.play(0.25f);
+                Assets.sound_countdown.play(0.45f);
                 countdown = true;
             }
             Assets.sound_airplane_engine.setVolume(0,volume);
@@ -143,22 +157,6 @@ public class GameScreen extends ScreenAdapter {
         }
         else if(gameState == END && gameStateTime > 4f) {
             Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
-        }
-
-        if(gameState == RACE && gameStateTime == 0f) {
-            float x = MathUtils.random(-7f, 7f);
-            float y = MathUtils.random(-7.2f, 4.2f);
-            world.rings.add(new Ring(x, y, spawnDistance/3.25f));
-            x = MathUtils.random(-7f, 7f);
-            y = MathUtils.random(-7.2f, 4.2f);
-            world.rings.add(new Ring(x, y, spawnDistance/1.35f));
-
-            Assets.sound_airplane_engine.stop();
-            Assets.music_course_1.setPosition(0f);
-            Assets.music_course_1.setVolume(1f);
-            for(Opponent o : world.opponents) {
-                o.position.z = o.spawnZ;
-            }
         }
     }
 
@@ -193,7 +191,6 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
         camera.lookAt(0f, cameraPanY, spawnDistance/2f);
         camera.up.set(player.getRotationAverage(), 20f, 0f);
-
 
         camera.fieldOfView = fieldOfView;
         camera.update();

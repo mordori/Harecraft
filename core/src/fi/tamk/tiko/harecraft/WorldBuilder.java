@@ -35,10 +35,7 @@ public class WorldBuilder {
     float clouds_LDownTimer = 1f;
     float clouds_RUpTimer = 1f;
     float clouds_RDownTimer = 1f;
-    float powerup_Timer = 2f * rings_Timer;
-
-    float waves_LTimer = 1f;
-    float waves_RTimer = 1f;
+    float balloon_Timer = 2f * rings_Timer;
 
     float trees_LTimer = 1f;
     float trees_RTimer = 1f;
@@ -51,7 +48,6 @@ public class WorldBuilder {
     float trees_LRemoveTimer;
     float trees_RRemoveTimer;
     Vector3 pos = new Vector3();
-    Powerup lastPowerup;
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
 
@@ -138,7 +134,7 @@ public class WorldBuilder {
     }
 
     public void updatePowerups(float delta) {
-        for(Powerup p : world.powerups) p.update(delta);
+        for(Balloon b : world.balloons) b.update(delta);
 
         removePowerup();
     }
@@ -253,41 +249,10 @@ public class WorldBuilder {
     }
 
     public void addPowerup() {
-        if((gameState == RACE || gameState == FINISH) && ((world.powerups.isEmpty() && gameStateTime > 5.2f && gameStateTime < 10f) || (gameStateTime > 5.2f && world.powerups.get(world.powerups.size() - 1).stateTime >= powerup_Timer))) {
+        if((gameState == RACE || gameState == FINISH) && ((world.balloons.isEmpty() && gameStateTime > 5.2f && gameStateTime < 10f) || (gameStateTime > 5.2f && world.balloons.get(world.balloons.size() - 1).stateTime >= balloon_Timer))) {
             x = MathUtils.random(-5f, 5f);
             y = -23f;
-            int random = MathUtils.random(0,2);
-            if(random == 0) {
-                if(!(lastPowerup instanceof PowerupSpeed)) {
-                    world.powerups.add(new PowerupSpeed(x,y, spawnDistance - 50f));
-                }
-                else {
-                    random = MathUtils.random(0,1);
-                    if(random == 0) world.powerups.add(new PowerupInvulnerability(x,y, spawnDistance - 50f));
-                    else if(random == 1) world.powerups.add(new PowerupSize(x,y, spawnDistance - 50f));
-                }
-            }
-            else if(random == 1) {
-                if(!(lastPowerup instanceof PowerupInvulnerability)) {
-                    world.powerups.add(new PowerupInvulnerability(x,y, spawnDistance - 50f));
-                }
-                else {
-                    random = MathUtils.random(0,1);
-                    if(random == 0) world.powerups.add(new PowerupSpeed(x,y, spawnDistance - 50f));
-                    else if(random == 1) world.powerups.add(new PowerupSize(x,y, spawnDistance - 50f));
-                }
-            }
-            else if(random == 2) {
-                if(!(lastPowerup instanceof PowerupSize)) {
-                    world.powerups.add(new PowerupSize(x,y, spawnDistance - 50f));
-                }
-                else {
-                    random = MathUtils.random(0,1);
-                    if(random == 0) world.powerups.add(new PowerupInvulnerability(x,y, spawnDistance - 50f));
-                    else if(random == 1) world.powerups.add(new PowerupSpeed(x,y, spawnDistance - 50f));
-                }
-            }
-            lastPowerup = world.powerups.get(world.powerups.size() - 1);
+            world.balloons.add(new Balloon(x,y, spawnDistance - 50f));
         }
     }
 
@@ -374,9 +339,9 @@ public class WorldBuilder {
     }
 
     public void removePowerup() {
-        if(world.powerups.size() > 1 && world.powerups.get(0).decal.getPosition().z < camera.position.z) {
-            if(!world.powerups.get(0).isCollected) {
-                world.powerups.remove(0);
+        if(world.balloons.size() > 1 && world.balloons.get(0).decal.getPosition().z < camera.position.z) {
+            if(!world.balloons.get(0).isCollected) {
+                world.balloons.remove(0);
             }
         }
     }

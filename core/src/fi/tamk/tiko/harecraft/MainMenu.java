@@ -161,7 +161,7 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(profilesButton);
         stage.addActor(profileBox);
 
-        Gdx.gl.glClearColor(42/255f, 116/255f, 154/255f, 1f);
+        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
     }
 
     public void render (float delta) {

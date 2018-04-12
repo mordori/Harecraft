@@ -73,7 +73,7 @@ public class HUD {
         drawCountdown();
         if(gameState != START) {
             drawPlacementNumber();
-            drawSpeedometer();
+            //drawSpeedometer();
         }
         sBatch.end();
     }
@@ -181,13 +181,12 @@ public class HUD {
 
             text_gameStates.draw(sBatch);
 
-            Assets.font.draw(sBatch, "" + player.ACCEL_Y_OFFSET, 500, 500);
+            //Assets.font.draw(sBatch, "" + player.ACCEL_Y_OFFSET, 1150, 775);
         }
     }
 
     public void updatePlacementNumber(float delta) {
         int pos = 0;
-        int placement = 0;
 
         for(Opponent o : world.opponents) {
             if(o.distance > player.distance) pos++;
