@@ -76,8 +76,8 @@ public abstract class World {
     float opacity;
 
     public World() {
-        if(this instanceof WorldSea) finish = 2000f;
-        else if(this instanceof WorldForest) finish = 3000f;
+        if(this instanceof WorldSea) finish = ProfileInfo.selectedDuration;             //2000f
+        else if(this instanceof WorldForest) finish = ProfileInfo.selectedDuration;     //3000f
 
         /*switch (MathUtils.random(0,2)) {
             case 0:

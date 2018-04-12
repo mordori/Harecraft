@@ -57,19 +57,29 @@ public class SettingsMenu extends ScreenAdapter {
         slider.setWidth(500);
         slider.setName("difficultyslider");
 
-        Label tarra1 = new Label("Difficulty", skin);
-        tarra1.setPosition(800,700);
-        tarra1.setFontScale(1);
+        Label difficultyLabel = new Label("Difficulty", skin);
+        difficultyLabel.setPosition(900 -difficultyLabel.getWidth()/2,700);
+        difficultyLabel.setFontScale(1);
 
         Slider slider2 = new Slider(0,5, 1, false,skin);
-        slider2.setPosition(650, 500);;
+        slider2.setPosition(650, 500);
         slider2.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"StaticHolds", 1));
         slider2.setWidth(500);
         slider2.setName("staticholdsslider");
 
-        Label tarra2 = new Label("Static Holds", skin);
-        tarra2.setPosition(770,550);
-        tarra2.setFontScale(1);
+        Label staticsLabel = new Label("Static Holds", skin);
+        staticsLabel.setPosition(900 - staticsLabel.getWidth()/2,550);
+        staticsLabel.setFontScale(1);
+
+        Label durationLabel = new Label("Duration", skin);
+        durationLabel.setPosition(900 - durationLabel.getWidth()/2,400);
+        durationLabel.setFontScale(1);
+
+        Slider durationSlider = new Slider(1000,3000, 1000, false,skin);
+        durationSlider.setPosition(650, 350);;
+        durationSlider.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"Duration", 2000));
+        durationSlider.setWidth(500);
+        durationSlider.setName("durationslider");
 
         //skin.getFont("font").getData().setScale(1.5f); //set skin font size
         //SelectBox profileBox = new SelectBox(skin);
@@ -80,8 +90,10 @@ public class SettingsMenu extends ScreenAdapter {
 
         stage.addActor(slider);
         stage.addActor(slider2);
-        stage.addActor(tarra1);
-        stage.addActor(tarra2);
+        stage.addActor(durationSlider);
+        stage.addActor(difficultyLabel);
+        stage.addActor(staticsLabel);
+        stage.addActor(durationLabel);
         stage.addActor(button);
         //stage.addActor(profileBox);
 
@@ -125,8 +137,24 @@ public class SettingsMenu extends ScreenAdapter {
             profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"StaticHolds", tmpInt );
             profilesData.flush();
 
+            tmpActor = stage.getRoot().findActor("durationslider");    //etsi static holds sliderin value ja tallenna
+            tmpInt = (int) tmpActor.getValue();
+            profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Duration", tmpInt );
+            profilesData.flush();
+
             game.setScreen(new MainMenu(game));
         }
         Gdx.app.log("Kenen profiili on valittuna", ""+ProfileInfo.selectedPlayerProfile);
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        skin.dispose();
+        stage.dispose();
     }
 }

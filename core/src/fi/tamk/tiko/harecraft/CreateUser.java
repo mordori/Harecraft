@@ -7,10 +7,15 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -28,7 +33,7 @@ public class CreateUser extends ScreenAdapter {
     Preferences profilesData;
     TextField textField;
     Boolean mainMenuSaving = false;
-    Boolean mainMenuWithoutSaving = false;
+    Boolean profilesMenuWithoutSaving = false;
 
     public CreateUser(GameMain game) {
         this.game = game;
@@ -53,7 +58,56 @@ public class CreateUser extends ScreenAdapter {
             }
         });
 
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.setPosition(450 -backButton.getWidth()/2,400);
+        backButton.setName("backbutton");
+        backButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    Gdx.input.setOnscreenKeyboardVisible(false);
+                    profilesMenuWithoutSaving = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+        TextButton acceptButton = new TextButton("Accept", skin);
+        acceptButton.setPosition(830 -backButton.getWidth()/2,400);
+        acceptButton.setName("acceptbutton");
+        acceptButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    Gdx.input.setOnscreenKeyboardVisible(false);
+                    mainMenuSaving = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+        Label label1 = new Label("Create User", skin);
+        label1.setPosition(640 -label1.getWidth()/2,670);
+        label1.setFontScale(1);
+
         stage.addActor(textField);
+        stage.addActor(acceptButton);
+        stage.addActor(backButton);
+        stage.addActor(label1);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -90,13 +144,29 @@ public class CreateUser extends ScreenAdapter {
             if (isThereDuplicate == false) {
                 profilesData.putString("username" + firstAvailableID, "" + tmpTxt); //muista flushaa
                 profilesData.flush();
+                ProfileInfo.selectedPlayerProfile = tmpTxt;
             }
                 game.setScreen(new MainMenu(game));
+        }
+
+        if (profilesMenuWithoutSaving) {
+            game.setScreen(new ProfileMenu(game));
         }
 
 
         game.sBatch.begin();
         //Assets.font.draw(game.sBatch, "Difficulty", 730,750);
         game.sBatch.end();
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        skin.dispose();
+        stage.dispose();
     }
 }

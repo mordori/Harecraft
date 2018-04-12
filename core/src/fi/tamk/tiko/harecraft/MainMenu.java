@@ -50,6 +50,7 @@ public class MainMenu extends ScreenAdapter {
     Boolean startGame = false;
     Boolean settingsMenu = false;
     Boolean profilesMenu = false;
+    Boolean createUser = false;
     Preferences profilesData;
     ArrayList<String> profiles;
     float opacity = 0f;
@@ -69,6 +70,10 @@ public class MainMenu extends ScreenAdapter {
             if (!tempName.equals("novalue")) {
                 profiles.add(tempName);
             }
+        }
+
+        if (profiles.size() == 0) {
+            createUser = true;
         }
 
         //profilesData.putString("username" +0,"Mikko");   //create profiles on disk
@@ -198,6 +203,9 @@ public class MainMenu extends ScreenAdapter {
         if (profilesMenu) {
             game.setScreen(new ProfileMenu(game));
         }
+        if (createUser) {       //force profile creation
+            game.setScreen(new CreateUser(game));
+        }
     }
 
     private void setCurrentPlayerProfile() {
@@ -213,6 +221,18 @@ public class MainMenu extends ScreenAdapter {
         sBatch.begin();
         texture.draw(sBatch, opacity);
         sBatch.end();
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        skin.dispose();
+        stage.dispose();
+        logo.dispose();
     }
 }
 
