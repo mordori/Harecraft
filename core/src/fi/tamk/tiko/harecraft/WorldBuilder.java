@@ -208,8 +208,9 @@ public class WorldBuilder {
 
                 if (staticHold == 0) {      //static hold starts
                     staticHold = MathUtils.random(2,4);     //static hold rings amount
-                    ringSpawnVector.rotate(MathUtils.random(0f, 360f)); //randomize new vector for static hold
-                    ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));  //minimum increased because static hold is useless in center
+                    //ringSpawnVector.rotate(MathUtils.random(0f, 360f)); //randomize new vector for static hold
+                    //ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));  //minimum increased because static hold is useless in center
+                    ringSpawnVector = randomizeRingSpawnVector();
                     rings_Timer = 1f;
                 }
                 else if (staticHold > 0) {       //static hold is running
@@ -222,8 +223,9 @@ public class WorldBuilder {
                 }
             }
             else {          //Spawn basic vector Ring
-                ringSpawnVector.rotate(MathUtils.random(0f, 360f));
-                ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));
+                //ringSpawnVector.rotate(MathUtils.random(0f, 360f));
+                //ringSpawnVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));
+                ringSpawnVector = randomizeRingSpawnVector();
                 world.rings.add(new Ring(ringSpawnVector.x, ringSpawnVector.y -2f, spawnDistance - 50f)); //-2f modifier for y spawn
             }
         }
@@ -453,4 +455,63 @@ public class WorldBuilder {
             }
         }
     }
+
+    public Vector2 randomizeRingSpawnVector() {
+        int whatVector = MathUtils.random(1,6);     //radomize what vector to spawn
+        Vector2 tmpVector = new Vector2(18f,0f);
+
+        if (whatVector == 1) {
+            tmpVector.x = ProfileInfo.customVector1.x;
+            tmpVector.y = ProfileInfo.customVector1.y;
+            Gdx.app.log("VECTOR", " 1");
+        }
+        if (whatVector == 2) {
+            tmpVector.x = ProfileInfo.customVector2.x;
+            tmpVector.y = ProfileInfo.customVector2.y;
+            Gdx.app.log("VECTOR", " 2");
+        }
+        if (whatVector == 3) {
+            tmpVector.x = ProfileInfo.customVector3.x;
+            tmpVector.y = ProfileInfo.customVector3.y;
+            Gdx.app.log("VECTOR", " 3");
+        }
+        if (whatVector == 4) {
+            tmpVector.x = ProfileInfo.customVector4.x;
+            tmpVector.y = ProfileInfo.customVector4.y;
+            Gdx.app.log("VECTOR", " 4");
+        }
+        if (whatVector == 5) {
+            tmpVector.x = ProfileInfo.customVector5.x;
+            tmpVector.y = ProfileInfo.customVector5.y;
+            Gdx.app.log("VECTOR", " 5");
+        }
+        if (whatVector == 6) {
+            tmpVector.x = ProfileInfo.customVector6.x;
+            tmpVector.y = ProfileInfo.customVector6.y;
+            Gdx.app.log("VECTOR", " 6");
+        }
+
+
+        Gdx.app.log("tmpvector" , " X: " +tmpVector.x +" Y : " +tmpVector.y );
+
+        if (tmpVector.x == 0 && tmpVector.y == 0) {
+            tmpVector.y = 18f;
+            tmpVector.x = 0f;
+            //tmpVector.setLength(MathUtils.random(2f + DIFFICULTYSENSITIVITY + (4f - DIFFICULTYSENSITIVITY)*0.25f, 3f + (DIFFICULTYSENSITIVITY * 1.3f) + (4f - DIFFICULTYSENSITIVITY)*0.5f));
+            tmpVector.setLength(MathUtils.random(1f + DIFFICULTYSENSITIVITY +DIFFICULTYSENSITIVITY, 4f + DIFFICULTYSENSITIVITY + DIFFICULTYSENSITIVITY ));
+            tmpVector.rotate(MathUtils.random(0f, 360f));
+            Gdx.app.log("total", " randomization");
+        }
+        else {
+            tmpVector.x = tmpVector.x / 17f * -1f;
+            tmpVector.y = tmpVector.y /17f;
+        }
+        Gdx.app.log("tmpvector" , " X: " +tmpVector.x +" Y : " +tmpVector.y );
+        Gdx.app.log("length :", " " +tmpVector.len() );
+        return tmpVector;
+
+
+
+    }
+
 }

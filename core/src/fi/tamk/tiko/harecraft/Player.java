@@ -89,8 +89,12 @@ public class Player extends Pilot {
         if(gameState != START && gameState != END) {
             //destination.x = accelX * -5f;
             //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
+            accelX = accelX * ProfileInfo.selectedSensitivity;
+            accelY = accelY * ProfileInfo.selectedSensitivity;
             destination.x = accelX * -5f * (960/SCREEN_WIDTH);
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
+            //destination.x = destination.x * ProfileInfo.selectedSensitivity;
+            //destination.y = destination.y * ProfileInfo.selectedSensitivity;
             destination = destination.add(keyboardDestination);
 
             destdist = 1f + destination.dst(0f, 6f, 0f)/100;   //100=1-1.3   reunanopeuden nollapiste +6y

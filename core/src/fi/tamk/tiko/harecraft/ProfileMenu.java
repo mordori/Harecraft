@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -150,6 +152,12 @@ public class ProfileMenu extends ScreenAdapter {
             }
             profilesData.remove(tempString +"StaticHolds");
             profilesData.remove(tempString +"Difficulty");
+            profilesData.remove(tempString + "Duration");
+            profilesData.remove(tempString +"Sensitivity");
+            for ( int i = 0; i < 6; i++) {
+                profilesData.remove(tempString + "VectorX" + i);
+                profilesData.remove(tempString + "VectorY" + i);
+            }
             profilesData.flush();
 
             game.setScreen(new ProfileMenu(game));
