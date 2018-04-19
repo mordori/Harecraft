@@ -145,9 +145,9 @@ public class SettingsMenu extends ScreenAdapter {
 
         stage.act();
         stage.draw();
-        game.sBatch.begin();
+        //game.sBatch.begin(); //onko tarpeellista
         //Assets.font.draw(game.sBatch, "Difficulty", 730,750);
-        game.sBatch.end();
+        //game.sBatch.end(); //oliko tämä tarpeellinen???
 
         if (returnToMainMenu) { //Tallennetaan muutokset aktiiviseen profiiliin
 

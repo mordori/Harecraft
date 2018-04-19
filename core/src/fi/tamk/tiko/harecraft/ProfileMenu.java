@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class ProfileMenu extends ScreenAdapter {
         });
 
         TextButton createUserButton = new TextButton("Create user", skin);
-        createUserButton.setPosition(100,300);
+        createUserButton.setPosition(100,500);
         createUserButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -94,7 +95,7 @@ public class ProfileMenu extends ScreenAdapter {
         });
 
         TextButton deleteUserButton = new TextButton("Delete user", skin);
-        deleteUserButton.setPosition(100,500);
+        deleteUserButton.setPosition(100,300);
         deleteUserButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -103,7 +104,7 @@ public class ProfileMenu extends ScreenAdapter {
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched)
+                if (touched && profiles.size() > 0)
                     deleteUser = true;
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -123,6 +124,13 @@ public class ProfileMenu extends ScreenAdapter {
         scrollBox.setClamp(true);
         scrollBox.setPosition(800,300);
 
+        Table table = new Table();
+        //table.setFillParent(true);
+        table.setDebug(true);
+        table.setBounds(400,200,500f,200f);
+        //skin.getDrawable("textfield");
+        table.setBackground(skin.getDrawable("pale-blue"));
+
         stage.addActor(mainMenuButton);
         stage.addActor(createUserButton);
         stage.addActor(deleteUserButton);
@@ -132,6 +140,7 @@ public class ProfileMenu extends ScreenAdapter {
     public void render (float delta) {
         Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act();
         stage.draw();
 
@@ -144,7 +153,7 @@ public class ProfileMenu extends ScreenAdapter {
         if (deleteUser) { //delete things here
             List tempActor = stage.getRoot().findActor("listbox");  //Set selected playerprofile to gamescreen.
             String tempString = (String) tempActor.getSelected();
-
+/*
             for (int i = 0; i < 200; i++) { //selvitetään KEY
                 if(tempString.equals(profilesData.getString("username" +i, "novalue"))) {
                     profilesData.remove("username"+i);
@@ -158,9 +167,9 @@ public class ProfileMenu extends ScreenAdapter {
                 profilesData.remove(tempString + "VectorX" + i);
                 profilesData.remove(tempString + "VectorY" + i);
             }
-            profilesData.flush();
+            profilesData.flush(); */
 
-            game.setScreen(new ProfileMenu(game));
+            game.setScreen(new ConfirmDelete(game, tempString));
         }
     }
 
