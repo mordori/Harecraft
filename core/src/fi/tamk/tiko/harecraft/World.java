@@ -1,10 +1,8 @@
 package fi.tamk.tiko.harecraft;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 

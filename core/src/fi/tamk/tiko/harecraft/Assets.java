@@ -152,11 +152,13 @@ public class Assets {
         //ATLASES
         atlas_text_race_positions = loadTextureAtlas("atlas_text_positions.txt");
         atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
-        //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
-        //flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
 
         sprites_text_race_states = atlas_text_race_states.createSprites();
         sprites_text_race_positions = atlas_text_race_positions.createSprites();
+
+        //ANIMATIONS
+        //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
+        //flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
 
         //AUDIO
         music_course_1 = loadMusic("music_course_1.mp3");
