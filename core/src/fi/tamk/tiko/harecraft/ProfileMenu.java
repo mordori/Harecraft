@@ -17,9 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by musta on 10.4.2018.
@@ -36,6 +38,7 @@ public class ProfileMenu extends ScreenAdapter {
     Boolean createUser = false;
     Boolean deleteUser = false;
     ArrayList<String> profiles;
+    Locale locale;
 
     public ProfileMenu(GameMain game) {
         this.game = game;
@@ -54,10 +57,15 @@ public class ProfileMenu extends ScreenAdapter {
             }
         }
 
+        ProfileInfo.determineGameLanguage(); //check language data
+        locale = ProfileInfo.gameLanguage;
+        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+
         Gdx.input.setInputProcessor(stage);
 
-        TextButton mainMenuButton = new TextButton("Return Main", skin);
+        TextButton mainMenuButton = new TextButton(localizationBundle.get("mainMenu"), skin);
         mainMenuButton.setPosition(100,100);
+        mainMenuButton.setWidth(400);
         mainMenuButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -75,8 +83,9 @@ public class ProfileMenu extends ScreenAdapter {
             }
         });
 
-        TextButton createUserButton = new TextButton("Create user", skin);
+        TextButton createUserButton = new TextButton(localizationBundle.get("createUser"), skin);
         createUserButton.setPosition(100,500);
+        createUserButton.setWidth(400);
         createUserButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -94,8 +103,9 @@ public class ProfileMenu extends ScreenAdapter {
             }
         });
 
-        TextButton deleteUserButton = new TextButton("Delete user", skin);
+        TextButton deleteUserButton = new TextButton(localizationBundle.get("deleteProfile"), skin);
         deleteUserButton.setPosition(100,300);
+        deleteUserButton.setWidth(400);
         deleteUserButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override

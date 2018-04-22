@@ -21,7 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.Locale;
 
 /**
  * Created by musta on 29.3.2018.
@@ -37,6 +40,7 @@ public class SettingsMenu extends ScreenAdapter {
     //String currentProfile;
     Preferences profilesData;
     Array<Actor> radarDotArray;
+    Locale locale;
 
     public SettingsMenu(GameMain game) {
         this.game = game;
@@ -49,7 +53,11 @@ public class SettingsMenu extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(stage);
 
-        TextButton button = new TextButton("Save", skin);
+        ProfileInfo.determineGameLanguage(); //check language data
+        locale = ProfileInfo.gameLanguage;
+        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+
+        TextButton button = new TextButton(localizationBundle.get("saveButtonText"), skin);
         button.setPosition(900,50);
         button.setName("backbutton");
 
@@ -59,7 +67,7 @@ public class SettingsMenu extends ScreenAdapter {
         slider.setWidth(500);
         slider.setName("difficultyslider");
 
-        Label difficultyLabel = new Label("Difficulty", skin);
+        Label difficultyLabel = new Label(localizationBundle.get("difficultyLabelText"), skin);
         difficultyLabel.setPosition(900 -difficultyLabel.getWidth()/2,700);
         difficultyLabel.setFontScale(1);
         difficultyLabel.setName("difficultylabel");
@@ -70,12 +78,12 @@ public class SettingsMenu extends ScreenAdapter {
         slider2.setWidth(500);
         slider2.setName("staticholdsslider");
 
-        Label staticsLabel = new Label("Static Holds", skin);
+        Label staticsLabel = new Label(localizationBundle.get("staticLabelText"), skin);
         staticsLabel.setPosition(900 - staticsLabel.getWidth()/2,550);
         staticsLabel.setFontScale(1);
         staticsLabel.setName("staticholdlabel");
 
-        Label durationLabel = new Label("Duration", skin);
+        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), skin);
         durationLabel.setPosition(900 - durationLabel.getWidth()/2,400);
         durationLabel.setFontScale(1);
         durationLabel.setName("durationlabel");
@@ -86,8 +94,8 @@ public class SettingsMenu extends ScreenAdapter {
         durationSlider.setWidth(500);
         durationSlider.setName("durationslider");
 
-        Label sensitivityLabel = new Label("Sensitivity", skin);
-        sensitivityLabel.setPosition(900 - durationLabel.getWidth()/2,250);
+        Label sensitivityLabel = new Label(localizationBundle.get("sensitivityLabelText"), skin);
+        sensitivityLabel.setPosition(900 - sensitivityLabel.getWidth()/2,250);
         sensitivityLabel.setFontScale(1);
         sensitivityLabel.setName("sensitivitylabel");
 

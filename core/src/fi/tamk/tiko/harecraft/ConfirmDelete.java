@@ -12,7 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.Locale;
 
 /**
  * Created by musta on 19.4.2018.
@@ -28,6 +31,7 @@ public class ConfirmDelete extends ScreenAdapter {
     Boolean yesSelect = false;
     Boolean noSelect = false;
     String tempString;
+    Locale locale;
 
     public ConfirmDelete(GameMain game, String deleteString) {
 
@@ -39,14 +43,19 @@ public class ConfirmDelete extends ScreenAdapter {
         profilesData = Gdx.app.getPreferences("ProfileFile");
         tempString = deleteString;
 
+        ProfileInfo.determineGameLanguage(); //check language data
+        locale = ProfileInfo.gameLanguage;
+        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+
         Gdx.input.setInputProcessor(stage);
 
-        Label questionLabel = new Label("Surely to delete " +tempString +" ? :E", skin);
+        Label questionLabel = new Label(localizationBundle.get("sureToDelete") +" " +tempString +" ?", skin);
         questionLabel.setPosition(640 -questionLabel.getWidth()/2,500);
+        //questionLabel.setPosition(640 - 150, 500);
         questionLabel.setFontScale(1);
         questionLabel.setName("difficultylabel");
 
-        TextButton yesButton = new TextButton("Yes", skin);
+        TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), skin);
         yesButton.setPosition(1280/2 -200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
         yesButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -65,7 +74,7 @@ public class ConfirmDelete extends ScreenAdapter {
             }
         });
 
-        TextButton noButton = new TextButton("No", skin);
+        TextButton noButton = new TextButton(localizationBundle.get("noButton"), skin);
         noButton.setPosition(1280/2 +200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
         noButton.addListener(new InputListener() {
             Boolean touched = false;

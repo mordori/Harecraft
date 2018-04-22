@@ -17,7 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.Locale;
 
 /**
  * Created by musta on 6.4.2018.
@@ -34,6 +37,7 @@ public class CreateUser extends ScreenAdapter {
     TextField textField;
     Boolean mainMenuSaving = false;
     Boolean profilesMenuWithoutSaving = false;
+    Locale locale;
 
     public CreateUser(GameMain game) {
         this.game = game;
@@ -58,7 +62,11 @@ public class CreateUser extends ScreenAdapter {
             }
         });
 
-        TextButton backButton = new TextButton("Back", skin);
+        ProfileInfo.determineGameLanguage(); //check language data
+        locale = ProfileInfo.gameLanguage;
+        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+
+        TextButton backButton = new TextButton(localizationBundle.get("backButtonText"), skin);
         backButton.setPosition(450 -backButton.getWidth()/2,400);
         backButton.setName("backbutton");
         backButton.addListener(new InputListener() {
@@ -79,7 +87,7 @@ public class CreateUser extends ScreenAdapter {
             }
         });
 
-        TextButton acceptButton = new TextButton("Accept", skin);
+        TextButton acceptButton = new TextButton(localizationBundle.get("acceptButtonText"), skin);
         acceptButton.setPosition(830 -backButton.getWidth()/2,400);
         acceptButton.setName("acceptbutton");
         acceptButton.addListener(new InputListener() {
@@ -100,7 +108,7 @@ public class CreateUser extends ScreenAdapter {
             }
         });
 
-        Label label1 = new Label("Create User", skin);
+        Label label1 = new Label(localizationBundle.get("createUserLabel"), skin);
         label1.setPosition(640 -label1.getWidth()/2,670);
         label1.setFontScale(1);
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,10 +25,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
@@ -51,18 +54,26 @@ public class MainMenu extends ScreenAdapter {
     Boolean settingsMenu = false;
     Boolean profilesMenu = false;
     Boolean createUser = false;
+    Boolean reloadMainMenu = false;
     Preferences profilesData;
     ArrayList<String> profiles;
     float opacity = 0f;
+    Locale locale;
 
     public MainMenu(GameMain game) {
         this.game = game;
+
+
         logo = new Texture("textures/logo.png");
         skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
+        ProfileInfo.determineGameLanguage(); //check language data
+        locale = ProfileInfo.gameLanguage;
+        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+
         profiles = new ArrayList<String>();
         for (int i = 0; i<200; i++) {
             String tempName;
@@ -83,7 +94,7 @@ public class MainMenu extends ScreenAdapter {
         //profiles.add("Mikko"); //profiileissa 1 järjestysnumero 2 profiilin nimi
         Gdx.input.setInputProcessor(stage);
 
-        TextButton playButton = new TextButton("Play", skin);
+        TextButton playButton = new TextButton(localizationBundle.get("playButtonText"), skin);
         playButton.setPosition(640 -playButton.getWidth()/2,290);
         playButton.setName("playbutton");
 
@@ -104,7 +115,7 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        TextButton settingsButton = new TextButton("Settings", skin);
+        TextButton settingsButton = new TextButton(localizationBundle.get("settingsButtonText"), skin);
         settingsButton.setPosition(640 -settingsButton.getWidth()/2,170);
         settingsButton.setName("settingsbutton");
 
@@ -125,7 +136,7 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        TextButton profilesButton = new TextButton("Profiles", skin);
+        TextButton profilesButton = new TextButton(localizationBundle.get("profilesButtonText"), skin);
         profilesButton.setPosition(640 -profilesButton.getWidth()/2,50);
         profilesButton.setName("profilesbutton");
 
@@ -161,10 +172,32 @@ public class MainMenu extends ScreenAdapter {
         //profileBox.setSelected("MikkoK");
         //profileBox.getSelected();
 
+        LanguageButton languageButton = new LanguageButton();
+        languageButton.setPosition(100,100);
+        languageButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched) {
+                    ProfileInfo.switchLanguage();
+                    reloadMainMenu = true;
+                }
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
         stage.addActor(playButton);
         stage.addActor(settingsButton);
         stage.addActor(profilesButton);
         stage.addActor(profileBox);
+        stage.addActor(languageButton);
 
         Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
     }
@@ -206,6 +239,9 @@ public class MainMenu extends ScreenAdapter {
         if (createUser) {       //force profile creation
             game.setScreen(new CreateUser(game));
         }
+        if (reloadMainMenu) {
+            game.setScreen(new MainMenu(game));
+        }
     }
 
     private void setCurrentPlayerProfile() {
@@ -233,6 +269,26 @@ public class MainMenu extends ScreenAdapter {
         skin.dispose();
         stage.dispose();
         logo.dispose();
+    }
+}
+
+class LanguageButton extends Actor {
+    Texture englishFlag;
+    Texture finnishFlag;
+
+    public LanguageButton() {
+        finnishFlag = new Texture(Gdx.files.internal("textures/fiFlag.png"));
+        englishFlag = new Texture(Gdx.files.internal("textures/ukFlag.png"));
+        setBounds(getX(),getY(),100,100);
+    }
+
+    public void draw(Batch batch, float alpha) {
+        if (ProfileInfo.gameLanguage.toString().equals("en_GB")) {
+            batch.draw(englishFlag, getX(), getY(), 100, 100);
+        }
+        if (ProfileInfo.gameLanguage.toString().equals("fi_FI")) {
+            batch.draw(finnishFlag, getX(),getY(),100,100);
+        }
     }
 }
 
