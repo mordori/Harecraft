@@ -74,8 +74,7 @@ public abstract class World {
     float opacity;
 
     public World() {
-        if(this instanceof WorldSea) finish = ProfileInfo.selectedDuration;             //2000f
-        else if(this instanceof WorldForest) finish = ProfileInfo.selectedDuration;     //3000f
+        finish = ProfileInfo.selectedDuration;
 
         /*switch (MathUtils.random(0,2)) {
             case 0:
@@ -137,10 +136,10 @@ class WorldForest extends World {
         float width = Assets.texR_foreground.getRegionWidth()/1.5f;
         float height = Assets.texR_foreground.getRegionHeight()/1.5f;
         decal_background = Decal.newDecal(width, height,Assets.texR_foreground, true);
-        decal_background.setPosition(0f, -80f, 275f);
+        decal_background.setPosition(0f, 30f, 275f);
 
         ground = Decal.newDecal(new TextureRegion(Assets.tex_grass, 0, 0, 600, 330), true);
-        ground.setPosition(0f, -28f, 125f);
+        ground.setPosition(0f, -43f, 125f);
         ground.rotateX(90f);
     }
 
@@ -163,6 +162,38 @@ class WorldForest extends World {
         */
     }
 
+}
+
+class WorldTundra extends World {
+    public WorldTundra() {
+        float width = Assets.texR_foreground.getRegionWidth()/1.5f;
+        float height = Assets.texR_foreground.getRegionHeight()/1.5f;
+        decal_background = Decal.newDecal(width, height,Assets.texR_foreground, true);
+        decal_background.setPosition(0f, 30f, 275f);
+
+        ground = Decal.newDecal(new TextureRegion(Assets.tex_grass, 0, 0, 600, 330), true);
+        ground.setPosition(0f, -43f, 125f);
+        ground.rotateX(90f);
+    }
+
+    public void update(float delta) {
+        super.update(delta);
+        decal_background.setColor(1f,1f,1f, opacity);
+    }
+
+    public void updateShaders(float delta) {
+        /*shader2D_vignette.begin();
+        if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
+            shader2D_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
+            if((gameStateTime - 2f) / 4f > 0.8f) shader2D_vignette.setUniformf("u_stateTime", 0.8f);
+        }
+        if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
+            shader2D_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
+            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader2D_vignette.setUniformf("u_stateTime", 0f);
+        }
+        shader2D_vignette.end();
+        */
+    }
 }
 
 class WorldSea extends World {

@@ -137,7 +137,7 @@ public class HUD {
                     if(index == 0) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
-                        //Assets.sound_countdown_end.play(0.85f);
+                        Assets.sound_countdown_end.play(0.85f);
                     }
                     index = 4;
                 }

@@ -33,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     GameMain game;
-    World world;
+    static World world;
     WorldBuilder builder;
     WorldRenderer worldRenderer;
     HUD HUD;
@@ -73,6 +73,9 @@ public class GameScreen extends ScreenAdapter {
                 world = new WorldForest();
                 break;
             case 1:
+                world = new WorldTundra();
+                break;
+            case 2:
                 world = new WorldSea();
                 break;
         }

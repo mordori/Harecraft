@@ -74,7 +74,7 @@ public class WorldBuilder {
         updateRings(delta);
         updatePowerups(delta);
 
-        if(world instanceof WorldForest) {
+        if(world instanceof WorldForest || world instanceof WorldTundra) {
             updateLakes(delta);
             updateTrees(delta);
             updateHills(delta);
@@ -98,7 +98,7 @@ public class WorldBuilder {
     }
 
     public void spawnGroundObjects() {
-        if(world instanceof WorldForest) {
+        if(world instanceof WorldForest || world instanceof WorldTundra) {
             addLakes();
             addHills();
             addTrees();
@@ -448,7 +448,7 @@ public class WorldBuilder {
     public void spawnStartObjects() {
         for (int j = 100; j < 220; j += MathUtils.random(30,40)) {               //Z Depth step
             for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
-                if(world instanceof  WorldForest) world.trees_L.add(new Tree(i, groundLevel, j));
+                if(world instanceof  WorldForest || world instanceof WorldTundra) world.trees_L.add(new Tree(i, groundLevel, j));
                 if ( i < -10 || i > 10 ) {
                     world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
                 }

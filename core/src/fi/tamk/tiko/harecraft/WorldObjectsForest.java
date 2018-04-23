@@ -17,8 +17,8 @@ public abstract class WorldObjectsForest {
 
 class Hill extends GameObject {
     public Hill(float x, float y, float z) {
-        width = Assets.texR_hill.getRegionWidth()/10f;
-        height = Assets.texR_hill.getRegionHeight()/10f;
+        width = Assets.texR_hill.getRegionWidth()/20f;
+        height = Assets.texR_hill.getRegionHeight()/20f;
 
         float randomSize = MathUtils.random(1.5f, 3f);
         width *= randomSize;
@@ -42,8 +42,8 @@ class Hill extends GameObject {
 
 class Lake extends GameObject {
     public Lake(float x, float y, float z) {
-        width = Assets.texR_lake.getRegionWidth() / 9f;
-        height = Assets.texR_lake.getRegionHeight() / 9f;
+        width = Assets.texR_lake.getRegionWidth() / 15f;
+        height = Assets.texR_lake.getRegionHeight() / 15f;
 
         float randomSize = MathUtils.random(1f, 2.5f);
         width *= randomSize;
@@ -72,26 +72,28 @@ class Tree extends GameObject {
         TextureRegion textureRegion;
         float transposedY = y - 1f;
 
-        if(MathUtils.random(0, 9) < 8) {
-            if(MathUtils.random(0,9) < 8) {
-                textureRegion = Assets.texR_tree_big_light;
-            }
-            else textureRegion = Assets.texR_tree_big_dark;
+        if(GameScreen.world instanceof WorldForest) {
+            textureRegion = Assets.texR_tree_leafy_big_light;
+
+            width = textureRegion.getRegionWidth()/20f;
+            height = textureRegion.getRegionHeight()/20f;
         }
         else {
-            if(MathUtils.random(0, 5) < 4) {
-                textureRegion = Assets.texR_tree_small_light;
+            if (MathUtils.random(0, 9) < 8) {
+                if (MathUtils.random(0, 9) < 8) {
+                    textureRegion = Assets.texR_tree_big_light;
+                } else textureRegion = Assets.texR_tree_big_dark;
+            } else {
+                if (MathUtils.random(0, 5) < 4) {
+                    textureRegion = Assets.texR_tree_small_light;
+                } else textureRegion = Assets.texR_tree_small_dark;
+
+                transposedY -= 1.5f;
             }
-            else textureRegion = Assets.texR_tree_small_dark;
 
-            transposedY -= 1.5f;
+            width = textureRegion.getRegionWidth()/7.5f;
+            height = textureRegion.getRegionHeight()/7.5f;
         }
-
-
-        width = textureRegion.getRegionWidth() / 100f;
-        height = textureRegion.getRegionHeight() / 100f;
-        width *= 17f;
-        height *= 17f;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,transposedY,z);

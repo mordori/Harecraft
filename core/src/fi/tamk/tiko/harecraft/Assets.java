@@ -51,6 +51,7 @@ public class Assets {
     static TextureRegion texR_cloud;
     static TextureRegion texR_ring;
     static TextureRegion texR_ring_arrows;
+    static TextureRegion texR_tree_leafy_big_light;
     static TextureRegion texR_tree_big_light;
     static TextureRegion texR_tree_big_dark;
     static TextureRegion texR_tree_small_light;
@@ -139,6 +140,7 @@ public class Assets {
         texR_cloud = loadDecalTextureRegion("tex_cloud.png");
         texR_ring = loadDecalTextureRegion("tex_ring.png");
         texR_ring_arrows = loadDecalTextureRegion("tex_ring_arrows.png");
+        texR_tree_leafy_big_light = loadDecalTextureRegion("tex_tree_leafy_big_light.png");
         texR_tree_big_light = loadDecalTextureRegion("tex_tree_big_light.png");
         texR_tree_big_dark = loadDecalTextureRegion("tex_tree_big_dark.png");
         texR_tree_small_light = loadDecalTextureRegion("tex_tree_small_light.png");
@@ -193,7 +195,7 @@ public class Assets {
 
     public static Texture loadTexture(String path) {
         Texture texture = new Texture(Gdx.files.internal("textures/" + path));
-        texture.setFilter(Texture.TextureFilter.Nearest,Texture.TextureFilter.Nearest);
+        texture.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         return texture;
     }
 
@@ -251,6 +253,7 @@ public class Assets {
         texR_cloud.getTexture().dispose();
         texR_ring.getTexture().dispose();
         texR_ring_arrows.getTexture().dispose();
+        texR_tree_leafy_big_light.getTexture().dispose();
         texR_tree_big_light.getTexture().dispose();
         texR_tree_big_dark.getTexture().dispose();
         texR_tree_small_light.getTexture().dispose();

@@ -56,7 +56,7 @@ public class WorldRenderer {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
-        //if(!isSeaEnabled) dBatch.add(world.decal_background);
+        if(!isSeaEnabled) dBatch.add(world.decal_background);
 
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);

@@ -29,10 +29,8 @@ class Ring extends GameObject {
     ParticleEffect pfx_speed_up;
 
     public Ring(float x, float y, float z) {
-        width = Assets.texR_ring.getRegionWidth() / 100f;
-        height = Assets.texR_ring.getRegionHeight() / 100f;
-        width *= 8.5f;
-        height *= 8.5f;
+        width = Assets.texR_ring.getRegionWidth()/90f;
+        height = Assets.texR_ring.getRegionHeight()/90f;
         decal = Decal.newDecal(width, height, Assets.texR_ring, true);
         decal.setPosition(x,y,z);
 
