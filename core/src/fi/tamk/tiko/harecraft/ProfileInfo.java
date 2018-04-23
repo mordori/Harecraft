@@ -77,5 +77,9 @@ public class ProfileInfo {
             profilesData.putString("Language" , "English");
             profilesData.flush();
         }
+        else { //if american OS or other loads it switches from english to finnish
+            profilesData.putString("Language" , "Finnish");
+            profilesData.flush();
+        }
     }
 }
