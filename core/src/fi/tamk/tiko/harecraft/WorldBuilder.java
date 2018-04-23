@@ -379,7 +379,7 @@ public class WorldBuilder {
             pos = (world.hills_L.get(world.hills_L.size() - 1).position.cpy());
             pos.y -= world.hills_L.get(world.hills_L.size() - 1).height / 2f;
 
-            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 1.25f) {
+            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_L.get(world.hills_L.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.dst(pos) < world.hills_L.get(world.hills_L.size() - 1).width / 1.15f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
             }
@@ -393,11 +393,11 @@ public class WorldBuilder {
             pos = world.hills_R.get(world.hills_R.size() - 1).position.cpy();
             pos.y -= world.hills_R.get(world.hills_R.size() - 1).height / 2f;
 
-            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.25f) {
+            if (!world.trees_R.isEmpty() && world.trees_R.get(world.trees_R.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_R.get(world.trees_R.size() - 1).position.dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.15f) {
                 world.trees_R.remove(world.trees_R.size() - 1);
                 trees_RRemoveTimer = 0.25f;
             }
-            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.25f) {
+            if (!world.trees_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.z > world.hills_R.get(world.hills_R.size() - 1).position.z && world.trees_L.get(world.trees_L.size() - 1).position.dst(pos) < world.hills_R.get(world.hills_R.size() - 1).width / 1.15f) {
                 world.trees_L.remove(world.trees_L.size() - 1);
                 trees_LRemoveTimer = 0.25f;
             }
@@ -491,7 +491,6 @@ public class WorldBuilder {
             Gdx.app.log("VECTOR", " 6");
         }
 
-
         Gdx.app.log("tmpvector" , " X: " +tmpVector.x +" Y : " +tmpVector.y );
 
         if (tmpVector.x == 0 && tmpVector.y == 0) {
@@ -509,9 +508,5 @@ public class WorldBuilder {
         Gdx.app.log("tmpvector" , " X: " +tmpVector.x +" Y : " +tmpVector.y );
         Gdx.app.log("length :", " " +tmpVector.len() );
         return tmpVector;
-
-
-
     }
-
 }

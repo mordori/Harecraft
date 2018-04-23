@@ -17,8 +17,8 @@ public abstract class WorldObjectsForest {
 
 class Hill extends GameObject {
     public Hill(float x, float y, float z) {
-        width = Assets.texR_hill.getRegionWidth()/20f;
-        height = Assets.texR_hill.getRegionHeight()/20f;
+        width = Assets.texR_hill.getRegionWidth()/25f;
+        height = Assets.texR_hill.getRegionHeight()/25f;
 
         float randomSize = MathUtils.random(1.5f, 3f);
         width *= randomSize;
@@ -70,7 +70,7 @@ class Lake extends GameObject {
 class Tree extends GameObject {
     public Tree(float x, float y, float z) {
         TextureRegion textureRegion;
-        float transposedY = y - 1f;
+        float transposedY = y - 2f;
 
         if(GameScreen.world instanceof WorldForest) {
             textureRegion = Assets.texR_tree_leafy_big_light;
@@ -88,11 +88,11 @@ class Tree extends GameObject {
                     textureRegion = Assets.texR_tree_small_light;
                 } else textureRegion = Assets.texR_tree_small_dark;
 
-                transposedY -= 1.5f;
+                transposedY -= 1f;
             }
 
-            width = textureRegion.getRegionWidth()/7.5f;
-            height = textureRegion.getRegionHeight()/7.5f;
+            width = textureRegion.getRegionWidth()/7f;
+            height = textureRegion.getRegionHeight()/7f;
         }
 
         decal = Decal.newDecal(width, height, textureRegion, true);

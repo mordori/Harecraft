@@ -23,13 +23,15 @@ public class Assets {
     //static int[][] worldsArr = new int[2][2];
 
     static Texture tex_grass;
+    static Texture tex_ground;
     static Texture tex_sea;
     static Texture tex_foam;
     static Texture tex_sea_deep;
     static Texture tex_mask_foam;
     static Texture tex_mask_sea_deep;
 
-    static TextureRegion texR_foreground;
+    static TextureRegion texR_background_summer;
+    static TextureRegion texR_background_tundra;
     static TextureRegion texR_sun;
     static TextureRegion texR_hotairballoon;
     static TextureRegion texR_ribbons;
@@ -102,6 +104,10 @@ public class Assets {
         //TEXTURES
         tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
         tex_grass.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_grass.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        tex_ground = new Texture(Gdx.files.internal("shaders/tex_ground.png"));
+        tex_ground.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_ground.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         tex_sea = new Texture(Gdx.files.internal("shaders/tex_sea.png"));
         tex_sea.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_sea.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -119,7 +125,8 @@ public class Assets {
         tex_mask_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
 
         //DECALS
-        texR_foreground = loadDecalTextureRegion("tex_foreground_tundra.png");
+        texR_background_summer = loadDecalTextureRegion("tex_background_summer.png");
+        texR_background_tundra = loadDecalTextureRegion("tex_background_tundra.png");
         texR_sun = loadDecalTextureRegion("tex_sun.png");
         texR_hotairballoon = loadDecalTextureRegion("tex_hotairballoon.png");
         texR_ribbons = loadDecalTextureRegion("tex_ribbons.png");
@@ -225,13 +232,15 @@ public class Assets {
 
     public static void dispose() {
         tex_grass.dispose();
+        tex_ground.dispose();
         tex_sea.dispose();
         tex_foam.dispose();
         tex_sea_deep.dispose();
         tex_mask_foam.dispose();
         tex_mask_sea_deep.dispose();
 
-        texR_foreground.getTexture().dispose();
+        texR_background_summer.getTexture().dispose();
+        texR_background_tundra.getTexture().dispose();
         texR_sun.getTexture().dispose();
         texR_hotairballoon.getTexture().dispose();
         texR_ribbons.getTexture().dispose();

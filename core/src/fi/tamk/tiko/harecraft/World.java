@@ -133,13 +133,13 @@ public abstract class World {
 
 class WorldForest extends World {
     public WorldForest() {
-        float width = Assets.texR_foreground.getRegionWidth()/1.5f;
-        float height = Assets.texR_foreground.getRegionHeight()/1.5f;
-        decal_background = Decal.newDecal(width, height,Assets.texR_foreground, true);
-        decal_background.setPosition(0f, 30f, 275f);
+        float width = Assets.texR_background_summer.getRegionWidth()/2f;
+        float height = Assets.texR_background_summer.getRegionHeight()/2f;
+        decal_background = Decal.newDecal(width, height,Assets.texR_background_summer, true);
+        decal_background.setPosition(0f, 2f, 275f);
 
         ground = Decal.newDecal(new TextureRegion(Assets.tex_grass, 0, 0, 600, 330), true);
-        ground.setPosition(0f, -43f, 125f);
+        ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
     }
 
@@ -166,13 +166,13 @@ class WorldForest extends World {
 
 class WorldTundra extends World {
     public WorldTundra() {
-        float width = Assets.texR_foreground.getRegionWidth()/1.5f;
-        float height = Assets.texR_foreground.getRegionHeight()/1.5f;
-        decal_background = Decal.newDecal(width, height,Assets.texR_foreground, true);
-        decal_background.setPosition(0f, 30f, 275f);
+        float width = Assets.texR_background_tundra.getRegionWidth()/2f;
+        float height = Assets.texR_background_tundra.getRegionHeight()/2f;
+        decal_background = Decal.newDecal(width, height,Assets.texR_background_tundra, true);
+        decal_background.setPosition(0f, 2f, 275f);
 
-        ground = Decal.newDecal(new TextureRegion(Assets.tex_grass, 0, 0, 600, 330), true);
-        ground.setPosition(0f, -43f, 125f);
+        ground = Decal.newDecal(new TextureRegion(Assets.tex_ground, 0, 0, 600, 330), true);
+        ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
     }
 

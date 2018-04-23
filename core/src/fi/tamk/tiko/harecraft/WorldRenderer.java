@@ -32,9 +32,14 @@ public class WorldRenderer {
 
         if(world instanceof WorldSea) {
             isSeaEnabled = true;
+            Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
-
-        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        else if(world instanceof WorldForest) {
+            Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
+        }
+        else if(world instanceof WorldTundra) {
+            Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
+        }
     }
 
     public void renderWorld() {
@@ -73,7 +78,7 @@ public class WorldRenderer {
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
                 dBatch.add(hotAirBalloon.decal);
-                if(hotAirBalloon == world.hotAirBalloons.get(0)) dBatch.add(hotAirBalloon.decal_ribbons);
+                //if(hotAirBalloon == world.hotAirBalloons.get(0)) dBatch.add(hotAirBalloon.decal_ribbons);
             }
         }
 
