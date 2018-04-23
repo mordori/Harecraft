@@ -283,12 +283,15 @@ class LanguageButton extends Actor {
     }
 
     public void draw(Batch batch, float alpha) {
-        if (ProfileInfo.gameLanguage.toString().equals("en_GB")) {
-            batch.draw(englishFlag, getX(), getY(), 100, 100);
-        }
         if (ProfileInfo.gameLanguage.toString().equals("fi_FI")) {
-            batch.draw(finnishFlag, getX(),getY(),100,100);
+            batch.draw(englishFlag, getX(),getY(),100,100);
         }
+        else {
+            batch.draw(finnishFlag, getX(), getY(), 100, 100);
+        }
+        //if (ProfileInfo.gameLanguage.toString().equals("en_GB")) {
+        //    batch.draw(englishFlag, getX(), getY(), 100, 100);
+        //}
     }
 }
 
