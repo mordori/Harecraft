@@ -92,11 +92,11 @@ public abstract class World {
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
 
         player = new Player(0f,-7f,-5f);
-        opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_DEF, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
-        opponents.add(new Opponent(0f, 4f, -52f*2f, finish/5f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_DEF, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
-        opponents.add(new Opponent(4f, -2f, -61f*2f, finish/6f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_DEF, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
-        opponents.add(new Opponent(4f, 2f, -55f*2f, finish/10f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_DEF, 9f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
-        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_DEF, 6f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
+        opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
+        opponents.add(new Opponent(0f, 4f, -52f*2f, finish/5f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
+        opponents.add(new Opponent(4f, -2f, -61f*2f, finish/6f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
+        opponents.add(new Opponent(4f, 2f, -55f*2f, finish/10f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 9f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
+        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 6f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
 
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun1.setPosition(0f, -40f, 294f);

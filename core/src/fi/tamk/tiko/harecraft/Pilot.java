@@ -13,10 +13,12 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.file;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
+import static fi.tamk.tiko.harecraft.GameScreen.strFlightRecord;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -170,6 +172,9 @@ class Player extends Pilot {
             decal.setRotationZ(getRotationAverage() * -15);
 
             checkInput(); //Keyboard input
+
+            strFlightRecord += direction.x + "," + direction.y + "," + (getRotationAverage() * -15);
+            strFlightRecord += "\n";
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
@@ -260,6 +265,7 @@ class Player extends Pilot {
 class Opponent extends Pilot {
     float spawnZ;
     Decal decal_playerTag;
+    String flight = file.readString();
 
     public Opponent(float x, float y, float z, float spawnZ, int color, int planetype, int character, float speed) {
         drawDistance = spawnDistance / 5f;
@@ -303,18 +309,18 @@ class Opponent extends Pilot {
                 texR_head = Assets.texR_character_default_head;
         }
 
-        width = texR_body.getRegionWidth() / 200f;
-        height = texR_body.getRegionHeight() / 200f;
+        width = texR_body.getRegionWidth() / 100f;
+        height = texR_body.getRegionHeight() / 100f;
         decal = Decal.newDecal(width, height, texR_body,true);
         decal.setPosition(x,y,z);
 
-        width = texR_head.getRegionWidth() / 200f;
-        height = texR_head.getRegionHeight() / 200f;
+        width = texR_head.getRegionWidth() / 100f;
+        height = texR_head.getRegionHeight() / 100f;
         decal_head = Decal.newDecal(width, height, texR_head,true);
         decal_head.setPosition(x,y,z+0.1f);
 
-        width = texR_wings.getRegionWidth() / 200f;
-        height = texR_wings.getRegionHeight() / 200f;
+        width = texR_wings.getRegionWidth() / 100f;
+        height = texR_wings.getRegionHeight() / 100f;
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z+0.2f);
 
@@ -327,10 +333,14 @@ class Opponent extends Pilot {
         decal_playerTag.setColor(1f,1f,1f, opacity);
 
         if(gameState == START) velocity.z = 9f * stateTime;
-        else velocity.z = speed - global_Multiplier * 3f;
+        else {
+            velocity.z = speed - global_Multiplier * 3f;
+            move(delta);
+        }
 
         if(gameState == RACE && gameStateTime == 0f) {
             distance = player.distance + spawnZ;
+            decal.setPosition(0f, -1.8f, decal.getPosition().z);
         }
 
         if(distance > World.end) {
@@ -345,7 +355,22 @@ class Opponent extends Pilot {
         decal_wings.setRotation(decal.getRotation());
         decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.08f);
 
-        decal_playerTag.setPosition(decal.getPosition().x, decal.getPosition().y + 1f, decal.getPosition().z);
+        decal_playerTag.setPosition(decal.getPosition().x, decal.getPosition().y + 1.3f, decal.getPosition().z);
+    }
+
+    public void move(float delta) {
+        if(flight.lastIndexOf("\n") != -1) {
+            String[] input = flight.split("\n", 2);
+            String[] line = input[0].split(",");
+            float xDir = Float.parseFloat(line[0]);
+            float yDir = Float.parseFloat(line[1]);
+            float rotZ = Float.parseFloat(line[2]);
+            decal.translateX(xDir);
+            decal.translateY(yDir);
+            decal.setRotationZ(rotZ * 1.5f);
+
+            flight = flight.replaceFirst("(.*)\n", "");
+        }
     }
 
     public void dispose() {

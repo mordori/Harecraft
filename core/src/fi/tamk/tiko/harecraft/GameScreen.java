@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -51,6 +52,10 @@ public class GameScreen extends ScreenAdapter {
     static boolean countdown;
     boolean newGame;
 
+    static String strFlightRecord;
+    static FileHandle file = Gdx.files.local("myfile.txt");
+    int renderCount = 0;
+
     public GameScreen(GameMain game, int index) {
         this.game = game;
         DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
@@ -65,6 +70,11 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.setVolume(0f);
         volume = 0.3f;
         Assets.sound_airplane_engine.loop(volume);
+
+        System.out.println(Gdx.files.isLocalStorageAvailable());
+        System.out.println(Gdx.files.getLocalStoragePath());
+
+        strFlightRecord = "";
     }
 
     public void selectWorld(int index) {
@@ -104,6 +114,8 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
         if(global_Multiplier < 1f) global_Multiplier = 1f;
 
+        renderCount++;
+
         if(gameState == START && gameStateTime >= 7) {
             gameState = RACE;
             gameStateTime = 0f;
@@ -121,6 +133,7 @@ public class GameScreen extends ScreenAdapter {
             Assets.sound_airplane_engine.stop();
             Assets.music_course_1.setPosition(0f);
             Assets.music_course_1.setVolume(0.7f);
+
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnZ;
             }
@@ -153,6 +166,8 @@ public class GameScreen extends ScreenAdapter {
             gameState = END;
             gameStateTime = 0f;
             Assets.sound_applause.play(0.4f);
+            strFlightRecord += renderCount;
+            file.writeString(strFlightRecord, false);
         }
         else if(gameState == END && gameStateTime > 5.5f) {
             //Assets.music_course_1.stop();
