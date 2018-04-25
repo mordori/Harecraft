@@ -52,9 +52,9 @@ public class GameScreen extends ScreenAdapter {
     static boolean countdown;
     boolean newGame;
 
-    static String strFlightRecord;
+    static String strFlightRecord = "";
     static FileHandle file = Gdx.files.local("myfile.txt");
-    int renderCount = 0;
+    static int renderCount = 0;
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
@@ -70,9 +70,6 @@ public class GameScreen extends ScreenAdapter {
         Assets.music_course_1.setVolume(0f);
         volume = 0.3f;
         Assets.sound_airplane_engine.loop(volume);
-
-        System.out.println(Gdx.files.isLocalStorageAvailable());
-        System.out.println(Gdx.files.getLocalStoragePath());
 
         strFlightRecord = "";
     }
@@ -115,6 +112,7 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier < 1f) global_Multiplier = 1f;
 
         renderCount++;
+        renderCount %= 60;
 
         if(gameState == START && gameStateTime >= 7) {
             gameState = RACE;
@@ -166,7 +164,7 @@ public class GameScreen extends ScreenAdapter {
             gameState = END;
             gameStateTime = 0f;
             Assets.sound_applause.play(0.4f);
-            strFlightRecord += renderCount;
+            //strFlightRecord += renderCount;
             file.writeString(strFlightRecord, false);
         }
         else if(gameState == END && gameStateTime > 5.5f) {
@@ -195,17 +193,6 @@ public class GameScreen extends ScreenAdapter {
             cameraPanY += (delta * 40f) * panAccelY;
             if (cameraPanY > 80f) cameraPanY = 80f;
         }
-
-        /*if(gameState == START || gameState == END) {
-            camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
-            camera.lookAt(0f, cameraPanY, spawnDistance/2f);
-        }
-        else {
-            camera.position.set(player.decal.getPosition().x, player.decal.getPosition().y,-5f);
-            camera.lookAt(player.decal.getPosition());
-        }
-        camera.up.set(player.getRotationAverage(), 20f, 0f);
-        */
 
         camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
         camera.lookAt(0f, cameraPanY, spawnDistance/2f);

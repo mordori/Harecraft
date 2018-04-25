@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -67,6 +68,13 @@ public class GameMain extends Game {
         fbo = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, true);
         texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, format));
         texture.flip(false, true);
+
+        System.out.println(Gdx.files.isLocalStorageAvailable());
+        System.out.println(Gdx.files.getLocalStoragePath());
+        if(!Gdx.files.local("myfile.txt").exists()) {
+            FileHandle from = Gdx.files.internal("myfile.txt");
+            from.copyTo(Gdx.files.local("myfile.txt"));
+        }
 
 		setScreen(new MainMenu(this));
 	}

@@ -18,6 +18,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
+import static fi.tamk.tiko.harecraft.GameScreen.renderCount;
 import static fi.tamk.tiko.harecraft.GameScreen.strFlightRecord;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
@@ -107,6 +108,8 @@ class Player extends Pilot {
         rotationsArray = new float[10];
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
 
+        //strFlightRecord.intern();
+
         drawDistance = spawnDistance/50f;
         speed = SPEED;
         acceleration = 1f;
@@ -173,8 +176,14 @@ class Player extends Pilot {
 
             checkInput(); //Keyboard input
 
-            strFlightRecord += direction.x + "," + direction.y + "," + (getRotationAverage() * -15);
-            strFlightRecord += "\n";
+            if(renderCount == 0) {
+                StringBuilder value = new StringBuilder(strFlightRecord);
+                value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
+                strFlightRecord = value.toString();
+            }
+
+            //strFlightRecord += direction.x + "," + direction.y + "," + (getRotationAverage() * -15);
+            //strFlightRecord += "\n";
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
@@ -266,11 +275,19 @@ class Opponent extends Pilot {
     float spawnZ;
     Decal decal_playerTag;
     String flight = file.readString();
+    String[] input;
+    String[] line;
+    float xDir;
+    float yDir;
+    float rotZ;
+    int count;
 
     public Opponent(float x, float y, float z, float spawnZ, int color, int planetype, int character, float speed) {
         drawDistance = spawnDistance / 5f;
         this.spawnZ = spawnZ;
         this.speed = speed;
+
+        input = flight.split("\n");
 
         TextureRegion texR_body;
         TextureRegion texR_wings;
@@ -359,18 +376,19 @@ class Opponent extends Pilot {
     }
 
     public void move(float delta) {
-        if(flight.lastIndexOf("\n") != -1) {
-            String[] input = flight.split("\n", 2);
-            String[] line = input[0].split(",");
-            float xDir = Float.parseFloat(line[0]);
-            float yDir = Float.parseFloat(line[1]);
-            float rotZ = Float.parseFloat(line[2]);
-            decal.translateX(xDir);
-            decal.translateY(yDir);
-            decal.setRotationZ(rotZ * 1.5f);
-
-            flight = flight.replaceFirst("(.*)\n", "");
+        if(renderCount == 0) {
+            line = input[count].split(",");
+            xDir = Float.parseFloat(line[0]);
+            yDir = Float.parseFloat(line[1]);
+            rotZ = Float.parseFloat(line[2]);
         }
+        decal.translateX(xDir);
+        decal.translateY(yDir);
+        decal.setRotationZ(rotZ * 1.5f);
+
+        if(renderCount == 0)count++;
+
+        if(count == input.length - 1) count = 0;
     }
 
     public void dispose() {
