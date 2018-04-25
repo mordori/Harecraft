@@ -54,6 +54,8 @@ public class GameScreen extends ScreenAdapter {
 
     static String strFlightRecord = "";
     static FileHandle file = Gdx.files.local("myfile.txt");
+    static FileHandle file2 = Gdx.files.local("myfile2.txt");
+    static FileHandle file3 = Gdx.files.local("myfile3.txt");
     static int renderCount = 0;
 
     public GameScreen(GameMain game, int index) {
@@ -77,10 +79,10 @@ public class GameScreen extends ScreenAdapter {
     public void selectWorld(int index) {
         switch (index) {
             case 0:
-                world = new WorldForest();
+                world = new WorldSea();
                 break;
             case 1:
-                world = new WorldTundra();
+                world = new WorldSea();
                 break;
             case 2:
                 world = new WorldSea();
@@ -112,7 +114,7 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier < 1f) global_Multiplier = 1f;
 
         renderCount++;
-        renderCount %= 10;
+        //renderCount %= 10;
 
         if(gameState == START && gameStateTime >= 7) {
             gameState = RACE;

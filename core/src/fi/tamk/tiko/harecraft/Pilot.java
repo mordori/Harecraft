@@ -14,6 +14,8 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.file;
+import static fi.tamk.tiko.harecraft.GameScreen.file2;
+import static fi.tamk.tiko.harecraft.GameScreen.file3;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
@@ -172,15 +174,15 @@ class Player extends Pilot {
                 rotationsArray[i] = rotationsArray[i - 1];
             }
             rotationsArray[0] = direction.x;
-            decal.setRotationZ(getRotationAverage() * -15);
+            decal.setRotationZ(getRotationAverage() * -20);
 
             checkInput(); //Keyboard input
 
-            if(renderCount == 0) {
+
                 StringBuilder value = new StringBuilder(strFlightRecord);
                 value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
                 strFlightRecord = value.toString();
-            }
+
 
             //strFlightRecord += direction.x + "," + direction.y + "," + (getRotationAverage() * -15);
             //strFlightRecord += "\n";
@@ -274,7 +276,7 @@ class Player extends Pilot {
 class Opponent extends Pilot {
     float spawnZ;
     Decal decal_playerTag;
-    String flight = file.readString();
+    String flight;
     String[] input;
     String[] line;
     float xDir;
@@ -286,6 +288,18 @@ class Opponent extends Pilot {
         drawDistance = spawnDistance / 5f;
         this.spawnZ = spawnZ;
         this.speed = speed;
+
+        switch(MathUtils.random(0,2)) {
+            case 0:
+                flight = file.readString();
+                break;
+            case 1:
+                flight = file2.readString();
+                break;
+            case 2:
+                flight = file3.readString();
+                break;
+        }
 
         input = flight.split("\n");
 
@@ -376,17 +390,18 @@ class Opponent extends Pilot {
     }
 
     public void move(float delta) {
-        if(renderCount == 0) {
+        //if(renderCount == 0) {
             line = input[count].split(",");
             xDir = Float.parseFloat(line[0]);
             yDir = Float.parseFloat(line[1]);
             rotZ = Float.parseFloat(line[2]);
-        }
+        //}
         decal.translateX(xDir);
         decal.translateY(yDir);
         decal.setRotationZ(rotZ * 1.5f);
 
-        if(renderCount == 0)count++;
+
+        count++;
 
         if(count == input.length - 1) count = 0;
     }
