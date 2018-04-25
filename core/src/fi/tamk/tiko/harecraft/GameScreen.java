@@ -112,7 +112,7 @@ public class GameScreen extends ScreenAdapter {
         if(global_Multiplier < 1f) global_Multiplier = 1f;
 
         renderCount++;
-        renderCount %= 60;
+        renderCount %= 10;
 
         if(gameState == START && gameStateTime >= 7) {
             gameState = RACE;
