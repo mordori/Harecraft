@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
- * Created by Minuet on 5.4.2018.
+ * Created by Mika on 5.4.2018.
+ *
+ * Class that handles 2D Shaders used in conjuction with an orthographic camera.
  */
 
 public class Shaders2D {

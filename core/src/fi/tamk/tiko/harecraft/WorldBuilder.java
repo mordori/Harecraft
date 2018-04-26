@@ -23,6 +23,8 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 /**
  * Created by Mika on 01/03/2018.
+ *
+ * Class used for adding, updating, deleting and all kinds of handling of objects in the worlds.
  */
 
 public class WorldBuilder {

@@ -18,6 +18,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 01/03/2018.
+ *
+ * An abstract parent class for all kinds of Worlds.
  */
 
 public abstract class World {
@@ -131,6 +133,12 @@ public abstract class World {
     }
 }
 
+/**
+ * Created by Mika on 01/03/2018.
+ *
+ * World of forests.
+ */
+
 class WorldForest extends World {
     public WorldForest() {
         float width = Assets.texR_background_summer.getRegionWidth()/2f;
@@ -164,6 +172,12 @@ class WorldForest extends World {
 
 }
 
+/**
+ * Created by Mika on 01/03/2018.
+ *
+ * World of tundra.
+ */
+
 class WorldTundra extends World {
     public WorldTundra() {
         float width = Assets.texR_background_tundra.getRegionWidth()/2f;
@@ -195,6 +209,12 @@ class WorldTundra extends World {
         */
     }
 }
+
+/**
+ * Created by Mika on 01/03/2018.
+ *
+ * World of sea.
+ */
 
 class WorldSea extends World {
     float tick;

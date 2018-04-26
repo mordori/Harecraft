@@ -27,6 +27,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 28/02/2018.
+ *
+ * Pilot is an abstract parent class for Player and Opponents.
  */
 
 public abstract class Pilot extends GameObject {
@@ -78,6 +80,12 @@ public abstract class Pilot extends GameObject {
 
     public void dispose() {}
 }
+
+/**
+ * Created by Mika on 28/02/2018.
+ *
+ * Player Class.
+ */
 
 class Player extends Pilot {
     //REFERENCE AMOUNTS
@@ -174,18 +182,16 @@ class Player extends Pilot {
                 rotationsArray[i] = rotationsArray[i - 1];
             }
             rotationsArray[0] = direction.x;
-            decal.setRotationZ(getRotationAverage() * -20);
+            decal.setRotationZ(getRotationAverage() * -15);
 
             checkInput(); //Keyboard input
 
-
+            //RECORD
+            /*
                 StringBuilder value = new StringBuilder(strFlightRecord);
                 value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
                 strFlightRecord = value.toString();
-
-
-            //strFlightRecord += direction.x + "," + direction.y + "," + (getRotationAverage() * -15);
-            //strFlightRecord += "\n";
+            */
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
@@ -272,6 +278,12 @@ class Player extends Pilot {
         pfx_scarf.dispose();
     }
 }
+
+/**
+ * Created by Mika on 28/02/2018.
+ *
+ * Opponent Class.
+ */
 
 class Opponent extends Pilot {
     float spawnZ;

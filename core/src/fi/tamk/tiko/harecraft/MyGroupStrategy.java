@@ -23,6 +23,14 @@ import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE4;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.World.player;
 
+/**
+ * Created by Mika.
+ *
+ * Custom Camera group strategy class based upon LibGDX CameraGroupStrategy class.
+ *
+ * Handles Custom created Shaders used for Decal objects and disables Decal draw overlapping,
+ * that the original strategy produced.
+ */
 
 public class MyGroupStrategy implements GroupStrategy, Disposable {
     private static final int GROUP_OPAQUE = 0;

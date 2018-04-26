@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Mika on 23.2.2018.
+ *
+ * Asset handling class.
  */
 
 public class Assets {

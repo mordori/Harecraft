@@ -19,6 +19,8 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 /**
  * Created by Mika on 15/03/2018.
+ *
+ * HUD class.
  */
 
 public class HUD {

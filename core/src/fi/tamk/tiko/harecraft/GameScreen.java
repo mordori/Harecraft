@@ -21,6 +21,8 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by musta on 23.2.2018.
+ *
+ * Game screen class.
  */
 
 public class GameScreen extends ScreenAdapter {
@@ -82,10 +84,10 @@ public class GameScreen extends ScreenAdapter {
                 world = new WorldSea();
                 break;
             case 1:
-                world = new WorldSea();
+                world = new WorldForest();
                 break;
             case 2:
-                world = new WorldSea();
+                world = new WorldTundra();
                 break;
         }
     }
@@ -166,8 +168,10 @@ public class GameScreen extends ScreenAdapter {
             gameState = END;
             gameStateTime = 0f;
             Assets.sound_applause.play(0.4f);
+
+            //RECORD
             //strFlightRecord += renderCount;
-            file.writeString(strFlightRecord, false);
+            //file.writeString(strFlightRecord, false);
         }
         else if(gameState == END && gameStateTime > 5.5f) {
             //Assets.music_course_1.stop();

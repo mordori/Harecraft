@@ -20,6 +20,12 @@ import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.Shaders2D.create2DShaders;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 
+/**
+ * Created by Mika and Mikko.
+ *
+ * Main class. Also, a cow.
+ */
+
 //      ^__^
 //      (oo)\_______
 //      (__)\       )\/\
@@ -74,6 +80,14 @@ public class GameMain extends Game {
         if(!Gdx.files.local("myfile.txt").exists()) {
             FileHandle from = Gdx.files.internal("myfile.txt");
             from.copyTo(Gdx.files.local("myfile.txt"));
+        }
+        if(!Gdx.files.local("myfile2.txt").exists()) {
+            FileHandle from = Gdx.files.internal("myfile2.txt");
+            from.copyTo(Gdx.files.local("myfile2.txt"));
+        }
+        if(!Gdx.files.local("myfile3.txt").exists()) {
+            FileHandle from = Gdx.files.internal("myfile3.txt");
+            from.copyTo(Gdx.files.local("myfile3.txt"));
         }
 
 		setScreen(new MainMenu(this));

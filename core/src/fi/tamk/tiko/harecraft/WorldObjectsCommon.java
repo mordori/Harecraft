@@ -13,10 +13,18 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 /**
  * Created by Mika on 19.4.2018.
+ *
+ * Contains all the common world objects-
  */
 
 public abstract class WorldObjectsCommon {
 }
+
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object Ring.
+ */
 
 class Ring extends GameObject {
     final float COLLECTED_SPEED = 10f;
@@ -133,6 +141,12 @@ class Ring extends GameObject {
     }
 }
 
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object Cloud.
+ */
+
 class Cloud extends GameObject {
     final float MULTIPLIER_LOW = 1f;
     final float MULTIPLIER_DECREMENT = 1.5f;
@@ -240,6 +254,12 @@ class Cloud extends GameObject {
         pfx_dispersion.dispose();
     }
 }
+
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object Balloon.
+ */
 
 class Balloon extends GameObject {
     final float COLLECTED_SPEED = 10f;

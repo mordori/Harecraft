@@ -13,6 +13,8 @@ import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 
 /**
  * Created by Mika on 23.2.2018.
+ *
+ * Game object class.
  */
 
 abstract class GameObject {

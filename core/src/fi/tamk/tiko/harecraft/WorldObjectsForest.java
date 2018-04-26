@@ -10,10 +10,18 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
  * Created by Mika on 19.4.2018.
+ *
+ * Contains all the game objects for Forest and Tundra Worlds.
  */
 
 public abstract class WorldObjectsForest {
 }
+
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object Hill.
+ */
 
 class Hill extends GameObject {
     public Hill(float x, float y, float z) {
@@ -39,6 +47,12 @@ class Hill extends GameObject {
         moveZ(delta);
     }
 }
+
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object Lake.
+ */
 
 class Lake extends GameObject {
     public Lake(float x, float y, float z) {
@@ -66,6 +80,12 @@ class Lake extends GameObject {
         moveZ(delta);
     }
 }
+
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object Tree.
+ */
 
 class Tree extends GameObject {
     public Tree(float x, float y, float z) {
@@ -110,6 +130,12 @@ class Tree extends GameObject {
         moveZ(delta);
     }
 }
+
+/**
+ * Created by Mika on 19.4.2018.
+ *
+ * Game object HotAirBalloon.
+ */
 
 class HotAirBalloon extends GameObject {
     static Decal decal_ribbons;

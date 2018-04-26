@@ -20,6 +20,8 @@ import static fi.tamk.tiko.harecraft.World.player;
 
 /**
  * Created by Mika on 01/03/2018.
+ *
+ * Class used for adding decals to Decal Batch and Frame Bufferer.
  */
 
 public class WorldRenderer {
