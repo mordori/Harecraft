@@ -64,9 +64,9 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         this.camera = camera;
         this.cameraSorter = sorter;
 
-        ShaderProgram.pedantic = false;
         createDefaultShader();
         createShader_Sea();
+        ShaderProgram.pedantic = false;
 
         shader3D_sea.begin();
         shader3D_sea.setUniformi("u_texture", 0);

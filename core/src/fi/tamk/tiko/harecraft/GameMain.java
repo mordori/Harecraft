@@ -24,13 +24,13 @@ import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
  * Created by Mika and Mikko.
  *
  * Main class. Also, a cow.
+ *
+ *       ^__^
+ *      (oo)\_______
+ *      (__)\       )\/\
+ *         ||----w |
+ *         ||     ||
  */
-
-//      ^__^
-//      (oo)\_______
-//      (__)\       )\/\
-//          ||----w |
-//          ||     ||
 
 public class GameMain extends Game {
 	static SpriteBatch sBatch;
