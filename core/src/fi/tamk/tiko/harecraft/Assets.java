@@ -67,7 +67,11 @@ public class Assets {
     static TextureAtlas atlas_text_race_states;
     static Array<Sprite> sprites_text_race_states;
     static Array<Sprite> sprites_text_race_positions;
-    //static MyAnimation<TextureRegion> animation_text_race_states;
+
+    static TextureAtlas atlas_menu_plane;
+    static Array<Sprite> sprites_menu_plane;
+
+    static MyAnimation<TextureRegion> animation_menu_plane;
 
     static Music music_course_1;
     static Sound sound_cloud_hit;
@@ -162,14 +166,17 @@ public class Assets {
 
         //ATLASES
         atlas_text_race_positions = loadTextureAtlas("atlas_text_positions.txt");
-        atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
-
-        sprites_text_race_states = atlas_text_race_states.createSprites();
         sprites_text_race_positions = atlas_text_race_positions.createSprites();
 
+        atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
+        sprites_text_race_states = atlas_text_race_states.createSprites();
+
+        atlas_menu_plane = loadTextureAtlas("atlas_menu_plane.txt");
+        sprites_menu_plane = atlas_menu_plane.createSprites();
+
         //ANIMATIONS
-        //animation_player_scarf = new MyAnimation<TextureRegion>(1f/15f, test_atlas.getRegions());
-        //flip(animation_player_scarf, animation_player_scarf.getKeyFrames().length);
+        animation_menu_plane = new MyAnimation<TextureRegion>(4/100f, atlas_menu_plane.getRegions());
+        //animation_menu_plane.setPlayMode(Animation.PlayMode.LOOP);
 
         //AUDIO
         music_course_1 = loadMusic("music_course_1.mp3");
@@ -217,7 +224,7 @@ public class Assets {
         return texR;
     }
 
-    public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal("textures/" + path));}
+    public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal("atlases/" + path));}
 
     public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal("audio/" + path));}
 
@@ -225,11 +232,14 @@ public class Assets {
 
     public static void flip(Animation<TextureRegion> animation, int frames) {
         TextureRegion regions;
+        int count = 0;
 
         for(int i = 0; i < frames; i++) {
             regions = animation.getKeyFrame(i * animation.getFrameDuration());
             regions.flip(true, false);
+            count++;
         }
+        System.out.println(count);
     }
 
     public static void dispose() {
@@ -274,6 +284,8 @@ public class Assets {
 
         atlas_text_race_positions.dispose();
         atlas_text_race_states.dispose();
+        atlas_menu_plane.dispose();
+        /////////
 
         music_course_1.dispose();
         sound_cloud_hit.dispose();

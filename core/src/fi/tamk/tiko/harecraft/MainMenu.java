@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -60,9 +62,14 @@ public class MainMenu extends ScreenAdapter {
     float opacity = 0f;
     Locale locale;
 
+    Sprite sprite_plane;
+    float stateTime;
+    float x = 1280f;
+    float y = 360f;
+    MyAnimation<TextureRegion> animation_plane = Assets.animation_menu_plane;
+
     public MainMenu(GameMain game) {
         this.game = game;
-
 
         logo = new Texture("textures/logo.png");
         skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
@@ -200,14 +207,42 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(languageButton);
 
         Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+
+        sprite_plane = new Sprite((TextureRegion) animation_plane.getKeyFrame(0));
+        sprite_plane.setBounds(1280f,0f, sprite_plane.getWidth(), sprite_plane.getHeight());
+        sprite_plane.setPosition(x, y);
     }
 
     public void render (float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(!animation_plane.isFlipped) x -= 7f;
+        else x += 7f;
+
+        if(x < -2500f && !animation_plane.isFlipped) {
+            x = -100;
+            stateTime = 0f;
+
+            Assets.flip(animation_plane, animation_plane.getKeyFrames().length);
+            animation_plane.isFlipped = true;
+        }
+
+        if(x > 2500f && Assets.animation_menu_plane.isFlipped) {
+            x = 1280f;
+            stateTime = 0f;
+
+            Assets.flip(animation_plane, animation_plane.getKeyFrames().length);
+            animation_plane.isFlipped = false;
+        }
+
+        sprite_plane.setRegion((TextureRegion) animation_plane.getKeyFrame(stateTime));
+        sprite_plane.setBounds(x, y, sprite_plane.getRegionWidth(), sprite_plane.getRegionHeight());
+        //sprite_plane.setPosition(x, y);
+        stateTime += delta;
 
         fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sBatch.begin();
+        sprite_plane.draw(sBatch);
         sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
         sBatch.end();
         stage.act();

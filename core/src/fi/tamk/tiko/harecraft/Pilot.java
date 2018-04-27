@@ -232,7 +232,6 @@ class Player extends Pilot {
             Assets.flip(Assets.animation_player_scarf, Assets.animation_player_scarf.getKeyFrames().length);
             Assets.animation_player_scarf.isFlipped = true;
         }*/
-        //decal_head.rotateY(getRotationAverage());
 
         projPosition = camera.project(curPosition.cpy());
         updateParticles(delta);
