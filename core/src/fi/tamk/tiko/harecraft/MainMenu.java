@@ -24,14 +24,18 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
@@ -61,6 +65,9 @@ public class MainMenu extends ScreenAdapter {
     ArrayList<String> profiles;
     float opacity = 0f;
     Locale locale;
+    String[] top3Names = new String[3];
+    int[] top3Score = new int[3];
+    Table highScoreTable = new Table();
 
     Sprite sprite_plane;
     float stateTime;
@@ -71,8 +78,11 @@ public class MainMenu extends ScreenAdapter {
     public MainMenu(GameMain game) {
         this.game = game;
 
+
         logo = new Texture("textures/logo.png");
-        skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        //skin = new Skin(Gdx.files.internal("harejson/hare.json"));
+        skin = Assets.skin_menu;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
@@ -102,8 +112,9 @@ public class MainMenu extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         TextButton playButton = new TextButton(localizationBundle.get("playButtonText"), skin);
-        playButton.setPosition(640 -playButton.getWidth()/2,290);
+        playButton.setPosition(640 -playButton.getWidth()/2,50); //y290 x640
         playButton.setName("playbutton");
+        playButton.setHeight(150f);
 
         playButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -123,7 +134,9 @@ public class MainMenu extends ScreenAdapter {
         });
 
         TextButton settingsButton = new TextButton(localizationBundle.get("settingsButtonText"), skin);
-        settingsButton.setPosition(640 -settingsButton.getWidth()/2,170);
+        settingsButton.setWidth(270f);
+        settingsButton.setHeight(120f);
+        settingsButton.setPosition(310 -settingsButton.getWidth()/2,50); //y170 x640
         settingsButton.setName("settingsbutton");
 
         settingsButton.addListener(new InputListener() {
@@ -144,7 +157,9 @@ public class MainMenu extends ScreenAdapter {
         });
 
         TextButton profilesButton = new TextButton(localizationBundle.get("profilesButtonText"), skin);
-        profilesButton.setPosition(640 -profilesButton.getWidth()/2,50);
+        profilesButton.setHeight(120f);
+        profilesButton.setWidth(270f);
+        profilesButton.setPosition(970 -profilesButton.getWidth()/2,50); //y50 x640
         profilesButton.setName("profilesbutton");
 
         profilesButton.addListener(new InputListener() {
@@ -166,21 +181,24 @@ public class MainMenu extends ScreenAdapter {
 
 
         //User valintaboxin luominen alkaa
-        skin.getFont("font").getData().setScale(1f); //set skin font size
+        //skin.getFont("font").getData().setScale(1f); //set skin font size
+        skin.getFont("komika").getData().setScale(1f); //set skin font size
         SelectBox profileBox = new SelectBox(skin);
         profileBox.setName("profileBox");
         //profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso", "tyyppi", "tyyppi2", "tyyppi3", "tyypi4"});
         Collections.sort(profiles);
+        profileBox.setAlignment(Align.center);
         profileBox.setItems(profiles.toArray());
-        profileBox.setPosition(850,50);
+        profileBox.setHeight(100f);
+        profileBox.setPosition(490,220);
         //profileBox.setScale(100f); isontaa buttonia mutta ei grafiikkaa
-        profileBox.setWidth(400);
+        profileBox.setWidth(300);
         profileBox.setSelected(ProfileInfo.selectedPlayerProfile);
         //profileBox.setSelected("MikkoK");
         //profileBox.getSelected();
 
         LanguageButton languageButton = new LanguageButton();
-        languageButton.setPosition(100,100);
+        languageButton.setPosition(40,50);
         languageButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -200,11 +218,15 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        stage.addActor(playButton);
+        makeHighScores();
+        highScoreTable.setPosition(220,350);
+
         stage.addActor(settingsButton);
         stage.addActor(profilesButton);
+        stage.addActor(playButton);
         stage.addActor(profileBox);
         stage.addActor(languageButton);
+        stage.addActor(highScoreTable);
 
         Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
 
@@ -302,9 +324,58 @@ public class MainMenu extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        skin.dispose();
         stage.dispose();
         logo.dispose();
+    }
+
+    public void makeHighScores() {
+        List<String> tempProfileList = profiles;
+        int tempScoreInt;
+
+        //profilesData.putInteger("Mikko"+"Score", 987);
+        //profilesData.putInteger("Miika"+"Score", 200);
+        //profilesData.flush();
+
+        for (int i = 0; i <= 2 ; i++) { //Järjestelee top3name top3scores muttujiin 3 parasta profiilia ja coret
+
+            int highestScoreFound = 0;
+            String highestProfileName = "----------";
+
+            for (String y : tempProfileList) { //haetaan profiilien scooret
+                tempScoreInt = profilesData.getInteger(y + "Score", 0);
+
+                if (tempScoreInt > highestScoreFound) {
+                    highestScoreFound = tempScoreInt;
+                    highestProfileName = y;
+                }
+            }
+            tempProfileList.remove(highestProfileName);
+            //if (highestProfileName.length() > 10) {     //limit String to 10 chars on highscore board
+            //    highestProfileName = highestProfileName.substring(0,10);
+            //}
+            top3Names[i] = highestProfileName;
+            top3Score[i] = highestScoreFound;
+            Gdx.app.log("paras score oli pelaajalla ", "" +highestProfileName +" lukemalla " +highestScoreFound);
+
+        }
+
+        Label name1 = new Label(top3Names[0], skin);
+        Label name2 = new Label(top3Names[1], skin);
+        Label name3 = new Label(top3Names[2], skin);
+
+        Label score1 = new Label("" +top3Score[0], skin);
+        Label score2 = new Label("" +top3Score[1], skin);
+        Label score3 = new Label("" +top3Score[2], skin);
+
+
+        highScoreTable.add(name1);
+        highScoreTable.add(score1);
+        highScoreTable.row();
+        highScoreTable.add(name2);
+        highScoreTable.add(score2);
+        highScoreTable.row();
+        highScoreTable.add(name3);
+        highScoreTable.add(score3);
     }
 }
 

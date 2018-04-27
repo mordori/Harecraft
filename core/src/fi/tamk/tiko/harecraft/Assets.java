@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -88,6 +89,8 @@ public class Assets {
     static ParticleEffect pfx_speed_up;
 
     static BitmapFont font;
+
+    static Skin skin_menu;
 
     public static void load() {
         //FILES
@@ -207,6 +210,9 @@ public class Assets {
         parameter.color = new Color(1f,0.6f,0f,1f);
         font = generator.generateFont(parameter);
         generator.dispose();
+
+        //MENU
+        skin_menu = new Skin(Gdx.files.internal("harejson/hare.json"));
     }
 
     public static Texture loadTexture(String path) {
@@ -302,5 +308,6 @@ public class Assets {
         pfx_speed_up.dispose();
 
         font.dispose();
+        skin_menu.dispose();
     }
 }

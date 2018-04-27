@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -44,7 +45,8 @@ public class CreateUser extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
-        skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        skin = Assets.skin_menu;
         profilesData = Gdx.app.getPreferences("ProfileFile");
         textField = new TextField("" ,skin);
         textField.setWidth(500);
@@ -61,6 +63,8 @@ public class CreateUser extends ScreenAdapter {
                 }
             }
         });
+        textField.setAlignment(Align.center);
+        textField.setMaxLength(10);
 
         ProfileInfo.determineGameLanguage(); //check language data
         locale = ProfileInfo.gameLanguage;
@@ -130,6 +134,11 @@ public class CreateUser extends ScreenAdapter {
 
         TextField tempActor = stage.getRoot().findActor("textfield");  //Set selected playerprofile to gamescreen.
         String tmpTxt = tempActor.getText();
+        //if (tmpTxt.length() > 10) {
+        //    tmpTxt = tmpTxt.substring(0 , 10);
+        //    tempActor.setText(tmpTxt);
+        //    tempActor.setCursorPosition(10);
+        //}
         //tempActor.getDefaultInputListener().enter();
         //textField.getDefaultInputListener().keyDown(Input.Keys.ENTER);
         //String string = (String) tempActor.getSelected();
@@ -174,7 +183,7 @@ public class CreateUser extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        skin.dispose();
+        //skin.dispose();
         stage.dispose();
     }
 }

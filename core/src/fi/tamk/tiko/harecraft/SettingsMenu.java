@@ -44,7 +44,9 @@ public class SettingsMenu extends ScreenAdapter {
 
     public SettingsMenu(GameMain game) {
         this.game = game;
-        skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        skin = Assets.skin_menu;
+        skin = new Skin(Gdx.files.internal("harejson/hare.json"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
@@ -193,7 +195,7 @@ public class SettingsMenu extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        skin.dispose();
+        //skin.dispose();
         stage.dispose();
     }
 

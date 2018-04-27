@@ -36,7 +36,8 @@ public class ConfirmDelete extends ScreenAdapter {
     public ConfirmDelete(GameMain game, String deleteString) {
 
         this.game = game;
-        skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        skin = Assets.skin_menu;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));

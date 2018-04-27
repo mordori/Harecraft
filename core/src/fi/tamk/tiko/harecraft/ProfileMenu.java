@@ -42,7 +42,8 @@ public class ProfileMenu extends ScreenAdapter {
 
     public ProfileMenu(GameMain game) {
         this.game = game;
-        skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
+        skin = Assets.skin_menu;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
@@ -190,7 +191,7 @@ public class ProfileMenu extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        skin.dispose();
+        //skin.dispose();
         stage.dispose();
     }
 }
