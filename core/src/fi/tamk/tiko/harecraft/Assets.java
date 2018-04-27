@@ -243,7 +243,8 @@ public class Assets {
         for(int i = 0; i < frames; i++) {
             regions = animation.getKeyFrame(i * animation.getFrameDuration());
             regions.flip(true, false);
-            count++;
+
+            if(regions.isFlipX())count++;
         }
         System.out.println(count);
     }

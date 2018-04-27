@@ -237,12 +237,19 @@ public class MainMenu extends ScreenAdapter {
 
     public void render (float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if(!animation_plane.isFlipped) x -= 7f;
-        else x += 7f;
+        if(!animation_plane.isFlipped) {
+            x -= 7f;
+            y += 0.25f;
+        }
+        else{
+            y -= 0.25f;
+            x += 7f;
+        }
 
         if(x < -2500f && !animation_plane.isFlipped) {
             x = -100;
             stateTime = 0f;
+            y = 400f;
 
             Assets.flip(animation_plane, animation_plane.getKeyFrames().length);
             animation_plane.isFlipped = true;
@@ -251,6 +258,7 @@ public class MainMenu extends ScreenAdapter {
         if(x > 2500f && Assets.animation_menu_plane.isFlipped) {
             x = 1280f;
             stateTime = 0f;
+            y = 300f;
 
             Assets.flip(animation_plane, animation_plane.getKeyFrames().length);
             animation_plane.isFlipped = false;
