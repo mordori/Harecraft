@@ -90,7 +90,8 @@ public class GameMain extends Game {
             from.copyTo(Gdx.files.local("myfile3.txt"));
         }
 
-		setScreen(new MainMenu(this));
+		//setScreen(new MainMenu(this));
+        setScreen(new SplashScreen(this));
 	}
 
 	@Override

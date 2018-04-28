@@ -61,6 +61,7 @@ public class MainMenu extends ScreenAdapter {
     Boolean profilesMenu = false;
     Boolean createUser = false;
     Boolean reloadMainMenu = false;
+    Boolean creditsMenu = false;
     Preferences profilesData;
     ArrayList<String> profiles;
     float opacity = 0f;
@@ -198,7 +199,7 @@ public class MainMenu extends ScreenAdapter {
         //profileBox.getSelected();
 
         LanguageButton languageButton = new LanguageButton();
-        languageButton.setPosition(40,50);
+        languageButton.setPosition(40,60);
         languageButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -218,6 +219,26 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
+        BananaButton bananaButton = new BananaButton();
+        bananaButton.setPosition(1140, 55);
+        bananaButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched) {
+                    creditsMenu = true;
+                }
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
         makeHighScores();
         highScoreTable.setPosition(220,350);
 
@@ -227,6 +248,7 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(profileBox);
         stage.addActor(languageButton);
         stage.addActor(highScoreTable);
+        stage.addActor(bananaButton);
 
         Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
 
@@ -307,6 +329,9 @@ public class MainMenu extends ScreenAdapter {
         }
         if (reloadMainMenu) {
             game.setScreen(new MainMenu(game));
+        }
+        if (creditsMenu) {
+            game.setScreen(new CreditsMenu(game));
         }
     }
 
@@ -407,6 +432,19 @@ class LanguageButton extends Actor {
         //if (ProfileInfo.gameLanguage.toString().equals("en_GB")) {
         //    batch.draw(englishFlag, getX(), getY(), 100, 100);
         //}
+    }
+}
+
+class BananaButton extends Actor {
+    Texture banana;
+
+    public BananaButton() {
+        banana = new Texture(Gdx.files.internal("textures/banana.png"));
+        setBounds(getX(),getY(),100,100);
+    }
+
+    public void draw(Batch batch, float alpha) {
+        batch.draw(banana, getX(),getY(),100,100);
     }
 }
 
