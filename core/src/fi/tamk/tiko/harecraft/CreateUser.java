@@ -163,7 +163,7 @@ public class CreateUser extends ScreenAdapter {
                 profilesData.flush();
                 ProfileInfo.selectedPlayerProfile = tmpTxt;
             }
-                game.setScreen(new MainMenu(game));
+                game.setScreen(new MainMenu(game,false));
         }
 
         if (profilesMenuWithoutSaving) {

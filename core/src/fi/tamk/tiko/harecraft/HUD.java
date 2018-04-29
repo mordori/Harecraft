@@ -15,6 +15,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.countdown;
+import static fi.tamk.tiko.harecraft.GameScreen.playerPlacement;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -33,9 +34,9 @@ public class HUD {
     float progressline_width = 300f;
     float progressline_arc_radius = 9f;
     float HUD_opacity;
+    float scoreboard_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
 
-    Sprite speedometer = new Sprite(Assets.texR_speedometer);
     Sprite text_gameStates = new Sprite();
     Sprite text_placementNumber = new Sprite();
 
@@ -44,10 +45,6 @@ public class HUD {
 
     public HUD(World world) {
         this.world = world;
-
-        //speedometer.setBounds(0f,0f,speedometer.getWidth()/2f,speedometer.getHeight()/2f);
-        //speedometer.setBounds(0f,0f,speedometer.getWidth()/1.5f,speedometer.getHeight()/1.5f);
-        speedometer.setPosition(SCREEN_WIDTH - speedometer.getWidth(),0f);
     }
 
     public void update(float delta) {
@@ -58,11 +55,14 @@ public class HUD {
         else if(gameState == END) {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
+            if(HUD_opacity == 0f) {
+                scoreboard_opacity += delta;
+                if(scoreboard_opacity > 1f) scoreboard_opacity = 1f;
+            }
         }
 
         if(gameState != START) {
             if(gameState != END) updateProgressLine(delta);
-            updateSpeedometer(delta);
             updatePlacementNumber(delta);
         }
     }
@@ -75,9 +75,27 @@ public class HUD {
         drawCountdown();
         if(gameState != START) {
             drawPlacementNumber();
-            //drawSpeedometer();
+        }
+        if(gameState == END) {
+            drawScoreboard();
         }
         sBatch.end();
+    }
+
+    public void drawScoreboard() {
+        Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0f, 0f, 0f, 0.5f * scoreboard_opacity);
+        shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f,2f/3f*SCREEN_WIDTH,2f/3f*SCREEN_HEIGHT);
+        shapeRenderer.arc(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f,10f, 180f, 90f);
+        shapeRenderer.arc(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,10f, 90f, 90f);
+        shapeRenderer.arc(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f,10f, 270f, 90f);
+        shapeRenderer.arc(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,10f, 0f, 90f);
+        shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f - 10f,2f/3f*SCREEN_WIDTH,10f);
+        shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,2f/3f*SCREEN_WIDTH,10f);
+        shapeRenderer.rect(SCREEN_WIDTH/6f - 10f,SCREEN_HEIGHT/6f,10f,2f/3f*SCREEN_HEIGHT);
+        shapeRenderer.rect(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f,10f,2f/3f*SCREEN_HEIGHT);
+        shapeRenderer.end();
     }
 
     public void updateProgressLine(float delta) {
@@ -118,7 +136,6 @@ public class HUD {
                     if(gameStateTime < 2f) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
-                        //Assets.sound_countdown.play(0.45f);
                     }
                     index = 2;
                 } else if (gameStateTime < 4.6f) {
@@ -186,33 +203,16 @@ public class HUD {
             text_gameStates.setPosition(SCREEN_WIDTH/2f - width/2f, yPos - height/2f);
 
             text_gameStates.draw(sBatch);
-
-            //Assets.font.draw(sBatch, "" + player.ACCEL_Y_OFFSET, 1150, 775);
         }
     }
 
     public void updatePlacementNumber(float delta) {
-        int pos = 0;
-
-        for(Opponent o : world.opponents) {
-            if(o.distance > player.distance) pos++;
-        }
-
-
-        text_placementNumber = Assets.sprites_text_race_positions.get(pos);
+        text_placementNumber = Assets.sprites_text_race_positions.get(playerPlacement - 1);
         text_placementNumber.setPosition(10f, 10f);
         text_placementNumber.setColor(1f, 1f, 1f, HUD_opacity);
     }
 
     public void drawPlacementNumber() {
         text_placementNumber.draw(sBatch);
-    }
-
-    public void updateSpeedometer(float delta) {
-        speedometer.setColor(1f, 1f, 1f, HUD_opacity);
-    }
-
-    public void drawSpeedometer() {
-        speedometer.draw(sBatch);
     }
 }

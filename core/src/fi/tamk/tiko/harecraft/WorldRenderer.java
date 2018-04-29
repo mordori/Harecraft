@@ -14,8 +14,6 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -36,7 +34,7 @@ public class WorldRenderer {
             isSeaEnabled = true;
             Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
-        else if(world instanceof WorldForest) {
+        else if(world instanceof WorldSummer) {
             Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
         }
         else if(world instanceof WorldTundra) {
@@ -80,7 +78,6 @@ public class WorldRenderer {
         if(gameState == FINISH || gameState == END) {
             for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
                 dBatch.add(hotAirBalloon.decal);
-                //if(hotAirBalloon == world.hotAirBalloons.get(0)) dBatch.add(hotAirBalloon.decal_ribbons);
             }
         }
 
@@ -149,8 +146,7 @@ public class WorldRenderer {
                 dBatch.add(o.decal_wings);
                 dBatch.add(o.decal_head);
                 dBatch.add(o.decal);
-                dBatch.add(o.decal_playerTag);
-
+                //dBatch.add(o.decal_playerTag);
             }
         }
     }

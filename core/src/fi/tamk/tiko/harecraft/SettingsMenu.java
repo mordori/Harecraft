@@ -183,7 +183,7 @@ public class SettingsMenu extends ScreenAdapter {
 
             saveVectorData();
 
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game,false));
         }
         //Gdx.app.log("Kenen profiili on valittuna", ""+ProfileInfo.selectedPlayerProfile);
     }

@@ -79,7 +79,7 @@ public class SplashScreen extends ScreenAdapter {
 
         if (timer > 200f) {
             sBatch.setProjectionMatrix(orthoCamera.combined); //palautetaan projektion matrix alkuperäiseksi
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game,true));
         }
 
         timer++;

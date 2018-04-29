@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
+import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
+import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -47,6 +49,8 @@ class Ring extends GameObject {
         decal_arrows.setScale(1.5f);
 
         pfx_speed_up = new ParticleEffect(Assets.pfx_speed_up);
+
+        worldScore++;
     }
 
     @Override
@@ -57,6 +61,7 @@ class Ring extends GameObject {
         if(!isCollected) {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.curPosition) < 2.5f) {
                 isCollected = true;
+                playerScore++;
 
                 if(global_Multiplier < MULTIPLIER_HIGH) global_Multiplier += MULTIPLIER_INCREMENT;
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;

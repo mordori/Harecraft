@@ -24,15 +24,25 @@ public abstract class WorldObjectsForest {
  */
 
 class Hill extends GameObject {
+    Vector3 up = new Vector3(0f,1f,0f);
     public Hill(float x, float y, float z) {
-        width = Assets.texR_hill.getRegionWidth()/25f;
-        height = Assets.texR_hill.getRegionHeight()/25f;
+        TextureRegion textureRegion = Assets.texR_summer_hill;
+
+        if(GameScreen.world instanceof WorldSummer) {
+            textureRegion = Assets.texR_summer_hill;
+        }
+        else if(GameScreen.world instanceof WorldTundra) {
+            textureRegion = Assets.texR_tundra_hill;
+        }
+
+        width = textureRegion.getRegionWidth()/25f;
+        height = textureRegion.getRegionHeight()/25f;
 
         float randomSize = MathUtils.random(1.5f, 3f);
         width *= randomSize;
         height *= randomSize;
 
-        decal = Decal.newDecal(width, height, Assets.texR_hill,true);
+        decal = Decal.newDecal(width, height, textureRegion,true);
         decal.setPosition(x,y + height/2f - 6f,z);
     }
 
@@ -45,6 +55,8 @@ class Hill extends GameObject {
 
         //Movement Z
         moveZ(delta);
+
+        decal.lookAt(camera.position,up);
     }
 }
 
@@ -56,16 +68,26 @@ class Hill extends GameObject {
 
 class Lake extends GameObject {
     public Lake(float x, float y, float z) {
-        width = Assets.texR_lake.getRegionWidth() / 15f;
-        height = Assets.texR_lake.getRegionHeight() / 15f;
+        TextureRegion textureRegion = Assets.texR_summer_lake;
+
+        if(GameScreen.world instanceof WorldSummer) {
+            textureRegion = Assets.texR_summer_lake;
+        }
+        else if(GameScreen.world instanceof WorldTundra) {
+            textureRegion = Assets.texR_tundra_lake;
+        }
+
+        width = textureRegion.getRegionWidth() / 15f;
+        height = textureRegion.getRegionHeight() / 15f;
 
         float randomSize = MathUtils.random(1f, 2.5f);
         width *= randomSize;
         height *= randomSize;
 
-        decal = Decal.newDecal(width, height, Assets.texR_lake, true);
+        decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y - 5f,z + height);
         decal.rotateX(90f);
+        decal.rotateZ(MathUtils.random(0f,360f));
     }
 
     @Override
@@ -88,31 +110,83 @@ class Lake extends GameObject {
  */
 
 class Tree extends GameObject {
+    Vector3 up = new Vector3(0f,1f,0f);
+
     public Tree(float x, float y, float z) {
-        TextureRegion textureRegion;
+        TextureRegion textureRegion = Assets.texR_tree_summer_big_light;
         float transposedY = y - 2f;
 
-        if(GameScreen.world instanceof WorldForest) {
-            textureRegion = Assets.texR_tree_leafy_big_light;
-
+        if(GameScreen.world instanceof WorldSummer) {
+            switch(MathUtils.random(0,1)) {
+                case 0:
+                    switch (MathUtils.random(0, 3)) {
+                        case 0:
+                            textureRegion = Assets.texR_tree_summer_small_light;
+                            transposedY -= 1.5f;
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                            textureRegion = Assets.texR_tree_summer_big_light;
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (MathUtils.random(0, 3)) {
+                        case 0:
+                            textureRegion = Assets.texR_tree_summer_small_dark;
+                            transposedY -= 1.5f;
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                            textureRegion = Assets.texR_tree_summer_big_dark;
+                            break;
+                    }
+                    break;
+            }
             width = textureRegion.getRegionWidth()/20f;
             height = textureRegion.getRegionHeight()/20f;
         }
-        else {
-            if (MathUtils.random(0, 9) < 8) {
-                if (MathUtils.random(0, 9) < 8) {
-                    textureRegion = Assets.texR_tree_big_light;
-                } else textureRegion = Assets.texR_tree_big_dark;
-            } else {
-                if (MathUtils.random(0, 5) < 4) {
-                    textureRegion = Assets.texR_tree_small_light;
-                } else textureRegion = Assets.texR_tree_small_dark;
-
-                transposedY -= 1f;
+        else if(GameScreen.world instanceof WorldTundra) {
+            switch(MathUtils.random(0,2)) {
+                case 0:
+                case 1:
+                    switch (MathUtils.random(0, 3)) {
+                        case 0:
+                            textureRegion = Assets.texR_tree_tundra_small_light;
+                            transposedY -= 1.5f;
+                            break;
+                        case 1:
+                            textureRegion = Assets.texR_tree_tundra_big_light;
+                            break;
+                        case 2:
+                        case 3:
+                            textureRegion = Assets.texR_tree_tundra_medium_light;
+                            transposedY -= 1f;
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (MathUtils.random(0, 3)) {
+                        case 0:
+                            textureRegion = Assets.texR_tree_tundra_small_dark;
+                            transposedY -= 1.5f;
+                            break;
+                        case 1:
+                            textureRegion = Assets.texR_tree_tundra_big_dark;
+                            break;
+                        case 2:
+                        case 3:
+                            textureRegion = Assets.texR_tree_tundra_medium_dark;
+                            transposedY -= 1f;
+                            break;
+                    }
+                    break;
             }
 
-            width = textureRegion.getRegionWidth()/7f;
-            height = textureRegion.getRegionHeight()/7f;
+            width = textureRegion.getRegionWidth()/20f;
+            height = textureRegion.getRegionHeight()/20f;
         }
 
         decal = Decal.newDecal(width, height, textureRegion, true);
@@ -128,6 +202,8 @@ class Tree extends GameObject {
 
         //Movement Z
         moveZ(delta);
+
+        decal.lookAt(camera.position,up);
     }
 }
 
@@ -138,7 +214,6 @@ class Tree extends GameObject {
  */
 
 class HotAirBalloon extends GameObject {
-    static Decal decal_ribbons;
     Vector3 up = new Vector3(0f,1f,0f);
 
     public HotAirBalloon(float x, float y, float z) {
@@ -147,8 +222,6 @@ class HotAirBalloon extends GameObject {
 
         decal = Decal.newDecal(width, height, Assets.texR_hotairballoon, true);
         decal.setPosition(x,y,z);
-
-        if(x < 0f) decal_ribbons = Decal.newDecal(Assets.texR_ribbons.getRegionWidth()/10f, Assets.texR_ribbons.getRegionHeight()/10f, Assets.texR_ribbons, true);
 
         velocity.y = 5f;
     }
@@ -162,10 +235,6 @@ class HotAirBalloon extends GameObject {
         decal.translateY(velocity.y * delta);
 
         setOpacity();
-        if(position.x < 0f){
-            decal_ribbons.setPosition(World.WORLD_WIDTH/2f - 5f, position.y + 5f, position.z -1f);
-            decal_ribbons.setColor(1f,1f,1f, opacity);
-        }
 
         //Movement Z
         moveZ(delta);

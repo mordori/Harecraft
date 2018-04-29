@@ -37,9 +37,7 @@ public class Assets {
     static TextureRegion texR_background_tundra;
     static TextureRegion texR_sun;
     static TextureRegion texR_hotairballoon;
-    static TextureRegion texR_ribbons;
     static TextureRegion texR_playertag;
-    static TextureRegion texR_speedometer;
     static TextureRegion texR_balloon_red;
     static TextureRegion texR_balloon_green;
     static TextureRegion texR_balloon_blue;
@@ -56,13 +54,20 @@ public class Assets {
     static TextureRegion texR_cloud;
     static TextureRegion texR_ring;
     static TextureRegion texR_ring_arrows;
-    static TextureRegion texR_tree_leafy_big_light;
-    static TextureRegion texR_tree_big_light;
-    static TextureRegion texR_tree_big_dark;
-    static TextureRegion texR_tree_small_light;
-    static TextureRegion texR_tree_small_dark;
-    static TextureRegion texR_lake;
-    static TextureRegion texR_hill;
+    static TextureRegion texR_tree_summer_big_light;
+    static TextureRegion texR_tree_summer_small_light;
+    static TextureRegion texR_tree_summer_big_dark;
+    static TextureRegion texR_tree_summer_small_dark;
+    static TextureRegion texR_tree_tundra_big_light;
+    static TextureRegion texR_tree_tundra_medium_light;
+    static TextureRegion texR_tree_tundra_small_light;
+    static TextureRegion texR_tree_tundra_small_dark;
+    static TextureRegion texR_tree_tundra_big_dark;
+    static TextureRegion texR_tree_tundra_medium_dark;
+    static TextureRegion texR_tundra_lake;
+    static TextureRegion texR_summer_lake;
+    static TextureRegion texR_tundra_hill;
+    static TextureRegion texR_summer_hill;
 
     static TextureAtlas atlas_text_race_positions;
     static TextureAtlas atlas_text_race_states;
@@ -94,21 +99,6 @@ public class Assets {
 
     public static void load() {
         //FILES
-        /*FileHandle handle = Gdx.files.internal("files/worlds.txt");
-        String str = handle.readString();
-        String[] strWorlds = str.split("-");
-        String[] temp;
-        int index = 0;
-        int index1 = 0;
-
-        for(String s : strWorlds) {
-            temp = s.split("\n");
-            for(String s1 : temp) {
-                worldsArr[index][index1] = Integer.parseInt(temp[index1]);
-                index1++;
-            }
-            index++;
-        }*/
 
         //TEXTURES
         tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
@@ -138,7 +128,6 @@ public class Assets {
         texR_background_tundra = loadDecalTextureRegion("tex_background_tundra.png");
         texR_sun = loadDecalTextureRegion("tex_sun.png");
         texR_hotairballoon = loadDecalTextureRegion("tex_hotairballoon.png");
-        texR_ribbons = loadDecalTextureRegion("tex_ribbons.png");
         texR_playertag = loadDecalTextureRegion("tex_playertag.png");
         texR_balloon_red = loadDecalTextureRegion("tex_balloon_red.png");
         texR_balloon_green = loadDecalTextureRegion("tex_balloon_green.png");
@@ -153,19 +142,25 @@ public class Assets {
         texR_plane_2_pink_wings = loadDecalTextureRegion("tex_plane_2_pink_wings.png");
         texR_character_default_head = loadDecalTextureRegion("tex_character_default_head.png");
         texR_character_hare_head = loadDecalTextureRegion("tex_character_hare_head.png");
-        texR_cloud = loadDecalTextureRegion("tex_cloud.png");
+        texR_cloud = loadDecalTextureRegion("tex_cloud_1.png");
         texR_ring = loadDecalTextureRegion("tex_ring.png");
         texR_ring_arrows = loadDecalTextureRegion("tex_ring_arrows.png");
-        texR_tree_leafy_big_light = loadDecalTextureRegion("tex_tree_leafy_big_light.png");
-        texR_tree_big_light = loadDecalTextureRegion("tex_tree_big_light.png");
-        texR_tree_big_dark = loadDecalTextureRegion("tex_tree_big_dark.png");
-        texR_tree_small_light = loadDecalTextureRegion("tex_tree_small_light.png");
-        texR_tree_small_dark = loadDecalTextureRegion("tex_tree_small_dark.png");
-        texR_lake = loadDecalTextureRegion("tex_lake.png");
-        texR_hill = loadDecalTextureRegion("tex_hill.png");
+        texR_tree_summer_big_dark = loadDecalTextureRegion("tex_tree_summer_big_dark.png");
+        texR_tree_summer_small_dark = loadDecalTextureRegion("tex_tree_summer_small_dark.png");
+        texR_tree_summer_big_light = loadDecalTextureRegion("tex_tree_summer_big_light.png");
+        texR_tree_summer_small_light = loadDecalTextureRegion("tex_tree_summer_small_light.png");
+        texR_tree_tundra_big_dark = loadDecalTextureRegion("tex_tree_tundra_big_dark.png");
+        texR_tree_tundra_small_dark = loadDecalTextureRegion("tex_tree_tundra_small_dark.png");
+        texR_tree_tundra_medium_dark = loadDecalTextureRegion("tex_tree_tundra_medium_dark.png");
+        texR_tree_tundra_medium_light = loadDecalTextureRegion("tex_tree_tundra_medium_light.png");
+        texR_tree_tundra_big_light = loadDecalTextureRegion("tex_tree_tundra_big_light.png");
+        texR_tree_tundra_small_light = loadDecalTextureRegion("tex_tree_tundra_small_light.png");
+        texR_summer_lake = loadDecalTextureRegion("tex_summer_lake.png");
+        texR_tundra_lake = loadDecalTextureRegion("tex_tundra_lake.png");
+        texR_tundra_hill = loadDecalTextureRegion("tex_tundra_hill.png");
+        texR_summer_hill = loadDecalTextureRegion("tex_summer_hill.png");
 
         //SPRITES
-        texR_speedometer = loadTextureRegion("tex_speedometer.png");
 
         //ATLASES
         atlas_text_race_positions = loadTextureAtlas("atlas_text_positions.txt");
@@ -174,12 +169,11 @@ public class Assets {
         atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
         sprites_text_race_states = atlas_text_race_states.createSprites();
 
-        atlas_menu_plane = loadTextureAtlas("atlas_menu_plane.txt");
+        atlas_menu_plane = loadTextureAtlas("atlas_menu_plane.atlas");
         sprites_menu_plane = atlas_menu_plane.createSprites();
 
         //ANIMATIONS
-        animation_menu_plane = new MyAnimation<TextureRegion>(4/100f, atlas_menu_plane.getRegions());
-        //animation_menu_plane.setPlayMode(Animation.PlayMode.LOOP);
+        animation_menu_plane = new MyAnimation<TextureRegion>(1/25f, atlas_menu_plane.getRegions());
 
         //AUDIO
         music_course_1 = loadMusic("music_course_1.mp3");
@@ -237,16 +231,18 @@ public class Assets {
     public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal("audio/" + path));}
 
     public static void flip(Animation<TextureRegion> animation, int frames) {
-        TextureRegion regions;
-        int count = 0;
+        TextureRegion frame;
 
         for(int i = 0; i < frames; i++) {
-            regions = animation.getKeyFrame(i * animation.getFrameDuration());
-            regions.flip(true, false);
-
-            if(regions.isFlipX())count++;
+            frame = animation.getKeyFrame(i * animation.getFrameDuration());
+            flip(frame);
         }
-        System.out.println(count);
+    }
+
+    public static void flip(Array<Sprite> sprites) {
+        for(int i = 0; i < sprites.size; i++) {
+            flip(sprites.get(i));
+        }
     }
 
     public static void dispose() {
@@ -262,9 +258,7 @@ public class Assets {
         texR_background_tundra.getTexture().dispose();
         texR_sun.getTexture().dispose();
         texR_hotairballoon.getTexture().dispose();
-        texR_ribbons.getTexture().dispose();
         texR_playertag.getTexture().dispose();
-        texR_speedometer.getTexture().dispose();
         texR_balloon_red.getTexture().dispose();
         texR_balloon_green.getTexture().dispose();
         texR_balloon_blue.getTexture().dispose();
@@ -281,13 +275,21 @@ public class Assets {
         texR_cloud.getTexture().dispose();
         texR_ring.getTexture().dispose();
         texR_ring_arrows.getTexture().dispose();
-        texR_tree_leafy_big_light.getTexture().dispose();
-        texR_tree_big_light.getTexture().dispose();
-        texR_tree_big_dark.getTexture().dispose();
-        texR_tree_small_light.getTexture().dispose();
-        texR_tree_small_dark.getTexture().dispose();
-        texR_lake.getTexture().dispose();
-        texR_hill.getTexture().dispose();
+        texR_tree_summer_big_light.getTexture().dispose();
+        texR_tree_summer_small_light.getTexture().dispose();
+        texR_tree_summer_big_dark.getTexture().dispose();
+        texR_tree_summer_small_dark.getTexture().dispose();
+        texR_tree_tundra_big_light.getTexture().dispose();
+        texR_tree_tundra_medium_light.getTexture().dispose();
+        texR_tree_tundra_small_light.getTexture().dispose();
+        texR_tree_tundra_small_dark.getTexture().dispose();
+        texR_tree_tundra_big_dark.getTexture().dispose();
+        texR_tree_tundra_medium_dark.getTexture().dispose();
+        texR_tundra_lake.getTexture().dispose();
+        texR_summer_lake.getTexture().dispose();
+        texR_tundra_hill.getTexture().dispose();
+        texR_summer_hill.getTexture().dispose();
+
 
         atlas_text_race_positions.dispose();
         atlas_text_race_states.dispose();

@@ -156,7 +156,7 @@ public class ProfileMenu extends ScreenAdapter {
         stage.draw();
 
         if (mainMenu) {
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game, false));
         }
         if (createUser) {
             game.setScreen(new CreateUser(game));

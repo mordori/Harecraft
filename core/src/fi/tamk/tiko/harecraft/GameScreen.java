@@ -4,18 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -25,14 +26,61 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  * Game screen class.
  */
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter implements GestureDetector.GestureListener{
     public static final float SCREEN_WIDTH = Gdx.graphics.getWidth();
     public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
     static float DIFFICULTYSENSITIVITY; // 0-EASY 2-MEDIUM 4-HARD
 
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
+        paused = !paused;
+        return false;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
+
+        return false;
+    }
+
+    @Override
+    public boolean fling(float velocityX, float velocityY, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean zoom(float initialDistance, float distance) {
+        return false;
+    }
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        return false;
+    }
+
+    @Override
+    public void pinchStop() {
+
+    }
+
     enum GameState {
-        START, RACE, FINISH, END
+        START, RACE, FINISH, END, EXIT
     }
 
     GameMain game;
@@ -53,12 +101,17 @@ public class GameScreen extends ScreenAdapter {
 
     static boolean countdown;
     boolean newGame;
+    boolean paused;
 
     static String strFlightRecord = "";
     static FileHandle file = Gdx.files.local("myfile.txt");
     static FileHandle file2 = Gdx.files.local("myfile2.txt");
     static FileHandle file3 = Gdx.files.local("myfile3.txt");
     static int renderCount = 0;
+
+    static int worldScore;
+    static int playerScore;
+    static int playerPlacement;
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
@@ -67,6 +120,7 @@ public class GameScreen extends ScreenAdapter {
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
         HUD = new HUD(world);
+        Gdx.input.setInputProcessor(new GestureDetector(this));
 
         gameState = GameState.START;
         gameStateTime = 0f;
@@ -76,6 +130,8 @@ public class GameScreen extends ScreenAdapter {
         Assets.sound_airplane_engine.loop(volume);
 
         strFlightRecord = "";
+        worldScore = 0;
+        playerScore = 0;
     }
 
     public void selectWorld(int index) {
@@ -84,7 +140,7 @@ public class GameScreen extends ScreenAdapter {
                 world = new WorldSea();
                 break;
             case 1:
-                world = new WorldForest();
+                world = new WorldSummer();
                 break;
             case 2:
                 world = new WorldTundra();
@@ -94,13 +150,15 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        update(delta);
-        worldRenderer.renderWorld();
-        HUD.draw();
+        if(!paused) {
+            update(delta);
+            worldRenderer.renderWorld();
+            HUD.draw();
 
-        if(newGame) game.setScreen(new MainMenu(game));
-        //if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
-        //System.out.println(player.velocity.z);
+            if (newGame) game.setScreen(new MainMenu(game, false));
+            //if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
+            //System.out.println(player.velocity.z);
+        }
     }
 
     public void update(float delta) {
@@ -108,6 +166,12 @@ public class GameScreen extends ScreenAdapter {
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
+
+        playerPlacement = 6;
+        for(Opponent o : world.opponents) {
+            if(player.distance > o.distance) playerPlacement--;
+        }
+
         HUD.update(delta);
     }
     public void updateState(float delta) {
@@ -142,7 +206,7 @@ public class GameScreen extends ScreenAdapter {
 
             player.avarageY = player.sumY / player.countY;
             player.ACCEL_Y_OFFSET = player.avarageY - 1.8f;
-            System.out.println(player.ACCEL_Y_OFFSET);
+            System.out.println(player.distance);
         }
         else if(gameState == START) {
             global_Multiplier = 3f;
@@ -158,7 +222,6 @@ public class GameScreen extends ScreenAdapter {
                 countdown = true;
             }
             Assets.sound_airplane_engine.setVolume(0,volume);
-            //Assets.sound_airplane_engine.setPitch(0, 3f);
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;
@@ -168,12 +231,38 @@ public class GameScreen extends ScreenAdapter {
             gameState = END;
             gameStateTime = 0f;
             Assets.sound_applause.play(0.4f);
+            System.out.println(player.distance);
+
+            worldScore += 12;
+            switch(playerPlacement) {
+                case 1:
+                    playerScore += 12;
+                    break;
+                case 2:
+                    playerScore += 8;
+                    break;
+                case 3:
+                    playerScore += 6;
+                    break;
+                case 4:
+                    playerScore += 4;
+                    break;
+                case 5:
+                    playerScore += 2;
+                    break;
+                case 6:
+                    playerScore += 0;
+                    break;
+            }
+
+            System.out.println(playerScore + " / " + worldScore);
+            System.out.println(playerPlacement);
 
             //RECORD
             //strFlightRecord += renderCount;
             //file.writeString(strFlightRecord, false);
         }
-        else if(gameState == END && gameStateTime > 5.5f) {
+        else if(gameState == EXIT && gameStateTime > 3.5f) {
             //Assets.music_course_1.stop();
             sBatch.setShader(shader2D_default);
             newGame = true;
@@ -193,7 +282,7 @@ public class GameScreen extends ScreenAdapter {
             cameraPanY -= (delta * 40f) * panAccelY;
             if (cameraPanY < 0f) cameraPanY = 0f;
         }
-        else if(gameState == END && gameStateTime > 2f) {
+        else if(gameState == EXIT) {
             panAccelY += delta / 2f;
             if (panAccelY > 1f) panAccelY = 1f;
             cameraPanY += (delta * 40f) * panAccelY;

@@ -38,10 +38,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static fi.tamk.tiko.harecraft.Assets.sprites_menu_plane;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 
@@ -72,13 +75,14 @@ public class MainMenu extends ScreenAdapter {
 
     Sprite sprite_plane;
     float stateTime;
-    float x = 1280f;
-    float y = 360f;
+    float randomTime;
+    float x, y;
+    boolean isLaunched;
     MyAnimation<TextureRegion> animation_plane = Assets.animation_menu_plane;
 
-    public MainMenu(GameMain game) {
+    public MainMenu(GameMain game, boolean isLaunched) {
         this.game = game;
-
+        this.isLaunched = isLaunched;
 
         logo = new Texture("textures/logo.png");
         //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
@@ -250,48 +254,58 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(highScoreTable);
         stage.addActor(bananaButton);
 
-        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        //Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
 
+        randomTime = MathUtils.random(5f, 8f);
         sprite_plane = new Sprite((TextureRegion) animation_plane.getKeyFrame(0));
-        sprite_plane.setBounds(1280f,0f, sprite_plane.getWidth(), sprite_plane.getHeight());
+        if(!animation_plane.isFlipped) x = -100f;
+        else x = 1300;
+        y = 0f;
         sprite_plane.setPosition(x, y);
+
+        Assets.music_course_1.play();
+        Assets.music_course_1.setVolume(0.45f);
     }
 
     public void render (float delta) {
+        if(isLaunched) Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+        else Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(!animation_plane.isFlipped) {
-            x -= 7f;
-            y += 0.25f;
+            x -= 6f * (SCREEN_WIDTH/1280f);
+            y += 0.2f * (SCREEN_WIDTH/1280f);
         }
         else{
-            y -= 0.25f;
-            x += 7f;
+            x += 6f * (SCREEN_WIDTH/1280f);
+            y -= 0.2f * (SCREEN_WIDTH/1280f);
         }
 
-        if(x < -2500f && !animation_plane.isFlipped) {
-            x = -100;
+        if(stateTime > randomTime && !Assets.animation_menu_plane.isFlipped) {
+            x = 0f - sprite_plane.getWidth();
             stateTime = 0f;
-            y = 400f;
+            y = SCREEN_HEIGHT/2f - sprite_plane.getHeight()/2f + MathUtils.random(-SCREEN_HEIGHT/10f, SCREEN_HEIGHT/10f);
 
-            Assets.flip(animation_plane, animation_plane.getKeyFrames().length);
+            Assets.flip(sprites_menu_plane);
             animation_plane.isFlipped = true;
+            randomTime = MathUtils.random(8f, 11f);
         }
-
-        if(x > 2500f && Assets.animation_menu_plane.isFlipped) {
-            x = 1280f;
+        else if(stateTime > randomTime && Assets.animation_menu_plane.isFlipped) {
+            x = SCREEN_WIDTH;
             stateTime = 0f;
-            y = 300f;
+            y = SCREEN_HEIGHT/2f - sprite_plane.getHeight()/2f + MathUtils.random(-SCREEN_HEIGHT/10f, SCREEN_HEIGHT/10f);
 
-            Assets.flip(animation_plane, animation_plane.getKeyFrames().length);
+            Assets.flip(sprites_menu_plane);
             animation_plane.isFlipped = false;
+            randomTime = MathUtils.random(8f, 11f);
         }
 
-        sprite_plane.setRegion((TextureRegion) animation_plane.getKeyFrame(stateTime));
-        sprite_plane.setBounds(x, y, sprite_plane.getRegionWidth(), sprite_plane.getRegionHeight());
-        //sprite_plane.setPosition(x, y);
+        sprite_plane = sprites_menu_plane.get(animation_plane.getKeyFrameIndex(stateTime));
+        sprite_plane.setScale(SCREEN_WIDTH/1280f);
+        sprite_plane.setPosition(x, y);
         stateTime += delta;
 
         fbo.begin();
+        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sBatch.begin();
         sprite_plane.draw(sBatch);
@@ -309,13 +323,16 @@ public class MainMenu extends ScreenAdapter {
             if(opacity == 0f) {
                 setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
                 ProfileInfo.load();
-                game.setScreen(new GameScreen(game, MathUtils.random(0, 2)));
-                //game.setScreen(new GameScreen(game, 1));
+                //game.setScreen(new GameScreen(game, MathUtils.random(0, 2)));
+                game.setScreen(new GameScreen(game,1));
             }
         }
         else {
             opacity += delta;
-            if(opacity > 1f) opacity = 1f;
+            if(opacity > 1f) {
+                isLaunched = false;
+                opacity = 1f;
+            }
         }
         if (settingsMenu) {
             setCurrentPlayerProfile();
@@ -328,7 +345,7 @@ public class MainMenu extends ScreenAdapter {
             game.setScreen(new CreateUser(game));
         }
         if (reloadMainMenu) {
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game,false));
         }
         if (creditsMenu) {
             game.setScreen(new CreditsMenu(game));

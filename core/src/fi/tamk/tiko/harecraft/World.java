@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
@@ -76,7 +77,8 @@ public abstract class World {
     float opacity;
 
     public World() {
-        finish = ProfileInfo.selectedDuration;
+        //finish = ProfileInfo.selectedDuration;
+        finish = 1000f;
 
         /*switch (MathUtils.random(0,2)) {
             case 0:
@@ -123,7 +125,7 @@ public abstract class World {
     public abstract void updateShaders(float delta);
     public void update(float delta) {
         if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
-        else if(gameState == END && gameStateTime > 4f) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
+        else if(gameState == EXIT) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
 
         decal_sun1.rotateZ(delta/2f);
         decal_sun1.setColor(1f,1f,1f, opacity);
@@ -139,8 +141,8 @@ public abstract class World {
  * World of forests.
  */
 
-class WorldForest extends World {
-    public WorldForest() {
+class WorldSummer extends World {
+    public WorldSummer() {
         float width = Assets.texR_background_summer.getRegionWidth()/2f;
         float height = Assets.texR_background_summer.getRegionHeight()/2f;
         decal_background = Decal.newDecal(width, height,Assets.texR_background_summer, true);

@@ -66,7 +66,8 @@ public abstract class Pilot extends GameObject {
         if(this instanceof Opponent && gameState == END) isDrawing = false;
 
         //OPACITY
-        if(isDrawing) opacity += this instanceof Opponent ? delta : delta * 0.4f;
+        if(this instanceof Opponent && position.z < 0f) opacity = 0.3f;
+        else if(isDrawing) opacity += this instanceof Opponent ? delta : delta * 0.4f;
         else opacity -= delta;
         if(opacity > 1f) opacity = 1f;
         else if(opacity < 0f) opacity = 0f;
@@ -296,7 +297,7 @@ class Opponent extends Pilot {
     int count;
 
     public Opponent(float x, float y, float z, float spawnZ, int color, int planetype, int character, float speed) {
-        drawDistance = spawnDistance / 5f;
+        drawDistance = 100f;
         this.spawnZ = spawnZ;
         this.speed = speed;
 
