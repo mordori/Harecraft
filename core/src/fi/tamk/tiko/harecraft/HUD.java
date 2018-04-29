@@ -55,7 +55,7 @@ public class HUD {
         else if(gameState == END) {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
-            if(text_opacity == 0f && gameStateTime > 3f) {
+            if(text_opacity == 0f && gameStateTime > 5f) {
                 scoreboard_opacity += delta;
                 if(scoreboard_opacity > 1f) scoreboard_opacity = 1f;
             }
@@ -68,24 +68,24 @@ public class HUD {
     }
 
     public void draw() {
+        Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
         if(gameState != START) {
             drawProgressLine();
+        }
+        if(gameState == END) {
+            drawScoreboard();
         }
         sBatch.begin();
         drawCountdown();
         if(gameState != START) {
             drawPlacementNumber();
         }
-        if(gameState == END) {
-            drawScoreboard();
-        }
         sBatch.end();
     }
 
     public void drawScoreboard() {
-        Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0f, 0f, 0f, 0.5f * scoreboard_opacity);
+        shapeRenderer.setColor(0f, 0f, 0f, 0.3f * scoreboard_opacity);
         shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f,2f/3f*SCREEN_WIDTH,2f/3f*SCREEN_HEIGHT);
         shapeRenderer.arc(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f,10f, 180f, 90f);
         shapeRenderer.arc(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,10f, 90f, 90f);
@@ -96,6 +96,7 @@ public class HUD {
         shapeRenderer.rect(SCREEN_WIDTH/6f - 10f,SCREEN_HEIGHT/6f,10f,2f/3f*SCREEN_HEIGHT);
         shapeRenderer.rect(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f,10f,2f/3f*SCREEN_HEIGHT);
         shapeRenderer.end();
+
     }
 
     public void updateProgressLine(float delta) {
@@ -108,7 +109,6 @@ public class HUD {
     }
 
     public void drawProgressLine() {
-        Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //Black
         shapeRenderer.setColor(0f, 0f, 0f, 0.3f * HUD_opacity);

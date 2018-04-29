@@ -158,14 +158,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             worldRenderer.renderWorld();
             HUD.draw();
 
-            if(newGame) game.setScreen(new MainMenu(game, false));
-            //if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
-            //System.out.println(player.velocity.z);
+            if(newGame) game.setScreen(new MainMenu(game,false));
         }
     }
 
     public void update(float delta) {
-        logger.log();
+        //logger.log();
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
@@ -234,7 +232,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             gameState = END;
             gameStateTime = 0f;
             Assets.sound_applause.play(0.4f);
-            System.out.println(player.distance);
 
             worldScore += 12;
             switch(playerPlacement) {
@@ -269,7 +266,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             //strFlightRecord += renderCount;
             //file.writeString(strFlightRecord, false);
         }
-        else if(gameState == EXIT && gameStateTime > 3.5f) {
+        else if(gameState == EXIT && gameStateTime > 0.5f) {
             //Assets.music_course_1.stop();
             sBatch.setShader(shader2D_default);
             newGame = true;
@@ -289,7 +286,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             cameraPanY -= (delta * 40f) * panAccelY;
             if (cameraPanY < 0f) cameraPanY = 0f;
         }
-        else if(gameState == EXIT) {
+        else if(gameState == END && gameStateTime > 2f) {
             panAccelY += delta / 2f;
             if (panAccelY > 1f) panAccelY = 1f;
             cameraPanY += (delta * 40f) * panAccelY;

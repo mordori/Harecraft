@@ -8,10 +8,12 @@ import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
@@ -44,14 +46,29 @@ public class WorldRenderer {
     }
 
     public void renderWorld() {
-        if(!isFBOEnabled) Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        if(gameState == EXIT) isFBOEnabled = true;
 
         if(isFBOEnabled) {
             fbo.begin();
+            if(world instanceof WorldSea) {
+                Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+            }
+            else if(world instanceof WorldSummer) {
+                Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
+            }
+            else if(world instanceof WorldTundra) {
+                Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
+            }
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
+
         drawDecals();
         drawParticles();
+
         if(isFBOEnabled) {
             fbo.end();
             renderToTexture();
@@ -97,11 +114,11 @@ public class WorldRenderer {
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
 
-        if(gameState == END) //sBatch.setShader(shader2D_vignette);
+        //if(gameState == END) sBatch.setShader(shader2D_vignette);
 
         //------------------------------------------------
         sBatch.begin();
-        texture.draw(sBatch);
+        texture.draw(sBatch, gameStateTime);
         sBatch.end();
     }
 
