@@ -77,8 +77,8 @@ public abstract class World {
     float opacity;
 
     public World() {
-        //finish = ProfileInfo.selectedDuration;
-        finish = 100f;
+        finish = ProfileInfo.selectedDuration;
+        //finish = 100f;
 
         /*switch (MathUtils.random(0,2)) {
             case 0:
