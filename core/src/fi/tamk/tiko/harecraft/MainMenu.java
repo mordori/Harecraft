@@ -203,7 +203,7 @@ public class MainMenu extends ScreenAdapter {
         //profileBox.getSelected();
 
         LanguageButton languageButton = new LanguageButton();
-        languageButton.setPosition(40,60);
+        languageButton.setPosition(1140,60);
         languageButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -224,7 +224,7 @@ public class MainMenu extends ScreenAdapter {
         });
 
         BananaButton bananaButton = new BananaButton();
-        bananaButton.setPosition(1140, 55);
+        bananaButton.setPosition(40, 55);
         bananaButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -242,9 +242,6 @@ public class MainMenu extends ScreenAdapter {
                 touched = false;
             }
         });
-
-        makeHighScores();
-        highScoreTable.setPosition(220,350);
 
         stage.addActor(settingsButton);
         stage.addActor(profilesButton);
@@ -323,8 +320,9 @@ public class MainMenu extends ScreenAdapter {
             if(opacity == 0f) {
                 setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
                 ProfileInfo.load();
-                //game.setScreen(new GameScreen(game, MathUtils.random(0, 2)));
-                game.setScreen(new GameScreen(game,1));
+                //game.setScreen(new GameScreen(game, MathUtils.random(1, 1)));
+                game.setScreen(new LevelSelectMenu(game, profiles));
+                //game.setScreen(new GameScreen(game, 1));
             }
         }
         else {
@@ -376,56 +374,6 @@ public class MainMenu extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         logo.dispose();
-    }
-
-    public void makeHighScores() {
-        List<String> tempProfileList = profiles;
-        int tempScoreInt;
-
-        //profilesData.putInteger("Mikko"+"Score", 987);
-        //profilesData.putInteger("Miika"+"Score", 200);
-        //profilesData.flush();
-
-        for (int i = 0; i <= 2 ; i++) { //Järjestelee top3name top3scores muttujiin 3 parasta profiilia ja coret
-
-            int highestScoreFound = 0;
-            String highestProfileName = "----------";
-
-            for (String y : tempProfileList) { //haetaan profiilien scooret
-                tempScoreInt = profilesData.getInteger(y + "Score", 0);
-
-                if (tempScoreInt > highestScoreFound) {
-                    highestScoreFound = tempScoreInt;
-                    highestProfileName = y;
-                }
-            }
-            tempProfileList.remove(highestProfileName);
-            //if (highestProfileName.length() > 10) {     //limit String to 10 chars on highscore board
-            //    highestProfileName = highestProfileName.substring(0,10);
-            //}
-            top3Names[i] = highestProfileName;
-            top3Score[i] = highestScoreFound;
-            Gdx.app.log("paras score oli pelaajalla ", "" +highestProfileName +" lukemalla " +highestScoreFound);
-
-        }
-
-        Label name1 = new Label(top3Names[0], skin);
-        Label name2 = new Label(top3Names[1], skin);
-        Label name3 = new Label(top3Names[2], skin);
-
-        Label score1 = new Label("" +top3Score[0], skin);
-        Label score2 = new Label("" +top3Score[1], skin);
-        Label score3 = new Label("" +top3Score[2], skin);
-
-
-        highScoreTable.add(name1);
-        highScoreTable.add(score1);
-        highScoreTable.row();
-        highScoreTable.add(name2);
-        highScoreTable.add(score2);
-        highScoreTable.row();
-        highScoreTable.add(name3);
-        highScoreTable.add(score3);
     }
 }
 
