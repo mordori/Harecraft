@@ -9,6 +9,7 @@ import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
@@ -19,7 +20,7 @@ import static fi.tamk.tiko.harecraft.World.player;
 /**
  * Created by Mika on 01/03/2018.
  *
- * Class used for adding decals to Decal Batch and Frame Bufferer.
+ * Class used for sending stuff to batchers and Frame Bufferer.
  */
 
 public class WorldRenderer {
@@ -106,7 +107,7 @@ public class WorldRenderer {
 
     public void drawParticles() {
         sBatch.begin();
-        if(gameState != START && gameState != END) player.pfx_scarf.draw(sBatch);
+        if(gameState == RACE || gameState == FINISH) player.pfx_scarf.draw(sBatch);
 
         for(Cloud c : world.clouds_RDown) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         for(Cloud c : world.clouds_RUp) if(c.isCollided) c.pfx_dispersion.draw(sBatch);

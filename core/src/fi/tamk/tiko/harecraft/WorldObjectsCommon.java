@@ -7,11 +7,15 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.World.player;
+import static fi.tamk.tiko.harecraft.WorldBuilder.blue;
+import static fi.tamk.tiko.harecraft.WorldBuilder.green;
+import static fi.tamk.tiko.harecraft.WorldBuilder.red;
 
 /**
  * Created by Mika on 19.4.2018.
@@ -276,16 +280,55 @@ class Balloon extends GameObject {
     public Balloon(float x, float y, float z) {
         TextureRegion textureRegion = Assets.texR_balloon_red;
 
-        switch(MathUtils.random(0,3)) {
+        switch(MathUtils.random(0,2)) {
             case 0:
-                textureRegion = Assets.texR_balloon_red;
-                break;
+                if(!red) {
+                    textureRegion = Assets.texR_balloon_red;
+                    red = true;
+                    break;
+                }
+                else if(!green){
+                    textureRegion = Assets.texR_balloon_green;
+                    green = true;
+                    break;
+                }
+                else if(!blue){
+                    textureRegion = Assets.texR_balloon_blue;
+                    blue = true;
+                    break;
+                }
             case 1:
-                textureRegion = Assets.texR_balloon_green;
-                break;
+                if(!green) {
+                    textureRegion = Assets.texR_balloon_green;
+                    green = true;
+                    break;
+                }
+                else if(!red){
+                    textureRegion = Assets.texR_balloon_red;
+                    red = true;
+                    break;
+                }
+                else if(!blue){
+                    textureRegion = Assets.texR_balloon_blue;
+                    blue = true;
+                    break;
+                }
             case 2:
-                textureRegion = Assets.texR_balloon_blue;
-                break;
+                if(!blue) {
+                    textureRegion = Assets.texR_balloon_blue;
+                    blue = true;
+                    break;
+                }
+                else if(!green){
+                    textureRegion = Assets.texR_balloon_green;
+                    green = true;
+                    break;
+                }
+                else if(!red){
+                    textureRegion = Assets.texR_balloon_red;
+                    red = true;
+                    break;
+                }
         }
 
         width = textureRegion.getRegionWidth() / 110f;
@@ -314,6 +357,7 @@ class Balloon extends GameObject {
         if(!isCollected) {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && (transposedPosition.dst(player.curPosition.x, player.curPosition.y) < 2.2f)) {
                 isCollected = true;
+                balloonsCollected++;
 
                 Assets.sound_balloon_collected.play();
                 decal.setPosition(position.x, position.y,0.5f);

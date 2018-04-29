@@ -55,7 +55,7 @@ public class HUD {
         else if(gameState == END) {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
-            if(HUD_opacity == 0f) {
+            if(text_opacity == 0f && gameStateTime > 3f) {
                 scoreboard_opacity += delta;
                 if(scoreboard_opacity > 1f) scoreboard_opacity = 1f;
             }

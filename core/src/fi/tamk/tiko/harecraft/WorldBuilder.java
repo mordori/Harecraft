@@ -12,6 +12,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
@@ -54,12 +55,14 @@ public class WorldBuilder {
 
     float balloon1SpawnPos, balloon2SpawnPos, balloon3SpawnPos;
     boolean balloon1Collected, balloon2Collected, balloon3Collected;
+    static boolean red, green, blue;
 
     public WorldBuilder(World world) {
         this.world = world;
-        balloon1SpawnPos = MathUtils.random(100f, (1f/3f * finish) - 50f) ;
-        balloon2SpawnPos = MathUtils.random(1f/3f * finish - (spawnDistance - 50f), 2f/3f * finish - 50f);
-        balloon3SpawnPos = MathUtils.random(2f/3f * finish - (spawnDistance - 50f), 3f/3f * finish - 50f);
+        red = green = blue = false;
+        balloon1SpawnPos = MathUtils.random(50f, (1f/3f * finish)) ;
+        balloon2SpawnPos = MathUtils.random(1f/3f * finish + 50f, 2f/3f * finish - 50f);
+        balloon3SpawnPos = MathUtils.random(2f/3f * finish + 50f, 3f/3f * finish - 50f);
         System.out.println(balloon1SpawnPos);
         System.out.println(balloon2SpawnPos);
         System.out.println(balloon3SpawnPos);
@@ -71,7 +74,7 @@ public class WorldBuilder {
         //SPAWN
         //-------------------------------------------
         spawnGroundObjects();
-        if(gameState != FINISH && gameState != END) {
+        if(gameState == START || gameState == RACE) {
             spawnSkyObjects();
         }
 
@@ -242,23 +245,23 @@ public class WorldBuilder {
     }
 
     public void addBalloon() {
-        if(!balloon1Collected && player.distance > balloon1SpawnPos) {
-            x = MathUtils.random(-5f, 5f);
-            y = -23f;
-            world.balloons.add(new Balloon(x, y, spawnDistance - 50f));
-            balloon1Collected = true;
-        }
-        else if(!balloon2Collected && player.distance > balloon2SpawnPos) {
-            x = MathUtils.random(-5f, 5f);
-            y = -23f;
-            world.balloons.add(new Balloon(x, y, spawnDistance - 50f));
-            balloon2Collected = true;
-        }
-        else if(!balloon3Collected && player.distance > balloon3SpawnPos) {
-            x = MathUtils.random(-5f, 5f);
-            y = -23f;
-            world.balloons.add(new Balloon(x, y, spawnDistance - 50f));
-            balloon3Collected = true;
+        if(!world.rings.isEmpty() && world.rings.get(world.rings.size() - 1).stateTime > 1.5f && world.rings.get(world.rings.size() - 1).stateTime < 2f) {
+            if (!balloon1Collected && player.distance > balloon1SpawnPos) {
+                x = MathUtils.random(-5f, 5f);
+                y = -23f;
+                world.balloons.add(new Balloon(x, y, spawnDistance - 50f));
+                balloon1Collected = true;
+            } else if (!balloon2Collected && player.distance > balloon2SpawnPos) {
+                x = MathUtils.random(-5f, 5f);
+                y = -23f;
+                world.balloons.add(new Balloon(x, y, spawnDistance - 50f));
+                balloon2Collected = true;
+            } else if (!balloon3Collected && player.distance > balloon3SpawnPos) {
+                x = MathUtils.random(-5f, 5f);
+                y = -23f;
+                world.balloons.add(new Balloon(x, y, spawnDistance - 50f));
+                balloon3Collected = true;
+            }
         }
     }
 

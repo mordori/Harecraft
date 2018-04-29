@@ -39,13 +39,14 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        paused = !paused;
+        if(gameState != END && gameState != EXIT) paused = !paused;
         return false;
     }
 
     @Override
     public boolean longPress(float x, float y) {
-
+        gameState = EXIT;
+        gameStateTime = 0f;
         return false;
     }
 
@@ -112,6 +113,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static int worldScore;
     static int playerScore;
     static int playerPlacement;
+    static int balloonsCollected;
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
@@ -132,6 +134,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         strFlightRecord = "";
         worldScore = 0;
         playerScore = 0;
+        balloonsCollected = 0;
     }
 
     public void selectWorld(int index) {
@@ -155,7 +158,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             worldRenderer.renderWorld();
             HUD.draw();
 
-            if (newGame) game.setScreen(new MainMenu(game, false));
+            if(newGame) game.setScreen(new MainMenu(game, false));
             //if(newGame) game.setScreen(new GameScreen(game, MathUtils.random(0,1)));
             //System.out.println(player.velocity.z);
         }
@@ -256,7 +259,11 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             }
 
             System.out.println(playerScore + " / " + worldScore);
-            System.out.println(playerPlacement);
+
+            System.out.println((int)((double)playerScore/(double)worldScore * 100) + balloonsCollected/3 + "%");
+
+            if(balloonsCollected == 3) playerScore *= 2;
+
 
             //RECORD
             //strFlightRecord += renderCount;

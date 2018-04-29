@@ -78,7 +78,7 @@ public abstract class World {
 
     public World() {
         //finish = ProfileInfo.selectedDuration;
-        finish = 1000f;
+        finish = 100f;
 
         /*switch (MathUtils.random(0,2)) {
             case 0:
@@ -123,9 +123,10 @@ public abstract class World {
     }
 
     public abstract void updateShaders(float delta);
+
     public void update(float delta) {
         if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
-        else if(gameState == EXIT) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
+        else if(gameState == EXIT) opacity = 4.5f - gameStateTime > 0f ? 4.5f - gameStateTime : 0f;
 
         decal_sun1.rotateZ(delta/2f);
         decal_sun1.setColor(1f,1f,1f, opacity);
