@@ -71,7 +71,7 @@ public class HUD {
         TextButton btnResume = new TextButton(localizationBundle.get("btnResumeText"), style);
         if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(340f);
         else btnResume.setWidth(300f);
-        btnResume.setHeight(140f);
+        btnResume.setHeight(160f);
         if(SCREEN_WIDTH >= 1280f) btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.85f/2f * SCREEN_HEIGHT);
         else btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.55f/2f * SCREEN_HEIGHT);
         btnResume.setName("btnResume");

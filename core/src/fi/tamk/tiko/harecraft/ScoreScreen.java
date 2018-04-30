@@ -85,7 +85,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
 
     float scoreboard_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
-    float originalLineHeight = Assets.font3.getLineHeight();
+    float originalLineHeight3 = Assets.font3.getLineHeight();
+    float originalLineHeight4 = Assets.font4.getLineHeight();
 
     public ScoreScreen() {
         sBatch.setProjectionMatrix(orthoCamera.combined);
@@ -95,6 +96,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
 
 
         Assets.font3.getData().setLineHeight(Assets.font3.getLineHeight()/1.3f);
+        Assets.font4.getData().setLineHeight(Assets.font3.getLineHeight()/1.3f);
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("listbutton"),
@@ -107,11 +109,11 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
         style.fontColor = new Color(1f,1f,1f,1f);
         TextButton btnNewGame = new TextButton(localizationBundle.get("btnNewGameText"), style);
-        if(localizationBundle.get("btnNewGameText").equals("lenna\nuudestaan")) btnNewGame.setWidth(280f);
-        else btnNewGame.setWidth(240f);
-        btnNewGame.setHeight(140f);
-        if(SCREEN_WIDTH >= 1280f) btnNewGame.setPosition(3f/4f * SCREEN_WIDTH - btnNewGame.getWidth()/2f,SCREEN_HEIGHT/6f - btnNewGame.getHeight()/2f);
-        else btnNewGame.setPosition(5f/6f * SCREEN_WIDTH - btnNewGame.getWidth()/2f,SCREEN_HEIGHT/7f - btnNewGame.getHeight()/2f);
+        if(localizationBundle.get("btnNewGameText").equals("uusi\nlento")) btnNewGame.setWidth(280f);
+        else btnNewGame.setWidth(280f);
+        btnNewGame.setHeight(160f);
+        if(SCREEN_WIDTH >= 1280f) btnNewGame.setPosition(SCREEN_WIDTH/2f - btnNewGame.getWidth()/2f,SCREEN_HEIGHT/6f - btnNewGame.getHeight()/2f);
+        else btnNewGame.setPosition(SCREEN_WIDTH/2f - btnNewGame.getWidth()/2f,SCREEN_HEIGHT/7f - btnNewGame.getHeight()/2f);
         btnNewGame.setName("btnNewGame");
         btnNewGame.addListener(new InputListener() {
             Boolean touched = false;
@@ -123,7 +125,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    Assets.font3.getData().setLineHeight(originalLineHeight);
+                    Assets.font3.getData().setLineHeight(originalLineHeight3);
+                    Assets.font4.getData().setLineHeight(originalLineHeight4);
                     game.setScreen(new GameScreen(game, GameScreen.index));
                 }
             }
@@ -137,18 +140,18 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font3);
+                Assets.font4);
 
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
         style.fontColor = new Color(1f,1f,1f,1f);
         TextButton btnCourseSelect = new TextButton(localizationBundle.get("btnCourseSelectText"), style);
-        if(localizationBundle.get("btnNewGameText").equals("lenna\nuudestaan")) btnCourseSelect.setWidth(280f);
-        else btnCourseSelect.setWidth(240f);
-        btnCourseSelect.setHeight(140f);
-        if(SCREEN_WIDTH >= 1280f)  btnCourseSelect.setPosition(SCREEN_WIDTH/2f - btnCourseSelect.getWidth()/2f,SCREEN_HEIGHT/6f - btnCourseSelect.getHeight()/2f);
-        else btnCourseSelect.setPosition(SCREEN_WIDTH/2f - btnCourseSelect.getWidth()/2f,SCREEN_HEIGHT/7f - btnCourseSelect.getHeight()/2f);
+        if(localizationBundle.get("btnNewGameText").equals("uusi\nlento")) btnCourseSelect.setWidth(240f);
+        else btnCourseSelect.setWidth(220f);
+        btnCourseSelect.setHeight(120f);
+        if(SCREEN_WIDTH >= 1280f)  btnCourseSelect.setPosition(3f/4f * SCREEN_WIDTH - btnCourseSelect.getWidth()/2f,SCREEN_HEIGHT/6f - btnCourseSelect.getHeight()/2f);
+        else btnCourseSelect.setPosition(5f/6f * SCREEN_WIDTH - btnCourseSelect.getWidth()/2f,SCREEN_HEIGHT/7f - btnCourseSelect.getHeight()/2f);
         btnCourseSelect.setName("btnReset");
         btnCourseSelect.addListener(new InputListener() {
             Boolean touched = false;
@@ -160,7 +163,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    Assets.font3.getData().setLineHeight(originalLineHeight);
+                    Assets.font4.getData().setLineHeight(originalLineHeight4);
+                    Assets.font3.getData().setLineHeight(originalLineHeight3);
                     game.setScreen(new LevelSelectMenu(game, profiles));
                 }
             }
@@ -171,9 +175,9 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         });
 
         TextButton btnMainMenu = new TextButton(localizationBundle.get("btnMainMenuText"), style);
-        if(localizationBundle.get("btnNewGameText").equals("lenna\nuudestaan")) btnMainMenu.setWidth(280f);
-        else btnMainMenu.setWidth(240f);
-        btnMainMenu.setHeight(140f);
+        if(localizationBundle.get("btnNewGameText").equals("uusi\nlento")) btnMainMenu.setWidth(240f);
+        else btnMainMenu.setWidth(220f);
+        btnMainMenu.setHeight(120f);
         if(SCREEN_WIDTH >= 1280f) btnMainMenu.setPosition(SCREEN_WIDTH/4f - btnMainMenu.getWidth()/2f,SCREEN_HEIGHT/6f - btnMainMenu.getHeight()/2f);
         else btnMainMenu.setPosition(SCREEN_WIDTH/6f - btnMainMenu.getWidth()/2f,SCREEN_HEIGHT/7f - btnMainMenu.getHeight()/2f);
         btnMainMenu.setName("btnMainMenu");
@@ -187,7 +191,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    Assets.font3.getData().setLineHeight(originalLineHeight);
+                    Assets.font4.getData().setLineHeight(originalLineHeight4);
+                    Assets.font3.getData().setLineHeight(originalLineHeight3);
                     game.setScreen(new MainMenu(game,false));
                 }
             }
@@ -217,17 +222,19 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         shapeRenderer.setColor(0f, 0f, 0f, 0.3f * scoreboard_opacity);
 
         float x = SCREEN_WIDTH/10f;
-        float y = SCREEN_HEIGHT/10f;
+        float y = SCREEN_HEIGHT/3f;
+        float height = SCREEN_HEIGHT/1.7f;
+        float width = SCREEN_WIDTH/1.25f;
 
-        shapeRenderer.rect(x,y,8f/10f*SCREEN_WIDTH,8f/10f*SCREEN_HEIGHT);
-        shapeRenderer.arc(x,y,10f, 180f, 90f);
-        shapeRenderer.arc(x,y + 8f/10f*SCREEN_HEIGHT,10f, 90f, 90f);
-        shapeRenderer.arc(x + 8f/10f*SCREEN_WIDTH,y,10f, 270f, 90f);
-        shapeRenderer.arc(x + 8f/10f*SCREEN_WIDTH,y + 8f/10f*SCREEN_HEIGHT,10f, 0f, 90f);
-        shapeRenderer.rect(x,y - 10f,8f/10f*SCREEN_WIDTH,10f);
-        shapeRenderer.rect(x,y + 8f/10f*SCREEN_HEIGHT,8f/10f*SCREEN_WIDTH,10f);
-        shapeRenderer.rect(x - 10f,y,10f,8f/10f*SCREEN_HEIGHT);
-        shapeRenderer.rect(x + 8f/10f*SCREEN_WIDTH,y,10f,8f/10f*SCREEN_HEIGHT);
+        shapeRenderer.rect(x, y, width, height);
+        shapeRenderer.arc(x, y,10f, 180f, 90f);
+        shapeRenderer.arc(x,y + height,10f, 90f, 90f);
+        shapeRenderer.arc(x + width, y,10f, 270f, 90f);
+        shapeRenderer.arc(x + width,y + height,10f, 0f, 90f);
+        shapeRenderer.rect(x,y - 10f, width,10f);
+        shapeRenderer.rect(x,y + height, width,10f);
+        shapeRenderer.rect(x - 10f, y,10f, height);
+        shapeRenderer.rect(x + width, y,10f, height);
         shapeRenderer.end();
 
         sBatch.begin();

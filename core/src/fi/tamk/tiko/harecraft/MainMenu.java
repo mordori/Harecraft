@@ -321,6 +321,7 @@ public class MainMenu extends ScreenAdapter {
                 setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
                 ProfileInfo.load();
                 game.setScreen(new LevelSelectMenu(game, profiles));
+                //game.setScreen(new ScoreScreen());
             }
         }
         else {
