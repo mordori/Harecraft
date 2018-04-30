@@ -158,11 +158,27 @@ class Player extends Pilot {
             //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             accelX = accelX * ProfileInfo.selectedSensitivity;
             accelY = accelY * ProfileInfo.selectedSensitivity;
+
             destination.x = accelX * -5f * (960/SCREEN_WIDTH);
-            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960/SCREEN_WIDTH);
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960 / SCREEN_WIDTH);
+
+            if (ProfileInfo.invertY == false) { //INVERTOITU LENTO
+                destination.y = (destination.y * -1) -ACCEL_Y_OFFSET -ACCEL_Y_OFFSET;
+            }
+
+            if (destination.x > 25f)
+                destination.x = 25f;
+            if (destination.x < -25f)
+                destination.x = -25f;
+            if (destination.y > 15f)
+                destination.y = 15f;
+            if (destination.y < -22f)
+                destination.y = -22f;
+
             //destination.x = destination.x * ProfileInfo.selectedSensitivity;
             //destination.y = destination.y * ProfileInfo.selectedSensitivity;
             destination = destination.add(keyboardDestination);
+
 
             destdist = 1f + destination.dst(0f, 6f, 0f)/100;   //100=1-1.3   reunanopeuden nollapiste +6y
             destination.y += 6f;                 //pelaajan default postionia korkeammalle +6y

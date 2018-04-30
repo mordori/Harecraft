@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -107,6 +108,13 @@ public class SettingsMenu extends ScreenAdapter {
         sensitivitySlider.setWidth(500);
         sensitivitySlider.setName("sensitivityslider");
 
+        CheckBox invertYCheckBox = new CheckBox(localizationBundle.get("invertLabelText"), skin);
+        invertYCheckBox.setChecked(profilesData.getBoolean(ProfileInfo.selectedPlayerProfile +"Invert", true));
+        invertYCheckBox.setName("invertcheckbox");
+        invertYCheckBox.getLabelCell().padLeft(50f);
+        invertYCheckBox.setPosition(900 -invertYCheckBox.getWidth()/2, 235);
+
+
         //skin.getFont("font").getData().setScale(1.5f); //set skin font size
         //SelectBox profileBox = new SelectBox(skin);
         //profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso", "tyyppi", "tyyppi2", "tyyppi3", "tyypi4"});
@@ -122,6 +130,8 @@ public class SettingsMenu extends ScreenAdapter {
         //stage.addActor(durationLabel);
         stage.addActor(sensitivityLabel);
         stage.addActor(sensitivitySlider);
+        stage.addActor(invertYCheckBox);
+
         stage.addActor(button);
         stage.addActor(new Radar());
 
@@ -179,6 +189,11 @@ public class SettingsMenu extends ScreenAdapter {
             tmpActor = stage.getRoot().findActor("sensitivityslider");    //etsi static holds sliderin value ja tallenna
             float tmpFloat = tmpActor.getValue();
             profilesData.putFloat(ProfileInfo.selectedPlayerProfile+"Sensitivity", tmpFloat );
+            profilesData.flush();
+
+            CheckBox tmpBox = stage.getRoot().findActor("invertcheckbox");
+            Boolean bool = tmpBox.isChecked();
+            profilesData.putBoolean(ProfileInfo.selectedPlayerProfile+"Invert", bool);
             profilesData.flush();
 
             saveVectorData();
