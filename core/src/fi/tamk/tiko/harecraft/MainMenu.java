@@ -65,7 +65,7 @@ public class MainMenu extends ScreenAdapter {
     Boolean reloadMainMenu = false;
     Boolean creditsMenu = false;
     Preferences profilesData;
-    ArrayList<String> profiles;
+    static ArrayList<String> profiles;
     float opacity = 0f;
     Locale locale;
     String[] top3Names = new String[3];

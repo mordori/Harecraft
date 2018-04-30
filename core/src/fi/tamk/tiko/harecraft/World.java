@@ -78,7 +78,7 @@ public abstract class World {
 
     public World() {
         //finish = ProfileInfo.selectedDuration;
-        finish = 1000f;
+        finish = 100f;
 
         /*switch (MathUtils.random(0,2)) {
             case 0:

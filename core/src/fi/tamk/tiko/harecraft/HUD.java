@@ -52,7 +52,6 @@ public class HUD {
     float progressline_width = 300f;
     float progressline_arc_radius = 9f;
     float HUD_opacity;
-    float scoreboard_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
 
     Sprite text_gameStates = new Sprite();
@@ -64,7 +63,7 @@ public class HUD {
     public HUD(World world, final GameScreen gameScreen) {
         this.world = world;
         this.gameScreen = gameScreen;
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(Assets.skin_menu.getDrawable("listbutton"),Assets.skin_menu.getDrawable("listbutton pressed"),Assets.skin_menu.getDrawable("listbutton"),Assets.font3);
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(Assets.skin_menu.getDrawable("listbutton"),Assets.skin_menu.getDrawable("listbutton pressed"),Assets.skin_menu.getDrawable("listbutton"),Assets.font2);
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
@@ -73,7 +72,8 @@ public class HUD {
         if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(340f);
         else btnResume.setWidth(300f);
         btnResume.setHeight(140f);
-        btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.85f/2f * SCREEN_HEIGHT);
+        if(SCREEN_WIDTH >= 1280f) btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.85f/2f * SCREEN_HEIGHT);
+        else btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.55f/2f * SCREEN_HEIGHT);
         btnResume.setName("btnResume");
         btnResume.addListener(new InputListener() {
             Boolean touched = false;
@@ -103,7 +103,8 @@ public class HUD {
         TextButton btnReset = new TextButton(localizationBundle.get("btnResetText"), style);
         btnReset.setWidth(210f);
         btnReset.setHeight(100f);
-        btnReset.setPosition(SCREEN_WIDTH/2f - btnReset.getWidth()/2f, 0.5f/2f * SCREEN_HEIGHT);
+        if(SCREEN_WIDTH >= 1280f) btnReset.setPosition(SCREEN_WIDTH/2f - btnReset.getWidth()/2f, 0.5f/2f * SCREEN_HEIGHT);
+        else btnReset.setPosition(2f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
         btnReset.setName("btnReset");
         btnReset.addListener(new InputListener() {
             Boolean touched = false;
@@ -127,7 +128,8 @@ public class HUD {
         TextButton btnQuit = new TextButton(localizationBundle.get("btnQuitText"), style);
         btnQuit.setWidth(210f);
         btnQuit.setHeight(100f);
-        btnQuit.setPosition(SCREEN_WIDTH/2f - btnQuit.getWidth()/2f, 0.2f/2f * SCREEN_HEIGHT);
+        if(SCREEN_WIDTH >= 1280f) btnQuit.setPosition(SCREEN_WIDTH/2f - btnQuit.getWidth()/2f, 0.2f/2f * SCREEN_HEIGHT);
+        else btnQuit.setPosition(1f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
         btnQuit.setName("btnQuit");
         btnQuit.addListener(new InputListener() {
             Boolean touched = false;
@@ -139,8 +141,6 @@ public class HUD {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    //sBatch.setShader(shader2D_default);
-                    //newGame = true;
                     gameState = EXIT;
                     gameStateTime = 0f;
                     paused = false;
@@ -166,8 +166,8 @@ public class HUD {
             HUD_opacity -= delta;
             if(HUD_opacity < 0f) HUD_opacity = 0f;
             if(text_opacity == 0f && gameStateTime > 5f) {
-                scoreboard_opacity += delta;
-                if(scoreboard_opacity > 1f) scoreboard_opacity = 1f;
+                sBatch.setShader(shader2D_default);
+                game.setScreen(new ScoreScreen());
             }
         }
 
@@ -189,9 +189,6 @@ public class HUD {
             if (gameState != START) {
                 drawProgressLine();
             }
-            if (gameState == END) {
-                drawScoreboard();
-            }
             sBatch.begin();
             drawCountdown();
             if (gameState != START) {
@@ -199,29 +196,6 @@ public class HUD {
             }
             sBatch.end();
         }
-    }
-
-    public void drawScoreboard() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0f, 0f, 0f, 0.3f * scoreboard_opacity);
-        shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f,2f/3f*SCREEN_WIDTH,2f/3f*SCREEN_HEIGHT);
-        shapeRenderer.arc(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f,10f, 180f, 90f);
-        shapeRenderer.arc(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,10f, 90f, 90f);
-        shapeRenderer.arc(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f,10f, 270f, 90f);
-        shapeRenderer.arc(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,10f, 0f, 90f);
-        shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f - 10f,2f/3f*SCREEN_WIDTH,10f);
-        shapeRenderer.rect(SCREEN_WIDTH/6f,SCREEN_HEIGHT/6f + 2f/3f*SCREEN_HEIGHT,2f/3f*SCREEN_WIDTH,10f);
-        shapeRenderer.rect(SCREEN_WIDTH/6f - 10f,SCREEN_HEIGHT/6f,10f,2f/3f*SCREEN_HEIGHT);
-        shapeRenderer.rect(SCREEN_WIDTH/6f + 2f/3f*SCREEN_WIDTH,SCREEN_HEIGHT/6f,10f,2f/3f*SCREEN_HEIGHT);
-        shapeRenderer.end();
-
-        sBatch.begin();
-        Assets.font3.setColor(1f,1f,1f, scoreboard_opacity);
-        Assets.font3.draw(sBatch,"Score:", 300f, 300f);
-
-        Assets.font1.setColor(1f,1f,1f, scoreboard_opacity);
-        Assets.font1.draw(sBatch,"" + playerScore, 650f, 400f);
-        sBatch.end();
     }
 
     public void drawPauseShade() {

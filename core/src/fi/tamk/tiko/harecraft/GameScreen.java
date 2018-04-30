@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
@@ -43,7 +44,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        if(gameState != END && gameState != EXIT && !paused) {
+        if(!paused) {
             paused = true;
             Gdx.input.setInputProcessor(stage);
         }
@@ -130,7 +131,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         selectWorld(index);
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
-        stage = new Stage(new StretchViewport(1280,800, orthoCamera));
+        stage = new Stage(new ScreenViewport(orthoCamera));
         HUD = new HUD(world, this);
         Gdx.input.setInputProcessor(new GestureDetector(this));
 

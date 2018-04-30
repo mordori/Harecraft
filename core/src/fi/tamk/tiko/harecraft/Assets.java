@@ -206,9 +206,9 @@ public class Assets {
         parameter.color = new Color(1f,1f,1f,1f);
         parameter.size = 150;
         font1 = generator.generateFont(parameter);
-        parameter.size = 100;
-        font2 = generator.generateFont(parameter);
         parameter.size = 55;
+        font2 = generator.generateFont(parameter);
+        parameter.size = 40;
         font3 = generator.generateFont(parameter);
         parameter.size = 30;
         font4 = generator.generateFont(parameter);
