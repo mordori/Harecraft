@@ -23,7 +23,7 @@ import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 /**
  * Created by Mika and Mikko.
  *
- * Main class. Also, a cow.
+ * Main class. Also, a friendly cow.
  *
  *       ^__^
  *      (oo)\_______

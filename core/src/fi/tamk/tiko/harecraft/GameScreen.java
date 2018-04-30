@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
@@ -26,7 +30,7 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  * Game screen class.
  */
 
-public class GameScreen extends ScreenAdapter implements GestureDetector.GestureListener{
+public class GameScreen extends ScreenAdapter implements GestureDetector.GestureListener {
     public static final float SCREEN_WIDTH = Gdx.graphics.getWidth();
     public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
@@ -39,14 +43,15 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        if(gameState != END && gameState != EXIT) paused = !paused;
+        if(gameState != END && gameState != EXIT && !paused) {
+            paused = true;
+            Gdx.input.setInputProcessor(stage);
+        }
         return false;
     }
 
     @Override
     public boolean longPress(float x, float y) {
-        gameState = EXIT;
-        gameStateTime = 0f;
         return false;
     }
 
@@ -84,13 +89,14 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         START, RACE, FINISH, END, EXIT
     }
 
-    GameMain game;
+    static GameMain game;
     static World world;
     WorldBuilder builder;
     WorldRenderer worldRenderer;
     HUD HUD;
     FPSLogger logger = new FPSLogger();
     static GameState gameState;
+    static Stage stage;
 
     static float fieldOfView = 45f;
     static float gameStateTime;
@@ -101,8 +107,10 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     float panAccelY = 1f;
 
     static boolean countdown;
-    boolean newGame;
-    boolean paused;
+    static boolean newGame;
+    static boolean paused;
+    static GlyphLayout layout = new GlyphLayout();
+    static int index;
 
     static String strFlightRecord = "";
     static FileHandle file = Gdx.files.local("myfile.txt");
@@ -117,13 +125,17 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public GameScreen(GameMain game, int index) {
         this.game = game;
+        this.index = index;
         DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
         selectWorld(index);
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
-        HUD = new HUD(world);
+        stage = new Stage(new StretchViewport(1280,800, orthoCamera));
+        HUD = new HUD(world, this);
         Gdx.input.setInputProcessor(new GestureDetector(this));
 
+        paused = false;
+        newGame = false;
         gameState = GameState.START;
         gameStateTime = 0f;
         Assets.music_course_1.play();
@@ -153,13 +165,11 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public void render(float delta) {
-        if(!paused) {
-            update(delta);
-            worldRenderer.renderWorld();
-            HUD.draw();
+        if(!paused) update(delta);
+        worldRenderer.renderWorld();
+        HUD.draw();
 
-            if(newGame) game.setScreen(new MainMenu(game,false));
-        }
+        if(newGame) game.setScreen(new MainMenu(game,false));
     }
 
     public void update(float delta) {

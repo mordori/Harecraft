@@ -53,7 +53,6 @@ import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
  */
 
 public class MainMenu extends ScreenAdapter {
-
     GameMain game;
     Skin skin;
     Stage stage;
@@ -79,6 +78,7 @@ public class MainMenu extends ScreenAdapter {
     float x, y;
     boolean isLaunched;
     MyAnimation<TextureRegion> animation_plane = Assets.animation_menu_plane;
+    static I18NBundle localizationBundle;
 
     public MainMenu(GameMain game, boolean isLaunched) {
         this.game = game;
@@ -94,7 +94,7 @@ public class MainMenu extends ScreenAdapter {
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
         ProfileInfo.determineGameLanguage(); //check language data
         locale = ProfileInfo.gameLanguage;
-        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+        localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
         profiles = new ArrayList<String>();
         for (int i = 0; i<200; i++) {

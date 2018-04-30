@@ -47,7 +47,7 @@ public class WorldRenderer {
 
     public void renderWorld() {
 
-        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        //Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if(gameState == EXIT) isFBOEnabled = true;

@@ -93,7 +93,10 @@ public class Assets {
     static ParticleEffect pfx_speed_lines;
     static ParticleEffect pfx_speed_up;
 
-    static BitmapFont font;
+    static BitmapFont font1;
+    static BitmapFont font2;
+    static BitmapFont font3;
+    static BitmapFont font4;
 
     static Skin skin_menu;
 
@@ -197,12 +200,18 @@ public class Assets {
         pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
 
         //FONTS
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/foo.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/KOMIKAX_.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40;
-        parameter.borderWidth = 2;
-        parameter.color = new Color(1f,0.6f,0f,1f);
-        font = generator.generateFont(parameter);
+        //parameter.borderWidth = 2;
+        parameter.color = new Color(1f,1f,1f,1f);
+        parameter.size = 150;
+        font1 = generator.generateFont(parameter);
+        parameter.size = 100;
+        font2 = generator.generateFont(parameter);
+        parameter.size = 55;
+        font3 = generator.generateFont(parameter);
+        parameter.size = 30;
+        font4 = generator.generateFont(parameter);
         generator.dispose();
 
         //MENU
@@ -310,7 +319,11 @@ public class Assets {
         pfx_speed_lines.dispose();
         pfx_speed_up.dispose();
 
-        font.dispose();
+        font1.dispose();
+        font2.dispose();
+        font3.dispose();
+        font4.dispose();
+
         skin_menu.dispose();
     }
 }
