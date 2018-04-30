@@ -85,24 +85,24 @@ public class SettingsMenu extends ScreenAdapter {
         staticsLabel.setFontScale(1);
         staticsLabel.setName("staticholdlabel");
 
-        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), skin);
-        durationLabel.setPosition(900 - durationLabel.getWidth()/2,400);
-        durationLabel.setFontScale(1);
-        durationLabel.setName("durationlabel");
+        //Label durationLabel = new Label(localizationBundle.get("durationLabelText"), skin);
+        //durationLabel.setPosition(900 - durationLabel.getWidth()/2,400);
+        //durationLabel.setFontScale(1);
+        //durationLabel.setName("durationlabel");
 
-        Slider durationSlider = new Slider(1000,3000, 1000, false,skin);
-        durationSlider.setPosition(650, 350);;
-        durationSlider.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"Duration", 2000));
-        durationSlider.setWidth(500);
-        durationSlider.setName("durationslider");
+        //Slider durationSlider = new Slider(1000,3000, 1000, false,skin);
+        //durationSlider.setPosition(650, 350);;
+        //durationSlider.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"Duration", 2000));
+        //durationSlider.setWidth(500);
+        //durationSlider.setName("durationslider");
 
         Label sensitivityLabel = new Label(localizationBundle.get("sensitivityLabelText"), skin);
-        sensitivityLabel.setPosition(900 - sensitivityLabel.getWidth()/2,250);
+        sensitivityLabel.setPosition(900 - sensitivityLabel.getWidth()/2,400);
         sensitivityLabel.setFontScale(1);
         sensitivityLabel.setName("sensitivitylabel");
 
         Slider sensitivitySlider = new Slider(1,1.45f, 0.05f, false,skin);
-        sensitivitySlider.setPosition(650, 200);
+        sensitivitySlider.setPosition(650, 350);
         sensitivitySlider.setValue(profilesData.getFloat(""+ProfileInfo.selectedPlayerProfile +"Sensitivity", 1f));
         sensitivitySlider.setWidth(500);
         sensitivitySlider.setName("sensitivityslider");
@@ -116,10 +116,10 @@ public class SettingsMenu extends ScreenAdapter {
 
         stage.addActor(slider);
         stage.addActor(slider2);
-        stage.addActor(durationSlider);
+        //stage.addActor(durationSlider);
         stage.addActor(difficultyLabel);
         stage.addActor(staticsLabel);
-        stage.addActor(durationLabel);
+        //stage.addActor(durationLabel);
         stage.addActor(sensitivityLabel);
         stage.addActor(sensitivitySlider);
         stage.addActor(button);
@@ -171,10 +171,10 @@ public class SettingsMenu extends ScreenAdapter {
             profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"StaticHolds", tmpInt );
             profilesData.flush();
 
-            tmpActor = stage.getRoot().findActor("durationslider");    //etsi static holds sliderin value ja tallenna
-            tmpInt = (int) tmpActor.getValue();
-            profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Duration", tmpInt );
-            profilesData.flush();
+            //tmpActor = stage.getRoot().findActor("durationslider");    //etsi static holds sliderin value ja tallenna
+            //tmpInt = (int) tmpActor.getValue();
+            //profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Duration", tmpInt );
+            //profilesData.flush();
 
             tmpActor = stage.getRoot().findActor("sensitivityslider");    //etsi static holds sliderin value ja tallenna
             float tmpFloat = tmpActor.getValue();

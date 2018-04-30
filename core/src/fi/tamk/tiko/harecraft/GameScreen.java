@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -271,6 +272,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             System.out.println((int)((double)playerScore/(double)worldScore * 100) + balloonsCollected/3 + "%");
 
             if(balloonsCollected == 3) playerScore *= 2;
+
+            int oldScore = ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
+            int newScore = oldScore + playerScore;
+            ProfileInfo.profilesData.putInteger(ProfileInfo.selectedPlayerProfile +"Score", newScore);
+            ProfileInfo.profilesData.flush();
+
 
 
             //RECORD

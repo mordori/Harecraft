@@ -335,15 +335,19 @@ public class MainMenu extends ScreenAdapter {
             game.setScreen(new SettingsMenu(game));
         }
         if (profilesMenu) {
+            setCurrentPlayerProfile();
             game.setScreen(new ProfileMenu(game));
         }
         if (createUser) {       //force profile creation
+            setCurrentPlayerProfile();
             game.setScreen(new CreateUser(game));
         }
         if (reloadMainMenu) {
+            setCurrentPlayerProfile();
             game.setScreen(new MainMenu(game,false));
         }
         if (creditsMenu) {
+            setCurrentPlayerProfile();
             game.setScreen(new CreditsMenu(game));
         }
     }

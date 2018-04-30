@@ -13,7 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -37,6 +40,12 @@ public class LevelSelectMenu extends ScreenAdapter {
     Table highScoreTable = new Table();
     Preferences profilesData;
 
+    Boolean mainMenu = false;
+    Boolean startGame = false;
+    I18NBundle localizationBundle;
+
+    static int selectedLevelNumber;
+
     public LevelSelectMenu(GameMain game, ArrayList<String> profs) {
         this.game = game;
         camera = new OrthographicCamera();
@@ -49,25 +58,87 @@ public class LevelSelectMenu extends ScreenAdapter {
 
         ProfileInfo.determineGameLanguage(); //check language data
         locale = ProfileInfo.gameLanguage;
-        I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+        localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
+
+        selectedLevelNumber = 1;
 
         makeHighScores();
-        highScoreTable.setPosition(500,500);
+        highScoreTable.setPosition(240,630);
 
         LevelButton levelOneButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage1.png")), new Texture(Gdx.files.internal("textures/stage1p.png")), 1);
-        levelOneButton.setPosition(400 -100,600);
+        levelOneButton.setPosition(240 -levelOneButton.getWidth()/2,220);
 
         LevelButton levelTwoButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage2.png")), new Texture(Gdx.files.internal("textures/stage2p.png")), 2);
-        levelTwoButton.setPosition(640 -100,600);
+        levelTwoButton.setPosition(640 -levelTwoButton.getWidth()/2,220);
 
         LevelButton levelThreeButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage3.png")), new Texture(Gdx.files.internal("textures/stage3p.png")), 0);
-        levelThreeButton.setPosition(880 -100,600);
+        levelThreeButton.setPosition(1040 -levelThreeButton.getWidth()/2,220);
+
+        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), skin);
+        returnButton.setWidth(270);
+        returnButton.setHeight(120);
+        returnButton.setPosition(200 -returnButton.getWidth()/2,50);
+        returnButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    mainMenu = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+        TextButton startButton = new TextButton(localizationBundle.get("startButtonText"), skin);
+        startButton.setHeight(120);
+        startButton.setWidth(270);
+        startButton.setPosition(1080 -startButton.getWidth()/2,50);
+        startButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    startGame = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+        Slider durationSlider = new Slider(1000,3000, 1000, false,skin);
+        durationSlider.setPosition(640 - 250, 70);;
+        durationSlider.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"Duration", 2000));
+        durationSlider.setWidth(500);
+        durationSlider.setName("durationslider");
+
+        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), skin);
+        durationLabel.setPosition(640 -durationLabel.getWidth()/2, 120);
+
+        Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), skin);
+        topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
 
         stage.addActor(levelOneButton);
         stage.addActor(levelTwoButton);
         stage.addActor(levelThreeButton);
+        stage.addActor(returnButton);
+        stage.addActor(startButton);
 
+        stage.addActor(topPilotsLabel);
         stage.addActor(highScoreTable);
+
+        stage.addActor(durationLabel);
+        stage.addActor(durationSlider);
     }
 
 
@@ -78,6 +149,21 @@ public class LevelSelectMenu extends ScreenAdapter {
 
         stage.act();
         stage.draw();
+
+        if (mainMenu) {
+            game.setScreen(new MainMenu(game, false));
+        }
+        if (startGame) {
+
+            Slider tmpActor = stage.getRoot().findActor("durationslider");    //etsi static holds sliderin value ja tallenna
+            int tmpInt = (int) tmpActor.getValue();
+            profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Duration", tmpInt );
+            profilesData.flush();
+
+            ProfileInfo.load();
+
+            game.setScreen(new GameScreen(game, selectedLevelNumber));
+        }
     }
 
 
@@ -121,13 +207,18 @@ public class LevelSelectMenu extends ScreenAdapter {
         Label score2 = new Label("" +top3Score[1], skin);
         Label score3 = new Label("" +top3Score[2], skin);
 
+        Label emptySpaceLabel = new Label("   ", skin);
+
         highScoreTable.add(name1);
+        highScoreTable.add(emptySpaceLabel);
         highScoreTable.add(score1);
         highScoreTable.row();
         highScoreTable.add(name2);
+        highScoreTable.add(emptySpaceLabel);
         highScoreTable.add(score2);
         highScoreTable.row();
         highScoreTable.add(name3);
+        highScoreTable.add(emptySpaceLabel);
         highScoreTable.add(score3);
     }
 
@@ -159,25 +250,31 @@ class LevelButton extends Actor {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
                 touched = true;
-                textureToDraw = buttonPressed;
+                //textureToDraw = buttonPressed;
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    LevelSelectMenu.game.setScreen(new GameScreen(LevelSelectMenu.game, levelToGo));
+                    //LevelSelectMenu.game.setScreen(new GameScreen(LevelSelectMenu.game, levelToGo));
+                    LevelSelectMenu.selectedLevelNumber = levelToGo;
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
             {
-                textureToDraw = buttonNotPressed;
+                //textureToDraw = buttonNotPressed;
                 touched = false;
             }
         });
 
-        setBounds(getX(),getY(),200,100);
+        setBounds(getX(),getY(),350,300);
     }
 
     public void draw(Batch batch, float alpha) {
-        batch.draw(textureToDraw, getX(),getY(),200,100);
+        if (levelToGo == LevelSelectMenu.selectedLevelNumber) {
+            batch.draw(buttonPressed, getX(), getY(), 350, 300);
+        }
+        else {
+            batch.draw(buttonNotPressed, getX(), getY(), 350, 300);
+        }
     }
 }

@@ -117,6 +117,7 @@ public class ConfirmDelete extends ScreenAdapter {
             profilesData.remove(tempString +"Difficulty");
             profilesData.remove(tempString + "Duration");
             profilesData.remove(tempString +"Sensitivity");
+            profilesData.remove(tempString +"Score");
             for ( int i = 0; i < 6; i++) {
                 profilesData.remove(tempString + "VectorX" + i);
                 profilesData.remove(tempString + "VectorY" + i);
