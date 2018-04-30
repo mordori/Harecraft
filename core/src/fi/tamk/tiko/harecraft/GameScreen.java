@@ -245,33 +245,39 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             gameStateTime = 0f;
             Assets.sound_applause.play(0.4f);
 
-            worldScore += 12;
+
+            System.out.println(playerScore + " / " + worldScore);
+            System.out.println((int)((double)playerScore/(double)worldScore * 100) + (balloonsCollected/3) + "%");
+
+            if(balloonsCollected == 3) playerScore *= 2;
+
+            int lengthMultiplier = ProfileInfo.selectedDuration/1000;
+            if(lengthMultiplier == 2) lengthMultiplier = 3;
+            else if(lengthMultiplier == 3) lengthMultiplier = 5;
+
             switch(playerPlacement) {
                 case 1:
-                    playerScore += 12;
+                    playerScore += 10 * lengthMultiplier;
                     break;
                 case 2:
-                    playerScore += 8;
+                    playerScore += 7 * lengthMultiplier;
                     break;
                 case 3:
-                    playerScore += 6;
+                    playerScore += 5 * lengthMultiplier;
                     break;
                 case 4:
-                    playerScore += 4;
+                    playerScore += 3 * lengthMultiplier;
                     break;
                 case 5:
-                    playerScore += 2;
+                    playerScore += lengthMultiplier;
                     break;
                 case 6:
                     playerScore += 0;
                     break;
             }
 
-            System.out.println(playerScore + " / " + worldScore);
+            playerScore *= (ProfileInfo.selectedDifficulty + 1);
 
-            System.out.println((int)((double)playerScore/(double)worldScore * 100) + balloonsCollected/3 + "%");
-
-            if(balloonsCollected == 3) playerScore *= 2;
 
             int oldScore = ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
             int newScore = oldScore + playerScore;
