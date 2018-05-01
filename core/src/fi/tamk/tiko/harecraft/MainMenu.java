@@ -91,8 +91,9 @@ public class MainMenu extends ScreenAdapter {
         //skin = new Skin(Gdx.files.internal("harejson/hare.json"));
         skin = Assets.skin_menu;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 800);
-        stage = new Stage(new StretchViewport(1280, 800, camera));
+        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+        //stage = new Stage(new StretchViewport(1280, 800, camera));
+        stage = new Stage(new StretchViewport(1280f, 800f, camera));
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
         ProfileInfo.determineGameLanguage(); //check language data
         locale = ProfileInfo.gameLanguage;
@@ -307,7 +308,7 @@ public class MainMenu extends ScreenAdapter {
 
     public void render (float delta) {
         if(isLaunched) Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        else Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        else Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(!animation_plane.isFlipped) {
             x -= 6f * (SCREEN_WIDTH/1280f);
@@ -321,7 +322,7 @@ public class MainMenu extends ScreenAdapter {
         if(stateTime > randomTime && !Assets.animation_menu_plane.isFlipped) {
             x = 0f - sprite_plane.getWidth();
             stateTime = 0f;
-            y = SCREEN_HEIGHT/2f - sprite_plane.getHeight()/2f + MathUtils.random(-SCREEN_HEIGHT/10f, SCREEN_HEIGHT/10f);
+            y = SCREEN_HEIGHT/2.2f - MathUtils.random(SCREEN_HEIGHT/9f, 0f);
 
             Assets.flip(sprites_menu_plane);
             animation_plane.isFlipped = true;
@@ -330,7 +331,7 @@ public class MainMenu extends ScreenAdapter {
         else if(stateTime > randomTime && Assets.animation_menu_plane.isFlipped) {
             x = SCREEN_WIDTH;
             stateTime = 0f;
-            y = SCREEN_HEIGHT/2f - sprite_plane.getHeight()/2f + MathUtils.random(-SCREEN_HEIGHT/10f, SCREEN_HEIGHT/10f);
+            y = SCREEN_HEIGHT/2.2f - MathUtils.random(SCREEN_HEIGHT/9f, 0f);
 
             Assets.flip(sprites_menu_plane);
             animation_plane.isFlipped = false;
@@ -342,12 +343,19 @@ public class MainMenu extends ScreenAdapter {
         sprite_plane.setPosition(x, y);
         stateTime += delta;
 
+        float size = SCREEN_WIDTH/1920f;
+
         fbo.begin();
-        Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sBatch.begin();
         sprite_plane.draw(sBatch);
-        sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
+        //sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
+        sBatch.draw(logo,
+                Gdx.graphics.getWidth()/2f - (logo.getWidth()/1.25f * size / 2f),
+                Gdx.graphics.getHeight() - (logo.getHeight()/1.25f * size) - Gdx.graphics.getHeight()/35f,
+                logo.getWidth()/1.25f * size,
+                logo.getHeight()/1.25f * size);
         sBatch.end();
         stage.act();
         stage.draw();
@@ -356,7 +364,7 @@ public class MainMenu extends ScreenAdapter {
 
 
         if (startGame) {
-            opacity -= delta;
+            opacity -= delta*2f;
             if(opacity < 0f) opacity = 0f;
             if(opacity == 0f) {
                 setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
@@ -366,7 +374,7 @@ public class MainMenu extends ScreenAdapter {
             }
         }
         else {
-            opacity += delta;
+            opacity += delta*2f;
             if(opacity > 1f) {
                 isLaunched = false;
                 opacity = 1f;

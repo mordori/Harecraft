@@ -70,6 +70,11 @@ public class CreditsMenu extends ScreenAdapter {
             twoDots.setPosition(822, 270);
         }
 
+        style2 = new Label.LabelStyle(
+                Assets.font3,
+                new Color(1f,1f,1f,1f)
+        );
+
         Label creditLabel = new Label(localizationBundle.get("creditsText"), style2);
         creditLabel.setPosition(640-creditLabel.getWidth()/2, 650);
 

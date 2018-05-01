@@ -62,7 +62,7 @@ public class CreateUser extends ScreenAdapter {
         textField.setWidth(500);
         //button.getLabel().setFontScale(2f);
         //textField.setHeight(200);
-        textField.setPosition(1280/2 - textField.getWidth()/2,800/1.5f);
+        textField.setPosition(1280/2 - textField.getWidth()/2,800/1.4f);
         textField.setName("textfield");
         //Gdx.input.setOnscreenKeyboardVisible(true);
         textField.setTextFieldListener(new TextField.TextFieldListener() {
@@ -135,7 +135,7 @@ public class CreateUser extends ScreenAdapter {
         });
 
         Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font6,
+                Assets.font3,
                 new Color(1f,1f,1f,1f)
         );
 

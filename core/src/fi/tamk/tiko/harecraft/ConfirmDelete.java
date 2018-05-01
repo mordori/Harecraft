@@ -52,7 +52,7 @@ public class ConfirmDelete extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font6,
+                Assets.font5,
                 new Color(1f,1f,1f,1f)
         );
 

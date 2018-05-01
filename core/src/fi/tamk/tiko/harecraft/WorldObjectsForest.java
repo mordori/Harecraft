@@ -43,7 +43,7 @@ class Hill extends GameObject {
         height *= randomSize;
 
         decal = Decal.newDecal(width, height, textureRegion,true);
-        decal.setPosition(x,y + height/2f - 6f,z);
+        decal.setPosition(x,y + height/2f - 7f,z);
     }
 
     @Override
@@ -85,7 +85,7 @@ class Lake extends GameObject {
         height *= randomSize;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
-        decal.setPosition(x,y - 5f,z + height);
+        decal.setPosition(x,y - 5.5f,z + height);
         decal.rotateX(90f);
         decal.rotateZ(MathUtils.random(0f,360f));
     }
