@@ -7,6 +7,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -116,7 +118,19 @@ public class MainMenu extends ScreenAdapter {
         //profiles.add("Mikko"); //profiileissa 1 järjestysnumero 2 profiilin nimi
         Gdx.input.setInputProcessor(stage);
 
-        TextButton playButton = new TextButton(localizationBundle.get("playButtonText"), skin);
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font3);
+
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton playButton = new TextButton(localizationBundle.get("playButtonText"), style);
         playButton.setPosition(640 -playButton.getWidth()/2,50); //y290 x640
         playButton.setName("playbutton");
         playButton.setHeight(150f);
@@ -138,7 +152,17 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        TextButton settingsButton = new TextButton(localizationBundle.get("settingsButtonText"), skin);
+        style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6);
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton settingsButton = new TextButton(localizationBundle.get("settingsButtonText"), style);
         settingsButton.setWidth(270f);
         settingsButton.setHeight(120f);
         settingsButton.setPosition(310 -settingsButton.getWidth()/2,50); //y170 x640
@@ -161,7 +185,7 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        TextButton profilesButton = new TextButton(localizationBundle.get("profilesButtonText"), skin);
+        TextButton profilesButton = new TextButton(localizationBundle.get("profilesButtonText"), style);
         profilesButton.setHeight(120f);
         profilesButton.setWidth(270f);
         profilesButton.setPosition(970 -profilesButton.getWidth()/2,50); //y50 x640
@@ -185,10 +209,28 @@ public class MainMenu extends ScreenAdapter {
         });
 
 
+        com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle listStyle = new com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f),
+                new Color(1f,1f,1f,1f),
+                Assets.skin_menu.getDrawable("round-dark-gray")
+        );
+        listStyle.background = Assets.skin_menu.getDrawable("round-gray");
+
+        SelectBox.SelectBoxStyle style2 = new SelectBox.SelectBoxStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f),
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.skin_menu.get("default", ScrollPane.ScrollPaneStyle.class),
+                listStyle
+                );
+        style2.backgroundOpen = Assets.skin_menu.getDrawable("listbutton pressed");
+
+
         //User valintaboxin luominen alkaa
         //skin.getFont("font").getData().setScale(1f); //set skin font size
         skin.getFont("komika").getData().setScale(1f); //set skin font size
-        SelectBox profileBox = new SelectBox(skin);
+        SelectBox profileBox = new SelectBox(style2);
         profileBox.setName("profileBox");
         //profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso", "tyyppi", "tyyppi2", "tyyppi3", "tyypi4"});
         Collections.sort(profiles);

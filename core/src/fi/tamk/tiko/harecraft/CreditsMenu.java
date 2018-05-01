@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -41,22 +42,27 @@ public class CreditsMenu extends ScreenAdapter {
         locale = ProfileInfo.gameLanguage;
         I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
-        Label label1 = new Label(localizationBundle.get("miikaCreditsText"), skin);
+        Label.LabelStyle style2 = new Label.LabelStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label label1 = new Label(localizationBundle.get("miikaCreditsText"), style2);
         label1.setPosition(640-label1.getWidth()/2, 560);
 
-        Label label2 = new Label(localizationBundle.get("mikaCreditsText"), skin);
+        Label label2 = new Label(localizationBundle.get("mikaCreditsText"), style2);
         label2.setPosition(640-label2.getWidth()/2, 480);
 
-        Label label3 = new Label(localizationBundle.get("mikkoCreditsText"), skin);
+        Label label3 = new Label(localizationBundle.get("mikkoCreditsText"), style2);
         label3.setPosition(640-label3.getWidth()/2, 400);
 
-        Label label4 = new Label(localizationBundle.get("juusoCreditsText"), skin);
+        Label label4 = new Label(localizationBundle.get("juusoCreditsText"), style2);
         label4.setPosition(640-label4.getWidth()/2, 320);
 
-        Label label5 = new Label(localizationBundle.get("henriCreditsText"), skin);
+        Label label5 = new Label(localizationBundle.get("henriCreditsText"), style2);
         label5.setPosition(640-label5.getWidth()/2, 240);
 
-        Label twoDots = new Label("..", skin);
+        Label twoDots = new Label("..", style2);
         if (ProfileInfo.gameLanguage.toString().equals("fi_FI")) {
             twoDots.setPosition(843, 270);
         }
@@ -64,10 +70,22 @@ public class CreditsMenu extends ScreenAdapter {
             twoDots.setPosition(822, 270);
         }
 
-        Label creditLabel = new Label(localizationBundle.get("creditsText"), skin);
+        Label creditLabel = new Label(localizationBundle.get("creditsText"), style2);
         creditLabel.setPosition(640-creditLabel.getWidth()/2, 650);
 
-        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), skin);
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6);
+
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), style);
         returnButton.setWidth(270f);
         returnButton.setHeight(120f);
         returnButton.setPosition(640 -returnButton.getWidth()/2,50); //y170 x640

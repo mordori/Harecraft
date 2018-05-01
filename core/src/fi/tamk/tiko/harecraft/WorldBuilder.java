@@ -60,9 +60,9 @@ public class WorldBuilder {
     public WorldBuilder(World world) {
         this.world = world;
         red = green = blue = false;
-        balloon1SpawnPos = MathUtils.random(50f, (1f/3f * finish)) ;
-        balloon2SpawnPos = MathUtils.random(1f/3f * finish + 50f, 2f/3f * finish - 50f);
-        balloon3SpawnPos = MathUtils.random(2f/3f * finish + 50f, 3f/3f * finish - 50f);
+        balloon1SpawnPos = MathUtils.random(50f, 1f/3f * finish -100) ;
+        balloon2SpawnPos = MathUtils.random(1f/3f * finish + 100f, 2f/3f * finish - 100f);
+        balloon3SpawnPos = MathUtils.random(2f/3f * finish + 100f, 3f/3f * finish - 100f);
         System.out.println(balloon1SpawnPos);
         System.out.println(balloon2SpawnPos);
         System.out.println(balloon3SpawnPos);

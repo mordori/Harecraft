@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -50,13 +51,29 @@ public class ConfirmDelete extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(stage);
 
-        Label questionLabel = new Label(localizationBundle.get("sureToDelete") +" " +tempString +" ?", skin);
+        Label.LabelStyle style2 = new Label.LabelStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label questionLabel = new Label(localizationBundle.get("sureToDelete") +" " +tempString +" ?", style2);
         questionLabel.setPosition(640 -questionLabel.getWidth()/2,500);
         //questionLabel.setPosition(640 - 150, 500);
         questionLabel.setFontScale(1);
         questionLabel.setName("difficultylabel");
 
-        TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), skin);
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), style);
         yesButton.setPosition(1280/2 -200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
         yesButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -75,7 +92,7 @@ public class ConfirmDelete extends ScreenAdapter {
             }
         });
 
-        TextButton noButton = new TextButton(localizationBundle.get("noButton"), skin);
+        TextButton noButton = new TextButton(localizationBundle.get("noButton"), style);
         noButton.setPosition(1280/2 +200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
         noButton.addListener(new InputListener() {
             Boolean touched = false;

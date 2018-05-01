@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -48,7 +49,16 @@ public class CreateUser extends ScreenAdapter {
         //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
         skin = Assets.skin_menu;
         profilesData = Gdx.app.getPreferences("ProfileFile");
-        textField = new TextField("" ,skin);
+
+        TextField.TextFieldStyle style3 = new TextField.TextFieldStyle(
+                Assets.font6,
+                new Color(0f,0f,0f,1f),
+                Assets.skin_menu.getDrawable("black"),
+                Assets.skin_menu.getDrawable("pale-blue"),
+                Assets.skin_menu.getDrawable("textfield")
+        );
+
+        textField = new TextField("" , style3);
         textField.setWidth(500);
         //button.getLabel().setFontScale(2f);
         //textField.setHeight(200);
@@ -70,7 +80,19 @@ public class CreateUser extends ScreenAdapter {
         locale = ProfileInfo.gameLanguage;
         I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
-        TextButton backButton = new TextButton(localizationBundle.get("backButtonText"), skin);
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton backButton = new TextButton(localizationBundle.get("backButtonText"), style);
         backButton.setPosition(450 -backButton.getWidth()/2,400);
         backButton.setName("backbutton");
         backButton.addListener(new InputListener() {
@@ -91,7 +113,7 @@ public class CreateUser extends ScreenAdapter {
             }
         });
 
-        TextButton acceptButton = new TextButton(localizationBundle.get("acceptButtonText"), skin);
+        TextButton acceptButton = new TextButton(localizationBundle.get("acceptButtonText"), style);
         acceptButton.setPosition(830 -backButton.getWidth()/2,400);
         acceptButton.setName("acceptbutton");
         acceptButton.addListener(new InputListener() {
@@ -112,7 +134,12 @@ public class CreateUser extends ScreenAdapter {
             }
         });
 
-        Label label1 = new Label(localizationBundle.get("createUserLabel"), skin);
+        Label.LabelStyle style2 = new Label.LabelStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label label1 = new Label(localizationBundle.get("createUserLabel"), style2);
         label1.setPosition(640 -label1.getWidth()/2,670);
         label1.setFontScale(1);
 

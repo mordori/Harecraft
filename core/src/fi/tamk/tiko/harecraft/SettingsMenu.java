@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -60,17 +61,36 @@ public class SettingsMenu extends ScreenAdapter {
         locale = ProfileInfo.gameLanguage;
         I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
-        TextButton button = new TextButton(localizationBundle.get("saveButtonText"), skin);
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+            Assets.skin_menu.getDrawable("button"),
+            Assets.skin_menu.getDrawable("button pressed"),
+            Assets.skin_menu.getDrawable("button"),
+            Assets.font6
+        );
+
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton button = new TextButton(localizationBundle.get("saveButtonText"), style);
         button.setPosition(900,50);
         button.setName("backbutton");
 
-        Slider slider = new Slider(0,4,1,false,skin);
+        Slider slider = new Slider(0,4,1,false, skin);
         slider.setPosition(650,650);
         slider.setValue(profilesData.getInteger(""+ProfileInfo.selectedPlayerProfile +"Difficulty", 2));     //set value to current difficultylevel when loading
         slider.setWidth(500);
         slider.setName("difficultyslider");
 
-        Label difficultyLabel = new Label(localizationBundle.get("difficultyLabelText"), skin);
+
+        Label.LabelStyle style2 = new Label.LabelStyle(
+            Assets.font6,
+            new Color(1f,1f,1f,1f)
+        );
+
+        Label difficultyLabel = new Label(localizationBundle.get("difficultyLabelText"), style2);
         difficultyLabel.setPosition(900 -difficultyLabel.getWidth()/2,700);
         difficultyLabel.setFontScale(1);
         difficultyLabel.setName("difficultylabel");
@@ -81,7 +101,7 @@ public class SettingsMenu extends ScreenAdapter {
         slider2.setWidth(500);
         slider2.setName("staticholdsslider");
 
-        Label staticsLabel = new Label(localizationBundle.get("staticLabelText"), skin);
+        Label staticsLabel = new Label(localizationBundle.get("staticLabelText"), style2);
         staticsLabel.setPosition(900 - staticsLabel.getWidth()/2,550);
         staticsLabel.setFontScale(1);
         staticsLabel.setName("staticholdlabel");
@@ -97,7 +117,7 @@ public class SettingsMenu extends ScreenAdapter {
         //durationSlider.setWidth(500);
         //durationSlider.setName("durationslider");
 
-        Label sensitivityLabel = new Label(localizationBundle.get("sensitivityLabelText"), skin);
+        Label sensitivityLabel = new Label(localizationBundle.get("sensitivityLabelText"), style2);
         sensitivityLabel.setPosition(900 - sensitivityLabel.getWidth()/2,400);
         sensitivityLabel.setFontScale(1);
         sensitivityLabel.setName("sensitivitylabel");
@@ -108,7 +128,15 @@ public class SettingsMenu extends ScreenAdapter {
         sensitivitySlider.setWidth(500);
         sensitivitySlider.setName("sensitivityslider");
 
-        CheckBox invertYCheckBox = new CheckBox(localizationBundle.get("invertLabelText"), skin);
+
+        CheckBox.CheckBoxStyle style3 = new CheckBox.CheckBoxStyle(
+                Assets.skin_menu.getDrawable("checkbox checked"),
+                Assets.skin_menu.getDrawable("checkbox"),
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
+
+        CheckBox invertYCheckBox = new CheckBox(localizationBundle.get("invertLabelText"), style3);
         invertYCheckBox.setChecked(profilesData.getBoolean(ProfileInfo.selectedPlayerProfile +"Invert", true));
         invertYCheckBox.setName("invertcheckbox");
         invertYCheckBox.getLabelCell().padLeft(50f);

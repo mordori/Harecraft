@@ -35,6 +35,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
 import static fi.tamk.tiko.harecraft.MainMenu.profiles;
 
+
 public class ScoreScreen extends ScreenAdapter implements GestureDetector.GestureListener {
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
@@ -85,8 +86,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
 
     float scoreboard_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
-    float originalLineHeight3 = Assets.font3.getLineHeight();
-    float originalLineHeight4 = Assets.font4.getLineHeight();
+    float originalLineHeight3 = Assets.font5.getLineHeight();
+    float originalLineHeight4 = Assets.font6.getLineHeight();
 
     public ScoreScreen() {
         sBatch.setProjectionMatrix(orthoCamera.combined);
@@ -95,14 +96,14 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         Gdx.input.setInputProcessor(stage);
 
 
-        Assets.font3.getData().setLineHeight(Assets.font3.getLineHeight()/1.3f);
-        Assets.font4.getData().setLineHeight(Assets.font3.getLineHeight()/1.3f);
+        Assets.font5.getData().setLineHeight(Assets.font5.getLineHeight()/1.3f);
+        Assets.font6.getData().setLineHeight(Assets.font6.getLineHeight()/1.3f);
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("listbutton"),
                 Assets.skin_menu.getDrawable("listbutton pressed"),
                 Assets.skin_menu.getDrawable("listbutton"),
-                Assets.font3);
+                Assets.font5);
 
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
@@ -125,8 +126,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    Assets.font3.getData().setLineHeight(originalLineHeight3);
-                    Assets.font4.getData().setLineHeight(originalLineHeight4);
+                    Assets.font5.getData().setLineHeight(originalLineHeight3);
+                    Assets.font6.getData().setLineHeight(originalLineHeight4);
                     game.setScreen(new GameScreen(game, GameScreen.index));
                 }
             }
@@ -140,7 +141,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font4);
+                Assets.font6);
 
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
@@ -163,8 +164,9 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    Assets.font4.getData().setLineHeight(originalLineHeight4);
-                    Assets.font3.getData().setLineHeight(originalLineHeight3);
+                    Assets.font5.getData().setLineHeight(originalLineHeight4);
+                    Assets.font6.getData().setLineHeight(originalLineHeight3);
+
                     game.setScreen(new LevelSelectMenu(game, profiles));
                 }
             }
@@ -191,8 +193,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    Assets.font4.getData().setLineHeight(originalLineHeight4);
-                    Assets.font3.getData().setLineHeight(originalLineHeight3);
+                    Assets.font5.getData().setLineHeight(originalLineHeight4);
+                    Assets.font6.getData().setLineHeight(originalLineHeight3);
                     game.setScreen(new MainMenu(game,false));
                 }
             }

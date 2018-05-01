@@ -64,7 +64,19 @@ public class ProfileMenu extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(stage);
 
-        TextButton mainMenuButton = new TextButton(localizationBundle.get("mainMenu"), skin);
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton mainMenuButton = new TextButton(localizationBundle.get("mainMenu"), style);
         mainMenuButton.setPosition(100,100);
         mainMenuButton.setWidth(400);
         mainMenuButton.addListener(new InputListener() {
@@ -84,7 +96,7 @@ public class ProfileMenu extends ScreenAdapter {
             }
         });
 
-        TextButton createUserButton = new TextButton(localizationBundle.get("createUser"), skin);
+        TextButton createUserButton = new TextButton(localizationBundle.get("createUser"), style);
         createUserButton.setPosition(100,500);
         createUserButton.setWidth(400);
         createUserButton.addListener(new InputListener() {
@@ -104,7 +116,7 @@ public class ProfileMenu extends ScreenAdapter {
             }
         });
 
-        TextButton deleteUserButton = new TextButton(localizationBundle.get("deleteProfile"), skin);
+        TextButton deleteUserButton = new TextButton(localizationBundle.get("deleteProfile"), style);
         deleteUserButton.setPosition(100,300);
         deleteUserButton.setWidth(400);
         deleteUserButton.addListener(new InputListener() {
@@ -125,7 +137,15 @@ public class ProfileMenu extends ScreenAdapter {
         });
 
 
-        List listBox = new List(skin);
+        com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle listStyle = new com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f),
+                new Color(1f,1f,1f,1f),
+                Assets.skin_menu.getDrawable("round-dark-gray")
+        );
+        listStyle.background = Assets.skin_menu.getDrawable("round-gray");
+
+        List listBox = new List(listStyle);
         listBox.setItems(profiles.toArray());
         listBox.setName("listbox");
         ScrollPane scrollBox = new ScrollPane(listBox);

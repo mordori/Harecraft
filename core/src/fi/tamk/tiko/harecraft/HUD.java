@@ -63,7 +63,11 @@ public class HUD {
     public HUD(World world, final GameScreen gameScreen) {
         this.world = world;
         this.gameScreen = gameScreen;
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(Assets.skin_menu.getDrawable("listbutton"),Assets.skin_menu.getDrawable("listbutton pressed"),Assets.skin_menu.getDrawable("listbutton"),Assets.font2);
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.skin_menu.getDrawable("listbutton pressed"),
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.font4);
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
@@ -95,7 +99,11 @@ public class HUD {
             }
         });
 
-        style = new TextButton.TextButtonStyle(Assets.skin_menu.getDrawable("button"),Assets.skin_menu.getDrawable("button pressed"),Assets.skin_menu.getDrawable("button"),Assets.font4);
+        style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6);
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);

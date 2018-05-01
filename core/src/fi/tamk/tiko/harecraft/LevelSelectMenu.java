@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -74,7 +75,18 @@ public class LevelSelectMenu extends ScreenAdapter {
         LevelButton levelThreeButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage3.png")), new Texture(Gdx.files.internal("textures/stage3p.png")), 0);
         levelThreeButton.setPosition(1040 -levelThreeButton.getWidth()/2,220);
 
-        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), skin);
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), style);
         returnButton.setWidth(270);
         returnButton.setHeight(120);
         returnButton.setPosition(200 -returnButton.getWidth()/2,50);
@@ -95,7 +107,18 @@ public class LevelSelectMenu extends ScreenAdapter {
             }
         });
 
-        TextButton startButton = new TextButton(localizationBundle.get("startButtonText"), skin);
+        style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.skin_menu.getDrawable("listbutton pressed"),
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.font6
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
+        TextButton startButton = new TextButton(localizationBundle.get("startButtonText"), style);
         startButton.setHeight(120);
         startButton.setWidth(270);
         startButton.setPosition(1080 -startButton.getWidth()/2,50);
@@ -122,10 +145,15 @@ public class LevelSelectMenu extends ScreenAdapter {
         durationSlider.setWidth(500);
         durationSlider.setName("durationslider");
 
-        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), skin);
+        Label.LabelStyle style2 = new Label.LabelStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), style2);
         durationLabel.setPosition(640 -durationLabel.getWidth()/2, 120);
 
-        Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), skin);
+        Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
         topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
 
         stage.addActor(levelOneButton);
@@ -141,9 +169,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.addActor(durationSlider);
     }
 
-
     public void render (float delta) {
-
         Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -168,7 +194,7 @@ public class LevelSelectMenu extends ScreenAdapter {
 
 
     public void makeHighScores() {
-        List<String> tempProfileList = profiles;
+        ArrayList<String> tempProfileList = new ArrayList<String>(profiles);
         int tempScoreInt;
 
         //profilesData.putInteger("Mikko"+"Score", 987);
@@ -199,15 +225,20 @@ public class LevelSelectMenu extends ScreenAdapter {
             Gdx.app.log("paras score oli pelaajalla ", "" +highestProfileName +" lukemalla " +highestScoreFound);
         }
 
-        Label name1 = new Label(top3Names[0], skin);
-        Label name2 = new Label(top3Names[1], skin);
-        Label name3 = new Label(top3Names[2], skin);
+        Label.LabelStyle style2 = new Label.LabelStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
 
-        Label score1 = new Label("" +top3Score[0], skin);
-        Label score2 = new Label("" +top3Score[1], skin);
-        Label score3 = new Label("" +top3Score[2], skin);
+        Label name1 = new Label(top3Names[0], style2);
+        Label name2 = new Label(top3Names[1], style2);
+        Label name3 = new Label(top3Names[2], style2);
 
-        Label emptySpaceLabel = new Label("   ", skin);
+        Label score1 = new Label("" +top3Score[0], style2);
+        Label score2 = new Label("" +top3Score[1], style2);
+        Label score3 = new Label("" +top3Score[2], style2);
+
+        Label emptySpaceLabel = new Label("   ", style2);
 
         highScoreTable.add(name1);
         highScoreTable.add(emptySpaceLabel);
