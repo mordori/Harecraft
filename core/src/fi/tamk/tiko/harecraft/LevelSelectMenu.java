@@ -79,7 +79,7 @@ public class LevelSelectMenu extends ScreenAdapter {
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font6
+                Assets.font5
         );
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
@@ -111,7 +111,7 @@ public class LevelSelectMenu extends ScreenAdapter {
                 Assets.skin_menu.getDrawable("listbutton"),
                 Assets.skin_menu.getDrawable("listbutton pressed"),
                 Assets.skin_menu.getDrawable("listbutton"),
-                Assets.font6
+                Assets.font5
         );
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;

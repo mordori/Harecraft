@@ -73,7 +73,7 @@ public class HUD {
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
         style.fontColor = new Color(1f,1f,1f,1f);
         TextButton btnResume = new TextButton(localizationBundle.get("btnResumeText"), style);
-        if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(340f);
+        if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(360f);
         else btnResume.setWidth(300f);
         btnResume.setHeight(160f);
         if(SCREEN_WIDTH >= 1280f) btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.85f/2f * SCREEN_HEIGHT);

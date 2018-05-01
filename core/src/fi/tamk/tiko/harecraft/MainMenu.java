@@ -124,7 +124,6 @@ public class MainMenu extends ScreenAdapter {
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
                 Assets.font3);
-
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);

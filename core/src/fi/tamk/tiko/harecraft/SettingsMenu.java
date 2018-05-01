@@ -66,9 +66,8 @@ public class SettingsMenu extends ScreenAdapter {
             Assets.skin_menu.getDrawable("button"),
             Assets.skin_menu.getDrawable("button pressed"),
             Assets.skin_menu.getDrawable("button"),
-            Assets.font6
+            Assets.font5
         );
-
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
@@ -137,7 +136,7 @@ public class SettingsMenu extends ScreenAdapter {
         );
 
         CheckBox invertYCheckBox = new CheckBox(localizationBundle.get("invertLabelText"), style3);
-        invertYCheckBox.setChecked(profilesData.getBoolean(ProfileInfo.selectedPlayerProfile +"Invert", true));
+        invertYCheckBox.setChecked(profilesData.getBoolean(ProfileInfo.selectedPlayerProfile +"Invert",true));
         invertYCheckBox.setName("invertcheckbox");
         invertYCheckBox.getLabelCell().padLeft(50f);
         invertYCheckBox.setPosition(900 -invertYCheckBox.getWidth()/2, 235);
