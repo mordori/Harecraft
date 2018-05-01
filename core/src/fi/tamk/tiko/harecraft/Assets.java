@@ -92,6 +92,7 @@ public class Assets {
     static ParticleEffect pfx_cloud_dispersion;
     static ParticleEffect pfx_speed_lines;
     static ParticleEffect pfx_speed_up;
+    static ParticleEffect pfx_snow;
 
     static BitmapFont font1;
     static BitmapFont font2;
@@ -200,6 +201,8 @@ public class Assets {
         pfx_speed_lines.load(Gdx.files.internal("particles/pfx_speed_lines"), Gdx.files.internal("particles/"));
         pfx_speed_up = new ParticleEffect();
         pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
+        pfx_snow = new ParticleEffect();
+        pfx_snow.load(Gdx.files.internal("particles/pfx_snow"), Gdx.files.internal("particles/"));
 
         //FONTS
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/KOMIKAX_.ttf"));
@@ -329,6 +332,7 @@ public class Assets {
         pfx_cloud_dispersion.dispose();
         pfx_speed_lines.dispose();
         pfx_speed_up.dispose();
+        pfx_snow.dispose();
 
         font1.dispose();
         font2.dispose();

@@ -133,6 +133,7 @@ public class WorldRenderer {
         for(Ring r : world.rings) if(r.isCollected) r.pfx_speed_up.draw(sBatch);
 
         world.pfx_speed_lines.draw(sBatch);
+        if(world instanceof WorldTundra) world.pfx_snow.draw(sBatch);
         sBatch.end();
     }
 

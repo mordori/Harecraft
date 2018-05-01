@@ -33,6 +33,7 @@ public abstract class World {
     static float end;
 
     ParticleEffect pfx_speed_lines;
+    ParticleEffect pfx_snow;
 
     //Player
     static Player player;
@@ -94,6 +95,8 @@ public abstract class World {
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
+        pfx_snow = new ParticleEffect(Assets.pfx_snow);
+        pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
 
         player = new Player(0f,-7f,-5f);
         opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));

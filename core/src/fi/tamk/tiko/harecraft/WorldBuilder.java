@@ -453,7 +453,13 @@ public class WorldBuilder {
         world.pfx_speed_lines.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
         world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 1f);
         world.pfx_speed_lines.update(delta);
-        if(gameState == END) world.pfx_speed_lines.allowCompletion();
+
+        if(world instanceof WorldTundra) world.pfx_snow.update(delta);
+
+        if(gameState == END) {
+            world.pfx_speed_lines.allowCompletion();
+            world.pfx_snow.allowCompletion();
+        }
     }
 
     public void spawnStartObjects() {
