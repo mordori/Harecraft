@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import static fi.tamk.tiko.harecraft.GameMain.blurTargetA;
 import static fi.tamk.tiko.harecraft.GameMain.blurTargetB;
+import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
@@ -20,12 +22,12 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_BLUR;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_blur;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_blur;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_luminance;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -41,7 +43,8 @@ public class WorldRenderer {
     boolean isBlurEnabled;
 
     static float radius = 3f;
-    final static float MAX_BLUR = 500f;
+    final static float MAX_BLUR = 5.0f;
+    private static final float WORLD_TO_SCREEN = 1.0f / 100.0f;
 
 
     public WorldRenderer(World world) {
@@ -52,10 +55,11 @@ public class WorldRenderer {
             Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
         else if(world instanceof WorldSummer) {
-            //isBlurEnabled = true;
+            isBlurEnabled = true;
             Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
         }
         else if(world instanceof WorldTundra) {
+            isBlurEnabled = true;
             Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
         }
     }
@@ -71,6 +75,7 @@ public class WorldRenderer {
         }
 
         if(isBlurEnabled) {
+            //sBatch.setProjectionMatrix(orthoCamera.combined);
             blurTargetA.begin();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
@@ -87,10 +92,6 @@ public class WorldRenderer {
     public void drawDecals() {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
-
-        if(isBlurEnabled){
-            //activeShader = SHADER3D_BLUR;
-        }
         if(!isSeaEnabled) dBatch.add(world.decal_background);
 
         dBatch.add(world.decal_sun1);
@@ -98,22 +99,28 @@ public class WorldRenderer {
         dBatch.flush();
 
         if(isBlurEnabled) {
-            //activeShader = SHADER3D_BLUR;
+            //sBatch.setShader(null);
+            sBatch.setShader(shader2D_luminance);
+            //Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
+            //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
             sBatch.begin();
-            sBatch.draw(Assets.texR_hotairballoon,500, 500);
+            sBatch.draw(Assets.texR_balloon_red,400, 10);
+            sBatch.draw(Assets.tex_sea,500, 300);
             sBatch.end();
 
             blurTargetA.end();
 
-            blurTargetB.begin();
+            applyBlur(2.0f);
+            sBatch.setShader(null);
+
+            /*blurTargetB.begin();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
             sBatch.setShader(shader3D_blur);
             shader3D_blur.setUniformf("dir", 1f, 0f);
             shader3D_blur.setUniformf("radius", MAX_BLUR);
+
             sBatch.begin();
-            //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            //Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
             sBatch.draw(blurTargetA.getColorBufferTexture(),0, 0);
             sBatch.end();
             blurTargetB.end();
@@ -128,6 +135,7 @@ public class WorldRenderer {
             //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             sBatch.setShader(shader2D_default);
             //Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);
+            */
         }
 
         if(isBlurEnabled) activeShader = SHADER3D_DEFAULT;
@@ -155,6 +163,33 @@ public class WorldRenderer {
 
         //////////////////////////////////////////////
         dBatch.flush();
+    }
+
+    private void applyBlur(float blur) {
+        // Horizontal blur from FBO A to FBO B
+        blurTargetB.begin();
+        sBatch.setShader(shader2D_blur);
+        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
+        shader2D_blur.setUniformf("radius", blur);
+        //Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        sBatch.begin();
+        drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
+        sBatch.flush();
+        blurTargetB.end();
+
+        // Vertical blur from FBO B to the screen
+        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
+        shader2D_blur.setUniformf("radius", blur);
+        sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        drawTexture(blurTargetB.getColorBufferTexture(), 0.0f, 0.0f);
+        sBatch.flush();
+        sBatch.end();
+        sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    private void drawTexture(Texture texture, float x, float y) {
+        sBatch.draw(texture, x, y);
     }
 
     public void renderToTexture() {

@@ -77,8 +77,8 @@ public class GameMain extends Game {
         texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, format));
         texture.flip(false, true);
 
-        blurTargetA = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,true);
-        blurTargetB = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,true);
+        blurTargetA = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
+        blurTargetB = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
 
         System.out.println(Gdx.files.isLocalStorageAvailable());
         System.out.println(Gdx.files.getLocalStoragePath());

@@ -17,8 +17,8 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_blur;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_blur;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
@@ -167,10 +167,10 @@ class WorldSummer extends World {
         }
         shader2D_vignette.end();
         */
-        shader3D_blur.begin();
-        shader3D_blur.setUniformMatrix("u_projTrans", camera.combined);
-        shader3D_blur.setUniformi("u_texture", 0);
-        shader3D_blur.end();
+        shader2D_blur.begin();
+        //shader3D_blur.setUniformMatrix("u_projTrans", camera.combined);
+        //shader3D_blur.setUniformi("u_texture", 0);
+        shader2D_blur.end();
     }
 
 }
