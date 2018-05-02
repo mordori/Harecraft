@@ -61,7 +61,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         locale = ProfileInfo.gameLanguage;
         localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
-        selectedLevelNumber = 1;
+        selectedLevelNumber = profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"LastLevel", 1);
 
         makeHighScores();
         highScoreTable.setPosition(240,630);
@@ -177,11 +177,21 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.draw();
 
         if (mainMenu) {
+
+            saveLastSelectedLevel();
+
+            Slider tmpActor = stage.getRoot().findActor("durationslider");
+            int tmpInt = (int) tmpActor.getValue();
+            profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Duration", tmpInt );
+            profilesData.flush();
+
             game.setScreen(new MainMenu(game, false));
         }
         if (startGame) {
 
-            Slider tmpActor = stage.getRoot().findActor("durationslider");    //etsi static holds sliderin value ja tallenna
+            saveLastSelectedLevel();
+
+            Slider tmpActor = stage.getRoot().findActor("durationslider");
             int tmpInt = (int) tmpActor.getValue();
             profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"Duration", tmpInt );
             profilesData.flush();
@@ -192,6 +202,10 @@ public class LevelSelectMenu extends ScreenAdapter {
         }
     }
 
+    public void saveLastSelectedLevel() {
+        profilesData.putInteger(ProfileInfo.selectedPlayerProfile+"LastLevel", selectedLevelNumber);
+        profilesData.flush();
+    }
 
     public void makeHighScores() {
         ArrayList<String> tempProfileList = new ArrayList<String>(profiles);
