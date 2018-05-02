@@ -270,14 +270,14 @@ public class WorldBuilder {
             x = MathUtils.random(-150f, 0f);
             y = groundLevel;
             world.trees_L.add(new Tree(x, y, spawnDistance));
-            trees_LTimer = MathUtils.random(0.2f - global_Multiplier * 0.015f, 0.4f - global_Multiplier * 0.035f);
+            trees_LTimer = MathUtils.random(0.25f - global_Multiplier * 0.015f, 0.45f - global_Multiplier * 0.035f);
         }
 
         if((world.trees_R.isEmpty() && trees_RRemoveTimer == 0f) || (!world.trees_R.isEmpty() && trees_RRemoveTimer == 0f && world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer)) {
             x = MathUtils.random(0f, 150f);
             y = groundLevel;
             world.trees_R.add(new Tree(x, y, spawnDistance));
-            trees_RTimer = MathUtils.random(0.2f - global_Multiplier * 0.015f, 0.4f - global_Multiplier * 0.035f);
+            trees_RTimer = MathUtils.random(0.25f - global_Multiplier * 0.015f, 0.45f - global_Multiplier * 0.035f);
         }
     }
 
@@ -457,8 +457,8 @@ public class WorldBuilder {
         if(world.pfx_snow != null) world.pfx_snow.update(delta);
 
         if(gameState == END) {
-            world.pfx_speed_lines.allowCompletion();
-            world.pfx_snow.allowCompletion();
+            if(world.pfx_speed_lines != null) world.pfx_speed_lines.allowCompletion();
+            if(world.pfx_snow != null) world.pfx_snow.allowCompletion();
         }
     }
 

@@ -55,11 +55,11 @@ public class WorldRenderer {
             Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
         else if(world instanceof WorldSummer) {
-            isBlurEnabled = true;
+            //isBlurEnabled = true;
             Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
         }
         else if(world instanceof WorldTundra) {
-            isBlurEnabled = true;
+            //isBlurEnabled = true;
             Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
         }
     }
@@ -93,6 +93,9 @@ public class WorldRenderer {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
         if(!isSeaEnabled) dBatch.add(world.decal_background);
+
+        dBatch.add(world.decal_sun1);
+        dBatch.add(world.decal_sun2);
 
         dBatch.flush();
 
@@ -140,8 +143,7 @@ public class WorldRenderer {
             */
         }
 
-        dBatch.add(world.decal_sun1);
-        dBatch.add(world.decal_sun2);
+
 
         if(isBlurEnabled) activeShader = SHADER3D_DEFAULT;
         if(isSeaEnabled) activeShader = SHADER3D_SEA;
