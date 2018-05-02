@@ -2,7 +2,11 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
+import static fi.tamk.tiko.harecraft.GameMain.blurTargetA;
+import static fi.tamk.tiko.harecraft.GameMain.blurTargetB;
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
@@ -12,11 +16,16 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_BLUR;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_blur;
+import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -29,6 +38,11 @@ public class WorldRenderer {
     World world;
     boolean isFBOEnabled;
     boolean isSeaEnabled;
+    boolean isBlurEnabled;
+
+    static float radius = 3f;
+    final static float MAX_BLUR = 500f;
+
 
     public WorldRenderer(World world) {
         this.world = world;
@@ -38,6 +52,7 @@ public class WorldRenderer {
             Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
         else if(world instanceof WorldSummer) {
+            //isBlurEnabled = true;
             Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
         }
         else if(world instanceof WorldTundra) {
@@ -46,22 +61,17 @@ public class WorldRenderer {
     }
 
     public void renderWorld() {
-        //Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if(gameState == EXIT) isFBOEnabled = true;
 
         if(isFBOEnabled) {
             fbo.begin();
-            if(world instanceof WorldSea) {
-                Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
-            }
-            else if(world instanceof WorldSummer) {
-                Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
-            }
-            else if(world instanceof WorldTundra) {
-                Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
-            }
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        }
+
+        if(isBlurEnabled) {
+            blurTargetA.begin();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
 
@@ -78,12 +88,49 @@ public class WorldRenderer {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
+        if(isBlurEnabled){
+            //activeShader = SHADER3D_BLUR;
+        }
         if(!isSeaEnabled) dBatch.add(world.decal_background);
 
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
         dBatch.flush();
 
+        if(isBlurEnabled) {
+            //activeShader = SHADER3D_BLUR;
+            sBatch.begin();
+            sBatch.draw(Assets.texR_hotairballoon,500, 500);
+            sBatch.end();
+
+            blurTargetA.end();
+
+            blurTargetB.begin();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+            sBatch.setShader(shader3D_blur);
+            shader3D_blur.setUniformf("dir", 1f, 0f);
+            shader3D_blur.setUniformf("radius", MAX_BLUR);
+            sBatch.begin();
+            //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            //Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
+            sBatch.draw(blurTargetA.getColorBufferTexture(),0, 0);
+            sBatch.end();
+            blurTargetB.end();
+
+            shader3D_blur.setUniformf("dir", 0f, 1f);
+            shader3D_blur.setUniformf("radius", MAX_BLUR);
+
+            sBatch.begin();
+            sBatch.draw(blurTargetB.getColorBufferTexture(),0, 0);
+            sBatch.end();
+
+            //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            sBatch.setShader(shader2D_default);
+            //Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);
+        }
+
+        if(isBlurEnabled) activeShader = SHADER3D_DEFAULT;
         if(isSeaEnabled) activeShader = SHADER3D_SEA;
         //----------------------------
         dBatch.add(world.ground);
@@ -132,8 +179,8 @@ public class WorldRenderer {
 
         for(Ring r : world.rings) if(r.isCollected) r.pfx_speed_up.draw(sBatch);
 
+        if(world.pfx_snow != null) world.pfx_snow.draw(sBatch);
         world.pfx_speed_lines.draw(sBatch);
-        if(world instanceof WorldTundra) world.pfx_snow.draw(sBatch);
         sBatch.end();
     }
 

@@ -3,9 +3,12 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 
+import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
@@ -14,6 +17,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_blur;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -24,10 +28,6 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public abstract class World {
-    public static final float WORLD_WIDTH = SCREEN_WIDTH / 100f;
-    public static final float WORLD_HEIGHT_UP = SCREEN_HEIGHT / 100f * 1.5f;
-    public static final float WORLD_HEIGHT_DOWN = SCREEN_HEIGHT / 100f * 2f;
-
     //World length
     static float finish;
     static float end;
@@ -79,24 +79,12 @@ public abstract class World {
 
     public World() {
         finish = ProfileInfo.selectedDuration;
-        //finish = 100f;
-
-        /*switch (MathUtils.random(0,2)) {
-            case 0:
-                finish = 2000f;
-                break;
-            case 1:
-                finish = 2000f;
-                break;
-            case 2:
-                finish = 3000f;
-                break;
-        }*/
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
         pfx_snow = new ParticleEffect(Assets.pfx_snow);
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
+        pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
 
         player = new Player(0f,-7f,-5f);
         opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
@@ -122,7 +110,8 @@ public abstract class World {
             o.dispose();
         }
 
-        pfx_speed_lines.dispose();
+        if(pfx_speed_lines != null) pfx_speed_lines.dispose();
+        if(pfx_snow != null) pfx_snow.dispose();
     }
 
     public abstract void updateShaders(float delta);
@@ -155,11 +144,15 @@ class WorldSummer extends World {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_grass, 0, 0, 600, 330), true);
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
+        pfx_snow = null;
     }
 
     public void update(float delta) {
         super.update(delta);
         decal_background.setColor(1f,1f,1f, opacity);
+
+        if(pfx_snow != null) pfx_snow.getEmitters().get(0).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
+        if(pfx_snow != null) pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
     }
 
     public void updateShaders(float delta) {
@@ -174,6 +167,10 @@ class WorldSummer extends World {
         }
         shader2D_vignette.end();
         */
+        shader3D_blur.begin();
+        shader3D_blur.setUniformMatrix("u_projTrans", camera.combined);
+        shader3D_blur.setUniformi("u_texture", 0);
+        shader3D_blur.end();
     }
 
 }
@@ -230,6 +227,7 @@ class WorldSea extends World {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
         ground.setPosition(0f, -28f, 125f);
         ground.rotateX(90f);
+        pfx_snow = null;
     }
 
     public void update(float delta) {

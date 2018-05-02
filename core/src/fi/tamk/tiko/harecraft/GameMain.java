@@ -42,6 +42,8 @@ public class GameMain extends Game {
     static ShapeRenderer shapeRenderer;
 
     static FrameBuffer fbo;
+    static FrameBuffer blurTargetA, blurTargetB;
+    public static final int FBO_SIZE = 1024;
     static Sprite texture;
 	
 	@Override
@@ -75,6 +77,9 @@ public class GameMain extends Game {
         texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, format));
         texture.flip(false, true);
 
+        blurTargetA = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,true);
+        blurTargetB = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,true);
+
         System.out.println(Gdx.files.isLocalStorageAvailable());
         System.out.println(Gdx.files.getLocalStoragePath());
         if(!Gdx.files.local("myfile.txt").exists()) {
@@ -105,6 +110,8 @@ public class GameMain extends Game {
         dBatch.dispose();
         shapeRenderer.dispose();
         fbo.dispose();
+        blurTargetA.dispose();
+        blurTargetB.dispose();
         texture.getTexture().dispose();
         Shaders2D.dispose();
 

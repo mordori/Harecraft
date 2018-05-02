@@ -363,18 +363,19 @@ public class MainMenu extends ScreenAdapter {
         renderToTexture();
 
 
-        if (startGame) {
-            opacity -= delta*2f;
-            if(opacity < 0f) opacity = 0f;
-            if(opacity == 0f) {
+        if(startGame) {
+            //opacity -= delta*2f;
+            //if(opacity < 0f) opacity = 0f;
+            //if(opacity == 0f) {
                 setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
                 ProfileInfo.load();
                 game.setScreen(new LevelSelectMenu(game, profiles));
                 //game.setScreen(new ScoreScreen());
-            }
+            //}
         }
-        else {
-            opacity += delta*2f;
+        else if(!isLaunched) opacity = 1f;
+        else if(isLaunched) {
+            opacity += delta;
             if(opacity > 1f) {
                 isLaunched = false;
                 opacity = 1f;

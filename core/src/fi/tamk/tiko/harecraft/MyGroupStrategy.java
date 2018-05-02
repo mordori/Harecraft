@@ -20,8 +20,11 @@ import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE1;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE2;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE3;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE4;
+import static fi.tamk.tiko.harecraft.GameMain.FBO_SIZE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.World.player;
+import static fi.tamk.tiko.harecraft.WorldRenderer.radius;
 
 /**
  * Created by Mika.
@@ -66,6 +69,7 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
 
         createDefaultShader();
         createShader_Sea();
+        createShader_Blur();
         ShaderProgram.pedantic = false;
 
         shader3D_sea.begin();
@@ -86,6 +90,12 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         Assets.tex_foam.bind();
         Gdx.gl.glActiveTexture(GL_TEXTURE0);
         Assets.tex_sea.bind();
+
+        shader3D_blur.begin();
+        shader3D_blur.setUniformf("dir", 0f, 0f); //direction of blur; nil for now
+        shader3D_blur.setUniformf("resolution", SCREEN_WIDTH); //size of FBO texture
+        shader3D_blur.setUniformf("radius", radius); //radius of blur
+        shader3D_blur.end();
     }
 
     public void setCamera (Camera camera) {
@@ -149,6 +159,11 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
                 shader3D_sea.setUniformi("u_mask2", 3);
                 shader3D_sea.setUniformi("u_mask", 4);
                 break;
+            case SHADER3D_BLUR:
+                shader3D_blur.begin();
+                shader3D_blur.setUniformMatrix("u_projTrans", camera.combined);
+                shader3D_blur.setUniformi("u_texture", 0);
+                break;
             default:
                 shader.begin();
                 shader.setUniformMatrix("u_projectionViewMatrix", camera.combined);
@@ -162,6 +177,9 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         switch(activeShader) {
             case SHADER3D_SEA:
                 shader3D_sea.end();
+                break;
+            case SHADER3D_BLUR:
+                shader3D_blur.end();
                 break;
             default:
                 shader.end();
@@ -204,6 +222,10 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         switch(activeShader) {
             case SHADER3D_SEA:
                 return shader3D_sea;
+
+            case SHADER3D_BLUR:
+                return shader3D_blur;
+
             default:
                 return shader;
         }
@@ -213,6 +235,7 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
     public void dispose () {
         if(shader != null) shader.dispose();
         if(shader3D_sea != null) shader3D_sea.dispose();
+        if(shader3D_blur != null) shader3D_blur.dispose();
     }
 
     private void createShader_Sea() {
@@ -222,11 +245,20 @@ public class MyGroupStrategy implements GroupStrategy, Disposable {
         if(!shader3D_sea.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader3D_sea.getLog());
     }
 
+    private static void createShader_Blur() {
+        FileHandle VERTEX = Gdx.files.internal("shaders/shader3D_blur_vertex.txt");
+        FileHandle FRAGMENT = Gdx.files.internal("shaders/shader3D_blur_fragment.txt");
+        shader3D_blur = new ShaderProgram(VERTEX, FRAGMENT);
+        if(!shader3D_blur.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shader3D_blur.getLog());
+    }
+
     public static int activeShader;
     public static final int SHADER3D_DEFAULT = 0;
     public static final int SHADER3D_SEA = 1;
+    public static final int SHADER3D_BLUR = 2;
 
     static ShaderProgram shader3D_sea;
+    static ShaderProgram shader3D_blur;
 }
 
 
