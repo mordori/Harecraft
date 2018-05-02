@@ -94,18 +94,20 @@ public class WorldRenderer {
         //----------------------------
         if(!isSeaEnabled) dBatch.add(world.decal_background);
 
-        dBatch.add(world.decal_sun1);
-        dBatch.add(world.decal_sun2);
         dBatch.flush();
 
         if(isBlurEnabled) {
             //sBatch.setShader(null);
-            sBatch.setShader(shader2D_luminance);
+            //sBatch.setShader(shader2D_luminance);
             //Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
-            //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD );
+            //Gdx.gl.glBlendFunc( GL20.GL_SRC_ALPHA, GL20.GL_ONE );
+            //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_SRC_ALPHA);
+            shader2D_luminance.setUniformf("brightPassThreshold",0.1f);
+            sBatch.setShader(shader2D_luminance);
             sBatch.begin();
-            sBatch.draw(Assets.texR_balloon_red,400, 10);
-            sBatch.draw(Assets.tex_sea,500, 300);
+            sBatch.draw(Assets.texR_ring,400, 100);
+            //sBatch.draw(Assets.tex_sea,500, 300);
             sBatch.end();
 
             blurTargetA.end();
@@ -138,6 +140,9 @@ public class WorldRenderer {
             */
         }
 
+        dBatch.add(world.decal_sun1);
+        dBatch.add(world.decal_sun2);
+
         if(isBlurEnabled) activeShader = SHADER3D_DEFAULT;
         if(isSeaEnabled) activeShader = SHADER3D_SEA;
         //----------------------------
@@ -166,23 +171,30 @@ public class WorldRenderer {
     }
 
     private void applyBlur(float blur) {
-        // Horizontal blur from FBO A to FBO B
-        blurTargetB.begin();
-        sBatch.setShader(shader2D_blur);
-        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
-        shader2D_blur.setUniformf("radius", blur);
-        //Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        /*blurTargetB.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         sBatch.begin();
         drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
         blurTargetB.end();
 
+
+        // Horizontal blur from FBO A to FBO B
+        blurTargetA.begin();
+        sBatch.setShader(shader2D_blur);
+        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
+        shader2D_blur.setUniformf("radius", blur);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
+        sBatch.flush();
+        blurTargetA.end();
+*/
         // Vertical blur from FBO B to the screen
+        sBatch.begin();
         shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
         shader2D_blur.setUniformf("radius", blur);
         sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        drawTexture(blurTargetB.getColorBufferTexture(), 0.0f, 0.0f);
+        drawTexture(blurTargetA.getColorBufferTexture(), 0.0f, 0.0f);
         sBatch.flush();
         sBatch.end();
         sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
