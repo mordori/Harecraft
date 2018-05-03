@@ -1,5 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
@@ -167,6 +168,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public void render(float delta) {
+
         if(!paused) update(delta);
         worldRenderer.renderWorld();
         HUD.draw();

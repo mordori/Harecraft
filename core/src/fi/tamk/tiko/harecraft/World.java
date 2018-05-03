@@ -34,6 +34,7 @@ public abstract class World {
 
     ParticleEffect pfx_speed_lines;
     ParticleEffect pfx_snow;
+    ParticleEffect pfx_sea_glimmer;
 
     //Player
     static Player player;
@@ -81,10 +82,17 @@ public abstract class World {
         finish = ProfileInfo.selectedDuration;
         end = finish + spawnDistance + 20f;
 
+
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
+
+        pfx_sea_glimmer = new ParticleEffect(Assets.pfx_sea_glimmer);
+        pfx_sea_glimmer.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
+        //pfx_sea_glimmer.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
+
         pfx_snow = new ParticleEffect(Assets.pfx_snow);
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
         pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
+
 
         player = new Player(0f,-7f,-5f);
         opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.5f)));
@@ -112,6 +120,7 @@ public abstract class World {
 
         if(pfx_speed_lines != null) pfx_speed_lines.dispose();
         if(pfx_snow != null) pfx_snow.dispose();
+        if(pfx_sea_glimmer != null) pfx_sea_glimmer.dispose();
     }
 
     public abstract void updateShaders(float delta);
@@ -145,6 +154,7 @@ class WorldSummer extends World {
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
         pfx_snow = null;
+        pfx_sea_glimmer = null;
     }
 
     public void update(float delta) {
@@ -191,6 +201,8 @@ class WorldTundra extends World {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_ground, 0, 0, 600, 330), true);
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
+
+        pfx_sea_glimmer = null;
     }
 
     public void update(float delta) {

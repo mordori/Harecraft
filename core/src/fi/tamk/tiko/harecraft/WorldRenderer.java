@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import static fi.tamk.tiko.harecraft.GameMain.blurTargetA;
@@ -52,14 +53,15 @@ public class WorldRenderer {
 
         if(world instanceof WorldSea) {
             isSeaEnabled = true;
+            isBlurEnabled = true;
             Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
         else if(world instanceof WorldSummer) {
-            //isBlurEnabled = true;
+            isBlurEnabled = true;
             Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
         }
         else if(world instanceof WorldTundra) {
-            //isBlurEnabled = true;
+            isBlurEnabled = true;
             Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
         }
     }
@@ -75,7 +77,6 @@ public class WorldRenderer {
         }
 
         if(isBlurEnabled) {
-            //sBatch.setProjectionMatrix(orthoCamera.combined);
             blurTargetA.begin();
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
@@ -98,52 +99,6 @@ public class WorldRenderer {
         dBatch.add(world.decal_sun2);
 
         dBatch.flush();
-
-        if(isBlurEnabled) {
-            //sBatch.setShader(null);
-            //sBatch.setShader(shader2D_luminance);
-            //Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
-            //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD );
-            //Gdx.gl.glBlendFunc( GL20.GL_SRC_ALPHA, GL20.GL_ONE );
-            //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_SRC_ALPHA);
-            shader2D_luminance.setUniformf("brightPassThreshold",0.1f);
-            sBatch.setShader(shader2D_luminance);
-            sBatch.begin();
-            sBatch.draw(Assets.texR_ring,400, 100);
-            //sBatch.draw(Assets.tex_sea,500, 300);
-            sBatch.end();
-
-            blurTargetA.end();
-
-            applyBlur(2.0f);
-            sBatch.setShader(null);
-
-            /*blurTargetB.begin();
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-            sBatch.setShader(shader3D_blur);
-            shader3D_blur.setUniformf("dir", 1f, 0f);
-            shader3D_blur.setUniformf("radius", MAX_BLUR);
-
-            sBatch.begin();
-            sBatch.draw(blurTargetA.getColorBufferTexture(),0, 0);
-            sBatch.end();
-            blurTargetB.end();
-
-            shader3D_blur.setUniformf("dir", 0f, 1f);
-            shader3D_blur.setUniformf("radius", MAX_BLUR);
-
-            sBatch.begin();
-            sBatch.draw(blurTargetB.getColorBufferTexture(),0, 0);
-            sBatch.end();
-
-            //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            sBatch.setShader(shader2D_default);
-            //Gdx.gl.glDisable(Gdx.gl20.GL_BLEND);
-            */
-        }
-
-
 
         if(isBlurEnabled) activeShader = SHADER3D_DEFAULT;
         if(isSeaEnabled) activeShader = SHADER3D_SEA;
@@ -170,36 +125,63 @@ public class WorldRenderer {
 
         //////////////////////////////////////////////
         dBatch.flush();
+
+        blurTargetA.end();
+
+        applyBlur(2.0f);
+        sBatch.setShader(null);
     }
 
     private void applyBlur(float blur) {
-        /*blurTargetB.begin();
+        //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD );
+        Sprite sprite = new Sprite(blurTargetA.getColorBufferTexture());
+        sprite.flip(false, true);
+
+        sBatch.begin();
+        sBatch.setShader(shader2D_default);
+        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ZERO);
+        sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        sprite.draw(sBatch);
+        sBatch.end();
+
+        blurTargetB.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         sBatch.begin();
+        shader2D_luminance.setUniformf("brightPassThreshold",1f);
+        sBatch.setShader(shader2D_luminance);
         drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
         blurTargetB.end();
 
 
-        // Horizontal blur from FBO A to FBO B
         blurTargetA.begin();
-        sBatch.setShader(shader2D_blur);
-        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
-        shader2D_blur.setUniformf("radius", blur);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        shader2D_blur.setUniformf("dir", 1.0f, 0.0f);
+        shader2D_blur.setUniformf("radius", blur);
+        sBatch.setShader(shader2D_blur);
         drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
         blurTargetA.end();
-*/
-        // Vertical blur from FBO B to the screen
-        sBatch.begin();
-        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
+
+
+        blurTargetB.begin();
+        shader2D_blur.setUniformf("dir", 0.0f, 1.0f);
         shader2D_blur.setUniformf("radius", blur);
-        sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        drawTexture(blurTargetA.getColorBufferTexture(), 0.0f, 0.0f);
+        //drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
+        sBatch.flush();
+        blurTargetB.end();
+
+
+        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD);
+        //Gdx.gl.glEnable(GL20.GL_BLEND);
+        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        //drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
         sBatch.end();
-        sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     private void drawTexture(Texture texture, float x, float y) {
@@ -219,6 +201,7 @@ public class WorldRenderer {
 
     public void drawParticles() {
         sBatch.begin();
+        //if(world.pfx_sea_glimmer != null) world.pfx_sea_glimmer.draw(sBatch);
         if(gameState == RACE || gameState == FINISH) player.pfx_scarf.draw(sBatch);
 
         for(Cloud c : world.clouds_RDown) if(c.isCollided) c.pfx_dispersion.draw(sBatch);

@@ -51,7 +51,9 @@ public class Assets {
     static TextureRegion texR_plane_2_pink_wings;
     static TextureRegion texR_character_hare_head;
     static TextureRegion texR_character_default_head;
-    static TextureRegion texR_cloud;
+    static TextureRegion texR_cloud1;
+    static TextureRegion texR_cloud2;
+    static TextureRegion texR_cloud3;
     static TextureRegion texR_ring;
     static TextureRegion texR_ring_arrows;
     static TextureRegion texR_tree_summer_big_light;
@@ -93,6 +95,7 @@ public class Assets {
     static ParticleEffect pfx_speed_lines;
     static ParticleEffect pfx_speed_up;
     static ParticleEffect pfx_snow;
+    static ParticleEffect pfx_sea_glimmer;
 
     static BitmapFont font1;
     static BitmapFont font2;
@@ -148,7 +151,9 @@ public class Assets {
         texR_plane_2_pink_wings = loadDecalTextureRegion("tex_plane_2_pink_wings.png");
         texR_character_default_head = loadDecalTextureRegion("tex_character_default_head.png");
         texR_character_hare_head = loadDecalTextureRegion("tex_character_hare_head.png");
-        texR_cloud = loadDecalTextureRegion("tex_cloud_1.png");
+        texR_cloud1 = loadDecalTextureRegion("tex_cloud_1.png");
+        texR_cloud2 = loadDecalTextureRegion("tex_cloud_2.png");
+        texR_cloud3 = loadDecalTextureRegion("tex_cloud_3.png");
         texR_ring = loadDecalTextureRegion("tex_ring.png");
         texR_ring_arrows = loadDecalTextureRegion("tex_ring_arrows.png");
         texR_tree_summer_big_dark = loadDecalTextureRegion("tex_tree_summer_big_dark.png");
@@ -203,6 +208,8 @@ public class Assets {
         pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
         pfx_snow = new ParticleEffect();
         pfx_snow.load(Gdx.files.internal("particles/pfx_snow"), Gdx.files.internal("particles/"));
+        pfx_sea_glimmer = new ParticleEffect();
+        pfx_sea_glimmer.load(Gdx.files.internal("particles/pfx_sea_glimmer"), Gdx.files.internal("particles/"));
 
         //FONTS
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/KOMIKAX_.ttf"));
@@ -295,7 +302,9 @@ public class Assets {
         texR_plane_2_pink_wings.getTexture().dispose();
         texR_character_hare_head.getTexture().dispose();
         texR_character_default_head.getTexture().dispose();
-        texR_cloud.getTexture().dispose();
+        texR_cloud1.getTexture().dispose();
+        texR_cloud2.getTexture().dispose();
+        texR_cloud3.getTexture().dispose();
         texR_ring.getTexture().dispose();
         texR_ring_arrows.getTexture().dispose();
         texR_tree_summer_big_light.getTexture().dispose();
@@ -333,6 +342,7 @@ public class Assets {
         pfx_speed_lines.dispose();
         pfx_speed_up.dispose();
         pfx_snow.dispose();
+        pfx_sea_glimmer.dispose();
 
         font1.dispose();
         font2.dispose();

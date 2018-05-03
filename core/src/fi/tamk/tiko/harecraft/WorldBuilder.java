@@ -182,29 +182,33 @@ public class WorldBuilder {
     }
 
     public void addClouds() {
+        float difficultyRate = (4 - DIFFICULTYSENSITIVITY) * 0.2f;
+        float min = 0.55f + 6.1f/global_Multiplier * 0.12f;
+        float max = 1.55f - global_Multiplier * 0.15f;
+
         if(world.clouds_LUp.isEmpty() || world.clouds_LUp.get(world.clouds_LUp.size() - 1).stateTime >= clouds_LUpTimer) {
             x = MathUtils.random(-40f,0f);
             y = MathUtils.random(0f,6.2f);
             world.clouds_LUp.add(new Cloud(x, y, spawnDistance));
-            clouds_LUpTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
+            clouds_LUpTimer = MathUtils.random(min, max) + difficultyRate;
         }
         if(world.clouds_LDown.isEmpty() || world.clouds_LDown.get(world.clouds_LDown.size() - 1).stateTime >= clouds_LDownTimer) {
             x = MathUtils.random(-40f,0f);
             y = MathUtils.random(0f,-6.2f);
             world.clouds_LDown.add(new Cloud(x, y, spawnDistance));
-            clouds_LDownTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
+            clouds_LDownTimer = MathUtils.random(min, max) + difficultyRate;
         }
         if(world.clouds_RUp.isEmpty() || world.clouds_RUp.get(world.clouds_RUp.size() - 1).stateTime >= clouds_RUpTimer) {
             x = MathUtils.random(0f,40f);
             y = MathUtils.random(0f,6.2f);
             world.clouds_RUp.add(new Cloud(x, y, spawnDistance));
-            clouds_RUpTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
+            clouds_RUpTimer = MathUtils.random(min, max) + difficultyRate;
         }
         if(world.clouds_RDown.isEmpty() || world.clouds_RDown.get(world.clouds_RDown.size() - 1).stateTime >= clouds_RDownTimer) {
             x = MathUtils.random(0f,40f);
             y = MathUtils.random(0f,-6.2f);
             world.clouds_RDown.add(new Cloud(x, y, spawnDistance));
-            clouds_RDownTimer = MathUtils.random(0.4f, 1f - global_Multiplier *  0.1f) + (4 - DIFFICULTYSENSITIVITY) * 0.25f;
+            clouds_RDownTimer = MathUtils.random(min, max) + difficultyRate;
         }
     }
 
@@ -266,18 +270,27 @@ public class WorldBuilder {
     }
 
     public void addTrees() {
-        if((world.trees_L.isEmpty() && trees_LRemoveTimer == 0f) || (!world.trees_L.isEmpty() && trees_LRemoveTimer == 0f && world.trees_L.get(world.trees_L.size() - 1).stateTime >= trees_LTimer)) {
+        //float min = 0.1f + 6.1f/global_Multiplier * 0.04f;
+        //float max = 0.4f - global_Multiplier * 0.05f;
+        //float min = 0.05f;
+        //float max = 0.1f;
+        float min = 0.18f + 6.1f/global_Multiplier * 0.04f;
+        float max = 0.52f - global_Multiplier * 0.05f;
+
+        if((world.trees_L.isEmpty() && trees_LRemoveTimer == 0f)
+                || (!world.trees_L.isEmpty() && trees_LRemoveTimer == 0f && world.trees_L.get(world.trees_L.size() - 1).stateTime >= trees_LTimer)) {
             x = MathUtils.random(-150f, 0f);
             y = groundLevel;
             world.trees_L.add(new Tree(x, y, spawnDistance));
-            trees_LTimer = MathUtils.random(0.25f - global_Multiplier * 0.015f, 0.45f - global_Multiplier * 0.035f);
+            trees_LTimer = MathUtils.random(min, max);
         }
 
-        if((world.trees_R.isEmpty() && trees_RRemoveTimer == 0f) || (!world.trees_R.isEmpty() && trees_RRemoveTimer == 0f && world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer)) {
+        if((world.trees_R.isEmpty() && trees_RRemoveTimer == 0f)
+                || (!world.trees_R.isEmpty() && trees_RRemoveTimer == 0f && world.trees_R.get(world.trees_R.size() - 1).stateTime >= trees_RTimer)) {
             x = MathUtils.random(0f, 150f);
             y = groundLevel;
             world.trees_R.add(new Tree(x, y, spawnDistance));
-            trees_RTimer = MathUtils.random(0.25f - global_Multiplier * 0.015f, 0.45f - global_Multiplier * 0.035f);
+            trees_RTimer = MathUtils.random(min, max);
         }
     }
 
@@ -301,17 +314,20 @@ public class WorldBuilder {
     }
 
     public void addHills() {
+        float min = 1f;
+        float max = 3f - global_Multiplier * 0.3f;
+
         if((world.hills_L.isEmpty() && hills_LRemoveTimer == 0f) || (!world.hills_L.isEmpty() && hills_LRemoveTimer == 0f && world.hills_L.get(world.hills_L.size() - 1).stateTime >= hills_LTimer)) {
             x = MathUtils.random(-160f, 0f);
             y = groundLevel;
             world.hills_L.add(new Hill(x, y, spawnDistance));
-            hills_LTimer = MathUtils.random(1f, 4f - global_Multiplier * 0.3f);
+            hills_LTimer = MathUtils.random(min, max);
         }
         if((world.hills_R.isEmpty() && hills_RRemoveTimer == 0f) || (!world.hills_L.isEmpty() && hills_RRemoveTimer == 0f && world.hills_R.get(world.hills_R.size() - 1).stateTime >= hills_RTimer)) {
             x = MathUtils.random(0f, 160f);
             y = groundLevel;
             world.hills_R.add(new Hill(x, y, spawnDistance));
-            hills_RTimer = MathUtils.random(1f, 4f - global_Multiplier * 0.3f);
+            hills_RTimer = MathUtils.random(min, max);
         }
     }
 
@@ -455,6 +471,7 @@ public class WorldBuilder {
         world.pfx_speed_lines.update(delta);
 
         if(world.pfx_snow != null) world.pfx_snow.update(delta);
+        if(world.pfx_sea_glimmer != null) world.pfx_sea_glimmer.update(delta);
 
         if(gameState == END) {
             if(world.pfx_speed_lines != null) world.pfx_speed_lines.allowCompletion();

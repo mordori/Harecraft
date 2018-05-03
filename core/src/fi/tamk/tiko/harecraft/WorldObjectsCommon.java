@@ -43,8 +43,8 @@ class Ring extends GameObject {
     ParticleEffect pfx_speed_up;
 
     public Ring(float x, float y, float z) {
-        width = Assets.texR_ring.getRegionWidth()/90f;
-        height = Assets.texR_ring.getRegionHeight()/90f;
+        width = Assets.texR_ring.getRegionWidth()/75f;
+        height = Assets.texR_ring.getRegionHeight()/75f;
         decal = Decal.newDecal(width, height, Assets.texR_ring, true);
         decal.setPosition(x,y,z);
 
@@ -168,11 +168,24 @@ class Cloud extends GameObject {
     ParticleEffect pfx_dispersion;
 
     public Cloud(float x, float y, float z) {
-        TextureRegion textureRegion = Assets.texR_cloud;
+        TextureRegion textureRegion = Assets.texR_cloud1;
+
+        switch(MathUtils.random(0,2)) {
+            case 0:
+                textureRegion = Assets.texR_cloud1;
+                break;
+            case 1:
+                textureRegion = Assets.texR_cloud2;
+                break;
+            case 2:
+                textureRegion = Assets.texR_cloud3;
+                break;
+        }
+
         if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
 
-        width = textureRegion.getRegionWidth() / 80f;
-        height = textureRegion.getRegionHeight() / 80f;
+        width = textureRegion.getRegionWidth() / 70f;
+        height = textureRegion.getRegionHeight() / 70f;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);

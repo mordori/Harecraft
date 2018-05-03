@@ -185,8 +185,8 @@ class Tree extends GameObject {
                     break;
             }
 
-            width = textureRegion.getRegionWidth()/20f;
-            height = textureRegion.getRegionHeight()/20f;
+            width = textureRegion.getRegionWidth()/17f;
+            height = textureRegion.getRegionHeight()/17f;
         }
 
         decal = Decal.newDecal(width, height, textureRegion, true);
