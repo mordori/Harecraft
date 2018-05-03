@@ -53,15 +53,15 @@ public class WorldRenderer {
 
         if(world instanceof WorldSea) {
             isSeaEnabled = true;
-            isBlurEnabled = true;
+            //isBlurEnabled = true;
             Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
         }
         else if(world instanceof WorldSummer) {
-            isBlurEnabled = true;
+            //isBlurEnabled = true;
             Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
         }
         else if(world instanceof WorldTundra) {
-            isBlurEnabled = true;
+            //isBlurEnabled = true;
             Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
         }
     }
@@ -77,8 +77,7 @@ public class WorldRenderer {
         }
 
         if(isBlurEnabled) {
-            blurTargetA.begin();
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
         }
 
         drawDecals();
@@ -93,14 +92,33 @@ public class WorldRenderer {
     public void drawDecals() {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
+
+        //if(!isSeaEnabled) dBatch.add(world.decal_background);
+        //dBatch.flush();
+
+        if(isBlurEnabled) {
+            blurTargetA.begin();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        }
+
         if(!isSeaEnabled) dBatch.add(world.decal_background);
+        //dBatch.flush();
 
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
-
         dBatch.flush();
 
-        if(isBlurEnabled) activeShader = SHADER3D_DEFAULT;
+        if(isBlurEnabled) {
+            blurTargetA.end();
+
+            applyBlur(2.0f);
+            sBatch.setShader(null);
+
+            //if(!isSeaEnabled) dBatch.add(world.decal_background);
+            dBatch.flush();
+        }
+
+
         if(isSeaEnabled) activeShader = SHADER3D_SEA;
         //----------------------------
         dBatch.add(world.ground);
@@ -125,57 +143,58 @@ public class WorldRenderer {
 
         //////////////////////////////////////////////
         dBatch.flush();
-
-        blurTargetA.end();
-
-        applyBlur(2.0f);
-        sBatch.setShader(null);
     }
 
     private void applyBlur(float blur) {
         //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD );
-        Sprite sprite = new Sprite(blurTargetA.getColorBufferTexture());
-        sprite.flip(false, true);
 
-        sBatch.begin();
-        sBatch.setShader(shader2D_default);
+
+        //sBatch.begin();
+        //sBatch.setShader(shader2D_default);
         //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ZERO);
-        sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        sprite.draw(sBatch);
-        sBatch.end();
+        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        //sprite.draw(sBatch);
+        //sBatch.end();
 
         blurTargetB.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        sBatch.begin();
-        shader2D_luminance.setUniformf("brightPassThreshold",1f);
+        shader2D_luminance.setUniformf("brightPassThreshold",0f);
         sBatch.setShader(shader2D_luminance);
+        sBatch.begin();
         drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
         blurTargetB.end();
 
 
+        //sBatch.begin();
         blurTargetA.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        shader2D_blur.setUniformf("dir", 1.0f, 0.0f);
+        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
         shader2D_blur.setUniformf("radius", blur);
         sBatch.setShader(shader2D_blur);
         drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
         blurTargetA.end();
 
+        Sprite sprite = new Sprite(blurTargetA.getColorBufferTexture());
+        sprite.flip(false, true);
 
-        blurTargetB.begin();
-        shader2D_blur.setUniformf("dir", 0.0f, 1.0f);
+
+        //blurTargetB.begin();
+        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
         shader2D_blur.setUniformf("radius", blur);
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
         //drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
-        sBatch.flush();
-        blurTargetB.end();
+        sprite.draw(sBatch);
+        //sBatch.flush();
+        //blurTargetB.end();
 
 
         //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD);
-        //Gdx.gl.glEnable(GL20.GL_BLEND);
         //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
         //drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
         sBatch.flush();
