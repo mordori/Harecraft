@@ -43,6 +43,7 @@ public class SettingsMenu extends ScreenAdapter {
     Preferences profilesData;
     Array<Actor> radarDotArray;
     Locale locale;
+    Boolean clearDotsPressed = false;
 
     public SettingsMenu(GameMain game) {
         this.game = game;
@@ -76,6 +77,22 @@ public class SettingsMenu extends ScreenAdapter {
         TextButton button = new TextButton(localizationBundle.get("saveButtonText"), style);
         button.setPosition(900,50);
         button.setName("backbutton");
+        button.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    returnToMainMenu = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
 
         Slider slider = new Slider(0,4,1,false, skin);
         slider.setPosition(650,650);
@@ -135,6 +152,28 @@ public class SettingsMenu extends ScreenAdapter {
                 new Color(1f,1f,1f,1f)
         );
 
+        TextButton clearDotsButton = new TextButton(localizationBundle.get("clearButtonText"), style);
+        clearDotsButton.setWidth(320);
+        clearDotsButton.setHeight(100);
+        clearDotsButton.setPosition(330 - clearDotsButton.getWidth()/2,150);
+        clearDotsButton.setName("cleardotbutton");
+        clearDotsButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    clearDotsPressed = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
         CheckBox invertYCheckBox = new CheckBox(localizationBundle.get("invertLabelText"), style3);
         invertYCheckBox.setChecked(profilesData.getBoolean(ProfileInfo.selectedPlayerProfile +"Invert",true));
         invertYCheckBox.setName("invertcheckbox");
@@ -161,26 +200,10 @@ public class SettingsMenu extends ScreenAdapter {
 
         stage.addActor(button);
         stage.addActor(new Radar());
+        stage.addActor(clearDotsButton);
 
         loadVectordata();
         //stage.addActor(profileBox);
-
-        button.addListener(new InputListener() {
-            Boolean touched = false;
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                touched = true;
-                return true;
-            }
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched)
-                returnToMainMenu = true;
-            }
-            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
-            {
-                touched = false;
-            }
-        });
     }
 
     @Override
@@ -188,7 +211,7 @@ public class SettingsMenu extends ScreenAdapter {
         Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        removeRadarDots();
+        //removeRadarDots();
 
         stage.act();
         stage.draw();
@@ -227,6 +250,11 @@ public class SettingsMenu extends ScreenAdapter {
 
             game.setScreen(new MainMenu(game,false));
         }
+
+        if (clearDotsPressed) {
+            removeRadarDots2();
+            clearDotsPressed = false;
+        }
         //Gdx.app.log("Kenen profiili on valittuna", ""+ProfileInfo.selectedPlayerProfile);
     }
 
@@ -264,6 +292,17 @@ public class SettingsMenu extends ScreenAdapter {
                 stage.getRoot().removeActor(tmpActor);
             }
         }
+    }
+
+    public void removeRadarDots2() {
+            Actor tmpActor;
+            int dots;
+            dots = checkDotsAmount();
+
+            for (int i = 0; i < dots; i++) {
+                tmpActor = stage.getRoot().findActor("dot");
+                stage.getRoot().removeActor(tmpActor);
+            }
     }
 
     public void saveVectorData() {
@@ -311,7 +350,7 @@ class Radar extends Actor {
         addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("Touch ","detected in actor");
-                if (circle.contains(x,y)) {
+                if (circle.contains(x,y) && calculateMyDots() < 6) {
                     Gdx.app.log("Touch ", "detected in circle   " +x +"     " +y);
                     getStage().addActor(new RadarDot((int)x, (int) y));
                 }
@@ -319,6 +358,22 @@ class Radar extends Actor {
             }
 
         });
+    }
+
+    public int calculateMyDots() {
+
+        Array<Actor> stageActors = super.getStage().getActors();
+        int arraySize = stageActors.size;
+        int dotAmount = 0;
+
+        for (int i = 0; i < arraySize; i++) {
+            Actor tmpActor = stageActors.get(i);
+            if (tmpActor.getName().equals("dot")) {
+                dotAmount++;
+            }
+        }
+        Gdx.app.log("actors" , " found : " +dotAmount);
+        return dotAmount;
     }
 
     @Override
