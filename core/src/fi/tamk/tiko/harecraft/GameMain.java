@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -13,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
@@ -67,6 +70,7 @@ public class GameMain extends Game {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
 
+
         Pixmap.Format format = Pixmap.Format.RGB565;
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) format = Pixmap.Format.RGBA8888;
 
@@ -80,22 +84,6 @@ public class GameMain extends Game {
         blurTargetA = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
         blurTargetB = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
 
-        System.out.println(Gdx.files.isLocalStorageAvailable());
-        System.out.println(Gdx.files.getLocalStoragePath());
-        if(!Gdx.files.local("myfile.txt").exists()) {
-            FileHandle from = Gdx.files.internal("myfile.txt");
-            from.copyTo(Gdx.files.local("myfile.txt"));
-        }
-        if(!Gdx.files.local("myfile2.txt").exists()) {
-            FileHandle from = Gdx.files.internal("myfile2.txt");
-            from.copyTo(Gdx.files.local("myfile2.txt"));
-        }
-        if(!Gdx.files.local("myfile3.txt").exists()) {
-            FileHandle from = Gdx.files.internal("myfile3.txt");
-            from.copyTo(Gdx.files.local("myfile3.txt"));
-        }
-
-		//setScreen(new MainMenu(this));
         setScreen(new SplashScreen(this));
 	}
 

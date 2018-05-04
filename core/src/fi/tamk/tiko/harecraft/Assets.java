@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
+
 /**
  * Created by Mika on 23.2.2018.
  *
@@ -49,6 +51,10 @@ public class Assets {
     static TextureRegion texR_plane_2_blue_wings;
     static TextureRegion texR_plane_2_pink_body;
     static TextureRegion texR_plane_2_pink_wings;
+    static TextureRegion texR_plane_2_green_body;
+    static TextureRegion texR_plane_2_green_wings;
+    static TextureRegion texR_plane_2_black_body;
+    static TextureRegion texR_plane_2_black_wings;
     static TextureRegion texR_character_hare_head;
     static TextureRegion texR_character_default_head;
     static TextureRegion texR_cloud1;
@@ -106,8 +112,28 @@ public class Assets {
 
     static Skin skin_menu;
 
+    static ArrayList<FileHandle> flightsSource = new ArrayList<FileHandle>();
+
     public static void load() {
         //FILES
+        System.out.println(Gdx.files.isLocalStorageAvailable());
+        System.out.println(Gdx.files.getLocalStoragePath());
+
+
+        if(!Gdx.files.local("data/flights/0.txt").exists()) {
+            for (int i = 0; i < Gdx.files.internal("data/flights").list().length; i++) {
+
+                FileHandle from = Gdx.files.internal("data/flights/" + i + ".txt");
+                from.copyTo(Gdx.files.local("data/flights/" + i + ".txt"));
+                System.out.println("COPIED!");
+            }
+        }
+        else System.out.println("EXISTS!");
+
+        for(FileHandle file: Gdx.files.local("data/flights/").list()) {
+            flightsSource.add(file);
+        }
+
 
         //TEXTURES
         tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
@@ -149,6 +175,10 @@ public class Assets {
         texR_plane_2_blue_wings = loadDecalTextureRegion("tex_plane_2_blue_wings.png");
         texR_plane_2_pink_body = loadDecalTextureRegion("tex_plane_2_pink_body.png");
         texR_plane_2_pink_wings = loadDecalTextureRegion("tex_plane_2_pink_wings.png");
+        texR_plane_2_green_wings = loadDecalTextureRegion("tex_plane_2_green_wings.png");
+        texR_plane_2_green_body = loadDecalTextureRegion("tex_plane_2_green_body.png");
+        texR_plane_2_black_body = loadDecalTextureRegion("tex_plane_2_black_body.png");
+        texR_plane_2_black_wings = loadDecalTextureRegion("tex_plane_2_black_wings.png");
         texR_character_default_head = loadDecalTextureRegion("tex_character_default_head.png");
         texR_character_hare_head = loadDecalTextureRegion("tex_character_hare_head.png");
         texR_cloud1 = loadDecalTextureRegion("tex_cloud_1.png");
@@ -300,6 +330,10 @@ public class Assets {
         texR_plane_2_blue_wings.getTexture().dispose();
         texR_plane_2_pink_body.getTexture().dispose();
         texR_plane_2_pink_wings.getTexture().dispose();
+        texR_plane_2_green_body.getTexture().dispose();
+        texR_plane_2_green_wings.getTexture().dispose();
+        texR_plane_2_black_body.getTexture().dispose();
+        texR_plane_2_black_wings.getTexture().dispose();
         texR_character_hare_head.getTexture().dispose();
         texR_character_default_head.getTexture().dispose();
         texR_cloud1.getTexture().dispose();

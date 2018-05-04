@@ -12,15 +12,11 @@ import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
-import static fi.tamk.tiko.harecraft.GameScreen.file;
-import static fi.tamk.tiko.harecraft.GameScreen.file2;
-import static fi.tamk.tiko.harecraft.GameScreen.file3;
+import static fi.tamk.tiko.harecraft.GameScreen.flights;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
-import static fi.tamk.tiko.harecraft.GameScreen.renderCount;
 import static fi.tamk.tiko.harecraft.GameScreen.strFlightRecord;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
@@ -93,7 +89,7 @@ class Player extends Pilot {
     //Desktop = -2f
     //Tablet handheld = 4f
     //Tablet chair = 1f
-    static float ACCEL_Y_OFFSET = -20f;
+    static float ACCEL_Y_OFFSET = 0f;
     final float SPEED = 15f;
     float accelerationZ;
     float []rotationsArray;
@@ -101,6 +97,8 @@ class Player extends Pilot {
     float avarageY;
     float sumY;
     float countY;
+    static float ppcX;
+    static float ppcY;
     Vector3 keyboardDestination;
     Vector3 destination;
     Vector3 curPosition;
@@ -113,6 +111,9 @@ class Player extends Pilot {
     ParticleEffect pfx_scarf;
 
     public Player(float x, float y, float z) {
+        ppcX = Gdx.graphics.getPpcX();
+        ppcY = Gdx.graphics.getPpcY();
+
         destination = new Vector3();
         keyboardDestination = new Vector3();
         curPosition = new Vector3();
@@ -159,8 +160,11 @@ class Player extends Pilot {
             accelX = accelX * ProfileInfo.selectedSensitivity;
             accelY = accelY * ProfileInfo.selectedSensitivity;
 
-            destination.x = accelX * -5f * (960/SCREEN_WIDTH);
-            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (960 / SCREEN_WIDTH);
+            //destination.x = accelX * -5f * (SCREEN_WIDTH/ppcX/9.79f);
+            //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (SCREEN_HEIGHT/ppcY/5.5f);
+
+            destination.x = accelX * -5f;
+            destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
 
             if (ProfileInfo.invertY == false) { //INVERTOITU LENTO
                 destination.y = (destination.y * -1) -ACCEL_Y_OFFSET -ACCEL_Y_OFFSET;
@@ -204,11 +208,10 @@ class Player extends Pilot {
             checkInput(); //Keyboard input
 
             //RECORD
-            /*
-                StringBuilder value = new StringBuilder(strFlightRecord);
-                value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
-                strFlightRecord = value.toString();
-            */
+            //StringBuilder value = new StringBuilder(strFlightRecord);
+            //value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
+            //strFlightRecord = value.toString();
+
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
@@ -317,28 +320,25 @@ class Opponent extends Pilot {
         this.spawnZ = spawnZ;
         this.speed = speed;
 
-        switch(MathUtils.random(0,2)) {
-            case 0:
-                flight = file.readString();
-                break;
-            case 1:
-                flight = file2.readString();
-                break;
-            case 2:
-                flight = file3.readString();
-                break;
-        }
 
+        int i = MathUtils.random(0, flights.size() - 1);
+        flight = flights.get(i).readString();
+        flights.remove(i);
         input = flight.split("\n");
+
 
         TextureRegion texR_body;
         TextureRegion texR_wings;
         TextureRegion texR_head;
 
-        switch (color) {
+        if(color == 0) {
+            texR_body = Assets.texR_plane_2_black_body;
+            texR_wings = Assets.texR_plane_2_black_wings;
+        }
+        else switch(MathUtils.random(0,3)) {
             case COLOR_RED:
-                texR_body = Assets.texR_plane_2_red_body;
-                texR_wings = Assets.texR_plane_2_red_wings;
+                texR_body = Assets.texR_plane_2_green_body;
+                texR_wings = Assets.texR_plane_2_green_wings;
                 break;
             case COLOR_BLUE:
                 texR_body = Assets.texR_plane_2_blue_body;
@@ -366,6 +366,20 @@ class Opponent extends Pilot {
                 break;
             default:
                 texR_head = Assets.texR_character_default_head;
+        }
+
+        x = MathUtils.random(-5f, 5f);
+        y = MathUtils.random(-5f, 4f);
+
+        switch (MathUtils.random(0,1)) {
+            case 0:
+                if(x < 0) x -= 3f;
+                else x += 3f;
+                break;
+            case 1:
+                if(y < 0) y -= 3f;
+                else y += 3f;
+                break;
         }
 
         width = texR_body.getRegionWidth() / 100f;
@@ -418,12 +432,12 @@ class Opponent extends Pilot {
     }
 
     public void move(float delta) {
-        //if(renderCount == 0) {
-            line = input[count].split(",");
-            xDir = Float.parseFloat(line[0]);
-            yDir = Float.parseFloat(line[1]);
-            rotZ = Float.parseFloat(line[2]);
-        //}
+
+        line = input[count].split(",");
+        xDir = Float.parseFloat(line[0]);
+        yDir = Float.parseFloat(line[1]);
+        rotZ = Float.parseFloat(line[2]);
+
         decal.translateX(xDir);
         decal.translateY(yDir);
         decal.setRotationZ(rotZ * 1.5f);

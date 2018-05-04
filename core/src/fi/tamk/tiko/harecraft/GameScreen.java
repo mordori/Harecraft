@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.util.ArrayList;
+
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
@@ -116,19 +118,20 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static int index;
 
     static String strFlightRecord = "";
-    static FileHandle file = Gdx.files.local("myfile.txt");
-    static FileHandle file2 = Gdx.files.local("myfile2.txt");
-    static FileHandle file3 = Gdx.files.local("myfile3.txt");
     static int renderCount = 0;
+    static ArrayList<FileHandle> flights;
 
     static int worldScore;
     static int playerScore;
     static int playerPlacement;
     static int balloonsCollected;
 
+    static int recIndex = 6;
+
     public GameScreen(GameMain game, int index) {
         this.game = game;
         this.index = index;
+        flights = new ArrayList<FileHandle>(Assets.flightsSource);
         DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
         selectWorld(index);
         builder = new WorldBuilder(world);
@@ -195,7 +198,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         if(global_Multiplier < 1f) global_Multiplier = 1f;
 
         renderCount++;
-        //renderCount %= 10;
 
         if(gameState == START && gameStateTime >= 7) {
             gameState = RACE;
@@ -280,17 +282,18 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
             playerScore *= (ProfileInfo.selectedDifficulty + 1);
 
-
             int oldScore = ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
             int newScore = oldScore + playerScore;
             ProfileInfo.profilesData.putInteger(ProfileInfo.selectedPlayerProfile +"Score", newScore);
             ProfileInfo.profilesData.flush();
 
 
-
             //RECORD
-            //strFlightRecord += renderCount;
+            FileHandle file = Gdx.files.local("data/flights/"+ recIndex + ".txt");
+            strFlightRecord += renderCount;
             //file.writeString(strFlightRecord, false);
+
+            recIndex++;
         }
         else if(gameState == EXIT && gameStateTime > 0.5f) {
             //Assets.music_course_1.stop();

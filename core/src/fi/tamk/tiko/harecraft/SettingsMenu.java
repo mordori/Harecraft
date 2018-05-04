@@ -152,6 +152,17 @@ public class SettingsMenu extends ScreenAdapter {
                 new Color(1f,1f,1f,1f)
         );
 
+        style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font6
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
+
         TextButton clearDotsButton = new TextButton(localizationBundle.get("clearButtonText"), style);
         clearDotsButton.setWidth(320);
         clearDotsButton.setHeight(100);
