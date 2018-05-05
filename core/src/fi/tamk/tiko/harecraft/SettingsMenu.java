@@ -106,6 +106,11 @@ public class SettingsMenu extends ScreenAdapter {
             new Color(1f,1f,1f,1f)
         );
 
+        Label.LabelStyle instructionStyle = new Label.LabelStyle(
+                Assets.font7,
+                new Color(1f,1f,1f,1f)
+        );
+
         Label difficultyLabel = new Label(localizationBundle.get("difficultyLabelText"), style2);
         difficultyLabel.setPosition(900 -difficultyLabel.getWidth()/2,700);
         difficultyLabel.setFontScale(1);
@@ -194,35 +199,35 @@ public class SettingsMenu extends ScreenAdapter {
 
         //LISÄLABELIT ALKAA
 
-        Label radarInstructions = new Label(localizationBundle.get("radarInstructionsText"), style2);
-        radarInstructions.setPosition(330 -radarInstructions.getWidth()/2, 110);
+        Label radarInstructions = new Label(localizationBundle.get("radarInstructionsText"), instructionStyle);
+        radarInstructions.setPosition(330 -radarInstructions.getWidth()/2, 130);
         radarInstructions.setName("radarInstructions");
 
-        Label radarInstructions2 = new Label(localizationBundle.get("radarInstructionsText2"), style2);
-        radarInstructions2.setPosition(330 -radarInstructions2.getWidth()/2, 50);
+        Label radarInstructions2 = new Label(localizationBundle.get("radarInstructionsText2"), instructionStyle);
+        radarInstructions2.setPosition(330 -radarInstructions2.getWidth()/2, 90);
         radarInstructions2.setName("radarInstructions2");
 
-        Label hardLabel = new Label(localizationBundle.get("hardText"), style2);
+        Label hardLabel = new Label(localizationBundle.get("hardText"), instructionStyle);
         hardLabel.setPosition(900 +250 -hardLabel.getWidth(),700);
         hardLabel.setName("hardtext");
 
-        Label easyLabel = new Label(localizationBundle.get("easyText"), style2);
+        Label easyLabel = new Label(localizationBundle.get("easyText"), instructionStyle);
         easyLabel.setPosition(900 -250 ,700);
         easyLabel.setName("easytext");
 
-        Label hundredLabel = new Label(localizationBundle.get("100Text"), style2);
+        Label hundredLabel = new Label(localizationBundle.get("100Text"), instructionStyle);
         hundredLabel.setPosition(900 +250 -hundredLabel.getWidth(),550);
         hundredLabel.setName("hundredtext");
 
-        Label zeroLabel = new Label(localizationBundle.get("0Text"), style2);
+        Label zeroLabel = new Label(localizationBundle.get("0Text"), instructionStyle);
         zeroLabel.setPosition(900 -250 ,550);
         zeroLabel.setName("zerotext");
 
-        Label hundredfiftyLabel = new Label(localizationBundle.get("150Text"), style2);
+        Label hundredfiftyLabel = new Label(localizationBundle.get("150Text"), instructionStyle);
         hundredfiftyLabel.setPosition(900 + 250 -hundredfiftyLabel.getWidth(), 400);
         hundredfiftyLabel.setName("hundredfiftylabel");
 
-        Label fiftyLabel = new Label(localizationBundle.get("50Text"), style2);
+        Label fiftyLabel = new Label(localizationBundle.get("50Text"), instructionStyle);
         fiftyLabel.setPosition(900 -250, 400);
         fiftyLabel.setName("fiftylabel");
 

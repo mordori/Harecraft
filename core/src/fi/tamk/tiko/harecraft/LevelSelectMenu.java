@@ -75,6 +75,9 @@ public class LevelSelectMenu extends ScreenAdapter {
         LevelButton levelThreeButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage3.png")), new Texture(Gdx.files.internal("textures/stage3p.png")), 0);
         levelThreeButton.setPosition(1040 -levelThreeButton.getWidth()/2,220);
 
+        InstructionsBox instructionsBox = new InstructionsBox();
+        instructionsBox.setPosition(320 + 140, 610);
+
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
@@ -162,10 +165,15 @@ public class LevelSelectMenu extends ScreenAdapter {
         Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
         topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
 
-        Label minLabel = new Label("Min", style2);
+        Label.LabelStyle instructionStyle = new Label.LabelStyle(
+                Assets.font7,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label minLabel = new Label("Min", instructionStyle);
         minLabel.setPosition(640 - 250 ,120);
 
-        Label maxLabel = new Label("Max", style2);
+        Label maxLabel = new Label("Max", instructionStyle);
         maxLabel.setPosition(640 + 250 -maxLabel.getWidth() , 120);
 
         stage.addActor(levelOneButton);
@@ -173,6 +181,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.addActor(levelThreeButton);
         stage.addActor(returnButton);
         stage.addActor(startButton);
+        stage.addActor(instructionsBox);
 
         stage.addActor(instructionsLabel1);
         stage.addActor(instructionsLabel2);
@@ -338,5 +347,17 @@ class LevelButton extends Actor {
         else {
             batch.draw(buttonNotPressed, getX(), getY(), 350, 300);
         }
+    }
+}
+
+class InstructionsBox extends Actor {
+    Texture instructionTexture;
+
+    public InstructionsBox() {
+        instructionTexture = new Texture(Gdx.files.internal("textures/stage1.png"));
+    }
+
+    public void draw(Batch batch, float alpha) {
+        batch.draw(instructionTexture, getX(),getY(), 750 , 128);
     }
 }

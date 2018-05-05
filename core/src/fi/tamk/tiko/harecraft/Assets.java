@@ -109,6 +109,7 @@ public class Assets {
     static BitmapFont font4;
     static BitmapFont font5;
     static BitmapFont font6;
+    static BitmapFont font7;
 
     static Skin skin_menu;
 
@@ -263,6 +264,9 @@ public class Assets {
 
         parameter.size = 30;
         font6 = generator.generateFont(parameter);
+
+        parameter.size = 20;
+        font7 = generator.generateFont(parameter);
         generator.dispose();
 
         //MENU
@@ -384,6 +388,7 @@ public class Assets {
         font4.dispose();
         font5.dispose();
         font6.dispose();
+        font7.dispose();
 
         skin_menu.dispose();
     }
