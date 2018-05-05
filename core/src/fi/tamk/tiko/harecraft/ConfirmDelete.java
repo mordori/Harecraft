@@ -74,7 +74,7 @@ public class ConfirmDelete extends ScreenAdapter {
         style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), style);
-        yesButton.setPosition(1280/2 -200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
+        yesButton.setPosition(1280/2 +200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
         yesButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -93,7 +93,7 @@ public class ConfirmDelete extends ScreenAdapter {
         });
 
         TextButton noButton = new TextButton(localizationBundle.get("noButton"), style);
-        noButton.setPosition(1280/2 +200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
+        noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
         noButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override

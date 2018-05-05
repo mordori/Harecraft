@@ -138,7 +138,7 @@ public class SettingsMenu extends ScreenAdapter {
         sensitivityLabel.setFontScale(1);
         sensitivityLabel.setName("sensitivitylabel");
 
-        Slider sensitivitySlider = new Slider(1,1.45f, 0.05f, false,skin);
+        Slider sensitivitySlider = new Slider(0.5f,1.5f, 0.1f, false,skin);
         sensitivitySlider.setPosition(650, 350);
         sensitivitySlider.setValue(profilesData.getFloat(""+ProfileInfo.selectedPlayerProfile +"Sensitivity", 1f));
         sensitivitySlider.setWidth(500);
@@ -165,8 +165,8 @@ public class SettingsMenu extends ScreenAdapter {
 
         TextButton clearDotsButton = new TextButton(localizationBundle.get("clearButtonText"), style);
         clearDotsButton.setWidth(320);
-        clearDotsButton.setHeight(100);
-        clearDotsButton.setPosition(330 - clearDotsButton.getWidth()/2,150);
+        clearDotsButton.setHeight(80);
+        clearDotsButton.setPosition(330 - clearDotsButton.getWidth()/2,180);
         clearDotsButton.setName("cleardotbutton");
         clearDotsButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -192,12 +192,40 @@ public class SettingsMenu extends ScreenAdapter {
         invertYCheckBox.setPosition(900 -invertYCheckBox.getWidth()/2, 235);
 
 
-        //skin.getFont("font").getData().setScale(1.5f); //set skin font size
-        //SelectBox profileBox = new SelectBox(skin);
-        //profileBox.setItems(new String[] {"Mikko ", "Mika","Miika","Henri", "Juuso", "tyyppi", "tyyppi2", "tyyppi3", "tyypi4"});
-        //profileBox.setPosition(100,50);
-        //profileBox.setScale(100f); isontaa buttonia mutta ei grafiikkaa
-        //profileBox.setWidth(400);
+        //LISÄLABELIT ALKAA
+
+        Label radarInstructions = new Label(localizationBundle.get("radarInstructionsText"), style2);
+        radarInstructions.setPosition(330 -radarInstructions.getWidth()/2, 110);
+        radarInstructions.setName("radarInstructions");
+
+        Label radarInstructions2 = new Label(localizationBundle.get("radarInstructionsText2"), style2);
+        radarInstructions2.setPosition(330 -radarInstructions2.getWidth()/2, 50);
+        radarInstructions2.setName("radarInstructions2");
+
+        Label hardLabel = new Label(localizationBundle.get("hardText"), style2);
+        hardLabel.setPosition(900 +250 -hardLabel.getWidth(),700);
+        hardLabel.setName("hardtext");
+
+        Label easyLabel = new Label(localizationBundle.get("easyText"), style2);
+        easyLabel.setPosition(900 -250 ,700);
+        easyLabel.setName("easytext");
+
+        Label hundredLabel = new Label(localizationBundle.get("100Text"), style2);
+        hundredLabel.setPosition(900 +250 -hundredLabel.getWidth(),550);
+        hundredLabel.setName("hundredtext");
+
+        Label zeroLabel = new Label(localizationBundle.get("0Text"), style2);
+        zeroLabel.setPosition(900 -250 ,550);
+        zeroLabel.setName("zerotext");
+
+        Label hundredfiftyLabel = new Label(localizationBundle.get("150Text"), style2);
+        hundredfiftyLabel.setPosition(900 + 250 -hundredfiftyLabel.getWidth(), 400);
+        hundredfiftyLabel.setName("hundredfiftylabel");
+
+        Label fiftyLabel = new Label(localizationBundle.get("50Text"), style2);
+        fiftyLabel.setPosition(900 -250, 400);
+        fiftyLabel.setName("fiftylabel");
+
 
         stage.addActor(slider);
         stage.addActor(slider2);
@@ -212,6 +240,15 @@ public class SettingsMenu extends ScreenAdapter {
         stage.addActor(button);
         stage.addActor(new Radar());
         stage.addActor(clearDotsButton);
+
+        stage.addActor(radarInstructions);
+        stage.addActor(radarInstructions2);
+        stage.addActor(hardLabel);
+        stage.addActor(easyLabel);
+        stage.addActor(zeroLabel);
+        stage.addActor(hundredLabel);
+        stage.addActor(fiftyLabel);
+        stage.addActor(hundredfiftyLabel);
 
         loadVectordata();
         //stage.addActor(profileBox);

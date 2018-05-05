@@ -162,6 +162,12 @@ public class LevelSelectMenu extends ScreenAdapter {
         Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
         topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
 
+        Label minLabel = new Label("Min", style2);
+        minLabel.setPosition(640 - 250 ,120);
+
+        Label maxLabel = new Label("Max", style2);
+        maxLabel.setPosition(640 + 250 -maxLabel.getWidth() , 120);
+
         stage.addActor(levelOneButton);
         stage.addActor(levelTwoButton);
         stage.addActor(levelThreeButton);
@@ -170,6 +176,8 @@ public class LevelSelectMenu extends ScreenAdapter {
 
         stage.addActor(instructionsLabel1);
         stage.addActor(instructionsLabel2);
+        stage.addActor(minLabel);
+        stage.addActor(maxLabel);
 
         stage.addActor(topPilotsLabel);
         stage.addActor(highScoreTable);

@@ -77,7 +77,7 @@ public class ProfileMenu extends ScreenAdapter {
         style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton mainMenuButton = new TextButton(localizationBundle.get("mainMenu"), style);
-        mainMenuButton.setPosition(100,100);
+        mainMenuButton.setPosition(320 - mainMenuButton.getWidth()/2,200 -mainMenuButton.getHeight()/2);
         mainMenuButton.setWidth(400);
         mainMenuButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -97,7 +97,7 @@ public class ProfileMenu extends ScreenAdapter {
         });
 
         TextButton createUserButton = new TextButton(localizationBundle.get("createUser"), style);
-        createUserButton.setPosition(100,500);
+        createUserButton.setPosition(320 - createUserButton.getWidth()/2,600 -createUserButton.getHeight()/2);
         createUserButton.setWidth(400);
         createUserButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -117,7 +117,7 @@ public class ProfileMenu extends ScreenAdapter {
         });
 
         TextButton deleteUserButton = new TextButton(localizationBundle.get("deleteProfile"), style);
-        deleteUserButton.setPosition(100,300);
+        deleteUserButton.setPosition(320 -deleteUserButton.getWidth()/2,400 -deleteUserButton.getHeight()/2);
         deleteUserButton.setWidth(400);
         deleteUserButton.addListener(new InputListener() {
             Boolean touched = false;
@@ -149,11 +149,11 @@ public class ProfileMenu extends ScreenAdapter {
         listBox.setItems(profiles.toArray());
         listBox.setName("listbox");
         ScrollPane scrollBox = new ScrollPane(listBox);
-        scrollBox.setBounds(0,0,300,300);
+        scrollBox.setBounds(0,0,300,200 +deleteUserButton.getHeight());
         scrollBox.setSmoothScrolling(false);
         scrollBox.setOverscroll(false,false);
         scrollBox.setClamp(true);
-        scrollBox.setPosition(800,300);
+        scrollBox.setPosition(800,400 -deleteUserButton.getHeight()/2);
 
         Table table = new Table();
         //table.setFillParent(true);
