@@ -44,7 +44,7 @@ public class SplashScreen extends ScreenAdapter {
 
         tamkSprite = new Sprite(new Texture(Gdx.files.internal("textures/tamk_eng_pysty_NEGA.png")));
         tamkSprite.setSize(488,215);
-        tamkSprite.setPosition(960 -tamkSprite.getWidth()/2,533 - tamkSprite.getHeight()/2 -20);
+        tamkSprite.setPosition(960 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20);
 
         exeriumSprite = new Sprite(new Texture(Gdx.files.internal("textures/exerium_logo_low_pixel.png")));
         exeriumSprite.setSize(575, 187);

@@ -64,10 +64,10 @@ public class CreditsMenu extends ScreenAdapter {
 
         Label twoDots = new Label("..", style2);
         if (ProfileInfo.gameLanguage.toString().equals("fi_FI")) {
-            twoDots.setPosition(843, 270);
+            twoDots.setPosition(828, 270);
         }
         else {
-            twoDots.setPosition(822, 270);
+            twoDots.setPosition(808, 270);
         }
 
         style2 = new Label.LabelStyle(

@@ -44,6 +44,7 @@ public class SettingsMenu extends ScreenAdapter {
     Array<Actor> radarDotArray;
     Locale locale;
     Boolean clearDotsPressed = false;
+    Boolean mainMenuNotSave = false;
 
     public SettingsMenu(GameMain game) {
         this.game = game;
@@ -75,7 +76,9 @@ public class SettingsMenu extends ScreenAdapter {
         style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton button = new TextButton(localizationBundle.get("saveButtonText"), style);
-        button.setPosition(900,50);
+        button.setWidth(270);
+        button.setHeight(120);
+        button.setPosition(1060 -button.getWidth()/2,50);
         button.setName("backbutton");
         button.addListener(new InputListener() {
             Boolean touched = false;
@@ -87,6 +90,28 @@ public class SettingsMenu extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched)
                     returnToMainMenu = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), style);
+        returnButton.setWidth(270);
+        returnButton.setHeight(120);
+        returnButton.setName("returnbutton");
+        returnButton.setPosition(760 -returnButton.getWidth()/2,50);
+        returnButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    mainMenuNotSave = true;
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
             {
@@ -200,11 +225,11 @@ public class SettingsMenu extends ScreenAdapter {
         //LISÄLABELIT ALKAA
 
         Label radarInstructions = new Label(localizationBundle.get("radarInstructionsText"), instructionStyle);
-        radarInstructions.setPosition(330 -radarInstructions.getWidth()/2, 130);
+        radarInstructions.setPosition(330 -radarInstructions.getWidth()/2, 90);
         radarInstructions.setName("radarInstructions");
 
         Label radarInstructions2 = new Label(localizationBundle.get("radarInstructionsText2"), instructionStyle);
-        radarInstructions2.setPosition(330 -radarInstructions2.getWidth()/2, 90);
+        radarInstructions2.setPosition(330 -radarInstructions2.getWidth()/2, 50);
         radarInstructions2.setName("radarInstructions2");
 
         Label hardLabel = new Label(localizationBundle.get("hardText"), instructionStyle);
@@ -231,6 +256,10 @@ public class SettingsMenu extends ScreenAdapter {
         fiftyLabel.setPosition(900 -250, 400);
         fiftyLabel.setName("fiftylabel");
 
+        Label rehabilitationSettings = new Label(localizationBundle.get("rehabOptions"), instructionStyle);
+        rehabilitationSettings.setPosition(320 -rehabilitationSettings.getWidth()/2,130);
+        rehabilitationSettings.setName("rehablabel");
+
 
         stage.addActor(slider);
         stage.addActor(slider2);
@@ -243,6 +272,7 @@ public class SettingsMenu extends ScreenAdapter {
         stage.addActor(invertYCheckBox);
 
         stage.addActor(button);
+        stage.addActor(returnButton);
         stage.addActor(new Radar());
         stage.addActor(clearDotsButton);
 
@@ -254,6 +284,7 @@ public class SettingsMenu extends ScreenAdapter {
         stage.addActor(hundredLabel);
         stage.addActor(fiftyLabel);
         stage.addActor(hundredfiftyLabel);
+        stage.addActor(rehabilitationSettings);
 
         loadVectordata();
         //stage.addActor(profileBox);
@@ -308,6 +339,9 @@ public class SettingsMenu extends ScreenAdapter {
             removeRadarDots2();
             clearDotsPressed = false;
         }
+        if (mainMenuNotSave) {
+            game.setScreen(new MainMenu(game,false));
+        }
         //Gdx.app.log("Kenen profiili on valittuna", ""+ProfileInfo.selectedPlayerProfile);
     }
 
@@ -337,7 +371,7 @@ public class SettingsMenu extends ScreenAdapter {
         return dotAmount;
     }
 
-    public void removeRadarDots() {
+    public void removeRadarDots() { //was used to remove dots after 6th press
         if (checkDotsAmount() > 6) {
             Actor tmpActor;
             for (int i = 0; i < 7; i++) {

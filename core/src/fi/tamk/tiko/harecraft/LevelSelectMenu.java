@@ -153,22 +153,22 @@ public class LevelSelectMenu extends ScreenAdapter {
                 new Color(1f,1f,1f,1f)
         );
 
-        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), style2);
-        durationLabel.setPosition(640 -durationLabel.getWidth()/2, 120);
-
-        Label instructionsLabel1 = new Label(localizationBundle.get("instructionText1"), style2);
-        instructionsLabel1.setPosition(640 -instructionsLabel1.getWidth()/2,565);
-
-        Label instructionsLabel2 = new Label(localizationBundle.get("instructionText2"), style2);
-        instructionsLabel2.setPosition(1040 -instructionsLabel2.getWidth()/2, 565);
-
-        Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
-        topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
-
         Label.LabelStyle instructionStyle = new Label.LabelStyle(
                 Assets.font7,
                 new Color(1f,1f,1f,1f)
         );
+
+        Label durationLabel = new Label(localizationBundle.get("durationLabelText"), style2);
+        durationLabel.setPosition(640 -durationLabel.getWidth()/2, 120);
+
+        Label instructionsLabel1 = new Label(localizationBundle.get("instructionText1"), instructionStyle);
+        instructionsLabel1.setPosition(830 -instructionsLabel1.getWidth()/2,585);
+
+        //Label instructionsLabel2 = new Label(localizationBundle.get("instructionText2"), instructionStyle);
+        //instructionsLabel2.setPosition(800 -instructionsLabel2.getWidth()/2, 565);
+
+        Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
+        topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
 
         Label minLabel = new Label("Min", instructionStyle);
         minLabel.setPosition(640 - 250 ,120);
@@ -184,7 +184,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.addActor(instructionsBox);
 
         stage.addActor(instructionsLabel1);
-        stage.addActor(instructionsLabel2);
+        //stage.addActor(instructionsLabel2);
         stage.addActor(minLabel);
         stage.addActor(maxLabel);
 
@@ -354,10 +354,10 @@ class InstructionsBox extends Actor {
     Texture instructionTexture;
 
     public InstructionsBox() {
-        instructionTexture = new Texture(Gdx.files.internal("textures/stage1.png"));
+        instructionTexture = new Texture(Gdx.files.internal("textures/help.png"));
     }
 
     public void draw(Batch batch, float alpha) {
-        batch.draw(instructionTexture, getX(),getY(), 750 , 128);
+        batch.draw(instructionTexture, getX(),getY(), 720 , 128);
     }
 }
