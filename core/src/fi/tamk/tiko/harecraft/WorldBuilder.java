@@ -55,11 +55,9 @@ public class WorldBuilder {
 
     float balloon1SpawnPos, balloon2SpawnPos, balloon3SpawnPos;
     boolean balloon1Collected, balloon2Collected, balloon3Collected;
-    static boolean red, green, blue;
 
     public WorldBuilder(World world) {
         this.world = world;
-        red = green = blue = false;
         balloon1SpawnPos = MathUtils.random(50f, 1f/3f * finish -100) ;
         balloon2SpawnPos = MathUtils.random(1f/3f * finish + 100f, 2f/3f * finish - 100f);
         balloon3SpawnPos = MathUtils.random(2f/3f * finish + 100f, 3f/3f * finish - 100f);
@@ -183,8 +181,8 @@ public class WorldBuilder {
 
     public void addClouds() {
         float difficultyRate = (4 - DIFFICULTYSENSITIVITY) * 0.2f;
-        float min = 0.55f + 6.1f/global_Multiplier * 0.12f;
-        float max = 1.55f - global_Multiplier * 0.15f;
+        float min = 0.45f + 5.6f/global_Multiplier * 0.12f;
+        float max = 1.35f - global_Multiplier * 0.15f;
 
         if(world.clouds_LUp.isEmpty() || world.clouds_LUp.get(world.clouds_LUp.size() - 1).stateTime >= clouds_LUpTimer) {
             x = MathUtils.random(-40f,0f);
@@ -272,10 +270,10 @@ public class WorldBuilder {
     public void addTrees() {
         //float min = 0.1f + 6.1f/global_Multiplier * 0.04f;
         //float max = 0.4f - global_Multiplier * 0.05f;
-        //float min = 0.05f;
-        //float max = 0.1f;
-        float min = 0.18f + 6.1f/global_Multiplier * 0.04f;
-        float max = 0.52f - global_Multiplier * 0.05f;
+        //float min = 0.01f;
+        //float max = 0.05f;
+        float min = 0.05f + 5.6f/global_Multiplier * 0.04f;
+        float max = 0.35f - global_Multiplier * 0.04f;
 
         if((world.trees_L.isEmpty() && trees_LRemoveTimer == 0f)
                 || (!world.trees_L.isEmpty() && trees_LRemoveTimer == 0f && world.trees_L.get(world.trees_L.size() - 1).stateTime >= trees_LTimer)) {
@@ -300,7 +298,7 @@ public class WorldBuilder {
                 x = MathUtils.random(-150f, 0f);
                 y = groundLevel;
                 world.lakes_L.add(new Lake(x, y, spawnDistance));
-                lakes_LTimer = MathUtils.random(1f, 6f - global_Multiplier * 0.3f);
+                lakes_LTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
             }
         }
         if(world.lakes_R.isEmpty() || world.lakes_R.get(world.lakes_R.size() - 1).stateTime >= lakes_RTimer) {
@@ -308,13 +306,13 @@ public class WorldBuilder {
                 x = MathUtils.random(0f, 150f);
                 y = groundLevel;
                 world.lakes_R.add(new Lake(x, y, spawnDistance));
-                lakes_RTimer = MathUtils.random(1f, 6f - global_Multiplier * 0.3f);
+                lakes_RTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
             }
         }
     }
 
     public void addHills() {
-        float min = 1f;
+        float min = 0.7f;
         float max = 3f - global_Multiplier * 0.3f;
 
         if((world.hills_L.isEmpty() && hills_LRemoveTimer == 0f) || (!world.hills_L.isEmpty() && hills_LRemoveTimer == 0f && world.hills_L.get(world.hills_L.size() - 1).stateTime >= hills_LTimer)) {

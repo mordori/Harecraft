@@ -221,14 +221,20 @@ public class WorldRenderer {
     public void drawParticles() {
         sBatch.begin();
         //if(world.pfx_sea_glimmer != null) world.pfx_sea_glimmer.draw(sBatch);
-        if(gameState == RACE || gameState == FINISH) player.pfx_scarf.draw(sBatch);
+        if(gameState == RACE || gameState == FINISH) {
+            player.pfx_scarf.draw(sBatch);
+            player.pfx_wind_trail_right.draw(sBatch);
+            player.pfx_wind_trail_left.draw(sBatch);
+        }
 
         for(Cloud c : world.clouds_RDown) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         for(Cloud c : world.clouds_RUp) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         for(Cloud c : world.clouds_LDown) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
         for(Cloud c : world.clouds_LUp) if(c.isCollided) c.pfx_dispersion.draw(sBatch);
 
-        for(Ring r : world.rings) if(r.isCollected) r.pfx_speed_up.draw(sBatch);
+        for(Ring r : world.rings) if(r.isCollected) {
+            r.pfx_speed_up.draw(sBatch);
+        }
 
         if(world.pfx_snow != null) world.pfx_snow.draw(sBatch);
         world.pfx_speed_lines.draw(sBatch);

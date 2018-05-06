@@ -6,18 +6,23 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.flights;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 import static fi.tamk.tiko.harecraft.GameScreen.strFlightRecord;
+import static fi.tamk.tiko.harecraft.GameScreen.world;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -37,17 +42,16 @@ public abstract class Pilot extends GameObject {
     float drawDistance;
     boolean isDrawing;
 
-    static final int COLOR_RED = 0;
-    static final int COLOR_BLUE = 1;
-    static final int COLOR_ORANGE = 2;
-    static final int COLOR_PINK = 3;
-
     static final int PLANE_1 = 1;
     static final int PLANE_2 = 2;
     static final int PLANE_3 = 3;
 
-    static final int CHARACTER_DEF = 0;
-    static final int CHARACTER_HARE = 1;
+    static final int HARE = 0;
+    static final int WOLF = 1;
+    static final int FOX = 2;
+    static final int KOALA = 3;
+    static final int GIRAFF = 4;
+    static final int BEAR = 5;
 
     public void update(float delta) {
         super.update(delta);
@@ -103,12 +107,17 @@ class Player extends Pilot {
     Vector3 destination;
     Vector3 curPosition;
     Vector3 projPosition;
-
-    TextureRegion texR_body = Assets.texR_plane_2_red_body;
-    TextureRegion texR_wings = Assets.texR_plane_2_red_wings;
-    TextureRegion texR_head = Assets.texR_character_hare_head;
+    Vector3 windPos;
 
     ParticleEffect pfx_scarf;
+    static ParticleEffect pfx_wind_trail_left;
+    static ParticleEffect pfx_wind_trail_right;
+    float angle;
+    float offsetX;
+    float offsetY;
+    static float cloudHitTimer;
+    float windYOffset;
+    float windXOffset;
 
     public Player(float x, float y, float z) {
         ppcX = Gdx.graphics.getPpcX();
@@ -118,15 +127,29 @@ class Player extends Pilot {
         keyboardDestination = new Vector3();
         curPosition = new Vector3();
         rotationsArray = new float[10];
+        Vector3 windPos = new Vector3();
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
-
-        //strFlightRecord.intern();
+        pfx_wind_trail_left = new ParticleEffect(Assets.pfx_wind_trail);
+        pfx_wind_trail_right = new ParticleEffect(Assets.pfx_wind_trail);
 
         drawDistance = spawnDistance/50f;
         speed = SPEED;
         acceleration = 1f;
         accelerationZ = 1f;
         rotation.z = (MathUtils.random(0,1) == 0) ? -45f : 45f;
+
+        TextureRegion texR_body = Assets.texR_plane_red_body;
+        TextureRegion texR_wings = Assets.texR_plane_2_red_wings;
+        TextureRegion texR_head = Assets.texR_character_hare;
+
+
+        if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 5000) {
+            texR_wings = Assets.texR_plane_1_red_wings;
+        }
+        else if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 1000) {
+            texR_wings = Assets.texR_plane_3_red_wings;
+        }
+
 
         width = texR_body.getRegionWidth()/250f;
         height = texR_body.getRegionHeight()/250f;
@@ -144,6 +167,19 @@ class Player extends Pilot {
         decal_wings.setPosition(x,y,z + 0.2f);
 
         decal_head.rotateY(-90f);
+
+        if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 4000) {
+            windYOffset = -decal.getHeight()/15f;
+            windXOffset = decal.getWidth()/2.25f;
+        }
+        else if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 2000) {
+            windYOffset = decal.getHeight()/20f;
+            windXOffset = decal.getWidth()/2.75f;
+        }
+        else {
+            windYOffset = 0f;
+            windXOffset = decal.getWidth()/2.5f;
+        }
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -208,10 +244,7 @@ class Player extends Pilot {
             checkInput(); //Keyboard input
 
             //RECORD
-            //StringBuilder value = new StringBuilder(strFlightRecord);
-            //value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
-            //strFlightRecord = value.toString();
-
+            //recordFlight();
         }
         else if(gameState == START) {
             decal.setRotationZ(rotation.z);
@@ -238,23 +271,27 @@ class Player extends Pilot {
         }
 
         decal_head.setRotation(decal.getRotation().cpy().exp(2f));
-        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.07f);
+        decal_head.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.03f);
         decal_wings.setRotation(decal.getRotation());
-        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.14f);
+        decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.06f);
 
-        //ANIMATION
-        //decal_head.setTextureRegion((TextureRegion) Assets.animation_player_scarf.getKeyFrame(stateTime,true));
-        /*if(getRotationAverage() >= 0f && Assets.animation_player_scarf.isFlipped) {
-            Assets.flip(Assets.animation_player_scarf, Assets.animation_player_scarf.getKeyFrames().length);
-            Assets.animation_player_scarf.isFlipped = false;
-        }
-        else if(getRotationAverage() < 0f && !Assets.animation_player_scarf.isFlipped) {
-            Assets.flip(Assets.animation_player_scarf, Assets.animation_player_scarf.getKeyFrames().length);
-            Assets.animation_player_scarf.isFlipped = true;
-        }*/
 
-        projPosition = camera.project(curPosition.cpy());
         updateParticles(delta);
+        cloudHitTimer += delta;
+        if(gameState == START || cloudHitTimer > 2.4f) {
+            pfx_wind_trail_left.allowCompletion();
+            pfx_wind_trail_right.allowCompletion();
+        }
+        else if(cloudHitTimer > 0.001f && pfx_wind_trail_left.isComplete()) {
+            pfx_wind_trail_left.start();
+            pfx_wind_trail_right.start();
+        }
+    }
+
+    private void recordFlight() {
+        StringBuilder value = new StringBuilder(strFlightRecord);
+        value.append(direction.x).append(",").append(direction.y).append(",").append(getRotationAverage() * -15).append("\n");
+        strFlightRecord = value.toString();
     }
 
     public void checkInput() {
@@ -274,13 +311,43 @@ class Player extends Pilot {
 
     @Override
     public void updateParticles(float delta) {
+        windPos = curPosition.cpy();
+        windPos.x -= windXOffset;
+        windPos.y += windYOffset;
+        angle = decal.getRotation().getAngleRad();
+        offsetX = (float)((windPos.x - curPosition.x) * Math.cos(angle) - (windPos.y - curPosition.y) * Math.sin(angle) + curPosition.x);
+        offsetY = (float)((windPos.x - curPosition.x) * Math.sin(angle) + (windPos.y - curPosition.y) * Math.cos(angle) + curPosition.y);
+        windPos.x = offsetX;
+        windPos.y = offsetY;
+
+        projPosition = camera.project(windPos);
+        pfx_wind_trail_right.setPosition(
+                projPosition.x,
+                projPosition.y);
+        pfx_wind_trail_right.update(delta);
+
+        windPos = curPosition.cpy();
+        windPos.x += windXOffset;
+        windPos.y += windYOffset;
+        angle = decal.getRotation().getAngleRad();
+        offsetX = (float)((windPos.x - curPosition.x) * Math.cos(angle) - (windPos.y - curPosition.y) * Math.sin(angle) + curPosition.x);
+        offsetY = (float)((windPos.x - curPosition.x) * Math.sin(angle) + (windPos.y - curPosition.y) * Math.cos(angle) + curPosition.y);
+        windPos.x = offsetX;
+        windPos.y = offsetY;
+
+        projPosition = camera.project(windPos);
+        pfx_wind_trail_left.setPosition(
+                projPosition.x,
+                projPosition.y);
+        pfx_wind_trail_left.update(delta);
+
+
+        projPosition = camera.project(curPosition.cpy());
         pfx_scarf.setPosition(
                 projPosition.x,
-                projPosition.y - 10f);
-
+                projPosition.y - 5f);
         pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
         pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
-
         pfx_scarf.update(delta);
     }
 
@@ -295,6 +362,8 @@ class Player extends Pilot {
     public void dispose() {
         super.dispose();
         pfx_scarf.dispose();
+        pfx_wind_trail_right.dispose();
+        pfx_wind_trail_left.dispose();
     }
 }
 
@@ -306,7 +375,6 @@ class Player extends Pilot {
 
 class Opponent extends Pilot {
     float spawnZ;
-    Decal decal_playerTag;
     String flight;
     String[] input;
     String[] line;
@@ -315,7 +383,7 @@ class Opponent extends Pilot {
     float rotZ;
     int count;
 
-    public Opponent(float x, float y, float z, float spawnZ, int color, int planetype, int character, float speed) {
+    public Opponent(float x, float y, float z, float spawnZ, int character, float speed) {
         drawDistance = 100f;
         this.spawnZ = spawnZ;
         this.speed = speed;
@@ -326,46 +394,36 @@ class Opponent extends Pilot {
         flights.remove(i);
         input = flight.split("\n");
 
-
-        TextureRegion texR_body;
-        TextureRegion texR_wings;
-        TextureRegion texR_head;
-
-        if(color == 0) {
-            texR_body = Assets.texR_plane_2_black_body;
-            texR_wings = Assets.texR_plane_2_black_wings;
-        }
-        else switch(MathUtils.random(0,3)) {
-            case COLOR_RED:
-                texR_body = Assets.texR_plane_2_green_body;
-                texR_wings = Assets.texR_plane_2_green_wings;
-                break;
-            case COLOR_BLUE:
-                texR_body = Assets.texR_plane_2_blue_body;
-                texR_wings = Assets.texR_plane_2_blue_wings;
-                break;
-            case COLOR_ORANGE:
-                texR_body = Assets.texR_plane_2_orange_body;
-                texR_wings = Assets.texR_plane_2_orange_wings;
-                break;
-            case COLOR_PINK:
-                texR_body = Assets.texR_plane_2_pink_body;
-                texR_wings = Assets.texR_plane_2_pink_wings;
-                break;
-            default:
-                texR_body = Assets.texR_plane_2_red_body;
-                texR_wings = Assets.texR_plane_2_red_wings;
-        }
+        TextureRegion texR_head = Assets.texR_character_hare;
+        TextureRegion texR_body = Assets.texR_plane_red_body;
+        TextureRegion texR_wings = Assets.texR_plane_2_red_wings;
 
         switch (character) {
-            case CHARACTER_DEF:
-                texR_head = Assets.texR_character_default_head;
+            case WOLF:
+                texR_head = Assets.texR_character_wolf;
+                texR_body = Assets.texR_plane_wolf_body;
+                texR_wings = Assets.texR_plane_wolf_wings;
                 break;
-            case CHARACTER_HARE:
-                texR_head = Assets.texR_character_hare_head;
+            case FOX:
+                texR_head = Assets.texR_character_fox;
+                texR_body = Assets.texR_plane_fox_body;
+                texR_wings = Assets.texR_plane_fox_wings;
                 break;
-            default:
-                texR_head = Assets.texR_character_default_head;
+            case KOALA:
+                texR_head = Assets.texR_character_koala;
+                texR_body = Assets.texR_plane_koala_body;
+                texR_wings = Assets.texR_plane_koala_wings;
+                break;
+            case GIRAFF:
+                texR_head = Assets.texR_character_giraff;
+                texR_body = Assets.texR_plane_giraff_body;
+                texR_wings = Assets.texR_plane_giraff_wings;
+                break;
+            case BEAR:
+                texR_head = Assets.texR_character_bear;
+                texR_body = Assets.texR_plane_bear_body;
+                texR_wings = Assets.texR_plane_bear_wings;
+                break;
         }
 
         x = MathUtils.random(-5f, 5f);
@@ -396,14 +454,10 @@ class Opponent extends Pilot {
         height = texR_wings.getRegionHeight() / 100f;
         decal_wings = Decal.newDecal(width, height, texR_wings,true);
         decal_wings.setPosition(x,y,z+0.2f);
-
-        decal_playerTag = Decal.newDecal(Assets.texR_playertag.getRegionWidth()/70f,Assets.texR_playertag.getRegionHeight()/70f, Assets.texR_playertag,true);
     }
 
     public void update(float delta) {
         super.update(delta);
-
-        decal_playerTag.setColor(1f,1f,1f, opacity);
 
         if(gameState == START) velocity.z = 9f * stateTime;
         else {
@@ -427,8 +481,6 @@ class Opponent extends Pilot {
         decal_head.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.04f);
         decal_wings.setRotation(decal.getRotation());
         decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y,decal.getPosition().z + 0.08f);
-
-        decal_playerTag.setPosition(decal.getPosition().x, decal.getPosition().y + 1.3f, decal.getPosition().z);
     }
 
     public void move(float delta) {
@@ -440,7 +492,7 @@ class Opponent extends Pilot {
 
         decal.translateX(xDir);
         decal.translateY(yDir);
-        decal.setRotationZ(rotZ * 1.5f);
+        decal.setRotationZ(rotZ * 1.25f);
 
 
         count++;

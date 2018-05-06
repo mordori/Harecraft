@@ -6,16 +6,17 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
+import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.World.player;
-import static fi.tamk.tiko.harecraft.WorldBuilder.blue;
-import static fi.tamk.tiko.harecraft.WorldBuilder.green;
-import static fi.tamk.tiko.harecraft.WorldBuilder.red;
 
 /**
  * Created by Mika on 19.4.2018.
@@ -110,7 +111,6 @@ class Ring extends GameObject {
             stateTime_arrows = 0f;
         }
 
-
         //Rotation
         if(!isCollected) rotation.z = delta * 50f;
         else rotation.z = delta * 70f * (stateTime / 2f);
@@ -182,7 +182,7 @@ class Cloud extends GameObject {
                 break;
         }
 
-        if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
+        //if(MathUtils.random(0,1) == 0) textureRegion = Assets.flipAR(textureRegion);
 
         width = textureRegion.getRegionWidth() / 70f;
         height = textureRegion.getRegionHeight() / 70f;
@@ -264,6 +264,8 @@ class Cloud extends GameObject {
         pfx_dispersion.setPosition(
                 player.projPosition.x,
                 player.projPosition.y);
+
+        player.cloudHitTimer = 0f;
         isCollided = true;
     }
 
@@ -291,58 +293,11 @@ class Balloon extends GameObject {
     float random;
 
     public Balloon(float x, float y, float z) {
-        TextureRegion textureRegion = Assets.texR_balloon_red;
+        TextureRegion textureRegion;
 
-        switch(MathUtils.random(0,2)) {
-            case 0:
-                if(!red) {
-                    textureRegion = Assets.texR_balloon_red;
-                    red = true;
-                    break;
-                }
-                else if(!green){
-                    textureRegion = Assets.texR_balloon_green;
-                    green = true;
-                    break;
-                }
-                else if(!blue){
-                    textureRegion = Assets.texR_balloon_blue;
-                    blue = true;
-                    break;
-                }
-            case 1:
-                if(!green) {
-                    textureRegion = Assets.texR_balloon_green;
-                    green = true;
-                    break;
-                }
-                else if(!red){
-                    textureRegion = Assets.texR_balloon_red;
-                    red = true;
-                    break;
-                }
-                else if(!blue){
-                    textureRegion = Assets.texR_balloon_blue;
-                    blue = true;
-                    break;
-                }
-            case 2:
-                if(!blue) {
-                    textureRegion = Assets.texR_balloon_blue;
-                    blue = true;
-                    break;
-                }
-                else if(!green){
-                    textureRegion = Assets.texR_balloon_green;
-                    green = true;
-                    break;
-                }
-                else if(!red){
-                    textureRegion = Assets.texR_balloon_red;
-                    red = true;
-                    break;
-                }
-        }
+        if(world instanceof WorldSummer) textureRegion = Assets.texR_balloon_red;
+        else if(world instanceof WorldTundra) textureRegion = Assets.texR_balloon_blue;
+        else textureRegion = Assets.texR_balloon_orange;
 
         width = textureRegion.getRegionWidth() / 110f;
         height = textureRegion.getRegionHeight() / 110f;

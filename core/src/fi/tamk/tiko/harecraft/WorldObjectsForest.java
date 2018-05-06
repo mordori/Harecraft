@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
@@ -26,13 +27,13 @@ public abstract class WorldObjectsForest {
 class Hill extends GameObject {
     Vector3 up = new Vector3(0f,1f,0f);
     public Hill(float x, float y, float z) {
-        TextureRegion textureRegion = Assets.texR_summer_hill;
+        TextureRegion textureRegion = Assets.texR_hill_summer;
 
         if(GameScreen.world instanceof WorldSummer) {
-            textureRegion = Assets.texR_summer_hill;
+            textureRegion = Assets.texR_hill_summer;
         }
         else if(GameScreen.world instanceof WorldTundra) {
-            textureRegion = Assets.texR_tundra_hill;
+            textureRegion = Assets.texR_hill_tundra;
         }
 
         width = textureRegion.getRegionWidth()/25f;
@@ -68,13 +69,13 @@ class Hill extends GameObject {
 
 class Lake extends GameObject {
     public Lake(float x, float y, float z) {
-        TextureRegion textureRegion = Assets.texR_summer_lake;
+        TextureRegion textureRegion = Assets.texR_lake_summer;
 
         if(GameScreen.world instanceof WorldSummer) {
-            textureRegion = Assets.texR_summer_lake;
+            textureRegion = Assets.texR_lake_summer;
         }
         else if(GameScreen.world instanceof WorldTundra) {
-            textureRegion = Assets.texR_tundra_lake;
+            textureRegion = Assets.texR_lake_tundra;
         }
 
         width = textureRegion.getRegionWidth() / 15f;
@@ -217,10 +218,16 @@ class HotAirBalloon extends GameObject {
     Vector3 up = new Vector3(0f,1f,0f);
 
     public HotAirBalloon(float x, float y, float z) {
-        width = Assets.texR_hotairballoon.getRegionWidth()/12f;
-        height = Assets.texR_hotairballoon.getRegionHeight()/12f;
+        TextureRegion textureRegion;
 
-        decal = Decal.newDecal(width, height, Assets.texR_hotairballoon, true);
+        if(worldIndex == 1) textureRegion = Assets.texR_hotairballoon_summer;
+        else textureRegion = Assets.texR_hotairballoon_tundra;
+
+
+        width = textureRegion.getRegionWidth()/12f;
+        height = textureRegion.getRegionHeight()/12f;
+
+        decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);
 
         velocity.y = 5f;

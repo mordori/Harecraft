@@ -82,24 +82,21 @@ public abstract class World {
         finish = ProfileInfo.selectedDuration;
         end = finish + spawnDistance + 20f;
 
-
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
-
         pfx_sea_glimmer = new ParticleEffect(Assets.pfx_sea_glimmer);
         pfx_sea_glimmer.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
         //pfx_sea_glimmer.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-
         pfx_snow = new ParticleEffect(Assets.pfx_snow);
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
         pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
 
 
         player = new Player(0f,-7f,-5f);
-        opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, 0, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8.45f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(0f, 4f, -52f*2f, finish/5f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(4f, -2f, -61f*2f, finish/6f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 7.5f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(4f, 2f, -55f*2f, finish/10f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 9f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.COLOR_ORANGE, Pilot.PLANE_2, Pilot.CHARACTER_HARE, 6.75f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.WOLF, 8.45f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(0f, 4f, -52f*2f, finish/5f, Pilot.GIRAFF, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(4f, -2f, -61f*2f, finish/6f, Pilot.FOX, 7.5f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(4f, 2f, -55f*2f, finish/10f, Pilot.KOALA, 9f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.BEAR, 6.75f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
 
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun1.setPosition(0f, -40f, 294f);

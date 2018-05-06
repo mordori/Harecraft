@@ -124,7 +124,7 @@ public class HUD {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    game.setScreen(new GameScreen(game, GameScreen.index));
+                    game.setScreen(new GameScreen(game, GameScreen.worldIndex));
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)

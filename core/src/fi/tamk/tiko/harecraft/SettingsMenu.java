@@ -223,6 +223,10 @@ public class SettingsMenu extends ScreenAdapter {
 
 
         //LISÄLABELIT ALKAA
+        style2 = new Label.LabelStyle(
+                Assets.font7,
+                new Color(1f,1f,1f,1f)
+        );
 
         Label radarInstructions = new Label(localizationBundle.get("radarInstructionsText"), instructionStyle);
         radarInstructions.setPosition(330 -radarInstructions.getWidth()/2, 90);

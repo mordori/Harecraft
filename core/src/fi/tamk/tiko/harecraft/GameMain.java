@@ -84,7 +84,8 @@ public class GameMain extends Game {
         blurTargetA = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
         blurTargetB = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
 
-        setScreen(new SplashScreen(this));
+        setScreen(new MainMenu(this, false));
+        //setScreen(new SplashScreen(this));
 	}
 
 	@Override

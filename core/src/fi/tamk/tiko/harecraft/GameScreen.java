@@ -36,11 +36,6 @@ import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
  */
 
 public class GameScreen extends ScreenAdapter implements GestureDetector.GestureListener {
-    public static final float SCREEN_WIDTH = Gdx.graphics.getWidth();
-    public static final float SCREEN_HEIGHT = Gdx.graphics.getHeight();
-
-    static float DIFFICULTYSENSITIVITY; // 0-EASY 2-MEDIUM 4-HARD
-
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         return false;
@@ -94,6 +89,11 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         START, RACE, FINISH, END, EXIT
     }
 
+    public static float SCREEN_WIDTH = Gdx.graphics.getWidth();
+    public static float SCREEN_HEIGHT = Gdx.graphics.getHeight();
+
+    static float DIFFICULTYSENSITIVITY; // 0-EASY 2-MEDIUM 4-HARD
+
     static GameMain game;
     static World world;
     WorldBuilder builder;
@@ -115,7 +115,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static boolean newGame;
     static boolean paused;
     static GlyphLayout layout = new GlyphLayout();
-    static int index;
+    static int worldIndex;
 
     static String strFlightRecord = "";
     static int renderCount = 0;
@@ -126,14 +126,17 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static int playerPlacement;
     static int balloonsCollected;
 
-    static int recIndex = 6;
+    static int recIndex = 9;
 
-    public GameScreen(GameMain game, int index) {
+    public GameScreen(GameMain game, int worldIndex) {
+        SCREEN_WIDTH = Gdx.graphics.getWidth();
+        SCREEN_HEIGHT = Gdx.graphics.getHeight();
+
         this.game = game;
-        this.index = index;
+        this.worldIndex = worldIndex;
         flights = new ArrayList<FileHandle>(Assets.flightsSource);
         DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
-        selectWorld(index);
+        selectWorld(worldIndex);
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
         stage = new Stage(new ScreenViewport(orthoCamera));
@@ -192,6 +195,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
         HUD.update(delta);
     }
+
     public void updateState(float delta) {
         gameStateTime += delta;
         if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
@@ -289,11 +293,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
 
             //RECORD
-            FileHandle file = Gdx.files.local("data/flights/"+ recIndex + ".txt");
-            strFlightRecord += renderCount;
-            //file.writeString(strFlightRecord, false);
-
-            recIndex++;
+            //recordFlight();
         }
         else if(gameState == EXIT && gameStateTime > 0.5f) {
             //Assets.music_course_1.stop();
@@ -331,18 +331,24 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         orthoCamera.update();
     }
 
+    private void recordFlight() {
+        FileHandle file = Gdx.files.local("data/flights/"+ recIndex + ".txt");
+        strFlightRecord += renderCount;
+        file.writeString(strFlightRecord, false);
+
+        recIndex++;
+    }
+
+    public void endGame() {
+
+    }
+
     @Override
     public void resize (int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         orthoCamera.viewportWidth = width;
         orthoCamera.viewportHeight = height;
-
-        /*
-        shader2D_vignette.begin();
-        shader2D_vignette.setUniformf("u_resolution", width, height);
-        shader2D_vignette.end();
-        */
     }
 
     @Override
