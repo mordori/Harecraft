@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
@@ -24,6 +25,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.strFlightRecord;
 import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.World.player;
+import static fi.tamk.tiko.harecraft.World.finish;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
@@ -383,11 +385,26 @@ class Opponent extends Pilot {
     float rotZ;
     int count;
 
-    public Opponent(float x, float y, float z, float spawnZ, int character, float speed) {
+    public Opponent(float z, int character) {
         drawDistance = 100f;
-        this.spawnZ = spawnZ;
-        this.speed = speed;
 
+        float max = finish/4f;
+        float min = finish/12f;
+
+        spawnZ = MathUtils.random(min, max);
+        speed = MathUtils.random(2f, 3.8f) + MathUtils.random(0f, max/spawnZ * 3.8f);
+
+        System.out.println(speed);
+
+        if(character == WOLF) {
+            spawnZ = finish/4f;
+            speed = 8.2f;
+        }
+
+        speed -= (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f);
+
+        if(speed < 2f) speed = 2f;
+        if(speed > 10.8f) speed = 10.8f;
 
         int i = MathUtils.random(0, flights.size() - 1);
         flight = flights.get(i).readString();
@@ -426,8 +443,8 @@ class Opponent extends Pilot {
                 break;
         }
 
-        x = MathUtils.random(-5f, 5f);
-        y = MathUtils.random(-5f, 4f);
+        float x = MathUtils.random(-5f, 5f);
+        float y = MathUtils.random(-5f, 4f);
 
         switch (MathUtils.random(0,1)) {
             case 0:

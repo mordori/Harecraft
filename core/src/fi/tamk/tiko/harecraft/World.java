@@ -92,11 +92,17 @@ public abstract class World {
 
 
         player = new Player(0f,-7f,-5f);
-        opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.WOLF, 8.45f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(-65f*2f, Pilot.WOLF));
+        opponents.add(new Opponent(-52f*2f, Pilot.GIRAFF));
+        opponents.add(new Opponent(-61f*2f, Pilot.FOX));
+        opponents.add(new Opponent(-55f*2f, Pilot.KOALA));
+        opponents.add(new Opponent(-61f*2f, Pilot.BEAR));
+
+        /*opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.WOLF));
         opponents.add(new Opponent(0f, 4f, -52f*2f, finish/5f, Pilot.GIRAFF, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
         opponents.add(new Opponent(4f, -2f, -61f*2f, finish/6f, Pilot.FOX, 7.5f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
         opponents.add(new Opponent(4f, 2f, -55f*2f, finish/10f, Pilot.KOALA, 9f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.BEAR, 6.75f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
+        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.BEAR, 6.75f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));*/
 
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun1.setPosition(0f, -40f, 294f);
