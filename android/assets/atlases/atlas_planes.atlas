@@ -1,0 +1,146 @@
+
+atlas_planes.png
+size: 2048,2048
+format: RGBA8888
+filter: MipMapLinearLinear,Linear
+repeat: none
+bear
+  rotate: false
+  xy: 1355, 1519
+  size: 449, 227
+  orig: 449, 227
+  offset: 0, 0
+  index: -1
+bear_body
+  rotate: false
+  xy: 904, 1263
+  size: 449, 227
+  orig: 449, 227
+  offset: 0, 0
+  index: -1
+bear_wings
+  rotate: false
+  xy: 2, 375
+  size: 449, 227
+  orig: 449, 227
+  offset: 0, 0
+  index: -1
+fox
+  rotate: false
+  xy: 1355, 1331
+  size: 449, 186
+  orig: 449, 186
+  offset: 0, 0
+  index: -1
+fox_body
+  rotate: false
+  xy: 453, 712
+  size: 449, 186
+  orig: 449, 186
+  offset: 0, 0
+  index: -1
+fox_wings
+  rotate: false
+  xy: 904, 1075
+  size: 449, 186
+  orig: 449, 186
+  offset: 0, 0
+  index: -1
+giraff
+  rotate: false
+  xy: 2, 604
+  size: 449, 254
+  orig: 449, 254
+  offset: 0, 0
+  index: -1
+giraff_body
+  rotate: false
+  xy: 453, 900
+  size: 449, 254
+  orig: 449, 254
+  offset: 0, 0
+  index: -1
+giraff_wings
+  rotate: false
+  xy: 904, 1492
+  size: 449, 254
+  orig: 449, 254
+  offset: 0, 0
+  index: -1
+hare
+  rotate: false
+  xy: 2, 1156
+  size: 449, 294
+  orig: 449, 294
+  offset: 0, 0
+  index: -1
+koala
+  rotate: false
+  xy: 453, 339
+  size: 449, 184
+  orig: 449, 184
+  offset: 0, 0
+  index: -1
+koala_body
+  rotate: false
+  xy: 1355, 1145
+  size: 449, 184
+  orig: 449, 184
+  offset: 0, 0
+  index: -1
+koala_wings
+  rotate: false
+  xy: 2, 2
+  size: 449, 184
+  orig: 449, 184
+  offset: 0, 0
+  index: -1
+red_1_wings
+  rotate: false
+  xy: 453, 1452
+  size: 449, 294
+  orig: 449, 294
+  offset: 0, 0
+  index: -1
+red_2_wings
+  rotate: false
+  xy: 2, 860
+  size: 449, 294
+  orig: 449, 294
+  offset: 0, 0
+  index: -1
+red_3_wings
+  rotate: false
+  xy: 453, 1156
+  size: 449, 294
+  orig: 449, 294
+  offset: 0, 0
+  index: -1
+red_body
+  rotate: false
+  xy: 2, 1452
+  size: 449, 294
+  orig: 449, 294
+  offset: 0, 0
+  index: -1
+wolf
+  rotate: false
+  xy: 904, 888
+  size: 449, 185
+  orig: 449, 185
+  offset: 0, 0
+  index: -1
+wolf_body
+  rotate: false
+  xy: 453, 525
+  size: 449, 185
+  orig: 449, 185
+  offset: 0, 0
+  index: -1
+wolf_wings
+  rotate: false
+  xy: 2, 188
+  size: 449, 185
+  orig: 449, 185
+  offset: 0, 0
+  index: -1

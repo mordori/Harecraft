@@ -1,0 +1,209 @@
+
+atlas_objects.png
+size: 2048,2048
+format: RGBA8888
+filter: MipMapLinearNearest,Linear
+repeat: none
+HAB_summer
+  rotate: false
+  xy: 258, 43
+  size: 225, 350
+  orig: 225, 350
+  offset: 0, 0
+  index: -1
+HAB_tundra
+  rotate: false
+  xy: 4, 4
+  size: 250, 389
+  orig: 250, 389
+  offset: 0, 0
+  index: -1
+balloon_blue
+  rotate: false
+  xy: 1341, 1459
+  size: 246, 585
+  orig: 246, 585
+  offset: 0, 0
+  index: -1
+balloon_orange
+  rotate: false
+  xy: 1591, 1459
+  size: 246, 585
+  orig: 246, 585
+  offset: 0, 0
+  index: -1
+balloon_red
+  rotate: false
+  xy: 537, 855
+  size: 246, 585
+  orig: 246, 585
+  offset: 0, 0
+  index: -1
+boat
+  rotate: false
+  xy: 1335, 1212
+  size: 134, 155
+  orig: 134, 155
+  offset: 0, 0
+  index: -1
+cloud1
+  rotate: false
+  xy: 808, 1350
+  size: 408, 157
+  orig: 408, 157
+  offset: 0, 0
+  index: -1
+cloud2
+  rotate: false
+  xy: 511, 395
+  size: 341, 130
+  orig: 341, 130
+  offset: 0, 0
+  index: -1
+cloud3
+  rotate: false
+  xy: 787, 871
+  size: 334, 149
+  orig: 334, 149
+  offset: 0, 0
+  index: -1
+hill_summer
+  rotate: false
+  xy: 487, 307
+  size: 221, 84
+  orig: 221, 84
+  offset: 0, 0
+  index: -1
+hill_tundra
+  rotate: false
+  xy: 1331, 1371
+  size: 221, 84
+  orig: 221, 84
+  offset: 0, 0
+  index: -1
+island
+  rotate: false
+  xy: 4, 397
+  size: 503, 506
+  orig: 503, 506
+  offset: 0, 0
+  index: -1
+lake_summer
+  rotate: false
+  xy: 808, 1511
+  size: 529, 533
+  orig: 529, 533
+  offset: 0, 0
+  index: -1
+lake_tundra
+  rotate: false
+  xy: 4, 907
+  size: 529, 533
+  orig: 529, 533
+  offset: 0, 0
+  index: -1
+lighthouse
+  rotate: false
+  xy: 1841, 1413
+  size: 182, 631
+  orig: 182, 631
+  offset: 0, 0
+  index: -1
+palmtree
+  rotate: false
+  xy: 837, 655
+  size: 145, 212
+  orig: 145, 212
+  offset: 0, 0
+  index: -1
+ring
+  rotate: false
+  xy: 511, 529
+  size: 322, 322
+  orig: 322, 322
+  offset: 0, 0
+  index: -1
+ring_arrows
+  rotate: false
+  xy: 787, 1024
+  size: 322, 322
+  orig: 322, 322
+  offset: 0, 0
+  index: -1
+sun
+  rotate: false
+  xy: 4, 1444
+  size: 800, 600
+  orig: 800, 600
+  offset: 0, 0
+  index: -1
+tree_summer_big_dark
+  rotate: false
+  xy: 487, 105
+  size: 107, 198
+  orig: 107, 198
+  offset: 0, 0
+  index: -1
+tree_summer_big_light
+  rotate: false
+  xy: 986, 668
+  size: 107, 199
+  orig: 107, 199
+  offset: 0, 0
+  index: -1
+tree_summer_small_dark
+  rotate: false
+  xy: 1473, 1204
+  size: 107, 163
+  orig: 107, 163
+  offset: 0, 0
+  index: -1
+tree_summer_small_light
+  rotate: false
+  xy: 1224, 1202
+  size: 107, 164
+  orig: 107, 164
+  offset: 0, 0
+  index: -1
+tree_tundra_big_dark
+  rotate: false
+  xy: 1113, 1147
+  size: 107, 199
+  orig: 107, 199
+  offset: 0, 0
+  index: -1
+tree_tundra_big_light
+  rotate: false
+  xy: 598, 106
+  size: 107, 197
+  orig: 107, 197
+  offset: 0, 0
+  index: -1
+tree_tundra_medium_dark
+  rotate: false
+  xy: 1097, 703
+  size: 107, 164
+  orig: 107, 164
+  offset: 0, 0
+  index: -1
+tree_tundra_medium_light
+  rotate: false
+  xy: 709, 90
+  size: 107, 161
+  orig: 107, 161
+  offset: 0, 0
+  index: -1
+tree_tundra_small_dark
+  rotate: false
+  xy: 1220, 1370
+  size: 107, 137
+  orig: 107, 137
+  offset: 0, 0
+  index: -1
+tree_tundra_small_light
+  rotate: false
+  xy: 712, 255
+  size: 107, 136
+  orig: 107, 136
+  offset: 0, 0
+  index: -1
