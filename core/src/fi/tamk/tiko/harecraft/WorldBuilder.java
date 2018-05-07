@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
@@ -97,7 +98,7 @@ public class WorldBuilder {
             updateIslands(delta);
         }
 
-        if(gameState == FINISH || gameState == END) {
+        if(gameState == FINISH || gameState == END || gameState == EXIT) {
             if(worldIndex == 1 || worldIndex == 2) {
                 for (HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
                     hotAirBalloon.update(delta);

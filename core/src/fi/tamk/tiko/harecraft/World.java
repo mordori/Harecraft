@@ -17,6 +17,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_blur;
 import static fi.tamk.tiko.harecraft.WorldBuilder.groundLevel;
@@ -81,6 +82,7 @@ public abstract class World {
 
     public World() {
         finish = ProfileInfo.selectedDuration;
+        finish = 100f;
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
@@ -131,6 +133,14 @@ public abstract class World {
 
         decal_sun2.rotateZ(-delta);
         decal_sun2.setColor(1f,1f,1f, opacity);
+
+        if(gameState == EXIT) {
+            if(isTransition) opacity -= delta;
+            if(opacity < 0f) opacity = 0f;
+            float opacity2 = (1f - gameStateTime/2f) > 0f ? (1f - gameStateTime/2f) : 0f;
+            decal_sun1.setColor(1f,1f,1f, opacity2);
+            decal_sun2.setColor(1f,1f,1f, opacity2);
+        }
     }
 }
 
@@ -192,10 +202,10 @@ class WorldSummer extends World {
 
 class WorldTundra extends World {
     public WorldTundra() {
-        float width = Assets.texR_background_tundra.getRegionWidth()/2f;
-        float height = Assets.texR_background_tundra.getRegionHeight()/2f;
+        float width = Assets.texR_background_tundra.getRegionWidth()/2.25f;
+        float height = Assets.texR_background_tundra.getRegionHeight()/2.25f;
         decal_background = Decal.newDecal(width, height,Assets.texR_background_tundra, true);
-        decal_background.setPosition(0f, 2f, 275f);
+        decal_background.setPosition(0f, 3f, 275f);
 
         ground = Decal.newDecal(new TextureRegion(Assets.tex_ground, 0, 0, 600, 330), true);
         ground.setPosition(0f, -45f, 125f);

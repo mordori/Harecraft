@@ -17,9 +17,12 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.shapeRenderer;
+import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
@@ -32,6 +35,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.paused;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.stage;
 import static fi.tamk.tiko.harecraft.GameScreen.world;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
 import static fi.tamk.tiko.harecraft.MainMenu.profiles;
 
@@ -89,12 +93,22 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
     float originalLineHeight3 = Assets.font5.getLineHeight();
     float originalLineHeight4 = Assets.font6.getLineHeight();
 
+    float opacity = 0f;
+    boolean isTransition = false;
+    boolean isTransitionComplete = false;
+    boolean isTransitionFromComplete = false;
+
+    private final int MAIN_MENU = 0;
+    private final int LEVEL_MENU = 1;
+    private final int NEW_GAME = 2;
+
+    private int selectedScreen;
+
     public ScoreScreen() {
         sBatch.setProjectionMatrix(orthoCamera.combined);
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
         stage = new Stage(new ScreenViewport(orthoCamera));
         Gdx.input.setInputProcessor(stage);
-
 
         Assets.font5.getData().setLineHeight(Assets.font5.getLineHeight()/1.3f);
         Assets.font6.getData().setLineHeight(Assets.font6.getLineHeight()/1.3f);
@@ -125,12 +139,13 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched) {
+                if (touched && !isTransition) {
                     Assets.font5.getData().setLineHeight(originalLineHeight3);
                     Assets.font6.getData().setLineHeight(originalLineHeight4);
 
-                    AssetsAudio.stopMusic();
-                    game.setScreen(new GameScreen(game, GameScreen.worldIndex));
+                    selectedScreen = NEW_GAME;
+                    isTransition = true;
+                    Gdx.input.setInputProcessor(null);
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -165,12 +180,13 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched) {
+                if (touched && !isTransition) {
                     Assets.font5.getData().setLineHeight(originalLineHeight4);
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
-                    AssetsAudio.stopMusic();
-                    game.setScreen(new LevelSelectMenu(game, profiles));
+                    selectedScreen = LEVEL_MENU;
+                    isTransition = true;
+                    Gdx.input.setInputProcessor(null);
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -195,12 +211,13 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched) {
+                if (touched && !isTransition) {
                     Assets.font5.getData().setLineHeight(originalLineHeight4);
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
-                    AssetsAudio.stopMusic();
-                    game.setScreen(new MainMenu(game,false));
+                    selectedScreen = MAIN_MENU;
+                    isTransition = true;
+                    Gdx.input.setInputProcessor(null);
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -212,21 +229,11 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         stage.addActor(btnNewGame);
         stage.addActor(btnCourseSelect);
         stage.addActor(btnMainMenu);
-
-        if(world instanceof WorldSea) {
-            Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
-        }
-        else if(world instanceof WorldSummer) {
-            Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
-        }
-        else if(world instanceof WorldTundra) {
-            Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
-        }
     }
 
     public void drawScoreboard() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0f, 0f, 0f, 0.3f * scoreboard_opacity);
+        shapeRenderer.setColor(0f, 0f, 0f, 0.3f);
 
         float x = SCREEN_WIDTH/10f;
         float y = SCREEN_HEIGHT/3f;
@@ -245,11 +252,11 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         shapeRenderer.end();
 
         sBatch.begin();
-        Assets.font3.setColor(1f,1f,1f, scoreboard_opacity);
-        Assets.font3.draw(sBatch,"Score:", 300f, 500f);
+            Assets.font3.setColor(1f,1f,1f,1f);
+            Assets.font3.draw(sBatch,"Score:", 300f, 500f);
 
-        Assets.font1.setColor(1f,1f,1f, scoreboard_opacity);
-        Assets.font1.draw(sBatch,"" + playerScore, 650f, 600f);
+            Assets.font1.setColor(1f,1f,1f, 1f);
+            Assets.font1.draw(sBatch,"" + playerScore, 650f, 600f);
         sBatch.end();
     }
 
@@ -260,20 +267,78 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
     }
 
     public void update(float delta) {
-        scoreboard_opacity += delta;
-        if(scoreboard_opacity > 1f) scoreboard_opacity = 1f;
+        if(!isTransitionFromComplete) transitionFromScreen(delta);
         stage.act();
+        if(isTransition) {
+            transitionToScreen(delta);
+        }
+        if(isTransitionComplete) {
+            switch(selectedScreen) {
+                case MAIN_MENU:
+                    game.setScreen(new MainMenu(game,true));
+                    break;
+                case LEVEL_MENU:
+                    game.setScreen(new LevelSelectMenu(game, profiles));
+                    break;
+                case NEW_GAME:
+                    game.setScreen(new GameScreen(game, GameScreen.worldIndex));
+                    break;
+            }
+        }
     }
 
     public void draw(float delta) {
+        switch (worldIndex) {
+            case 0:
+                Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+                break;
+            case 1:
+                Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
+                break;
+            case 2:
+                Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
+                break;
+            default:
+                Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
+                break;
+        }
+        if(selectedScreen == MAIN_MENU || selectedScreen == LEVEL_MENU) Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glEnable(Gdx.gl20.GL_BLEND);
 
-        drawScoreboard();
-        stage.draw();
+        fbo.begin();
+            Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            drawScoreboard();
+            stage.draw();
+            sBatch.begin();
+            sBatch.end();
+        fbo.end();
+        renderToTexture();
+    }
 
+    public void transitionToScreen(float delta) {
+        opacity -= delta;
+        if(opacity <= 0f) {
+            opacity = 0f;
+            isTransitionComplete = true;
+        }
+    }
+
+    public void transitionFromScreen(float delta) {
+        opacity += delta;
+        if(opacity >= 1f) {
+            opacity = 1f;
+            isTransitionFromComplete = true;
+        }
+    }
+
+    public void renderToTexture() {
+        texture.setTexture(fbo.getColorBufferTexture());
+
+        //------------------------------------------------
         sBatch.begin();
-
+        texture.draw(sBatch, opacity);
         sBatch.end();
     }
 

@@ -48,6 +48,7 @@ public class GameMain extends Game {
     static FrameBuffer blurTargetA, blurTargetB;
     public static final int FBO_SIZE = 1024;
     static Sprite texture;
+    static float musicVolume;
 	
 	@Override
 	public void create () {

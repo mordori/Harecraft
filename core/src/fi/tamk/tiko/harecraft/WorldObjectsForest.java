@@ -190,6 +190,8 @@ class Tree extends GameObject {
             height = textureRegion.getRegionHeight()/17f;
         }
 
+        if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
+
         decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,transposedY,z);
     }

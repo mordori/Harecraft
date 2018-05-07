@@ -1,8 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -64,8 +62,12 @@ public class Assets {
     static TextureRegion texR_cloud1;
     static TextureRegion texR_cloud2;
     static TextureRegion texR_cloud3;
-    static TextureRegion texR_ring;
-    static TextureRegion texR_ring_arrows;
+    static TextureRegion texR_ring0;
+    static TextureRegion texR_ring1;
+    static TextureRegion texR_ring2;
+    static TextureRegion texR_ring_arrows0;
+    static TextureRegion texR_ring_arrows1;
+    static TextureRegion texR_ring_arrows2;
     static TextureRegion texR_tree_summer_big_light;
     static TextureRegion texR_tree_summer_small_light;
     static TextureRegion texR_tree_summer_big_dark;
@@ -212,8 +214,12 @@ public class Assets {
         texR_cloud1 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud1");
         texR_cloud2 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud2");
         texR_cloud3 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud3");
-        texR_ring = loadDecalTextureRegionFromAtlas(atlas_objects, "ring");
-        texR_ring_arrows = loadDecalTextureRegionFromAtlas(atlas_objects, "ring_arrows");
+        texR_ring0 = loadDecalTextureRegionFromAtlas(atlas_objects, "ring0");
+        texR_ring1 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring1");
+        texR_ring2 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring2");
+        texR_ring_arrows0 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows0");
+        texR_ring_arrows1 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows1");
+        texR_ring_arrows2 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows2");
         texR_tree_summer_big_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_big_dark");
         texR_tree_summer_small_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_big_dark");
         texR_tree_summer_big_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_big_dark");
@@ -350,8 +356,12 @@ public class Assets {
         texR_cloud1.getTexture().dispose();
         texR_cloud2.getTexture().dispose();
         texR_cloud3.getTexture().dispose();
-        texR_ring.getTexture().dispose();
-        texR_ring_arrows.getTexture().dispose();
+        texR_ring0.getTexture().dispose();
+        texR_ring1.getTexture().dispose();
+        texR_ring2.getTexture().dispose();
+        texR_ring_arrows0.getTexture().dispose();
+        texR_ring_arrows1.getTexture().dispose();
+        texR_ring_arrows2.getTexture().dispose();
         texR_tree_summer_big_light.getTexture().dispose();
         texR_tree_summer_small_light.getTexture().dispose();
         texR_tree_summer_big_dark.getTexture().dispose();

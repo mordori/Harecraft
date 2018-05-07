@@ -24,11 +24,12 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.countdown;
-import static fi.tamk.tiko.harecraft.GameScreen.newGame;
+import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
 import static fi.tamk.tiko.harecraft.GameScreen.paused;
 import static fi.tamk.tiko.harecraft.GameScreen.playerPlacement;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.layout;
+import static fi.tamk.tiko.harecraft.GameScreen.selectedScreen;
 import static fi.tamk.tiko.harecraft.GameScreen.stage;
 import static fi.tamk.tiko.harecraft.GameScreen.game;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
@@ -90,6 +91,7 @@ public class HUD {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
                     paused = false;
+                    AssetsAudio.resumeSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
                     Gdx.input.setInputProcessor(new GestureDetector(gameScreen));
                 }
             }
@@ -124,8 +126,11 @@ public class HUD {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    AssetsAudio.stopMusic();
-                    game.setScreen(new GameScreen(game, GameScreen.worldIndex));
+                    paused = false;
+                    gameState = EXIT;
+                    gameStateTime = 0f;
+                    selectedScreen = GameScreen.NEW_GAME;
+                    Gdx.input.setInputProcessor(null);
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -150,9 +155,11 @@ public class HUD {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
+                    paused = false;
                     gameState = EXIT;
                     gameStateTime = 0f;
-                    paused = false;
+                    selectedScreen = GameScreen.MAIN_MENU;
+                    Gdx.input.setInputProcessor(null);
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -176,6 +183,7 @@ public class HUD {
             if(HUD_opacity < 0f) HUD_opacity = 0f;
             if(text_opacity == 0f && gameStateTime > 5f) {
                 sBatch.setShader(shader2D_default);
+                AssetsAudio.stopMusic();
                 game.setScreen(new ScoreScreen());
             }
         }

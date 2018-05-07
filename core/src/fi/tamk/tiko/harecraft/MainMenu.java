@@ -42,12 +42,14 @@ import java.util.Locale;
 
 import static fi.tamk.tiko.harecraft.Assets.sprites_menu_plane;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
 
 /**
@@ -307,12 +309,28 @@ public class MainMenu extends ScreenAdapter {
         sprite_plane.setPosition(x, y);
 
         AssetsAudio.playMusic(AssetsAudio.MUSIC_COURSE_2);
-        AssetsAudio.setMusicVolume(0.5f);
+        musicVolume = 0.5f;
+        AssetsAudio.setMusicVolume(musicVolume);
     }
 
     public void render (float delta) {
-        if(isLaunched) Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        else Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
+        if(isLaunched) {
+            switch(worldIndex) {
+                case 0:
+                    Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+                    break;
+                case 1:
+                    Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
+                    break;
+                case 2:
+                    Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
+                    break;
+                default:
+                    Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+                    break;
+            }
+        }
+        else Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(!animation_plane.isFlipped) {
             x -= 6f * (SCREEN_WIDTH/1280f);
@@ -350,33 +368,26 @@ public class MainMenu extends ScreenAdapter {
         float size = SCREEN_WIDTH/1920f;
 
         fbo.begin();
-        Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        sBatch.begin();
-        sBatch.draw(background, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        sprite_plane.draw(sBatch);
-        //sBatch.draw(logo, Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth() - (Gdx.graphics.getWidth()/8) *2,Gdx.graphics.getHeight()/2);
-        sBatch.draw(logo,
-                Gdx.graphics.getWidth()/2f - (logo.getWidth()/1.25f * size / 2f),
-                Gdx.graphics.getHeight() - (logo.getHeight()/1.25f * size) - Gdx.graphics.getHeight()/35f,
-                logo.getWidth()/1.25f * size,
-                logo.getHeight()/1.25f * size);
-        sBatch.end();
-        stage.act();
-        stage.draw();
+            Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            sBatch.begin();
+                sBatch.draw(background, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                sprite_plane.draw(sBatch);
+                sBatch.draw(logo,
+                        Gdx.graphics.getWidth()/2f - (logo.getWidth()/1.25f * size / 2f),
+                        Gdx.graphics.getHeight() - (logo.getHeight()/1.25f * size) - Gdx.graphics.getHeight()/35f,
+                        logo.getWidth()/1.25f * size,
+                        logo.getHeight()/1.25f * size);
+            sBatch.end();
+            stage.act();
+            stage.draw();
         fbo.end();
         renderToTexture();
 
-
         if(startGame) {
-            //opacity -= delta*2f;
-            //if(opacity < 0f) opacity = 0f;
-            //if(opacity == 0f) {
-                setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
-                ProfileInfo.load();
-                game.setScreen(new LevelSelectMenu(game, profiles));
-                //game.setScreen(new ScoreScreen());
-            //}
+            setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
+            ProfileInfo.load();
+            game.setScreen(new LevelSelectMenu(game, profiles));
         }
         else if(!isLaunched) opacity = 1f;
         else if(isLaunched) {

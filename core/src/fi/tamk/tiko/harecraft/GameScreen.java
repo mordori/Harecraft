@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
+import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
@@ -43,9 +44,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        if(!paused) {
-            paused = true;
-            Gdx.input.setInputProcessor(stage);
+        if(gameState != END && gameState != START) {
+            if(!paused) {
+                paused = true;
+                AssetsAudio.pauseSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
+                Gdx.input.setInputProcessor(stage);
+            }
         }
         return false;
     }
@@ -107,15 +111,14 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static float gameStateTime;
     static float global_Speed = -13f;
     static float global_Multiplier = 1f;
-    float volume;
+    float volume = 1f;
     float cameraPanY = 60f;
     float panAccelY = 1f;
 
     static boolean countdown;
-    static boolean newGame;
     static boolean paused;
     static GlyphLayout layout = new GlyphLayout();
-    static int worldIndex;
+    static int worldIndex = -1;
 
     static String strFlightRecord = "";
     static int renderCount = 0;
@@ -128,9 +131,23 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     static int recIndex = 9;
 
+    static final int MAIN_MENU = 0;
+    static final int NEW_GAME = 2;
+    static int selectedScreen;
+
+    float timer;
+
+    static float opacity = 1f;
+    static boolean isTransition = false;
+    static boolean isTransitionComplete = false;
+
     public GameScreen(GameMain game, int worldIndex) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
+        isTransition = false;
+        isTransitionComplete = false;
+        opacity = 1f;
+        countdown = false;
 
         this.game = game;
         this.worldIndex = worldIndex;
@@ -144,7 +161,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         Gdx.input.setInputProcessor(new GestureDetector(this));
 
         paused = false;
-        newGame = false;
         gameState = GameState.START;
         gameStateTime = 0f;
         strFlightRecord = "";
@@ -175,9 +191,13 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         worldRenderer.renderWorld();
         HUD.draw();
 
-        if(newGame) {
-            AssetsAudio.stopMusic();
-            game.setScreen(new MainMenu(game,false));
+        if(isTransition) transitionToScreen(delta);
+        if(isTransitionComplete) {
+            if(selectedScreen == NEW_GAME) {
+                timer += delta;
+                if(timer > 0.5f) endGame();
+            }
+            else endGame();
         }
     }
 
@@ -231,13 +251,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         else if(gameState == START) {
             global_Multiplier = 3f;
 
-            if(gameStateTime > 5.4f) {
-                if(volume > 0f) volume -= 0.15f * delta;
-                if(volume <= 0f) {
-                    volume = 0f;
-                }
-            }
-            else if(gameStateTime > 2f && !countdown) {
+            if(gameStateTime > 2f && !countdown) {
                 AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                 countdown = true;
             }
@@ -250,74 +264,74 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             gameState = END;
             gameStateTime = 0f;
 
-            AssetsAudio.setMusicVolume(0.125f);
             playFanfaar();
-
-            System.out.println(playerScore + " / " + worldScore);
-            System.out.println((int)((double)playerScore/(double)worldScore * 100) + (balloonsCollected/3) + "%");
-
-            if(balloonsCollected == 3) playerScore *= 2;
-
-            int lengthMultiplier = ProfileInfo.selectedDuration/1000;
-            if(lengthMultiplier == 2) lengthMultiplier = 3;
-            else if(lengthMultiplier == 3) lengthMultiplier = 5;
-
-            switch(playerPlacement) {
-                case 1:
-                    playerScore += 10 * lengthMultiplier;
-                    break;
-                case 2:
-                    playerScore += 7 * lengthMultiplier;
-                    break;
-                case 3:
-                    playerScore += 5 * lengthMultiplier;
-                    break;
-                case 4:
-                    playerScore += 3 * lengthMultiplier;
-                    break;
-                case 5:
-                    playerScore += lengthMultiplier;
-                    break;
-                case 6:
-                    playerScore += 0;
-                    break;
-            }
-
-            playerScore *= (ProfileInfo.selectedDifficulty + 1);
-
-            int oldScore = ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
-            int newScore = oldScore + playerScore;
-            ProfileInfo.profilesData.putInteger(ProfileInfo.selectedPlayerProfile +"Score", newScore);
-            ProfileInfo.profilesData.flush();
-
+            calculateScore();
 
             //RECORD
             //recordFlight();
         }
-        else if(gameState == EXIT && gameStateTime > 0.5f) {
-            sBatch.setShader(shader2D_default);
-            newGame = true;
+        else if(gameState == END) {
+            fadeMusic(delta/4f);
         }
-        else if(gameState == END && gameStateTime > 4f) {
+    }
 
+    public void calculateScore() {
+        System.out.println(playerScore + " / " + worldScore);
+        System.out.println((int)((double)playerScore/(double)worldScore * 100) + (balloonsCollected/3) + "%");
+
+        if(balloonsCollected == 3) playerScore *= 2;
+
+        int lengthMultiplier = ProfileInfo.selectedDuration/1000;
+        if(lengthMultiplier == 2) lengthMultiplier = 3;
+        else if(lengthMultiplier == 3) lengthMultiplier = 5;
+
+        switch(playerPlacement) {
+            case 1:
+                playerScore += 10 * lengthMultiplier;
+                break;
+            case 2:
+                playerScore += 7 * lengthMultiplier;
+                break;
+            case 3:
+                playerScore += 5 * lengthMultiplier;
+                break;
+            case 4:
+                playerScore += 3 * lengthMultiplier;
+                break;
+            case 5:
+                playerScore += lengthMultiplier;
+                break;
+            case 6:
+                playerScore += 0;
+                break;
         }
+
+        playerScore *= (ProfileInfo.selectedDifficulty + 1);
+
+        int oldScore = ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
+        int newScore = oldScore + playerScore;
+        ProfileInfo.profilesData.putInteger(ProfileInfo.selectedPlayerProfile +"Score", newScore);
+        ProfileInfo.profilesData.flush();
     }
 
     public void updateCameras(float delta) {
         fieldOfView -= delta;
         if(fieldOfView < 45f) fieldOfView = 45f;
 
-        if(gameState == START) {
-            panAccelY -= delta / 3f;
-            if (panAccelY < 0f) panAccelY = 0f;
-            cameraPanY -= (delta * 40f) * panAccelY;
-            if (cameraPanY < 0f) cameraPanY = 0f;
-        }
-        else if(gameState == END && gameStateTime > 2f) {
+        if(gameState == EXIT || (gameState == END && gameStateTime > 2f)) {
             panAccelY += delta / 2f;
             if (panAccelY > 1f) panAccelY = 1f;
             cameraPanY += (delta * 40f) * panAccelY;
             if (cameraPanY > 80f) cameraPanY = 80f;
+            else if(gameState == EXIT && player.distance < world.end && cameraPanY > 35f) {
+                isTransition = true;
+            }
+        }
+        else if(gameState == START) {
+            panAccelY -= delta / 3f;
+            if (panAccelY < 0f) panAccelY = 0f;
+            cameraPanY -= (delta * 40f) * panAccelY;
+            if (cameraPanY < 0f) cameraPanY = 0f;
         }
 
         camera.position.set(player.decal.getPosition().x/1.1f, player.decal.getPosition().y/1.1f,-5f);
@@ -337,8 +351,31 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         recIndex++;
     }
 
-    public void endGame() {
+    public void fadeMusic(float delta) {
+        volume -= delta;
+        if(volume <= 0f) volume = 0f;
+        AssetsAudio.setMusicVolume(musicVolume * volume);
+    }
 
+    public void transitionToScreen(float delta) {
+        fadeMusic(delta);
+        opacity -= delta;
+        if(opacity <= 0f) opacity = 0f;
+
+        if(opacity == 0f && volume == 0f) isTransitionComplete = true;
+    }
+
+    public void endGame() {
+        sBatch.setShader(shader2D_default);
+        AssetsAudio.stopMusic();
+        switch(selectedScreen) {
+            case MAIN_MENU:
+                game.setScreen(new MainMenu(game,true));
+                break;
+            case NEW_GAME:
+                game.setScreen(new GameScreen(game, worldIndex));
+                break;
+        }
     }
 
     public void playFanfaar() {

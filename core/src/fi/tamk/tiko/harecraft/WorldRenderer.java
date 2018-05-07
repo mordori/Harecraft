@@ -24,6 +24,8 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
+import static fi.tamk.tiko.harecraft.GameScreen.opacity;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
@@ -47,31 +49,26 @@ public class WorldRenderer {
 
     static float radius = 3f;
     final static float MAX_BLUR = 5.0f;
-    private static final float WORLD_TO_SCREEN = 1.0f / 100.0f;
 
 
     public WorldRenderer(World world) {
         this.world = world;
-
-        if(world instanceof WorldSea) {
-            isSeaEnabled = true;
-            //isBlurEnabled = true;
-            Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
-        }
-        else if(world instanceof WorldSummer) {
-            //isBlurEnabled = true;
-            Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
-        }
-        else if(world instanceof WorldTundra) {
-            //isBlurEnabled = true;
-            Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
-        }
     }
 
     public void renderWorld() {
+        if(worldIndex == 0) {
+            isSeaEnabled = true;
+            Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+        }
+        else if(worldIndex == 1) {
+            Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
+        }
+        else if(worldIndex == 2) {
+            Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
+        }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        if(gameState == EXIT) isFBOEnabled = true;
+        if(isTransition) isFBOEnabled = true;
 
         if(isFBOEnabled) {
             fbo.begin();
@@ -103,8 +100,8 @@ public class WorldRenderer {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
 
-        if(!isSeaEnabled) dBatch.add(world.decal_background);
         //dBatch.flush();
+        if(!isSeaEnabled) dBatch.add(world.decal_background);
 
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
@@ -129,7 +126,7 @@ public class WorldRenderer {
         if(isSeaEnabled) activeShader = SHADER3D_DEFAULT;
         //----------------------------
 
-        if(gameState == FINISH || gameState == END) {
+        if(gameState == FINISH || gameState == END || (gameState == EXIT && player.distance > world.finish)) {
             if(worldIndex == 1 || worldIndex == 2) {
                 for (HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
                     dBatch.add(hotAirBalloon.decal);
@@ -222,9 +219,10 @@ public class WorldRenderer {
 
         //if(gameState == END) sBatch.setShader(shader2D_vignette);
 
+        //Gdx.gl.glEnable(GL20.GL_BLEND);
         //------------------------------------------------
         sBatch.begin();
-        texture.draw(sBatch, gameStateTime);
+        texture.draw(sBatch, opacity);
         sBatch.end();
     }
 

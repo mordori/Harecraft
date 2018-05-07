@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
@@ -16,7 +13,6 @@ import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
-import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -45,12 +41,28 @@ class Ring extends GameObject {
     ParticleEffect pfx_speed_up;
 
     public Ring(float x, float y, float z) {
-        width = Assets.texR_ring.getRegionWidth()/75f;
-        height = Assets.texR_ring.getRegionHeight()/75f;
-        decal = Decal.newDecal(width, height, Assets.texR_ring, true);
+        TextureRegion textureRegion = Assets.texR_ring0;
+        TextureRegion textureRegion2 = Assets.texR_ring_arrows0;
+        switch (worldIndex) {
+            case 0:
+                textureRegion = Assets.texR_ring0;
+                textureRegion2 = Assets.texR_ring_arrows2;
+                break;
+            case 1:
+                textureRegion = Assets.texR_ring2;
+                textureRegion2 = Assets.texR_ring_arrows0;
+                break;
+            case 2:
+                textureRegion = Assets.texR_ring1;
+                textureRegion2 = Assets.texR_ring_arrows1;
+                break;
+        }
+        width = textureRegion.getRegionWidth()/75f;
+        height = textureRegion.getRegionHeight()/75f;
+        decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);
 
-        decal_arrows = Decal.newDecal(width, height, Assets.texR_ring_arrows, true);
+        decal_arrows = Decal.newDecal(width, height, textureRegion2, true);
         decal_arrows.setPosition(x,y,z);
         decal_arrows.setScale(1.5f);
 

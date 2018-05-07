@@ -25,6 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static fi.tamk.tiko.harecraft.GameMain.fbo;
+import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
+import static fi.tamk.tiko.harecraft.GameMain.sBatch;
+import static fi.tamk.tiko.harecraft.GameMain.texture;
+
 /**
  * Created by musta on 29.4.2018.
  */
@@ -46,6 +51,10 @@ public class LevelSelectMenu extends ScreenAdapter {
     I18NBundle localizationBundle;
 
     static int selectedLevelNumber;
+
+    float opacity = 1f;
+    boolean isTransition = false;
+    boolean isTransitionComplete = false;
 
     public LevelSelectMenu(GameMain game, ArrayList<String> profs) {
         this.game = game;
@@ -193,17 +202,38 @@ public class LevelSelectMenu extends ScreenAdapter {
 
         stage.addActor(durationLabel);
         stage.addActor(durationSlider);
+
+        AssetsAudio.playMusic(AssetsAudio.MUSIC_COURSE_2);
+        musicVolume = 0.5f;
+        AssetsAudio.setMusicVolume(musicVolume);
     }
 
     public void render (float delta) {
-        Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1);
+        switch (selectedLevelNumber) {
+            case 0:
+                Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
+                break;
+            case 1:
+                Gdx.gl.glClearColor(137/255f, 189/255f, 255/255f, 1f);
+                break;
+            case 2:
+                Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
+                break;
+            default:
+                Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
+                break;
+        }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act();
-        stage.draw();
+        fbo.begin();
+            Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            stage.act();
+            stage.draw();
+        fbo.end();
+        renderToTexture();
 
         if (mainMenu) {
-
             saveLastSelectedLevel();
 
             Slider tmpActor = stage.getRoot().findActor("durationslider");
@@ -213,8 +243,10 @@ public class LevelSelectMenu extends ScreenAdapter {
 
             game.setScreen(new MainMenu(game, false));
         }
-        if (startGame) {
-
+        if(isTransition) {
+            transitionToScreen(delta);
+        }
+        if (startGame && !isTransition) {
             saveLastSelectedLevel();
 
             Slider tmpActor = stage.getRoot().findActor("durationslider");
@@ -223,10 +255,32 @@ public class LevelSelectMenu extends ScreenAdapter {
             profilesData.flush();
 
             ProfileInfo.load();
+            isTransition = true;
+        }
 
+        if(isTransitionComplete) {
             AssetsAudio.stopMusic();
             game.setScreen(new GameScreen(game, selectedLevelNumber));
         }
+    }
+
+    public void transitionToScreen(float delta) {
+        opacity -= delta;
+        if(opacity <= 0f) {
+            opacity = 0f;
+            isTransitionComplete = true;
+        }
+
+        AssetsAudio.setMusicVolume(musicVolume * opacity);
+    }
+
+    public void renderToTexture() {
+        texture.setTexture(fbo.getColorBufferTexture());
+
+        //------------------------------------------------
+        sBatch.begin();
+        texture.draw(sBatch, opacity);
+        sBatch.end();
     }
 
     public void saveLastSelectedLevel() {

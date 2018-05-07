@@ -175,6 +175,22 @@ public class AssetsAudio {
         }
     }
 
+    public static void pauseSound(int soundID) {
+        switch (soundID) {
+            case SOUND_AIRPLANE_ENGINE:
+                sound_airplane_engine.pause(ID_sound_airplane_engine);
+                break;
+        }
+    }
+
+    public static void resumeSound(int soundID) {
+        switch (soundID) {
+            case SOUND_AIRPLANE_ENGINE:
+                sound_airplane_engine.resume(ID_sound_airplane_engine);
+                break;
+        }
+    }
+
     public static void playSound(int soundID, float volume) {
         switch (soundID) {
             case SOUND_FANFAAR_1:
