@@ -316,6 +316,12 @@ public class MainMenu extends ScreenAdapter {
     public void render (float delta) {
         if(isLaunched) {
             switch(worldIndex) {
+                case -2:
+                    Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+                    break;
+                case -1:
+                    Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
+                    break;
                 case 0:
                     Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
                     break;
@@ -326,11 +332,10 @@ public class MainMenu extends ScreenAdapter {
                     Gdx.gl.glClearColor(60/255f, 140/255f, 208/255f, 1f);
                     break;
                 default:
-                    Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+                    Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
                     break;
             }
         }
-        else Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(!animation_plane.isFlipped) {
             x -= 6f * (SCREEN_WIDTH/1280f);
@@ -387,7 +392,7 @@ public class MainMenu extends ScreenAdapter {
         if(startGame) {
             setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
             ProfileInfo.load();
-            game.setScreen(new LevelSelectMenu(game, profiles));
+            game.setScreen(new LevelSelectMenu(game, profiles,false));
         }
         else if(!isLaunched) opacity = 1f;
         else if(isLaunched) {

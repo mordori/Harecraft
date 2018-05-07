@@ -275,10 +275,11 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         if(isTransitionComplete) {
             switch(selectedScreen) {
                 case MAIN_MENU:
+                    worldIndex = -1;
                     game.setScreen(new MainMenu(game,true));
                     break;
                 case LEVEL_MENU:
-                    game.setScreen(new LevelSelectMenu(game, profiles));
+                    game.setScreen(new LevelSelectMenu(game, profiles,true));
                     break;
                 case NEW_GAME:
                     game.setScreen(new GameScreen(game, GameScreen.worldIndex));

@@ -118,7 +118,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static boolean countdown;
     static boolean paused;
     static GlyphLayout layout = new GlyphLayout();
-    static int worldIndex = -1;
+    static int worldIndex = -2;
 
     static String strFlightRecord = "";
     static int renderCount = 0;
@@ -271,7 +271,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             //recordFlight();
         }
         else if(gameState == END) {
-            fadeMusic(delta/4f);
+            fadeMusic(delta/4.5f);
         }
     }
 

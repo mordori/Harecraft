@@ -55,9 +55,13 @@ public class LevelSelectMenu extends ScreenAdapter {
     float opacity = 1f;
     boolean isTransition = false;
     boolean isTransitionComplete = false;
+    boolean isTransitionFromComplete = false;
+    boolean isFaded;
 
-    public LevelSelectMenu(GameMain game, ArrayList<String> profs) {
+    public LevelSelectMenu(GameMain game, ArrayList<String> profs, boolean isFaded) {
         this.game = game;
+        this.isFaded = isFaded;
+        if(isFaded) opacity = 0f;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
@@ -209,6 +213,7 @@ public class LevelSelectMenu extends ScreenAdapter {
     }
 
     public void render (float delta) {
+        if(isFaded && !isTransitionFromComplete) transitionFromScreen(delta);
         switch (selectedLevelNumber) {
             case 0:
                 Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
@@ -223,6 +228,7 @@ public class LevelSelectMenu extends ScreenAdapter {
                 Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
                 break;
         }
+        if(isFaded && !isTransitionFromComplete) Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         fbo.begin();
@@ -261,6 +267,14 @@ public class LevelSelectMenu extends ScreenAdapter {
         if(isTransitionComplete) {
             AssetsAudio.stopMusic();
             game.setScreen(new GameScreen(game, selectedLevelNumber));
+        }
+    }
+
+    public void transitionFromScreen(float delta) {
+        opacity += delta;
+        if(opacity >= 1f) {
+            opacity = 1f;
+            isTransitionFromComplete = true;
         }
     }
 
