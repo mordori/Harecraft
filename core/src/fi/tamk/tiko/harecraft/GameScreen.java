@@ -147,15 +147,27 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         newGame = false;
         gameState = GameState.START;
         gameStateTime = 0f;
-        Assets.music_course_1.play();
-        Assets.music_course_1.setVolume(0f);
-        volume = 0.3f;
-        Assets.sound_airplane_engine.loop(volume);
-
         strFlightRecord = "";
         worldScore = 0;
         playerScore = 0;
         balloonsCollected = 0;
+
+        if(Assets.music_course_2.isPlaying()) Assets.music_course_2.stop();
+
+        if(worldIndex == 0) {
+            Assets.music_course_0.play();
+            Assets.music_course_0.setVolume(0f);
+        }
+        else if(worldIndex == 1) {
+            Assets.music_course_1.play();
+            Assets.music_course_1.setVolume(0f);
+        }
+        else {
+            Assets.music_course_2.play();
+            Assets.music_course_2.setVolume(0f);
+        }
+        volume = 0.3f;
+        Assets.sound_airplane_engine.loop(volume);
     }
 
     public void selectWorld(int index) {
@@ -174,7 +186,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public void render(float delta) {
-
         if(!paused) update(delta);
         worldRenderer.renderWorld();
         HUD.draw();
@@ -183,7 +194,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     }
 
     public void update(float delta) {
-        //logger.log();
+        logger.log();
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);
@@ -218,8 +229,20 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             world.rings.add(new Ring(x, y, spawnDistance/1.35f));
 
             Assets.sound_airplane_engine.stop();
-            Assets.music_course_1.setPosition(0f);
-            Assets.music_course_1.setVolume(0.7f);
+
+            if(worldIndex == 0) {
+                Assets.music_course_0.setPosition(0f);
+                Assets.music_course_0.setVolume(0.7f);
+            }
+            else if(worldIndex == 1) {
+                Assets.music_course_1.setPosition(0f);
+                Assets.music_course_1.setVolume(0.7f);
+            }
+            else {
+                Assets.music_course_2.setPosition(0f);
+                Assets.music_course_2.setVolume(0.7f);
+            }
+
 
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnZ;
@@ -296,12 +319,29 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             //recordFlight();
         }
         else if(gameState == EXIT && gameStateTime > 0.5f) {
-            //Assets.music_course_1.stop();
             sBatch.setShader(shader2D_default);
             newGame = true;
+
+            if(worldIndex == 0) {
+                Assets.music_course_0.stop();
+            }
+            else if(worldIndex == 1) {
+                Assets.music_course_1.stop();
+            }
+            else {
+                Assets.music_course_2.stop();
+            }
         }
         else if(gameState == END && gameStateTime > 4f) {
-            Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
+            if(worldIndex == 0) {
+                Assets.music_course_0.setVolume(1f-(gameStateTime-4f));
+            }
+            else if(worldIndex == 1) {
+                Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
+            }
+            else {
+                Assets.music_course_2.setVolume(1f-(gameStateTime-4f));
+            }
         }
     }
 

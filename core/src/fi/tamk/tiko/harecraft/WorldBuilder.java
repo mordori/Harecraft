@@ -26,7 +26,7 @@ import static fi.tamk.tiko.harecraft.World.player;
 /**
  * Created by Mika on 01/03/2018.
  *
- * Class used for adding, updating, deleting and all kinds of handling of objects in the worlds.
+ * Class used for adding, updating, deleting and all kinds of crazy handling of objects in the worlds.
  */
 
 public class WorldBuilder {
@@ -53,6 +53,7 @@ public class WorldBuilder {
     float hills_RRemoveTimer;
     float trees_LRemoveTimer;
     float trees_RRemoveTimer;
+    float boat_RemoveTimer;
     Vector3 pos = new Vector3();
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
@@ -134,6 +135,8 @@ public class WorldBuilder {
 
     public void updateBoats(float delta) {
         for(Boat b : world.boats) b.update(delta);
+        boat_RemoveTimer -= delta;
+        if(boat_RemoveTimer < 0f) boat_RemoveTimer = 0f;
         removeBoats();
     }
 
@@ -156,18 +159,28 @@ public class WorldBuilder {
     }
 
     public void removeBoats() {
+        if (!world.boats.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_L.get(world.islands_L.size() - 1).position) < world.islands_L.get(world.islands_L.size() - 1).width
+                || !world.islands_R.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_R.get(world.islands_R.size() - 1).position) < world.islands_R.get(world.islands_R.size() - 1).width) {
+            world.boats.remove(world.boats.size() - 1);
+            boat_RemoveTimer = 0.5f;
+
+            System.out.println("BOAT REMOVED!!!!");
+        }
+
         if(!world.boats.isEmpty() && world.boats.get(0).decal.getPosition().z < camera.position.z) {
             world.boats.remove(0);
         }
     }
 
     public void addBoat() {
-        if(world.boats.isEmpty() || world.boats.get(world.boats.size() - 1).stateTime >= boatsTimer) {
-            if(gameStateTime >= boatsTimer) {
-                x = MathUtils.random(-150f, 150f);
-                y = groundLevel;
-                world.boats.add(new Boat(x, y, spawnDistance));
-                boatsTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
+        if(boat_RemoveTimer == 0) {
+            if (world.boats.isEmpty() || world.boats.get(world.boats.size() - 1).stateTime >= boatsTimer) {
+                if (gameStateTime >= boatsTimer) {
+                    x = MathUtils.random(-150f, 150f);
+                    y = groundLevel;
+                    world.boats.add(new Boat(x, y, 350f));
+                    boatsTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
+                }
             }
         }
     }

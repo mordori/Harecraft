@@ -98,7 +98,16 @@ public class Assets {
 
     static MyAnimation<TextureRegion> animation_menu_plane;
 
+    static Music music_course_0;
     static Music music_course_1;
+    static Music music_course_2;
+
+    static Sound sound_fanfaar_1;
+    static Sound sound_fanfaar_2;
+    static Sound sound_fanfaar_3;
+    static Sound sound_fanfaar_4;
+    static Sound sound_fanfaar_5;
+    static Sound sound_fanfaar_6;
     static Sound sound_cloud_hit;
     static Sound sound_ring_collected;
     static Sound sound_balloon_collected;
@@ -106,6 +115,8 @@ public class Assets {
     static Sound sound_countdown_end;
     static Sound sound_airplane_engine;
     static Sound sound_applause;
+    static Sound sound_overtaking;
+    static Sound sound_undertaking;
 
     static ParticleEffect pfx_scarf;
     static ParticleEffect pfx_cloud_dispersion;
@@ -162,16 +173,6 @@ public class Assets {
         atlas_linear_objects = loadTextureAtlas("atlas_linear_objects.atlas");
 
         //TEXTURES
-
-        /*tex_ground = atlas_shaders.findRegion("tex_ground").getTexture();
-        tex_grass = atlas_shaders.findRegion("tex_grass").getTexture();
-        tex_sea = atlas_shaders.findRegion("tex_sea").getTexture();
-        tex_foam = atlas_shaders.findRegion("tex_foam").getTexture();
-        tex_sea_deep = atlas_shaders.findRegion("tex_sea_deep").getTexture();
-        tex_mask_foam = atlas_shaders.findRegion("tex_sea_mask").getTexture();
-        tex_mask_sea_deep = atlas_shaders.findRegion("tex_sea_deep_mask").getTexture();
-        */
-
         tex_mask_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep_mask.png"));
         tex_mask_sea_deep.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_mask_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -259,8 +260,19 @@ public class Assets {
         animation_menu_plane = new MyAnimation<TextureRegion>(1/25f, atlas_menu_plane.getRegions());
 
         //AUDIO
+        music_course_0 = loadMusic("music_course_0.mp3");
+        music_course_0.setLooping(true);
         music_course_1 = loadMusic("music_course_1.mp3");
         music_course_1.setLooping(true);
+        music_course_2 = loadMusic("music_course_2.mp3");
+        music_course_2.setLooping(true);
+
+        sound_fanfaar_1 = loadSound("sound_fanfaar_1.wav");
+        sound_fanfaar_2 = loadSound("sound_fanfaar_2.wav");
+        sound_fanfaar_3 = loadSound("sound_fanfaar_3.wav");
+        sound_fanfaar_4 = loadSound("sound_fanfaar_4.wav");
+        sound_fanfaar_5 = loadSound("sound_fanfaar_5.wav");
+        sound_fanfaar_6 = loadSound("sound_fanfaar_6.wav");
         sound_cloud_hit = loadSound("sound_cloud_hit.wav");
         sound_ring_collected = loadSound("sound_ring_collected.wav");
         sound_balloon_collected = loadSound("sound_balloon_collected.wav");
@@ -268,6 +280,8 @@ public class Assets {
         sound_countdown_end = loadSound("sound_countdown_end.wav");
         sound_airplane_engine = loadSound("sound_airplane_engine.wav");
         sound_applause = loadSound("sound_applause.wav");
+        sound_overtaking = loadSound("sound_overtaking.wav");
+        sound_undertaking = loadSound("sound_undertaking.wav");
 
         //PARTICLES
         pfx_scarf = new ParticleEffect();
@@ -292,22 +306,16 @@ public class Assets {
         parameter.color = new Color(1f,1f,1f,1f);
         parameter.size = 150;
         font1 = generator.generateFont(parameter);
-
         parameter.size = 100;
         font2 = generator.generateFont(parameter);
-
         parameter.size = 60;
         font3 = generator.generateFont(parameter);
-
         parameter.size = 55;
         font4 = generator.generateFont(parameter);
-
         parameter.size = 40;
         font5 = generator.generateFont(parameter);
-
         parameter.size = 30;
         font6 = generator.generateFont(parameter);
-
         parameter.size = 20;
         font7 = generator.generateFont(parameter);
         generator.dispose();
@@ -415,7 +423,6 @@ public class Assets {
         texR_boat.getTexture().dispose();
         texR_palmtree.getTexture().dispose();
 
-
         atlas_text_race_positions.dispose();
         atlas_text_race_states.dispose();
         atlas_menu_plane.dispose();
@@ -423,8 +430,16 @@ public class Assets {
         atlas_objects.dispose();
         atlas_linear_objects.dispose();
 
-
+        music_course_0.dispose();
         music_course_1.dispose();
+        music_course_2.dispose();
+
+        sound_fanfaar_1.dispose();
+        sound_fanfaar_2.dispose();
+        sound_fanfaar_3.dispose();
+        sound_fanfaar_4.dispose();
+        sound_fanfaar_5.dispose();
+        sound_fanfaar_6.dispose();
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();
         sound_countdown.dispose();
@@ -432,6 +447,8 @@ public class Assets {
         sound_airplane_engine.dispose();
         sound_applause.dispose();
         sound_balloon_collected.dispose();
+        sound_overtaking.dispose();
+        sound_undertaking.dispose();
 
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();

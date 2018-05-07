@@ -40,12 +40,13 @@ class Boat extends GameObject {
         height *= randomSize;
 
         decal = Decal.newDecal(width, height, textureRegion,true);
-        decal.setPosition(x,y + height/2f - 7f,z);
+        decal.setPosition(x,y + height/2f-4f,z);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        if(position.z > 250f) stateTime = 0;
 
         //Opacity
         setOpacity();
@@ -77,7 +78,7 @@ class Island extends GameObject {
         height *= randomSize;
 
         decal = Decal.newDecal(width, height, textureRegion,true);
-        decal.setPosition(x,y - 4f,z + height);
+        decal.setPosition(x,y - 4f, z);
         decal.rotateX(90f);
         decal.rotateZ(MathUtils.random(0f,360f));
 
@@ -109,7 +110,7 @@ class Island extends GameObject {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if(position.z > 250) stateTime = 0;
+        if(position.z > 250f) stateTime = 0;
 
         //Opacity
         setOpacity();

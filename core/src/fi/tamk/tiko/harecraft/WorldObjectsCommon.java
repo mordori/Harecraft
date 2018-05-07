@@ -14,6 +14,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -182,7 +183,7 @@ class Cloud extends GameObject {
                 break;
         }
 
-        //if(MathUtils.random(0,1) == 0) textureRegion = Assets.flipAR(textureRegion);
+        if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
 
         width = textureRegion.getRegionWidth() / 70f;
         height = textureRegion.getRegionHeight() / 70f;
@@ -295,8 +296,8 @@ class Balloon extends GameObject {
     public Balloon(float x, float y, float z) {
         TextureRegion textureRegion;
 
-        if(world instanceof WorldSummer) textureRegion = Assets.texR_balloon_red;
-        else if(world instanceof WorldTundra) textureRegion = Assets.texR_balloon_blue;
+        if(worldIndex == 0) textureRegion = Assets.texR_balloon_red;
+        else if(worldIndex == 2) textureRegion = Assets.texR_balloon_blue;
         else textureRegion = Assets.texR_balloon_orange;
 
         width = textureRegion.getRegionWidth() / 110f;
