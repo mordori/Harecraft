@@ -94,7 +94,6 @@ public class Assets {
     static Array<Sprite> sprites_menu_plane;
     static TextureAtlas atlas_planes;
     static TextureAtlas atlas_objects;
-    static TextureAtlas atlas_shaders;
     static TextureAtlas atlas_linear_objects;
 
     static MyAnimation<TextureRegion> animation_menu_plane;
@@ -160,7 +159,6 @@ public class Assets {
 
         atlas_planes = loadTextureAtlas("atlas_planes.atlas");
         atlas_objects = loadTextureAtlas("atlas_objects.atlas");
-        atlas_shaders = loadTextureAtlas("atlas_shaders.atlas");
         atlas_linear_objects = loadTextureAtlas("atlas_linear_objects.atlas");
 
         //TEXTURES
@@ -423,7 +421,6 @@ public class Assets {
         atlas_menu_plane.dispose();
         atlas_planes.dispose();
         atlas_objects.dispose();
-        atlas_shaders.dispose();
         atlas_linear_objects.dispose();
 
 
