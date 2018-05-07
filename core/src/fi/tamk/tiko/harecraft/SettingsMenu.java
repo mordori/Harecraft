@@ -296,7 +296,8 @@ public class SettingsMenu extends ScreenAdapter {
 
     @Override
     public void render (float delta) {
-        Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
+        //Gdx.gl.glClearColor(0.16f, 0.45f, 0.6f, 1);
+        Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //removeRadarDots();

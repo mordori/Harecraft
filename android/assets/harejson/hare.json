@@ -209,6 +209,15 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		pressedOffsetX: 4
 		pressedOffsetY: -4
 	}
+	Green: {
+		font: komika
+		fontColor: white
+		downFontColor: gray
+		up: buttongreen
+		down: buttongreenpressed
+		pressedOffsetX: 4
+		pressedOffsetY: -4
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
