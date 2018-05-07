@@ -273,6 +273,9 @@ public class Assets {
         sound_fanfaar_4 = loadSound("sound_fanfaar_4.wav");
         sound_fanfaar_5 = loadSound("sound_fanfaar_5.wav");
         sound_fanfaar_6 = loadSound("sound_fanfaar_6.wav");
+        sound_overtaking = loadSound("sound_overtaking.wav");
+        sound_undertaking = loadSound("sound_undertaking.wav");
+
         sound_cloud_hit = loadSound("sound_cloud_hit.wav");
         sound_ring_collected = loadSound("sound_ring_collected.wav");
         sound_balloon_collected = loadSound("sound_balloon_collected.wav");
@@ -280,8 +283,6 @@ public class Assets {
         sound_countdown_end = loadSound("sound_countdown_end.wav");
         sound_airplane_engine = loadSound("sound_airplane_engine.wav");
         sound_applause = loadSound("sound_applause.wav");
-        sound_overtaking = loadSound("sound_overtaking.wav");
-        sound_undertaking = loadSound("sound_undertaking.wav");
 
         //PARTICLES
         pfx_scarf = new ParticleEffect();
@@ -440,6 +441,9 @@ public class Assets {
         sound_fanfaar_4.dispose();
         sound_fanfaar_5.dispose();
         sound_fanfaar_6.dispose();
+        sound_overtaking.dispose();
+        sound_undertaking.dispose();
+
         sound_cloud_hit.dispose();
         sound_ring_collected.dispose();
         sound_countdown.dispose();
@@ -447,8 +451,6 @@ public class Assets {
         sound_airplane_engine.dispose();
         sound_applause.dispose();
         sound_balloon_collected.dispose();
-        sound_overtaking.dispose();
-        sound_undertaking.dispose();
 
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();
