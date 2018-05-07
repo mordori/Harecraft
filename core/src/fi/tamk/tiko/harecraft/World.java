@@ -241,8 +241,8 @@ class WorldSea extends World {
         ground.rotateX(90f);
         pfx_snow = null;
 
-        lightHouses.add(new LightHouse(-30f, groundLevel, spawnDistance + 48f));
-        lightHouses.add(new LightHouse(30f, groundLevel, spawnDistance + 48f));
+        lightHouses.add(new LightHouse(-33f, groundLevel, spawnDistance + 50f));
+        lightHouses.add(new LightHouse(33f, groundLevel, spawnDistance + 50f));
     }
 
     public void update(float delta) {

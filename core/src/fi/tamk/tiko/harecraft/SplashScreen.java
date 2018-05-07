@@ -74,10 +74,11 @@ public class SplashScreen extends ScreenAdapter {
         tikoSprite.draw(sBatch, alpha);
         sBatch.end();
 
-        if (alpha > 0.01f && timer >= 100f)
-        alpha -= 0.012f;
+        if (timer >= 50f)
+        alpha -= 0.017f;
+        if(alpha < 0f) alpha = 0f;
 
-        if (timer > 200f) {
+        if (timer > 110f) {
             sBatch.setProjectionMatrix(orthoCamera.combined); //palautetaan projektion matrix alkuperäiseksi
             game.setScreen(new MainMenu(game,true));
         }

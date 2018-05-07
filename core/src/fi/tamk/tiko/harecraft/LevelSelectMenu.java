@@ -224,6 +224,7 @@ public class LevelSelectMenu extends ScreenAdapter {
 
             ProfileInfo.load();
 
+            AssetsAudio.stopMusic();
             game.setScreen(new GameScreen(game, selectedLevelNumber));
         }
     }

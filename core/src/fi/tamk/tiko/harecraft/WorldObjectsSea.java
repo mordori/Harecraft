@@ -144,8 +144,8 @@ class LightHouse extends GameObject {
         decal.setPosition(x,y - 4f + height/2f, z);
 
         textureRegion = Assets.texR_island;
-        width = textureRegion.getRegionWidth() / 13.5f;
-        height = textureRegion.getRegionHeight() / 13.5f;
+        width = textureRegion.getRegionWidth() / 10f;
+        height = textureRegion.getRegionHeight() / 10f;
 
         decal_island = Decal.newDecal(width, height, textureRegion,true);
         decal_island.setPosition(x,y - 4f, z + 5f);

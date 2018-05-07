@@ -136,7 +136,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         this.worldIndex = worldIndex;
         flights = new ArrayList<FileHandle>(Assets.flightsSource);
         DIFFICULTYSENSITIVITY = ProfileInfo.selectedDifficulty;
-        selectWorld(worldIndex);
+        selectWorld();
         builder = new WorldBuilder(world);
         worldRenderer = new WorldRenderer(world);
         stage = new Stage(new ScreenViewport(orthoCamera));
@@ -152,26 +152,11 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         playerScore = 0;
         balloonsCollected = 0;
 
-        if(Assets.music_course_2.isPlaying()) Assets.music_course_2.stop();
-
-        /*if(worldIndex == 0) {
-            Assets.music_course_0.play();
-            Assets.music_course_0.setVolume(0f);
-        }
-        else if(worldIndex == 1) {
-            Assets.music_course_1.play();
-            Assets.music_course_1.setVolume(0f);
-        }
-        else {
-            Assets.music_course_2.play();
-            Assets.music_course_2.setVolume(0f);
-        }*/
-        volume = 0.3f;
-        Assets.sound_airplane_engine.loop(volume);
+        AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.3f);
     }
 
-    public void selectWorld(int index) {
-        switch (index) {
+    public void selectWorld() {
+        switch (worldIndex) {
             case 0:
                 world = new WorldSea();
                 break;
@@ -190,7 +175,10 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         worldRenderer.renderWorld();
         HUD.draw();
 
-        if(newGame) game.setScreen(new MainMenu(game,false));
+        if(newGame) {
+            AssetsAudio.stopMusic();
+            game.setScreen(new MainMenu(game,false));
+        }
     }
 
     public void update(float delta) {
@@ -228,21 +216,9 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             y = MathUtils.random(-7.2f, 4.2f);
             world.rings.add(new Ring(x, y, spawnDistance/1.35f));
 
-            /*Assets.sound_airplane_engine.stop();
-
-            if(worldIndex == 0) {
-                Assets.music_course_0.setPosition(0f);
-                Assets.music_course_0.setVolume(0.7f);
-            }
-            else if(worldIndex == 1) {
-                Assets.music_course_1.setPosition(0f);
-                Assets.music_course_1.setVolume(0.7f);
-            }
-            else {
-                Assets.music_course_2.setPosition(0f);
-                Assets.music_course_2.setVolume(0.7f);
-            }*/
-
+            AssetsAudio.stopSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
+            AssetsAudio.playMusic(worldIndex);
+            AssetsAudio.setMusicVolume(0.6f);
 
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnZ;
@@ -262,10 +238,9 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
                 }
             }
             else if(gameStateTime > 2f && !countdown) {
-                Assets.sound_countdown.play(0.45f);
+                AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                 countdown = true;
             }
-            Assets.sound_airplane_engine.setVolume(0,volume);
         }
         else if(gameState == RACE && player.distance > world.finish) {
             gameState = FINISH;
@@ -274,8 +249,9 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         else if(gameState == FINISH && player.distance > world.end) {
             gameState = END;
             gameStateTime = 0f;
-            Assets.sound_applause.play(0.4f);
 
+            AssetsAudio.setMusicVolume(0.125f);
+            playFanfaar();
 
             System.out.println(playerScore + " / " + worldScore);
             System.out.println((int)((double)playerScore/(double)worldScore * 100) + (balloonsCollected/3) + "%");
@@ -321,27 +297,9 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         else if(gameState == EXIT && gameStateTime > 0.5f) {
             sBatch.setShader(shader2D_default);
             newGame = true;
-
-            /*if(worldIndex == 0) {
-                Assets.music_course_0.stop();
-            }
-            else if(worldIndex == 1) {
-                Assets.music_course_1.stop();
-            }
-            else {
-                Assets.music_course_2.stop();
-            }*/
         }
         else if(gameState == END && gameStateTime > 4f) {
-            /*if(worldIndex == 0) {
-                Assets.music_course_0.setVolume(1f-(gameStateTime-4f));
-            }
-            else if(worldIndex == 1) {
-                Assets.music_course_1.setVolume(1f-(gameStateTime-4f));
-            }
-            else {
-                Assets.music_course_2.setVolume(1f-(gameStateTime-4f));
-            }*/
+
         }
     }
 
@@ -381,6 +339,29 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public void endGame() {
 
+    }
+
+    public void playFanfaar() {
+        switch(playerPlacement) {
+            case 1:
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_6,0.45f);
+                break;
+            case 2:
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_5,0.45f);
+                break;
+            case 3:
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_4,0.45f);
+                break;
+            case 4:
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_3,0.45f);
+                break;
+            case 5:
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_2,0.45f);
+                break;
+            case 6:
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_1,0.45f);
+                break;
+        }
     }
 
     @Override

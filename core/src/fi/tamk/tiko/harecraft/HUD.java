@@ -124,6 +124,7 @@ public class HUD {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
+                    AssetsAudio.stopMusic();
                     game.setScreen(new GameScreen(game, GameScreen.worldIndex));
                 }
             }
@@ -263,21 +264,21 @@ public class HUD {
                     if(index == 2) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
-                        Assets.sound_countdown.play(0.45f);
+                        AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                     }
                     index = 1;
                 } else if (gameStateTime < 5.9f) {
                     if(index == 1) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
-                        Assets.sound_countdown.play(0.45f);
+                        AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                     }
                     index = 0;
                 } else {
                     if(index == 0) {
                         yPos = SCREEN_HEIGHT/1.5f;
                         text_opacity = 0f;
-                        Assets.sound_countdown_end.play(0.85f);
+                        AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN_END,1f);
                     }
                     index = 4;
                 }

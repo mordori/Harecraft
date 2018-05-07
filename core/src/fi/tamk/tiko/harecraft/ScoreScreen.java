@@ -128,6 +128,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                 if (touched) {
                     Assets.font5.getData().setLineHeight(originalLineHeight3);
                     Assets.font6.getData().setLineHeight(originalLineHeight4);
+
+                    AssetsAudio.stopMusic();
                     game.setScreen(new GameScreen(game, GameScreen.worldIndex));
                 }
             }
@@ -167,6 +169,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                     Assets.font5.getData().setLineHeight(originalLineHeight4);
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
+                    AssetsAudio.stopMusic();
                     game.setScreen(new LevelSelectMenu(game, profiles));
                 }
             }
@@ -195,6 +198,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                 if (touched) {
                     Assets.font5.getData().setLineHeight(originalLineHeight4);
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
+
+                    AssetsAudio.stopMusic();
                     game.setScreen(new MainMenu(game,false));
                 }
             }

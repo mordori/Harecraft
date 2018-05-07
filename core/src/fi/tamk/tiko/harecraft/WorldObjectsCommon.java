@@ -72,7 +72,8 @@ class Ring extends GameObject {
                 if(global_Multiplier < MULTIPLIER_HIGH) global_Multiplier += MULTIPLIER_INCREMENT;
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
-                Assets.sound_ring_collected.play();
+                AssetsAudio.playSound(AssetsAudio.SOUND_RING_COLLECTED,1f);
+
                 decal.setPosition(position.x, position.y,0.5f);
                 decal_arrows.setPosition(position.x, position.y,0.5f);
 
@@ -260,7 +261,9 @@ class Cloud extends GameObject {
             global_Multiplier -= MULTIPLIER_DECREMENT;
         }
         if(global_Multiplier < MULTIPLIER_LOW) global_Multiplier = MULTIPLIER_LOW;
-        Assets.sound_cloud_hit.play(0.5f);
+
+        AssetsAudio.playSound(AssetsAudio.SOUND_CLOUD_HIT, 0.7f);
+
         pfx_dispersion.start();
         pfx_dispersion.setPosition(
                 player.projPosition.x,
@@ -328,7 +331,7 @@ class Balloon extends GameObject {
                 isCollected = true;
                 balloonsCollected++;
 
-                Assets.sound_balloon_collected.play();
+                AssetsAudio.playSound(AssetsAudio.SOUND_BALLOON_COLLECTED, 1f);
                 decal.setPosition(position.x, position.y,0.5f);
             }
         }

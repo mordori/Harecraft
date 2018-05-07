@@ -98,32 +98,11 @@ public class Assets {
 
     static MyAnimation<TextureRegion> animation_menu_plane;
 
-    static Music music_course_0;
-    static Music music_course_1;
-    static Music music_course_2;
-
-    static Sound sound_fanfaar_1;
-    static Sound sound_fanfaar_2;
-    static Sound sound_fanfaar_3;
-    static Sound sound_fanfaar_4;
-    static Sound sound_fanfaar_5;
-    static Sound sound_fanfaar_6;
-    static Sound sound_cloud_hit;
-    static Sound sound_ring_collected;
-    static Sound sound_balloon_collected;
-    static Sound sound_countdown;
-    static Sound sound_countdown_end;
-    static Sound sound_airplane_engine;
-    static Sound sound_applause;
-    static Sound sound_overtaking;
-    static Sound sound_undertaking;
-
     static ParticleEffect pfx_scarf;
     static ParticleEffect pfx_cloud_dispersion;
     static ParticleEffect pfx_speed_lines;
     static ParticleEffect pfx_speed_up;
     static ParticleEffect pfx_snow;
-    static ParticleEffect pfx_sea_glimmer;
     static ParticleEffect pfx_wind_trail;
 
     static BitmapFont font1;
@@ -259,31 +238,6 @@ public class Assets {
         //ANIMATIONS
         animation_menu_plane = new MyAnimation<TextureRegion>(1/25f, atlas_menu_plane.getRegions());
 
-        //AUDIO
-        music_course_0 = loadMusic("music_course_0.mp3");
-        music_course_0.setLooping(true);
-        music_course_1 = loadMusic("music_course_1.mp3");
-        music_course_1.setLooping(true);
-        music_course_2 = loadMusic("music_course_2.mp3");
-        music_course_2.setLooping(true);
-
-        sound_fanfaar_1 = loadSound("sound_fanfaar_1.wav");
-        sound_fanfaar_2 = loadSound("sound_fanfaar_2.wav");
-        sound_fanfaar_3 = loadSound("sound_fanfaar_3.wav");
-        sound_fanfaar_4 = loadSound("sound_fanfaar_4.wav");
-        sound_fanfaar_5 = loadSound("sound_fanfaar_5.wav");
-        sound_fanfaar_6 = loadSound("sound_fanfaar_6.wav");
-        sound_overtaking = loadSound("sound_overtaking.wav");
-        sound_undertaking = loadSound("sound_undertaking.wav");
-
-        sound_cloud_hit = loadSound("sound_cloud_hit.wav");
-        sound_ring_collected = loadSound("sound_ring_collected.wav");
-        sound_balloon_collected = loadSound("sound_balloon_collected.wav");
-        sound_countdown = loadSound("sound_countdown.wav");
-        sound_countdown_end = loadSound("sound_countdown_end.wav");
-        sound_airplane_engine = loadSound("sound_airplane_engine.wav");
-        sound_applause = loadSound("sound_applause.wav");
-
         //PARTICLES
         pfx_scarf = new ParticleEffect();
         pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
@@ -295,15 +249,12 @@ public class Assets {
         pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
         pfx_snow = new ParticleEffect();
         pfx_snow.load(Gdx.files.internal("particles/pfx_snow"), Gdx.files.internal("particles/"));
-        pfx_sea_glimmer = new ParticleEffect();
-        pfx_sea_glimmer.load(Gdx.files.internal("particles/pfx_sea_glimmer"), Gdx.files.internal("particles/"));
         pfx_wind_trail = new ParticleEffect();
         pfx_wind_trail.load(Gdx.files.internal("particles/pfx_wind_trail"), Gdx.files.internal("particles/"));
 
         //FONTS
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/KOMIKAX_.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        //parameter.borderWidth = 2;
         parameter.color = new Color(1f,1f,1f,1f);
         parameter.size = 150;
         font1 = generator.generateFont(parameter);
@@ -321,7 +272,7 @@ public class Assets {
         font7 = generator.generateFont(parameter);
         generator.dispose();
 
-        //MENU
+        //SKINS
         skin_menu = new Skin(Gdx.files.internal("harejson/hare.json"));
     }
 
@@ -343,10 +294,6 @@ public class Assets {
     }
 
     public static TextureAtlas loadTextureAtlas(String path) {return new TextureAtlas(Gdx.files.internal("atlases/" + path));}
-
-    public static Sound loadSound(String path) {return Gdx.audio.newSound(Gdx.files.internal("audio/" + path));}
-
-    public static Music loadMusic(String path) {return Gdx.audio.newMusic(Gdx.files.internal("audio/" + path));}
 
     public static void flip(Animation<TextureRegion> animation, int frames) {
         TextureRegion frame;
@@ -431,33 +378,11 @@ public class Assets {
         atlas_objects.dispose();
         atlas_linear_objects.dispose();
 
-        music_course_0.dispose();
-        music_course_1.dispose();
-        music_course_2.dispose();
-
-        sound_fanfaar_1.dispose();
-        sound_fanfaar_2.dispose();
-        sound_fanfaar_3.dispose();
-        sound_fanfaar_4.dispose();
-        sound_fanfaar_5.dispose();
-        sound_fanfaar_6.dispose();
-        sound_overtaking.dispose();
-        sound_undertaking.dispose();
-
-        sound_cloud_hit.dispose();
-        sound_ring_collected.dispose();
-        sound_countdown.dispose();
-        sound_countdown_end.dispose();
-        sound_airplane_engine.dispose();
-        sound_applause.dispose();
-        sound_balloon_collected.dispose();
-
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();
         pfx_speed_lines.dispose();
         pfx_speed_up.dispose();
         pfx_snow.dispose();
-        pfx_sea_glimmer.dispose();
         pfx_wind_trail.dispose();
 
         font1.dispose();

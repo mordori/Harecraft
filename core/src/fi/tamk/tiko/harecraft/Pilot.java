@@ -388,23 +388,27 @@ class Opponent extends Pilot {
     public Opponent(float z, int character) {
         drawDistance = 100f;
 
-        float max = finish/4f;
+        float max = finish/4.3f;
         float min = finish/12f;
 
         spawnZ = MathUtils.random(min, max);
-        speed = MathUtils.random(2.6f, 5.7f) + MathUtils.random(0f, max/spawnZ * 3.6f);
-
-        System.out.println(speed);
+        speed = MathUtils.random(1f, 4f) + MathUtils.random(1f, 9f);
 
         if(character == WOLF) {
             spawnZ = finish/4f;
             speed = 8.2f;
         }
 
+        if(speed < 2f) speed = 2f;
+        if(spawnZ > finish/5f && speed > 8.2f) speed = 8.2f;
+        else if(spawnZ > finish/5.5f && speed > 8.3f) speed = 8.4f;
+        else if(spawnZ > finish/6f && speed > 8.4f) speed = 8.6f;
+        else if(spawnZ > finish/6.5f && speed > 8.5f) speed = 9f;
+        else if(spawnZ > finish/8f && speed > 11f) speed = 10f;
+        else if(spawnZ > finish/10f && speed > 13f) speed = 11f;
         speed -= (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f);
 
-        if(speed < 2f) speed = 2f;
-        if(speed > 10.8f) speed = 10.8f;
+        System.out.println("SPAWN: " + spawnZ + ", SPEED: " + speed);
 
         int i = MathUtils.random(0, flights.size() - 1);
         flight = flights.get(i).readString();

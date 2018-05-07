@@ -159,12 +159,14 @@ public class WorldBuilder {
     }
 
     public void removeBoats() {
-        if (!world.boats.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_L.get(world.islands_L.size() - 1).position) < world.islands_L.get(world.islands_L.size() - 1).width
-                || !world.islands_R.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_R.get(world.islands_R.size() - 1).position) < world.islands_R.get(world.islands_R.size() - 1).width) {
-            world.boats.remove(world.boats.size() - 1);
-            boat_RemoveTimer = 0.5f;
+        if(!world.boats.isEmpty()) {
+            if (world.boats.get(world.boats.size() - 1).position.dst(world.islands_L.get(world.islands_L.size() - 1).position) < world.islands_L.get(world.islands_L.size() - 1).width
+                    || !world.islands_R.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_R.get(world.islands_R.size() - 1).position) < world.islands_R.get(world.islands_R.size() - 1).width) {
+                world.boats.remove(world.boats.size() - 1);
+                boat_RemoveTimer = 0.5f;
 
-            System.out.println("BOAT REMOVED!!!!");
+                System.out.println("BOAT REMOVED!!!!");
+            }
         }
 
         if(!world.boats.isEmpty() && world.boats.get(0).decal.getPosition().z < camera.position.z) {

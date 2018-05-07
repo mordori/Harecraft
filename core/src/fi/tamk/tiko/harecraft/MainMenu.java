@@ -306,8 +306,8 @@ public class MainMenu extends ScreenAdapter {
         y = 0f;
         sprite_plane.setPosition(x, y);
 
-        Assets.music_course_2.play();
-        Assets.music_course_2.setVolume(0.45f);
+        AssetsAudio.playMusic(AssetsAudio.MUSIC_COURSE_2);
+        AssetsAudio.setMusicVolume(0.5f);
     }
 
     public void render (float delta) {

@@ -52,6 +52,7 @@ public class GameMain extends Game {
 	@Override
 	public void create () {
 		Assets.load();
+		AssetsAudio.load();
 
         orthoCamera = new OrthographicCamera();
         orthoCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -105,6 +106,7 @@ public class GameMain extends Game {
         Shaders2D.dispose();
 
 		Assets.dispose();
+        AssetsAudio.dispose();
         Gdx.app.log("DISPOSED","Assets");
 	}
 }
