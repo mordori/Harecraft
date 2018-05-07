@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import static fi.tamk.tiko.harecraft.GameMain.blurTargetA;
@@ -23,6 +24,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
@@ -128,8 +130,16 @@ public class WorldRenderer {
         //----------------------------
 
         if(gameState == FINISH || gameState == END) {
-            for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
-                dBatch.add(hotAirBalloon.decal);
+            if(worldIndex == 1 || worldIndex == 2) {
+                for (HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
+                    dBatch.add(hotAirBalloon.decal);
+                }
+            }
+            else {
+                for (LightHouse lightHouse : world.lightHouses) {
+                    dBatch.add(lightHouse.decal);
+                    dBatch.add(lightHouse.decal_island);
+                }
             }
         }
 
@@ -220,7 +230,6 @@ public class WorldRenderer {
 
     public void drawParticles() {
         sBatch.begin();
-        //if(world.pfx_sea_glimmer != null) world.pfx_sea_glimmer.draw(sBatch);
         if(gameState == RACE || gameState == FINISH) {
             player.pfx_scarf.draw(sBatch);
             player.pfx_wind_trail_right.draw(sBatch);
@@ -254,6 +263,8 @@ public class WorldRenderer {
 
         for(Balloon b : world.balloons) dBatch.add(b.decal);
 
+        for(Boat b : world.boats) dBatch.add(b.decal);
+
         for(Tree t : world.trees_L) dBatch.add(t.decal);
         for(Tree t : world.trees_R) dBatch.add(t.decal);
 
@@ -263,12 +274,24 @@ public class WorldRenderer {
         for(Lake l : world.lakes_L) dBatch.add(l.decal);
         for(Lake l : world.lakes_R) dBatch.add(l.decal);
 
+        for(Island i : world.islands_L) {
+            dBatch.add(i.decal);
+            for(Decal d : i.palmtrees) {
+                dBatch.add(d);
+            }
+        }
+        for(Island i : world.islands_R) {
+            dBatch.add(i.decal);
+            for(Decal d : i.palmtrees) {
+                dBatch.add(d);
+            }
+        }
+
         for(Opponent o : world.opponents) {
             if(o.isDrawing || o.opacity != 0f) {
                 dBatch.add(o.decal_wings);
                 dBatch.add(o.decal_head);
                 dBatch.add(o.decal);
-                //dBatch.add(o.decal_playerTag);
             }
         }
     }

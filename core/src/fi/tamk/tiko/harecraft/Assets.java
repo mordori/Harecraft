@@ -94,6 +94,8 @@ public class Assets {
     static Array<Sprite> sprites_menu_plane;
     static TextureAtlas atlas_planes;
     static TextureAtlas atlas_objects;
+    static TextureAtlas atlas_shaders;
+    static TextureAtlas atlas_linear_objects;
 
     static MyAnimation<TextureRegion> animation_menu_plane;
 
@@ -158,29 +160,47 @@ public class Assets {
 
         atlas_planes = loadTextureAtlas("atlas_planes.atlas");
         atlas_objects = loadTextureAtlas("atlas_objects.atlas");
+        atlas_shaders = loadTextureAtlas("atlas_shaders.atlas");
+        atlas_linear_objects = loadTextureAtlas("atlas_linear_objects.atlas");
 
         //TEXTURES
-        tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
-        tex_grass.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex_grass.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        tex_ground = new Texture(Gdx.files.internal("shaders/tex_ground.png"));
-        tex_ground.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex_ground.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        tex_sea = new Texture(Gdx.files.internal("shaders/tex_sea.png"));
-        tex_sea.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex_sea.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        tex_foam = new Texture(Gdx.files.internal("shaders/tex_foam.png"));
-        tex_foam.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex_foam.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        tex_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep.png"));
-        tex_sea_deep.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        tex_mask_foam = new Texture(Gdx.files.internal("shaders/tex_sea_mask.png"));
-        tex_mask_foam.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
-        tex_mask_foam.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        /*tex_ground = atlas_shaders.findRegion("tex_ground").getTexture();
+        tex_grass = atlas_shaders.findRegion("tex_grass").getTexture();
+        tex_sea = atlas_shaders.findRegion("tex_sea").getTexture();
+        tex_foam = atlas_shaders.findRegion("tex_foam").getTexture();
+        tex_sea_deep = atlas_shaders.findRegion("tex_sea_deep").getTexture();
+        tex_mask_foam = atlas_shaders.findRegion("tex_sea_mask").getTexture();
+        tex_mask_sea_deep = atlas_shaders.findRegion("tex_sea_deep_mask").getTexture();
+        */
+
         tex_mask_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep_mask.png"));
         tex_mask_sea_deep.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_mask_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_mask_foam = new Texture(Gdx.files.internal("shaders/tex_sea_mask.png"));
+        tex_mask_foam.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_mask_foam.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep.png"));
+        tex_sea_deep.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_foam = new Texture(Gdx.files.internal("shaders/tex_foam.png"));
+        tex_foam.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_foam.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_sea = new Texture(Gdx.files.internal("shaders/tex_sea.png"));
+        tex_sea.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_sea.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
+        tex_grass.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_grass.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_ground = new Texture(Gdx.files.internal("shaders/tex_ground.png"));
+        tex_ground.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+        tex_ground.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
 
         //DECALS
         texR_background_summer = loadDecalTextureRegion("tex_background_summer.png");
@@ -226,11 +246,11 @@ public class Assets {
         texR_tree_tundra_medium_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_medium_light");
         texR_tree_tundra_big_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_big_light");
         texR_tree_tundra_small_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_small_light");
-        texR_lake_summer = loadDecalTextureRegionFromAtlas(atlas_objects, "lake_summer");
-        texR_lake_tundra = loadDecalTextureRegionFromAtlas(atlas_objects, "lake_tundra");
+        texR_lake_summer = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "lake_summer");
+        texR_lake_tundra = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "lake_tundra");
         texR_hill_tundra = loadDecalTextureRegionFromAtlas(atlas_objects, "hill_tundra");
         texR_hill_summer = loadDecalTextureRegionFromAtlas(atlas_objects, "hill_summer");
-        texR_island = loadDecalTextureRegionFromAtlas(atlas_objects, "island");
+        texR_island = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "island");
         texR_lighthouse = loadDecalTextureRegionFromAtlas(atlas_objects, "lighthouse");
         texR_palmtree = loadDecalTextureRegionFromAtlas(atlas_objects, "palmtree");
         texR_boat = loadDecalTextureRegionFromAtlas(atlas_objects, "boat");
@@ -403,7 +423,9 @@ public class Assets {
         atlas_menu_plane.dispose();
         atlas_planes.dispose();
         atlas_objects.dispose();
-        /////////
+        atlas_shaders.dispose();
+        atlas_linear_objects.dispose();
+
 
         music_course_1.dispose();
         sound_cloud_hit.dispose();

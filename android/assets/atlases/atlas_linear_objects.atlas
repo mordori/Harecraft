@@ -1,0 +1,27 @@
+
+atlas_linear_objects.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+island
+  rotate: false
+  xy: 8, 8
+  size: 886, 890
+  orig: 886, 890
+  offset: 0, 0
+  index: -1
+lake_summer
+  rotate: false
+  xy: 1439, 365
+  size: 529, 533
+  orig: 529, 533
+  offset: 0, 0
+  index: -1
+lake_tundra
+  rotate: false
+  xy: 902, 365
+  size: 529, 533
+  orig: 529, 533
+  offset: 0, 0
+  index: -1

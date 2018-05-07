@@ -19,6 +19,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.World.finish;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -38,6 +39,9 @@ public class WorldBuilder {
     float clouds_LDownTimer = 1f;
     float clouds_RUpTimer = 1f;
     float clouds_RDownTimer = 1f;
+    float boatsTimer = 5f;
+    float islands_LTimer = 5f;
+    float islands_RTimer = 5f;
 
     float trees_LTimer = 1f;
     float trees_RTimer = 1f;
@@ -61,9 +65,6 @@ public class WorldBuilder {
         balloon1SpawnPos = MathUtils.random(50f, 1f/3f * finish -100) ;
         balloon2SpawnPos = MathUtils.random(1f/3f * finish + 100f, 2f/3f * finish - 100f);
         balloon3SpawnPos = MathUtils.random(2f/3f * finish + 100f, 3f/3f * finish - 100f);
-        System.out.println(balloon1SpawnPos);
-        System.out.println(balloon2SpawnPos);
-        System.out.println(balloon3SpawnPos);
 
         spawnStartObjects();
     }
@@ -83,7 +84,7 @@ public class WorldBuilder {
         updateOpponents(delta);
         updateClouds(delta);
         updateRings(delta);
-        updatePowerups(delta);
+        updateBalloons(delta);
 
         if(world instanceof WorldSummer || world instanceof WorldTundra) {
             updateLakes(delta);
@@ -91,15 +92,26 @@ public class WorldBuilder {
             updateHills(delta);
         }
         else if(world instanceof WorldSea) {
-
+            updateBoats(delta);
+            updateIslands(delta);
         }
 
         if(gameState == FINISH || gameState == END) {
-            for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
-                hotAirBalloon.update(delta);
+            if(worldIndex == 1 || worldIndex == 2) {
+                for (HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
+                    hotAirBalloon.update(delta);
+                }
+                if (!world.hotAirBalloons.isEmpty() && world.hotAirBalloons.get(0).decal.getPosition().z < camera.position.z) {
+                    world.hotAirBalloons.remove(0);
+                }
             }
-            if(!world.hotAirBalloons.isEmpty() && world.hotAirBalloons.get(0).decal.getPosition().z < camera.position.z) {
-                world.hotAirBalloons.remove(0);
+            else {
+                for (LightHouse lightHouse : world.lightHouses) {
+                    lightHouse.update(delta);
+                }
+                if (!world.lightHouses.isEmpty() && world.lightHouses.get(0).decal.getPosition().z < camera.position.z) {
+                    world.lightHouses.remove(0);
+                }
             }
         }
 
@@ -115,7 +127,68 @@ public class WorldBuilder {
             addTrees();
         }
         else if(world instanceof WorldSea) {
+            addBoat();
+            AddIsland();
+        }
+    }
 
+    public void updateBoats(float delta) {
+        for(Boat b : world.boats) b.update(delta);
+        removeBoats();
+    }
+
+    public void updateIslands(float delta) {
+        for(Island i : world.islands_L) i.update(delta);
+        for(Island i : world.islands_R) i.update(delta);
+
+        removeIslands();
+    }
+
+    public void removeIslands() {
+        removeIsland(world.islands_L);
+        removeIsland(world.islands_R);
+    }
+
+    public void removeIsland(ArrayList<Island> islandArray) {
+        if(!islandArray.isEmpty() && islandArray.get(0).decal.getPosition().z < camera.position.z) {
+            islandArray.remove(0);
+        }
+    }
+
+    public void removeBoats() {
+        if(!world.boats.isEmpty() && world.boats.get(0).decal.getPosition().z < camera.position.z) {
+            world.boats.remove(0);
+        }
+    }
+
+    public void addBoat() {
+        if(world.boats.isEmpty() || world.boats.get(world.boats.size() - 1).stateTime >= boatsTimer) {
+            if(gameStateTime >= boatsTimer) {
+                x = MathUtils.random(-150f, 150f);
+                y = groundLevel;
+                world.boats.add(new Boat(x, y, spawnDistance));
+                boatsTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
+            }
+        }
+    }
+
+    public void AddIsland() {
+        if(world.islands_L.isEmpty() || world.islands_L.get(world.islands_L.size() - 1).stateTime >= islands_LTimer) {
+            if(gameStateTime >= islands_LTimer) {
+                x = MathUtils.random(-110f, -20f);
+                y = groundLevel;
+                world.islands_L.add(new Island(x, y, 350f));
+                islands_LTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+            }
+        }
+
+        if(world.islands_R.isEmpty() || world.islands_R.get(world.islands_R.size() - 1).stateTime >= islands_RTimer) {
+            if(gameStateTime >= islands_RTimer) {
+                x = MathUtils.random(20f, 110f);
+                y = groundLevel;
+                world.islands_R.add(new Island(x, y, 350f));
+                islands_RTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+            }
         }
     }
 
@@ -144,10 +217,10 @@ public class WorldBuilder {
         removeRing();
     }
 
-    public void updatePowerups(float delta) {
+    public void updateBalloons(float delta) {
         for(Balloon b : world.balloons) b.update(delta);
 
-        removePowerup();
+        removeBalloon();
     }
 
     public void updateTrees(float delta) {
@@ -180,7 +253,7 @@ public class WorldBuilder {
     }
 
     public void addClouds() {
-        float difficultyRate = (4 - DIFFICULTYSENSITIVITY) * 0.2f;
+        float difficultyRate = (4 - DIFFICULTYSENSITIVITY) * 0.17f;
         float min = 0.45f + 5.6f/global_Multiplier * 0.12f;
         float max = 1.35f - global_Multiplier * 0.15f;
 
@@ -347,6 +420,24 @@ public class WorldBuilder {
     }
 
     public void removeHills() {
+        if(!world.hills_L.isEmpty()) {
+            if (!world.lakes_L.isEmpty() && world.hills_L.get(world.hills_L.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
+                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_L.get(world.hills_L.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
+
+                world.hills_L.remove(world.hills_L.size() - 1);
+                hills_LRemoveTimer = 1f;
+            }
+        }
+
+        if(!world.hills_R.isEmpty()) {
+            if (!world.lakes_L.isEmpty() && world.hills_R.get(world.hills_R.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
+                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_R.get(world.hills_R.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
+
+                world.hills_R.remove(world.hills_R.size() - 1);
+                hills_RRemoveTimer = 1f;
+            }
+        }
+
         removeHill(world.hills_L);
         removeHill(world.hills_R);
     }
@@ -365,7 +456,7 @@ public class WorldBuilder {
         }
     }
 
-    public void removePowerup() {
+    public void removeBalloon() {
         if(world.balloons.size() > 1 && world.balloons.get(0).decal.getPosition().z < camera.position.z) {
             if(!world.balloons.get(0).isCollected) {
                 world.balloons.remove(0);
@@ -383,7 +474,6 @@ public class WorldBuilder {
     }
 
     public void removeTree(ArrayList<Tree> treeArray) {
-
         if(!world.trees_L.isEmpty()) {
             if (!world.lakes_L.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width / 1.75f
                     || !world.lakes_R.isEmpty() && world.trees_L.get(world.trees_L.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width / 1.75f) {
@@ -440,24 +530,6 @@ public class WorldBuilder {
     }
 
     public void removeHill(ArrayList<Hill> hillArray) {
-        if(!world.hills_L.isEmpty()) {
-            if (!world.lakes_L.isEmpty() && world.hills_L.get(world.hills_L.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
-                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_L.get(world.hills_L.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
-
-                world.hills_L.remove(world.hills_L.size() - 1);
-                hills_LRemoveTimer = 1f;
-            }
-        }
-
-        if(!world.hills_R.isEmpty()) {
-            if (!world.lakes_L.isEmpty() && world.hills_R.get(world.hills_R.size() - 1).position.dst(world.lakes_L.get(world.lakes_L.size() - 1).position) < world.lakes_L.get(world.lakes_L.size() - 1).width
-                    || !world.lakes_R.isEmpty() && world.lakes_R.get(world.lakes_R.size()-1).stateTime < 1f && world.hills_R.get(world.hills_R.size() - 1).position.dst(world.lakes_R.get(world.lakes_R.size() - 1).position) < world.lakes_R.get(world.lakes_R.size() - 1).width) {
-
-                world.hills_R.remove(world.hills_R.size() - 1);
-                hills_RRemoveTimer = 1f;
-            }
-        }
-
         if(!hillArray.isEmpty() && hillArray.get(0).decal.getPosition().z < camera.position.z) {
             hillArray.remove(0);
         }
@@ -469,7 +541,6 @@ public class WorldBuilder {
         world.pfx_speed_lines.update(delta);
 
         if(world.pfx_snow != null) world.pfx_snow.update(delta);
-        if(world.pfx_sea_glimmer != null) world.pfx_sea_glimmer.update(delta);
 
         if(gameState == END) {
             if(world.pfx_speed_lines != null) world.pfx_speed_lines.allowCompletion();

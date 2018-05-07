@@ -183,7 +183,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     }
 
     public void update(float delta) {
-        logger.log();
+        //logger.log();
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);

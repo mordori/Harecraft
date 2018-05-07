@@ -19,6 +19,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
 import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_blur;
+import static fi.tamk.tiko.harecraft.WorldBuilder.groundLevel;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
 /**
@@ -34,7 +35,6 @@ public abstract class World {
 
     ParticleEffect pfx_speed_lines;
     ParticleEffect pfx_snow;
-    ParticleEffect pfx_sea_glimmer;
 
     //Player
     static Player player;
@@ -47,6 +47,7 @@ public abstract class World {
 
     //HotAirBalloons
     ArrayList<HotAirBalloon> hotAirBalloons = new ArrayList<HotAirBalloon>();
+    ArrayList<LightHouse> lightHouses = new ArrayList<LightHouse>();
 
     //Ground
     Decal ground;
@@ -61,8 +62,8 @@ public abstract class World {
 
     //Sea Objects
     ArrayList<Boat> boats = new ArrayList<Boat>();
-    ArrayList<Whale> whales = new ArrayList<Whale>();
-    ArrayList<Island> islands = new ArrayList<Island>();
+    ArrayList<Island> islands_L = new ArrayList<Island>();
+    ArrayList<Island> islands_R = new ArrayList<Island>();
 
     //Sky
     ArrayList<Cloud> clouds_LUp = new ArrayList<Cloud>();
@@ -83,9 +84,6 @@ public abstract class World {
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
-        pfx_sea_glimmer = new ParticleEffect(Assets.pfx_sea_glimmer);
-        pfx_sea_glimmer.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-        //pfx_sea_glimmer.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
         pfx_snow = new ParticleEffect(Assets.pfx_snow);
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
         pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
@@ -109,9 +107,6 @@ public abstract class World {
         decal_sun2 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun2.setPosition(0f, -40f, 298f);
         decal_sun2.rotateZ(45f);
-
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 30f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 30f));
     }
 
     public void dispose() {
@@ -123,7 +118,6 @@ public abstract class World {
 
         if(pfx_speed_lines != null) pfx_speed_lines.dispose();
         if(pfx_snow != null) pfx_snow.dispose();
-        if(pfx_sea_glimmer != null) pfx_sea_glimmer.dispose();
     }
 
     public abstract void updateShaders(float delta);
@@ -157,7 +151,9 @@ class WorldSummer extends World {
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
         pfx_snow = null;
-        pfx_sea_glimmer = null;
+
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 30f));
     }
 
     public void update(float delta) {
@@ -180,10 +176,10 @@ class WorldSummer extends World {
         }
         shader2D_vignette.end();
         */
-        shader2D_blur.begin();
+        //shader2D_blur.begin();
         //shader3D_blur.setUniformMatrix("u_projTrans", camera.combined);
         //shader3D_blur.setUniformi("u_texture", 0);
-        shader2D_blur.end();
+        //shader2D_blur.end();
     }
 
 }
@@ -205,7 +201,8 @@ class WorldTundra extends World {
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
 
-        pfx_sea_glimmer = null;
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 30f));
     }
 
     public void update(float delta) {
@@ -240,9 +237,12 @@ class WorldSea extends World {
 
     public WorldSea() {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
-        ground.setPosition(0f, -28f, 125f);
+        ground.setPosition(0f, -30f, 125f);
         ground.rotateX(90f);
         pfx_snow = null;
+
+        lightHouses.add(new LightHouse(-30f, groundLevel, spawnDistance + 48f));
+        lightHouses.add(new LightHouse(30f, groundLevel, spawnDistance + 48f));
     }
 
     public void update(float delta) {
@@ -250,8 +250,8 @@ class WorldSea extends World {
     }
 
     public void updateShaders(float delta) {
-        tick += delta;
-        velocity += player.velocity.z;
+        tick += delta/2f;
+        velocity += player.velocity.z/2f;
         velocity %= 3000f;
 
         shader3D_sea.begin();

@@ -392,7 +392,7 @@ class Opponent extends Pilot {
         float min = finish/12f;
 
         spawnZ = MathUtils.random(min, max);
-        speed = MathUtils.random(2f, 3.8f) + MathUtils.random(0f, max/spawnZ * 3.8f);
+        speed = MathUtils.random(2.6f, 4.1f) + MathUtils.random(0f, max/spawnZ * 3.8f);
 
         System.out.println(speed);
 
