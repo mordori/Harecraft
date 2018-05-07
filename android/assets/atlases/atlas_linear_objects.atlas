@@ -4,23 +4,37 @@ size: 2048,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+bg_summer
+  rotate: false
+  xy: 894, 541
+  size: 1100, 183
+  orig: 1100, 183
+  offset: 0, 0
+  index: -1
+bg_tundra
+  rotate: false
+  xy: 894, 728
+  size: 1100, 183
+  orig: 1100, 183
+  offset: 0, 0
+  index: -1
 island
   rotate: false
-  xy: 8, 8
+  xy: 4, 21
   size: 886, 890
   orig: 886, 890
   offset: 0, 0
   index: -1
 lake_summer
   rotate: false
-  xy: 1439, 365
+  xy: 894, 4
   size: 529, 533
   orig: 529, 533
   offset: 0, 0
   index: -1
 lake_tundra
   rotate: false
-  xy: 902, 365
+  xy: 1427, 4
   size: 529, 533
   orig: 529, 533
   offset: 0, 0
