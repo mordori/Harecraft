@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -104,11 +105,19 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
 
     private int selectedScreen = -1;
 
+    Preferences profilesData; //diu
+    int oldTotalScore;
+    int scoreAlreadyadded = 0;
+
     public ScoreScreen() {
         sBatch.setProjectionMatrix(orthoCamera.combined);
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
         stage = new Stage(new ScreenViewport(orthoCamera));
         Gdx.input.setInputProcessor(stage);
+
+        profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE //diu
+        oldTotalScore = profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
+        oldTotalScore -= playerScore;
 
         Assets.font5.getData().setLineHeight(Assets.font5.getLineHeight()/1.3f);
         Assets.font6.getData().setLineHeight(Assets.font6.getLineHeight()/1.3f);
@@ -251,12 +260,29 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         shapeRenderer.rect(x + width, y,10f, height);
         shapeRenderer.end();
 
+        if (scoreAlreadyadded < playerScore) {
+            oldTotalScore = oldTotalScore + 1;
+            scoreAlreadyadded = scoreAlreadyadded + 1;
+            Gdx.app.log("oldtotalscro:", "" +oldTotalScore);
+            Gdx.app.log("scoreAlreadyadded", "" +scoreAlreadyadded);
+            Gdx.app.log("playerscore :", "" +playerScore);
+        }
+
         sBatch.begin();
             Assets.font3.setColor(1f,1f,1f,1f);
-            Assets.font3.draw(sBatch,"Score:", 300f, 500f);
+            Assets.font3.draw(sBatch,"Score:", Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/1.3f);
 
             Assets.font1.setColor(1f,1f,1f, 1f);
-            Assets.font1.draw(sBatch,"" + playerScore, 650f, 600f);
+            Assets.font1.draw(sBatch,"" + playerScore, (Gdx.graphics.getWidth()/4) *2.1f , Gdx.graphics.getHeight()/1.2f);
+            //diu
+            Assets.font3.setColor(1f,1f,1f,1f);
+            Assets.font3.draw(sBatch,"New Total:", Gdx.graphics.getWidth()/7, Gdx.graphics.getHeight()/1.9f);
+
+            Assets.font1.setColor(1f,1f,1f, 1f);
+            Assets.font1.draw(sBatch,"" + oldTotalScore, (Gdx.graphics.getWidth()/4) *2.1f, Gdx.graphics.getHeight()/1.8f);
+
+
+
         sBatch.end();
     }
 
