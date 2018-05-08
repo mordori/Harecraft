@@ -381,16 +381,20 @@ public class HUD {
         String rings = Integer.toString(ringsCollected);
 
         if(SCREEN_WIDTH > 1600f) {
+            Assets.font5.setColor(1f, 1f, 1f, opacity);
             layout.setText(Assets.font5, rings);
             float layoutHeight = layout.height;
             y2 = layoutHeight;
             Assets.font5.draw(sBatch, rings, x + width * 1.5f, y + y2);
+            Assets.font5.setColor(1f, 1f, 1f, 1f);
         }
         else {
+            Assets.font6.setColor(1f, 1f, 1f, opacity);
             layout.setText(Assets.font6, rings);
             float layoutHeight = layout.height;
             y2 = layoutHeight;
             Assets.font6.draw(sBatch, rings, x + width * 1.5f, y + y2);
+            Assets.font5.setColor(1f, 1f, 1f, 1f);
         }
 
         width = balloonRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
@@ -399,8 +403,16 @@ public class HUD {
 
         sBatch.draw(balloonRegion, x, y - height/4f, width, height);
         String balloons = Integer.toString(balloonsCollected) + "/3";
-        if(SCREEN_WIDTH > 1600f) Assets.font5.draw(sBatch, balloons, x + width * 1.5f, y + y2);
-        else Assets.font6.draw(sBatch, balloons, x + width * 1.5f, y + y2);
+        if(SCREEN_WIDTH > 1600f) {
+            Assets.font5.setColor(1f, 1f, 1f, opacity);
+            Assets.font5.draw(sBatch, balloons, x + width * 1.5f, y + y2);
+            Assets.font5.setColor(1f, 1f, 1f, 1f);
+        }
+        else {
+            Assets.font6.setColor(1f, 1f, 1f, opacity);
+            Assets.font6.draw(sBatch, balloons, x + width * 1.5f, y + y2);
+            Assets.font6.setColor(1f, 1f, 1f, 1f);
+        }
         sBatch.setColor(1f,1f,1f,1f);
     }
 
