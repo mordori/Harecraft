@@ -71,7 +71,7 @@ public class AssetsAudio {
 
     private static int CURRENT_MUSIC;
 
-    public static void load() {
+    public static boolean load() {
         music_course_0 = loadMusic("music_course_0.mp3");
         music_course_0.setLooping(true);
         music_course_1 = loadMusic("music_course_1.mp3");
@@ -99,13 +99,13 @@ public class AssetsAudio {
 
         ID_sound_fanfaar_1 = sound_fanfaar_1.play(0);
         ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
-        ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
+        ID_sound_fanfaar_3 = sound_fanfaar_3.play(0);
+        ID_sound_fanfaar_4 = sound_fanfaar_4.play(0);
+        ID_sound_fanfaar_5 = sound_fanfaar_5.play(0);
+        ID_sound_fanfaar_6 = sound_fanfaar_6.play(0);
+        ID_sound_cloud_hit = sound_cloud_hit.play(0);
+        ID_sound_ring_collected = sound_ring_collected.play(0);
+        ID_sound_balloon_collected = sound_balloon_collected.play(0);
         ID_sound_countdown = sound_countdown.play(0);
         ID_sound_countdown_end = sound_countdown_end.play(0);
         ID_sound_airplane_engine = sound_airplane_engine.play(0);
@@ -114,6 +114,8 @@ public class AssetsAudio {
         ID_sound_points_counting = sound_points_counting.play(0);
         ID_sound_points_counting_end = sound_points_counting_end.play(0);
         ID_sound_points_highscore = sound_points_highscore.play(0);
+
+        return true;
     }
 
     public static void playMusic(int musicID) {
@@ -183,6 +185,34 @@ public class AssetsAudio {
         }
     }
 
+    public static void pauseMusic() {
+        switch (CURRENT_MUSIC) {
+            case MUSIC_COURSE_0:
+                music_course_0.pause();
+                break;
+            case MUSIC_COURSE_1:
+                music_course_1.pause();
+                break;
+            case MUSIC_COURSE_2:
+                music_course_2.pause();
+                break;
+        }
+    }
+
+    public static void resumeMusic() {
+        switch (CURRENT_MUSIC) {
+            case MUSIC_COURSE_0:
+                music_course_0.play();
+                break;
+            case MUSIC_COURSE_1:
+                music_course_1.play();
+                break;
+            case MUSIC_COURSE_2:
+                music_course_2.play();
+                break;
+        }
+    }
+
     public static void resumeSound(int soundID) {
         switch (soundID) {
             case SOUND_AIRPLANE_ENGINE:
@@ -239,8 +269,8 @@ public class AssetsAudio {
                 break;
             case SOUND_AIRPLANE_ENGINE:
                 sound_airplane_engine.stop(ID_sound_airplane_engine);
-                ID_sound_airplane_engine = sound_airplane_engine.play(volume);
-                sound_airplane_engine.setLooping(ID_sound_airplane_engine,true);
+                ID_sound_airplane_engine = sound_airplane_engine.loop(volume);
+                //sound_airplane_engine.setLooping(ID_sound_airplane_engine,true);
                 break;
             case SOUND_OVERTAKING:
                 sound_overtaking.stop(ID_sound_overtaking);
@@ -252,7 +282,7 @@ public class AssetsAudio {
                 break;
             case SOUND_POINTS_COUNTING:
                 sound_points_counting.stop(ID_sound_points_counting);
-                ID_sound_points_counting = sound_points_counting.play(volume);
+                ID_sound_points_counting = sound_points_counting.loop(volume);
                 break;
             case SOUND_POINTS_COUNTING_END:
                 sound_points_counting_end.stop(ID_sound_points_counting_end);

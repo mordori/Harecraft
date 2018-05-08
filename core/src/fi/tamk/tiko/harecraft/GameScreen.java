@@ -387,6 +387,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     }
 
     public void playFanfaar() {
+        AssetsAudio.pauseMusic();
         switch(playerPlacement) {
             case 1:
                 AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_6,0.45f);

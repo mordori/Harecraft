@@ -45,9 +45,6 @@ public class GameMain extends Game {
 	
 	@Override
 	public void create () {
-		Assets.load();
-		AssetsAudio.load();
-
         orthoCamera = new OrthographicCamera();
         orthoCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera = new PerspectiveCamera(fieldOfView, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -59,11 +56,8 @@ public class GameMain extends Game {
         sBatch.setProjectionMatrix(orthoCamera.combined);
         sBatch.setShader(null);
 
-        dBatch = new DecalBatch(new MyGroupStrategy(camera));
-
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(orthoCamera.combined);
-
 
         Pixmap.Format format = Pixmap.Format.RGB565;
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) format = Pixmap.Format.RGBA8888;
@@ -85,10 +79,11 @@ public class GameMain extends Game {
 	
 	@Override
 	public void dispose () {
-		sBatch.dispose();
-        dBatch.dispose();
-        shapeRenderer.dispose();
-        fbo.dispose();
+        if(sBatch != null) sBatch.dispose();
+        if(dBatch != null) dBatch.dispose();
+        if(shapeRenderer != null) shapeRenderer.dispose();
+        if(fbo != null) fbo.dispose();
+
         texture.getTexture().dispose();
 
 		Assets.dispose();

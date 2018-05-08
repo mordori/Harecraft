@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 
@@ -33,6 +35,9 @@ public class SplashScreen extends ScreenAdapter {
     float alpha;
     float timer;
 
+    boolean isAudioLoaded;
+    boolean isAssetsLoaded;
+
     public SplashScreen(GameMain game) {
         this.game = game;
         //camera = new OrthographicCamera();
@@ -41,20 +46,22 @@ public class SplashScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         camera.update();
+        isAudioLoaded = false;
+        isAssetsLoaded = false;
 
-        tamkSprite = new Sprite(Assets.tex_tamk);
+        tamkSprite = new Sprite(new Texture(Gdx.files.internal("textures/tamk.png")));
         tamkSprite.setSize(488,215);
         tamkSprite.setPosition(960 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20);
 
-        exeriumSprite = new Sprite(Assets.tex_exerium);
+        exeriumSprite = new Sprite(new Texture(Gdx.files.internal("textures/exerium.png")));
         exeriumSprite.setSize(575, 187);
         exeriumSprite.setPosition(320 -exeriumSprite.getWidth()/2,100);
 
-        projectileSprite = new Sprite(Assets.tex_projectile);
+        projectileSprite = new Sprite(new Texture(Gdx.files.internal("textures/projectile.png")));
         projectileSprite.setSize(514,329 );
         projectileSprite.setPosition(320 - projectileSprite.getWidth()/2, 533 - projectileSprite.getHeight()/2);
 
-        tikoSprite = new Sprite(Assets.tex_tiko);
+        tikoSprite = new Sprite(new Texture(Gdx.files.internal("textures/tiko.png")));
         tikoSprite.setSize(423,166);
         tikoSprite.setPosition(960 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -20);
         //skin = Assets.skin_menu;
@@ -74,16 +81,22 @@ public class SplashScreen extends ScreenAdapter {
         tikoSprite.draw(sBatch, alpha);
         sBatch.end();
 
-        if (timer >= 50f)
-        alpha -= 0.017f;
-        if(alpha < 0f) alpha = 0f;
-
-        if (timer > 110f) {
+        if(alpha == 0f && timer > 2f) {
+            dBatch = new DecalBatch(new MyGroupStrategy(camera));
             sBatch.setProjectionMatrix(orthoCamera.combined); //palautetaan projektion matrix alkuperäiseksi
             game.setScreen(new MainMenu(game,true));
         }
 
-        timer++;
+        if(timer != 0f) {
+            if(isAudioLoaded && isAssetsLoaded) alpha -= 0.02f;
+            else {
+                if (!isAudioLoaded) isAudioLoaded = AssetsAudio.load();
+                if (!isAssetsLoaded) isAssetsLoaded = Assets.load();
+            }
+            if(alpha < 0f) alpha = 0f;
+        }
+
+        timer += delta;
     }
 
     @Override

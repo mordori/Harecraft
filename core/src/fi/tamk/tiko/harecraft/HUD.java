@@ -542,7 +542,6 @@ public class HUD {
     }
 
     public void dispose() {
-        stage.dispose();
         pfx_placement.dispose();
         pfx_placement1.dispose();
         pfx_placement2.dispose();

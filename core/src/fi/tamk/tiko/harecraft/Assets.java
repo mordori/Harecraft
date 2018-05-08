@@ -34,10 +34,6 @@ public class Assets {
     static Texture tex_englishFlag;
     static Texture tex_banana;
     static Texture tex_gamelogo;
-    static Texture tex_tamk;
-    static Texture tex_tiko;
-    static Texture tex_exerium;
-    static Texture tex_projectile;
     static Texture tex_radar;
     static Texture tex_radar_dot;
     static Texture tex_mainmenu_background;
@@ -140,7 +136,7 @@ public class Assets {
 
     static ArrayList<FileHandle> flightsSource = new ArrayList<FileHandle>();
 
-    public static void load() {
+    public static boolean load() {
         //FILES;
         for(FileHandle file: Gdx.files.internal("data/flights/").list()) {
             flightsSource.add(file);
@@ -186,10 +182,6 @@ public class Assets {
         tex_englishFlag = new Texture(Gdx.files.internal("textures/ukFlag.png"));
         tex_banana = new Texture(Gdx.files.internal("textures/banana.png"));
         tex_gamelogo = new Texture(Gdx.files.internal("textures/logo.png"));
-        tex_tamk = new Texture(Gdx.files.internal("textures/tamk.png"));
-        tex_tiko = new Texture(Gdx.files.internal("textures/tiko.png"));
-        tex_projectile = new Texture(Gdx.files.internal("textures/projectile.png"));
-        tex_exerium = new Texture(Gdx.files.internal("textures/exerium.png"));
         tex_radar = new Texture(Gdx.files.internal("textures/radar.png"));
         tex_radar_dot = new Texture(Gdx.files.internal("textures/radardot.png"));
         tex_mainmenu_background = new Texture(Gdx.files.internal("textures/menubg.png"));
@@ -312,6 +304,8 @@ public class Assets {
 
         //SKINS
         skin_menu = new Skin(Gdx.files.internal("harejson/hare.json"));
+
+        return true;
     }
 
     public static Texture loadTexture(String path) {
@@ -416,10 +410,6 @@ public class Assets {
         tex_englishFlag.dispose();
         tex_banana.dispose();
         tex_gamelogo.dispose();
-        tex_tamk.dispose();
-        tex_tiko.dispose();
-        tex_projectile.dispose();
-        tex_exerium.dispose();
         tex_radar.dispose();
         tex_radar_dot.dispose();
         tex_mainmenu_background.dispose();
