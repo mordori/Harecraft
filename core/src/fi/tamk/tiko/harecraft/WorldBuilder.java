@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -155,6 +156,12 @@ public class WorldBuilder {
 
     public void removeIsland(ArrayList<Island> islandArray) {
         if(!islandArray.isEmpty() && islandArray.get(0).decal.getPosition().z < camera.position.z) {
+            int size = islandArray.get(0).palmtrees.size() - 1;
+            System.out.println(islandArray.get(0).palmtrees.size());
+
+            for(int i = size; i > 0; i--) {
+                islandArray.get(0).palmtrees.remove(i);
+            }
             islandArray.remove(0);
         }
     }

@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -46,7 +47,7 @@ public class HUD {
     float progressline_y = SCREEN_HEIGHT - 75f;
     float progressline_color_red = 255f;
     float progressline_color_green = 130f;
-    float progressline_width = SCREEN_WIDTH/4f;
+    float progressline_width = SCREEN_WIDTH/3.5f;
     float progressline_arc_radius = 9f;
     float yPos = SCREEN_HEIGHT/1.5f;
     float opacity = 0f;
@@ -286,7 +287,7 @@ public class HUD {
     }
 
     public void updateProgressLine(float delta) {
-        progressline_x = 300f * (player.distance / world.end);
+        progressline_x = SCREEN_WIDTH/3.5f * (player.distance / world.end);
         progressline_color_green = (130f + (125f * (player.distance / world.end))) / 255f; //110 + 160 = 270
         progressline_color_red = (255f - ((255f - 95f) * (player.distance / world.end))) / 255f;
 
