@@ -123,6 +123,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static int playerScore;
     static int playerPlacement;
     static int balloonsCollected;
+    static int ringsCollected;
 
     static int recIndex = 9;
 
@@ -136,6 +137,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static boolean isTransition = false;
     static boolean isTransitionComplete = false;
     int lastPlayerPlacement = 6;
+
 
     public GameScreen(GameMain game, int worldIndex) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -163,6 +165,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         worldScore = 0;
         playerScore = 0;
         balloonsCollected = 0;
+        ringsCollected = 0;
 
         AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.3f);
     }

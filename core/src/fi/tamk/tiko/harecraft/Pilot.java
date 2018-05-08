@@ -127,12 +127,12 @@ class Player extends Pilot {
         TextureRegion texR_head = Assets.texR_character_hare;
 
 
-        if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 4000) {
+        /*if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 4000) {
             texR_wings = Assets.texR_plane_1_red_wings;
         }
         else if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 2000) {
             texR_wings = Assets.texR_plane_3_red_wings;
-        }
+        }*/
 
         width = texR_body.getRegionWidth()/250f;
         height = texR_body.getRegionHeight()/250f;

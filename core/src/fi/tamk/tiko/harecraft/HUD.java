@@ -21,15 +21,18 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.countdown;
 import static fi.tamk.tiko.harecraft.GameScreen.paused;
 import static fi.tamk.tiko.harecraft.GameScreen.playerPlacement;
 import static fi.tamk.tiko.harecraft.GameScreen.layout;
+import static fi.tamk.tiko.harecraft.GameScreen.ringsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.selectedScreen;
 import static fi.tamk.tiko.harecraft.GameScreen.stage;
 import static fi.tamk.tiko.harecraft.GameScreen.game;
+import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -48,7 +51,8 @@ public class HUD {
     float progressline_color_red = 255f;
     float progressline_color_green = 130f;
     float progressline_width = SCREEN_WIDTH/3.5f;
-    float progressline_arc_radius = 9f;
+    float progressline_arc_radius = 9f * (SCREEN_HEIGHT/800f);
+    float progressline_arc_radius2 = 3f * (SCREEN_HEIGHT/800f);
     float yPos = SCREEN_HEIGHT/1.5f;
     float opacity = 0f;
     float stateOpacity = 0f;
@@ -61,11 +65,30 @@ public class HUD {
 
     TextureRegion stateRegion = new TextureRegion();
     TextureRegion placementRegion = new TextureRegion();
+    TextureRegion ringRegion = new TextureRegion();
+    TextureRegion balloonRegion = new TextureRegion();
     String language;
 
     public HUD(World world, final GameScreen gameScreen) {
         this.world = world;
         this.gameScreen = gameScreen;
+
+        switch (worldIndex) {
+            case 0:
+                ringRegion = Assets.texR_ring0;
+                balloonRegion = Assets.texR_balloon_red;
+                break;
+            case 1:
+                ringRegion = Assets.texR_ring2;
+                balloonRegion = Assets.texR_balloon_orange;
+                break;
+            case 2:
+                ringRegion = Assets.texR_ring1;
+                balloonRegion = Assets.texR_balloon_blue;
+                break;
+            default:
+                break;
+        }
 
         pfx_placement.allowCompletion();
         pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f));
@@ -254,11 +277,13 @@ public class HUD {
         else if(gameState != EXIT) {
             if(gameState != START) {
                 drawProgressLine();
+                drawBackdrop();
             }
             sBatch.begin();
                 drawState();
                 if(gameState != START) {
                     drawPlacementNumber();
+                    drawCollectables();
                 }
             sBatch.end();
         }
@@ -299,19 +324,19 @@ public class HUD {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //Black
         shapeRenderer.setColor(0f, 0f, 0f, 0.3f * opacity);
-        shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius + 3f, 90f, 180f);
-        shapeRenderer.arc(SCREEN_WIDTH/2f + progressline_width/2f, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius + 3f, 270f, 180f);
-        shapeRenderer.rect(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y, progressline_width, (progressline_arc_radius + 3)*2f);
+        shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius + progressline_arc_radius2, progressline_arc_radius + progressline_arc_radius2, 90f, 180f);
+        shapeRenderer.arc(SCREEN_WIDTH/2f + progressline_width/2f, progressline_y + progressline_arc_radius + progressline_arc_radius2, progressline_arc_radius + progressline_arc_radius2, 270f, 180f);
+        shapeRenderer.rect(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y, progressline_width, (progressline_arc_radius + progressline_arc_radius2)*2f);
 
         //Color
         shapeRenderer.setColor(progressline_color_red, progressline_color_green, 44f/255f, 0.7f * opacity);
-        shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius, 90f, 180f);
-        shapeRenderer.rect(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + 3f, progressline_x, progressline_arc_radius*2f);
-        shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius, 270f, 180f);
+        shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius + progressline_arc_radius2, progressline_arc_radius, 90f, 180f);
+        shapeRenderer.rect(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius2, progressline_x, progressline_arc_radius*2f);
+        shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + progressline_arc_radius2, progressline_arc_radius, 270f, 180f);
 
         //White
         shapeRenderer.setColor(1f, 1f, 1f, 0.6f * opacity);
-        shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius);
+        shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + progressline_arc_radius2, progressline_arc_radius);
         shapeRenderer.end();
     }
 
@@ -319,6 +344,63 @@ public class HUD {
         yPos = SCREEN_HEIGHT/1.25f;
         stateOpacity = 0f;
         count++;
+    }
+
+    public void drawBackdrop() {
+        float width = ringRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
+        float height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
+
+        float x = SCREEN_WIDTH/1.302f;
+        float y = SCREEN_HEIGHT/1.1f;
+        float y2 = 0;
+        float backdropWidth = SCREEN_WIDTH/6.3f;
+        float backdropRadius = SCREEN_HEIGHT/30f;
+        float backdropHeight = backdropRadius*2f;
+
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        //Black
+        shapeRenderer.setColor(0f, 0f, 0f, 0.3f * opacity);
+        shapeRenderer.arc(x + backdropRadius/4f, y + backdropHeight/4f, backdropRadius, 90f, 180f);
+        shapeRenderer.arc(x + backdropWidth + backdropRadius/4f, y + backdropHeight/4f, backdropRadius, 270f, 180f);
+        shapeRenderer.rect(x + backdropRadius/4f, y - backdropRadius + backdropHeight/4f, backdropWidth, backdropHeight);
+        shapeRenderer.end();
+    }
+
+    public void drawCollectables() {
+        float width = ringRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
+        float height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
+
+        float x = SCREEN_WIDTH/1.3f;
+        float y = SCREEN_HEIGHT/1.104f;
+        float y2 = 0;
+
+        sBatch.setColor(1f,1f,1f, opacity);
+
+        sBatch.draw(ringRegion, x, SCREEN_HEIGHT/1.1075f, width, height);
+        String rings = Integer.toString(ringsCollected);
+
+        if(SCREEN_WIDTH > 1600f) {
+            layout.setText(Assets.font5, rings);
+            float layoutHeight = layout.height;
+            y2 = layoutHeight;
+            Assets.font5.draw(sBatch, rings, x + width * 1.5f, y + y2);
+        }
+        else {
+            layout.setText(Assets.font6, rings);
+            float layoutHeight = layout.height;
+            y2 = layoutHeight;
+            Assets.font6.draw(sBatch, rings, x + width * 1.5f, y + y2);
+        }
+
+        width = balloonRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
+        height = balloonRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
+        x = SCREEN_WIDTH/1.16f;
+
+        sBatch.draw(balloonRegion, x, y - height/4f, width, height);
+        String balloons = Integer.toString(balloonsCollected) + "/3";
+        Assets.font5.draw(sBatch, balloons, x + width * 1.5f, y + y2);
+        sBatch.setColor(1f,1f,1f,1f);
     }
 
     public void drawState() {
@@ -447,6 +529,7 @@ public class HUD {
     }
 
     public void dispose() {
+        stage.dispose();
         pfx_placement.dispose();
         pfx_placement1.dispose();
         pfx_placement2.dispose();

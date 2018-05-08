@@ -370,10 +370,10 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
     }
 
     public void hide() {
-
+        dispose();
     }
 
     public void dispose() {
-
+        stage.dispose();
     }
 }

@@ -11,6 +11,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
+import static fi.tamk.tiko.harecraft.GameScreen.ringsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -80,6 +81,7 @@ class Ring extends GameObject {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.curPosition) < 2.5f) {
                 isCollected = true;
                 playerScore++;
+                ringsCollected++;
 
                 if(global_Multiplier < MULTIPLIER_HIGH) global_Multiplier += MULTIPLIER_INCREMENT;
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
