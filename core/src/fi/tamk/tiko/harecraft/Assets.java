@@ -202,8 +202,8 @@ public class Assets {
         tex_stage3_pressed = new Texture(Gdx.files.internal("textures/stage3p.png"));
 
         //DECALS
-        texR_background_summer = loadDecalTextureRegion("tex_background_summer.png");
-        texR_background_tundra = loadDecalTextureRegion("tex_background_tundra.png");
+        texR_background_summer = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "bg_summer");
+        texR_background_tundra = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "bg_tundra");
         texR_sun = loadDecalTextureRegionFromAtlas(atlas_objects, "sun");
         texR_hotairballoon_summer = loadDecalTextureRegionFromAtlas(atlas_objects, "HAB_summer");
         texR_hotairballoon_tundra = loadDecalTextureRegionFromAtlas(atlas_objects, "HAB_tundra");
