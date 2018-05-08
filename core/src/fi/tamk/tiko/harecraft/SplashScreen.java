@@ -42,19 +42,19 @@ public class SplashScreen extends ScreenAdapter {
         camera.setToOrtho(false, 1280, 800);
         camera.update();
 
-        tamkSprite = new Sprite(new Texture(Gdx.files.internal("textures/tamk_eng_pysty_NEGA.png")));
+        tamkSprite = new Sprite(Assets.tex_tamk);
         tamkSprite.setSize(488,215);
         tamkSprite.setPosition(960 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20);
 
-        exeriumSprite = new Sprite(new Texture(Gdx.files.internal("textures/exerium_logo_low_pixel.png")));
+        exeriumSprite = new Sprite(Assets.tex_exerium);
         exeriumSprite.setSize(575, 187);
         exeriumSprite.setPosition(320 -exeriumSprite.getWidth()/2,100);
 
-        projectileSprite = new Sprite((new Texture(Gdx.files.internal("textures/projectile.png"))));
+        projectileSprite = new Sprite(Assets.tex_projectile);
         projectileSprite.setSize(514,329 );
         projectileSprite.setPosition(320 - projectileSprite.getWidth()/2, 533 - projectileSprite.getHeight()/2);
 
-        tikoSprite = new Sprite(new Texture(Gdx.files.internal("textures/tiko.png")));
+        tikoSprite = new Sprite(Assets.tex_tiko);
         tikoSprite.setSize(423,166);
         tikoSprite.setPosition(960 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -20);
         //skin = Assets.skin_menu;
@@ -84,5 +84,14 @@ public class SplashScreen extends ScreenAdapter {
         }
 
         timer++;
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
     }
 }

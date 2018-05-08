@@ -50,7 +50,7 @@ public class SettingsMenu extends ScreenAdapter {
         this.game = game;
         //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
         skin = Assets.skin_menu;
-        skin = new Skin(Gdx.files.internal("harejson/hare.json"));
+        //skin = new Skin(Gdx.files.internal("harejson/hare.json"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
@@ -433,7 +433,7 @@ class Radar extends Actor {
     private Texture radarTexture;
 
     public Radar() {
-        radarTexture = new Texture(Gdx.files.internal("textures/radar.png"));
+        radarTexture = Assets.tex_radar;
         setName("radar");
         setBounds(70,250,500,500);
         circle = new Circle();
@@ -479,7 +479,7 @@ class RadarDot extends Actor {
 
     public RadarDot(int x, int y) {
         setName("dot");
-        dotTexture = new Texture(Gdx.files.internal("textures/radardot.png"));
+        dotTexture = Assets.tex_radar_dot;
         setBounds(x +70 -25,y +250 -25, 50,50);
     }
 

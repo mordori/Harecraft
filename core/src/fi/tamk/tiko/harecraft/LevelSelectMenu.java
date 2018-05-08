@@ -79,13 +79,13 @@ public class LevelSelectMenu extends ScreenAdapter {
         makeHighScores();
         highScoreTable.setPosition(240,630);
 
-        LevelButton levelOneButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage1.png")), new Texture(Gdx.files.internal("textures/stage1p.png")), 1);
+        LevelButton levelOneButton = new LevelButton(Assets.tex_stage1, Assets.tex_stage1_pressed, 1);
         levelOneButton.setPosition(240 -levelOneButton.getWidth()/2,220);
 
-        LevelButton levelTwoButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage2.png")), new Texture(Gdx.files.internal("textures/stage2p.png")), 2);
+        LevelButton levelTwoButton = new LevelButton(Assets.tex_stage2, Assets.tex_stage2_pressed, 2);
         levelTwoButton.setPosition(640 -levelTwoButton.getWidth()/2,220);
 
-        LevelButton levelThreeButton = new LevelButton(new Texture(Gdx.files.internal("textures/stage3.png")), new Texture(Gdx.files.internal("textures/stage3p.png")), 0);
+        LevelButton levelThreeButton = new LevelButton(Assets.tex_stage3, Assets.tex_stage3_pressed, 0);
         levelThreeButton.setPosition(1040 -levelThreeButton.getWidth()/2,220);
 
         InstructionsBox instructionsBox = new InstructionsBox();
@@ -423,7 +423,7 @@ class InstructionsBox extends Actor {
     Texture instructionTexture;
 
     public InstructionsBox() {
-        instructionTexture = new Texture(Gdx.files.internal("textures/help.png"));
+        instructionTexture = Assets.tex_instructions;
     }
 
     public void draw(Batch batch, float alpha) {

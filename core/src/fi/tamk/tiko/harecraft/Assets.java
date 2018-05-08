@@ -30,6 +30,24 @@ public class Assets {
     static Texture tex_sea_deep;
     static Texture tex_mask_foam;
     static Texture tex_mask_sea_deep;
+    static Texture tex_finnishFlag;
+    static Texture tex_englishFlag;
+    static Texture tex_banana;
+    static Texture tex_gamelogo;
+    static Texture tex_tamk;
+    static Texture tex_tiko;
+    static Texture tex_exerium;
+    static Texture tex_projectile;
+    static Texture tex_radar;
+    static Texture tex_radar_dot;
+    static Texture tex_mainmenu_background;
+    static Texture tex_instructions;
+    static Texture tex_stage1;
+    static Texture tex_stage1_pressed;
+    static Texture tex_stage2;
+    static Texture tex_stage2_pressed;
+    static Texture tex_stage3;
+    static Texture tex_stage3_pressed;
 
     static TextureRegion texR_background_summer;
     static TextureRegion texR_background_tundra;
@@ -163,6 +181,25 @@ public class Assets {
         tex_ground = new Texture(Gdx.files.internal("shaders/tex_ground.png"));
         tex_ground.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_ground.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
+        tex_finnishFlag = new Texture(Gdx.files.internal("textures/fiFlag.png"));
+        tex_englishFlag = new Texture(Gdx.files.internal("textures/ukFlag.png"));
+        tex_banana = new Texture(Gdx.files.internal("textures/banana.png"));
+        tex_gamelogo = new Texture(Gdx.files.internal("textures/logo.png"));
+        tex_tamk = new Texture(Gdx.files.internal("textures/tamk.png"));
+        tex_tiko = new Texture(Gdx.files.internal("textures/tiko.png"));
+        tex_projectile = new Texture(Gdx.files.internal("textures/projectile.png"));
+        tex_exerium = new Texture(Gdx.files.internal("textures/exerium.png"));
+        tex_radar = new Texture(Gdx.files.internal("textures/radar.png"));
+        tex_radar_dot = new Texture(Gdx.files.internal("textures/radardot.png"));
+        tex_mainmenu_background = new Texture(Gdx.files.internal("textures/menubg.png"));
+        tex_instructions = new Texture(Gdx.files.internal("textures/help.png"));
+        tex_stage1 = new Texture(Gdx.files.internal("textures/stage1.png"));
+        tex_stage2 = new Texture(Gdx.files.internal("textures/stage2.png"));
+        tex_stage3 = new Texture(Gdx.files.internal("textures/stage3.png"));
+        tex_stage1_pressed = new Texture(Gdx.files.internal("textures/stage1p.png"));
+        tex_stage2_pressed = new Texture(Gdx.files.internal("textures/stage2p.png"));
+        tex_stage3_pressed = new Texture(Gdx.files.internal("textures/stage3p.png"));
 
         //DECALS
         texR_background_summer = loadDecalTextureRegion("tex_background_summer.png");
@@ -375,6 +412,24 @@ public class Assets {
         texR_lighthouse.getTexture().dispose();
         texR_boat.getTexture().dispose();
         texR_palmtree.getTexture().dispose();
+        tex_finnishFlag.dispose();
+        tex_englishFlag.dispose();
+        tex_banana.dispose();
+        tex_gamelogo.dispose();
+        tex_tamk.dispose();
+        tex_tiko.dispose();
+        tex_projectile.dispose();
+        tex_exerium.dispose();
+        tex_radar.dispose();
+        tex_radar_dot.dispose();
+        tex_mainmenu_background.dispose();
+        tex_instructions.dispose();
+        tex_stage1.dispose();
+        tex_stage2.dispose();
+        tex_stage3.dispose();
+        tex_stage1_pressed.dispose();
+        tex_stage2_pressed.dispose();
+        tex_stage3_pressed.dispose();
 
         atlas_menu_plane.dispose();
         atlas_planes.dispose();
