@@ -399,7 +399,8 @@ public class HUD {
 
         sBatch.draw(balloonRegion, x, y - height/4f, width, height);
         String balloons = Integer.toString(balloonsCollected) + "/3";
-        Assets.font5.draw(sBatch, balloons, x + width * 1.5f, y + y2);
+        if(SCREEN_WIDTH > 1600f) Assets.font5.draw(sBatch, balloons, x + width * 1.5f, y + y2);
+        else Assets.font6.draw(sBatch, balloons, x + width * 1.5f, y + y2);
         sBatch.setColor(1f,1f,1f,1f);
     }
 
