@@ -407,6 +407,12 @@ public class HUD {
                 pfx_placement3.start();
                 pfx_placement2.allowCompletion();
             }
+            else {
+                pfx_placement.allowCompletion();
+                pfx_placement1.allowCompletion();
+                pfx_placement2.allowCompletion();
+                pfx_placement3.allowCompletion();
+            }
         }
         else {
             pfx_placement.allowCompletion();
