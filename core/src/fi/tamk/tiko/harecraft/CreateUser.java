@@ -161,6 +161,7 @@ public class CreateUser extends ScreenAdapter {
 
         TextField tempActor = stage.getRoot().findActor("textfield");  //Set selected playerprofile to gamescreen.
         String tmpTxt = tempActor.getText();
+        tmpTxt = tmpTxt.toUpperCase();
         //if (tmpTxt.length() > 10) {
         //    tmpTxt = tmpTxt.substring(0 , 10);
         //    tempActor.setText(tmpTxt);
