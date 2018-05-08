@@ -76,7 +76,6 @@ public abstract class World {
 
     public World() {
         finish = ProfileInfo.selectedDuration;
-        //finish = 100f;
         end = finish + spawnDistance + 20f;
 
         if(SCREEN_WIDTH > 1600) pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines_2);
@@ -85,19 +84,12 @@ public abstract class World {
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
         pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
 
-
         player = new Player(0f,-7f,-5f);
         opponents.add(new Opponent(-65f*2f, Pilot.WOLF));
         opponents.add(new Opponent(-52f*2f, Pilot.GIRAFF));
         opponents.add(new Opponent(-61f*2f, Pilot.FOX));
         opponents.add(new Opponent(-55f*2f, Pilot.KOALA));
         opponents.add(new Opponent(-61f*2f, Pilot.BEAR));
-
-        /*opponents.add(new Opponent(-3f, -2f, -65f*2f, finish/4f, Pilot.WOLF));
-        opponents.add(new Opponent(0f, 4f, -52f*2f, finish/5f, Pilot.GIRAFF, 8f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(4f, -2f, -61f*2f, finish/6f, Pilot.FOX, 7.5f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(4f, 2f, -55f*2f, finish/10f, Pilot.KOALA, 9f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));
-        opponents.add(new Opponent(3f, -5f, -61f*2f, finish/12f, Pilot.BEAR, 6.75f - (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f)));*/
 
         decal_sun1 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun1.setPosition(0f, -40f, 294f);
@@ -170,21 +162,7 @@ class WorldSummer extends World {
     }
 
     public void updateShaders(float delta) {
-        /*shader2D_vignette.begin();
-        if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
-            shader2D_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
-            if((gameStateTime - 2f) / 4f > 0.8f) shader2D_vignette.setUniformf("u_stateTime", 0.8f);
-        }
-        if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
-            shader2D_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
-            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader2D_vignette.setUniformf("u_stateTime", 0f);
-        }
-        shader2D_vignette.end();
-        */
-        //shader2D_blur.begin();
-        //shader3D_blur.setUniformMatrix("u_projTrans", camera.combined);
-        //shader3D_blur.setUniformi("u_texture", 0);
-        //shader2D_blur.end();
+
     }
 
 }
@@ -216,17 +194,7 @@ class WorldTundra extends World {
     }
 
     public void updateShaders(float delta) {
-        /*shader2D_vignette.begin();
-        if (GameScreen.gameStateTime > 2f && GameScreen.gameState == START) {
-            shader2D_vignette.setUniformf("u_stateTime", (GameScreen.gameStateTime - 2f) / 4f);
-            if((gameStateTime - 2f) / 4f > 0.8f) shader2D_vignette.setUniformf("u_stateTime", 0.8f);
-        }
-        if (GameScreen.gameStateTime > 0.5f && GameScreen.gameState == END) {
-            shader2D_vignette.setUniformf("u_stateTime", 0.8f -(GameScreen.gameStateTime - 0.5f) / 3f);
-            if(0.8f -(GameScreen.gameStateTime - 0.5f) / 3f < 0f) shader2D_vignette.setUniformf("u_stateTime", 0f);
-        }
-        shader2D_vignette.end();
-        */
+
     }
 }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
@@ -15,15 +14,12 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
-import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.flights;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 import static fi.tamk.tiko.harecraft.GameScreen.strFlightRecord;
-import static fi.tamk.tiko.harecraft.GameScreen.world;
-import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.World.finish;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
@@ -43,10 +39,6 @@ public abstract class Pilot extends GameObject {
     float speed;
     float drawDistance;
     boolean isDrawing;
-
-    static final int PLANE_1 = 1;
-    static final int PLANE_2 = 2;
-    static final int PLANE_3 = 3;
 
     static final int HARE = 0;
     static final int WOLF = 1;
@@ -91,10 +83,6 @@ public abstract class Pilot extends GameObject {
  */
 
 class Player extends Pilot {
-    //REFERENCE AMOUNTS
-    //Desktop = -2f
-    //Tablet handheld = 4f
-    //Tablet chair = 1f
     static float ACCEL_Y_OFFSET = 0f;
     final float SPEED = 15f;
     float accelerationZ;
@@ -103,8 +91,6 @@ class Player extends Pilot {
     float avarageY;
     float sumY;
     float countY;
-    static float ppcX;
-    static float ppcY;
     Vector3 keyboardDestination;
     Vector3 destination;
     Vector3 curPosition;
@@ -122,14 +108,10 @@ class Player extends Pilot {
     float windXOffset;
 
     public Player(float x, float y, float z) {
-        ppcX = Gdx.graphics.getPpcX();
-        ppcY = Gdx.graphics.getPpcY();
-
         destination = new Vector3();
         keyboardDestination = new Vector3();
         curPosition = new Vector3();
         rotationsArray = new float[10];
-        Vector3 windPos = new Vector3();
         pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
         pfx_wind_trail_left = new ParticleEffect(Assets.pfx_wind_trail);
         pfx_wind_trail_right = new ParticleEffect(Assets.pfx_wind_trail);
@@ -151,7 +133,6 @@ class Player extends Pilot {
         else if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 2000) {
             texR_wings = Assets.texR_plane_3_red_wings;
         }
-
 
         width = texR_body.getRegionWidth()/250f;
         height = texR_body.getRegionHeight()/250f;
@@ -202,13 +183,8 @@ class Player extends Pilot {
         }
 
         if(gameState != START && gameState != END) {
-            //destination.x = accelX * -5f;
-            //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
             accelX = accelX * ProfileInfo.selectedSensitivity;
             accelY = accelY * ProfileInfo.selectedSensitivity;
-
-            //destination.x = accelX * -5f * (SCREEN_WIDTH/ppcX/9.79f);
-            //destination.y = (accelY - ACCEL_Y_OFFSET) * -5f * (SCREEN_HEIGHT/ppcY/5.5f);
 
             destination.x = accelX * -5f;
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;

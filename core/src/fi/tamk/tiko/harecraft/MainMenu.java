@@ -31,6 +31,7 @@ import java.util.Locale;
 import static fi.tamk.tiko.harecraft.Assets.sprites_menu_plane;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
+import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
@@ -46,7 +47,7 @@ public class MainMenu extends ScreenAdapter {
     GameMain game;
     Skin skin;
     Stage stage;
-    OrthographicCamera camera;
+    //OrthographicCamera camera;
     Texture logo;
     Boolean startGame = false;
     Boolean settingsMenu = false;
@@ -78,9 +79,9 @@ public class MainMenu extends ScreenAdapter {
 
         logo = new Texture("textures/logo.png");
         skin = Assets.skin_menu;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        stage = new Stage(new StretchViewport(1280f, 800f, camera));
+        //camera = new OrthographicCamera();
+        orthoCamera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+        stage = new Stage(new StretchViewport(1280f, 800f, orthoCamera));
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
         ProfileInfo.determineGameLanguage(); //check language data
         locale = ProfileInfo.gameLanguage;

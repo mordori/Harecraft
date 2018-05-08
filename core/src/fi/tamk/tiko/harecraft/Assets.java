@@ -123,21 +123,7 @@ public class Assets {
     static ArrayList<FileHandle> flightsSource = new ArrayList<FileHandle>();
 
     public static void load() {
-        //FILES
-        System.out.println(Gdx.files.isLocalStorageAvailable());
-        System.out.println(Gdx.files.getLocalStoragePath());
-
-
-        /*if(!Gdx.files.local("data/flights/0.txt").exists()) {
-            for (int i = 0; i < Gdx.files.internal("data/flights").list().length; i++) {
-
-                FileHandle from = Gdx.files.internal("data/flights/" + i + ".txt");
-                from.copyTo(Gdx.files.local("data/flights/" + i + ".txt"));
-                System.out.println("COPIED!");
-            }
-        }
-        else System.out.println("EXISTS!");*/
-
+        //FILES;
         for(FileHandle file: Gdx.files.internal("data/flights/").list()) {
             flightsSource.add(file);
         }

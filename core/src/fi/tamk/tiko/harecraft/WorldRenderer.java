@@ -32,8 +32,6 @@ public class WorldRenderer {
     boolean isFBOEnabled;
     boolean isSeaEnabled;
 
-    static float radius = 3f;
-
     public WorldRenderer(World world) {
         this.world = world;
     }
