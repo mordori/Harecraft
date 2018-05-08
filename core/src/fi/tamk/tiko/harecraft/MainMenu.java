@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,6 +28,7 @@ import java.util.Collections;
 import java.util.Locale;
 
 import static fi.tamk.tiko.harecraft.Assets.sprites_menu_plane;
+import static fi.tamk.tiko.harecraft.Assets.texR_gamelogo;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
@@ -47,8 +47,6 @@ public class MainMenu extends ScreenAdapter {
     GameMain game;
     Skin skin;
     Stage stage;
-    //OrthographicCamera camera;
-    Texture logo;
     Boolean startGame = false;
     Boolean settingsMenu = false;
     Boolean profilesMenu = false;
@@ -71,15 +69,11 @@ public class MainMenu extends ScreenAdapter {
     MyAnimation<TextureRegion> animation_plane = Assets.animation_menu_plane;
     static I18NBundle localizationBundle;
 
-    Texture background;
-
     public MainMenu(GameMain game, boolean isLaunched) {
         this.game = game;
         this.isLaunched = isLaunched;
 
-        logo = Assets.tex_gamelogo;
         skin = Assets.skin_menu;
-        //camera = new OrthographicCamera();
         orthoCamera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(new StretchViewport(1280f, 800f, orthoCamera));
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
@@ -87,20 +81,15 @@ public class MainMenu extends ScreenAdapter {
         locale = ProfileInfo.gameLanguage;
         localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
-        background = Assets.tex_mainmenu_background;
-
         profiles = new ArrayList<String>();
         for (int i = 0; i<200; i++) {
             String tempName;
             tempName = profilesData.getString("username" +i, "novalue");
-            if (!tempName.equals("novalue")) {
-                profiles.add(tempName);
-            }
+
+            if (!tempName.equals("novalue")) profiles.add(tempName);
         }
 
-        if (profiles.size() == 0) {
-            createUser = true;
-        }
+        if (profiles.size() == 0) createUser = true;
 
         //profilesData.putString("username" +0,"Mikko");   //create profiles on disk
         //profilesData.putString("username" +3,"Henna");
@@ -108,7 +97,6 @@ public class MainMenu extends ScreenAdapter {
 
         //profiles.add("Mikko"); //profiileissa 1 järjestysnumero 2 profiilin nimi
         Gdx.input.setInputProcessor(stage);
-
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("button"),
@@ -283,8 +271,6 @@ public class MainMenu extends ScreenAdapter {
         stage.addActor(highScoreTable);
         stage.addActor(bananaButton);
 
-        //Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
-
         randomTime = MathUtils.random(5f, 8f);
         sprite_plane = new Sprite((TextureRegion) animation_plane.getKeyFrame(0));
         if(!animation_plane.isFlipped) x = -100f;
@@ -360,13 +346,13 @@ public class MainMenu extends ScreenAdapter {
             Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             sBatch.begin();
-                sBatch.draw(background, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                sBatch.draw(Assets.texR_mainmenu_background, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 sprite_plane.draw(sBatch);
-                sBatch.draw(logo,
-                        Gdx.graphics.getWidth()/2f - (logo.getWidth()/1.25f * size / 2f),
-                        Gdx.graphics.getHeight() - (logo.getHeight()/1.25f * size) - Gdx.graphics.getHeight()/35f,
-                        logo.getWidth()/1.25f * size,
-                        logo.getHeight()/1.25f * size);
+                sBatch.draw(Assets.texR_gamelogo,
+                        Gdx.graphics.getWidth()/2f - (texR_gamelogo.getRegionWidth()/1.25f * size / 2f),
+                        Gdx.graphics.getHeight() - (Assets.texR_gamelogo.getRegionHeight()/1.25f * size) - Gdx.graphics.getHeight()/35f,
+                        Assets.texR_gamelogo.getRegionWidth()/1.25f * size,
+                        Assets.texR_gamelogo.getRegionHeight()/1.25f * size);
             sBatch.end();
             stage.act();
             stage.draw();
@@ -435,12 +421,12 @@ public class MainMenu extends ScreenAdapter {
 }
 
 class LanguageButton extends Actor {
-    Texture englishFlag;
-    Texture finnishFlag;
+    TextureRegion englishFlag;
+    TextureRegion finnishFlag;
 
     public LanguageButton() {
-        finnishFlag = Assets.tex_finnishFlag;
-        englishFlag = Assets.tex_englishFlag;
+        finnishFlag = Assets.texR_finnishFlag;
+        englishFlag = Assets.texR_englishFlag;
         setBounds(getX(),getY(),100,100);
     }
 
@@ -458,10 +444,10 @@ class LanguageButton extends Actor {
 }
 
 class BananaButton extends Actor {
-    Texture banana;
+    TextureRegion banana;
 
     public BananaButton() {
-        banana = Assets.tex_banana;
+        banana = Assets.texR_banana;
         setBounds(getX(),getY(),100,100);
     }
 

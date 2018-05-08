@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
@@ -23,10 +24,8 @@ import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
  */
 
 public class SplashScreen extends ScreenAdapter {
-
     GameMain game;
-    Stage stage;
-    OrthographicCamera camera;
+    OrthographicCamera localCamera;
     Sprite tamkSprite;
     Sprite exeriumSprite;
     Sprite projectileSprite;
@@ -34,18 +33,14 @@ public class SplashScreen extends ScreenAdapter {
 
     float alpha;
     float timer;
-
     boolean isAudioLoaded;
     boolean isAssetsLoaded;
 
     public SplashScreen(GameMain game) {
         this.game = game;
-        //camera = new OrthographicCamera();
-        //camera.setToOrtho(false, 1280, 800);
-        //stage = new Stage(new StretchViewport(1280, 800, camera));
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 800);
-        camera.update();
+        localCamera = new OrthographicCamera();
+        localCamera.setToOrtho(false, 1280, 800);
+        localCamera.update();
         isAudioLoaded = false;
         isAssetsLoaded = false;
 
@@ -64,10 +59,10 @@ public class SplashScreen extends ScreenAdapter {
         tikoSprite = new Sprite(new Texture(Gdx.files.internal("textures/tiko.png")));
         tikoSprite.setSize(423,166);
         tikoSprite.setPosition(960 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -20);
-        //skin = Assets.skin_menu;
+
         timer = 0f;
         alpha = 1f;
-        sBatch.setProjectionMatrix(camera.combined);
+        sBatch.setProjectionMatrix(localCamera.combined);
     }
 
     public void render (float delta) {
@@ -100,11 +95,13 @@ public class SplashScreen extends ScreenAdapter {
     }
 
     @Override
-    public void hide() {
-        dispose();
-    }
+    public void hide() { dispose(); }
 
     @Override
     public void dispose() {
+        tamkSprite.getTexture().dispose();
+        exeriumSprite.getTexture().dispose();
+        projectileSprite.getTexture().dispose();
+        tikoSprite.getTexture().dispose();
     }
 }

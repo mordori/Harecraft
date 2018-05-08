@@ -30,20 +30,6 @@ public class Assets {
     static Texture tex_sea_deep;
     static Texture tex_mask_foam;
     static Texture tex_mask_sea_deep;
-    static Texture tex_finnishFlag;
-    static Texture tex_englishFlag;
-    static Texture tex_banana;
-    static Texture tex_gamelogo;
-    static Texture tex_radar;
-    static Texture tex_radar_dot;
-    static Texture tex_mainmenu_background;
-    static Texture tex_instructions;
-    static Texture tex_stage1;
-    static Texture tex_stage1_pressed;
-    static Texture tex_stage2;
-    static Texture tex_stage2_pressed;
-    static Texture tex_stage3;
-    static Texture tex_stage3_pressed;
 
     static TextureRegion texR_background_summer;
     static TextureRegion texR_background_tundra;
@@ -101,11 +87,25 @@ public class Assets {
     static TextureRegion texR_boat;
     static TextureRegion texR_palmtree;
 
+    static TextureRegion texR_finnishFlag;
+    static TextureRegion texR_englishFlag;
+    static TextureRegion texR_banana;
+    static TextureRegion texR_gamelogo;
+    static TextureRegion texR_radar;
+    static TextureRegion texR_radar_dot;
+    static TextureRegion texR_mainmenu_background;
+    static TextureRegion texR_instructions;
+    static TextureRegion texR_stage1;
+    static TextureRegion texR_stage2;
+    static TextureRegion texR_stage3;
+    static TextureRegion texR_stage1_pressed;
+    static TextureRegion texR_stage2_pressed;
+    static TextureRegion texR_stage3_pressed;
+
     static TextureAtlas atlas_menu_plane;
     static TextureAtlas atlas_planes;
     static TextureAtlas atlas_objects;
-    static TextureAtlas atlas_linear_objects;
-    static TextureAtlas atlas_HUD;
+    static TextureAtlas atlas_1;
 
     static Array<Sprite> sprites_menu_plane;
 
@@ -146,8 +146,7 @@ public class Assets {
         atlas_menu_plane = loadTextureAtlas("atlas_menu_plane.atlas");
         atlas_planes = loadTextureAtlas("atlas_planes.atlas");
         atlas_objects = loadTextureAtlas("atlas_objects.atlas");
-        atlas_linear_objects = loadTextureAtlas("atlas_linear_objects.atlas");
-        atlas_HUD = loadTextureAtlas("atlas_HUD.atlas");
+        atlas_1 = loadTextureAtlas("atlas_1.atlas");
 
         //TEXTURES
         tex_mask_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep_mask.png"));
@@ -178,77 +177,78 @@ public class Assets {
         tex_ground.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_ground.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
 
-        tex_finnishFlag = new Texture(Gdx.files.internal("textures/fiFlag.png"));
-        tex_englishFlag = new Texture(Gdx.files.internal("textures/ukFlag.png"));
-        tex_banana = new Texture(Gdx.files.internal("textures/banana.png"));
-        tex_gamelogo = new Texture(Gdx.files.internal("textures/logo.png"));
-        tex_radar = new Texture(Gdx.files.internal("textures/radar.png"));
-        tex_radar_dot = new Texture(Gdx.files.internal("textures/radardot.png"));
-        tex_mainmenu_background = new Texture(Gdx.files.internal("textures/menubg.png"));
-        tex_instructions = new Texture(Gdx.files.internal("textures/help.png"));
-        tex_stage1 = new Texture(Gdx.files.internal("textures/stage1.png"));
-        tex_stage2 = new Texture(Gdx.files.internal("textures/stage2.png"));
-        tex_stage3 = new Texture(Gdx.files.internal("textures/stage3.png"));
-        tex_stage1_pressed = new Texture(Gdx.files.internal("textures/stage1p.png"));
-        tex_stage2_pressed = new Texture(Gdx.files.internal("textures/stage2p.png"));
-        tex_stage3_pressed = new Texture(Gdx.files.internal("textures/stage3p.png"));
+        //TEXTURE REGIONS
+        texR_finnishFlag = loadAtlasTextureRegion(atlas_1,"fiFlag");
+        texR_englishFlag = loadAtlasTextureRegion(atlas_1,"ukFlag");
+        texR_banana = loadAtlasTextureRegion(atlas_1,"banana");
+        texR_gamelogo = loadAtlasTextureRegion(atlas_1,"logo");
+        texR_radar = loadAtlasTextureRegion(atlas_1,"radar");
+        texR_radar_dot = loadAtlasTextureRegion(atlas_1,"radardot");
+        texR_mainmenu_background = loadAtlasTextureRegion(atlas_1,"menubg");
+        texR_instructions = loadAtlasTextureRegion(atlas_1,"help");
+        texR_stage1 = loadAtlasTextureRegion(atlas_1,"stage1");
+        texR_stage2 = loadAtlasTextureRegion(atlas_1,"stage2");
+        texR_stage3 = loadAtlasTextureRegion(atlas_1,"stage3");
+        texR_stage1_pressed = loadAtlasTextureRegion(atlas_1,"stage1p");
+        texR_stage2_pressed = loadAtlasTextureRegion(atlas_1,"stage2p");
+        texR_stage3_pressed = loadAtlasTextureRegion(atlas_1,"stage3p");
 
         //DECALS
-        texR_background_summer = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "bg_summer");
-        texR_background_tundra = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "bg_tundra");
-        texR_sun = loadDecalTextureRegionFromAtlas(atlas_objects, "sun");
-        texR_hotairballoon_summer = loadDecalTextureRegionFromAtlas(atlas_objects, "HAB_summer");
-        texR_hotairballoon_tundra = loadDecalTextureRegionFromAtlas(atlas_objects, "HAB_tundra");
-        texR_balloon_red = loadDecalTextureRegionFromAtlas(atlas_objects, "balloon_red");
-        texR_balloon_orange = loadDecalTextureRegionFromAtlas(atlas_objects, "balloon_orange");
-        texR_balloon_blue = loadDecalTextureRegionFromAtlas(atlas_objects, "balloon_blue");
-        texR_plane_red_body = loadDecalTextureRegionFromAtlas(atlas_planes, "red_body");
-        texR_plane_1_red_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"red_1_wings");
-        texR_plane_2_red_wings = loadDecalTextureRegionFromAtlas(atlas_planes, "red_2_wings");
-        texR_plane_3_red_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"red_3_wings");
-        texR_plane_wolf_body = loadDecalTextureRegionFromAtlas(atlas_planes,"wolf_body");
-        texR_plane_wolf_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"wolf_wings");
-        texR_plane_fox_body = loadDecalTextureRegionFromAtlas(atlas_planes,"fox_body");
-        texR_plane_fox_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"fox_wings");
-        texR_plane_koala_body = loadDecalTextureRegionFromAtlas(atlas_planes,"koala_body");
-        texR_plane_koala_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"koala_wings");
-        texR_plane_giraff_body = loadDecalTextureRegionFromAtlas(atlas_planes,"giraff_body");
-        texR_plane_giraff_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"giraff_wings");
-        texR_plane_bear_body = loadDecalTextureRegionFromAtlas(atlas_planes,"bear_body");
-        texR_plane_bear_wings = loadDecalTextureRegionFromAtlas(atlas_planes,"bear_wings");
-        texR_character_wolf = loadDecalTextureRegionFromAtlas(atlas_planes,"wolf");
-        texR_character_fox = loadDecalTextureRegionFromAtlas(atlas_planes,"fox");
-        texR_character_koala = loadDecalTextureRegionFromAtlas(atlas_planes,"koala");
-        texR_character_giraff = loadDecalTextureRegionFromAtlas(atlas_planes,"giraff");
-        texR_character_bear = loadDecalTextureRegionFromAtlas(atlas_planes,"bear");
-        texR_character_hare = loadDecalTextureRegionFromAtlas(atlas_planes,"hare");
-        texR_cloud1 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud1");
-        texR_cloud2 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud2");
-        texR_cloud3 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud3");
-        texR_ring0 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring0");
-        texR_ring1 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring1");
-        texR_ring2 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring2");
-        texR_ring_arrows0 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows0");
-        texR_ring_arrows1 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows1");
-        texR_ring_arrows2 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows2");
-        texR_tree_summer_big_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_big_dark");
-        texR_tree_summer_small_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_big_dark");
-        texR_tree_summer_big_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_big_dark");
-        texR_tree_summer_small_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_summer_small_light");
-        texR_tree_tundra_big_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_big_dark");
-        texR_tree_tundra_small_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_small_dark");
-        texR_tree_tundra_medium_dark = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_medium_dark");
-        texR_tree_tundra_medium_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_medium_light");
-        texR_tree_tundra_big_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_big_light");
-        texR_tree_tundra_small_light = loadDecalTextureRegionFromAtlas(atlas_objects, "tree_tundra_small_light");
-        texR_lake_summer = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "lake_summer");
-        texR_lake_tundra = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "lake_tundra");
-        texR_hill_tundra = loadDecalTextureRegionFromAtlas(atlas_objects, "hill_tundra");
-        texR_hill_summer = loadDecalTextureRegionFromAtlas(atlas_objects, "hill_summer");
-        texR_island = loadDecalTextureRegionFromAtlas(atlas_linear_objects, "island");
-        texR_lighthouse = loadDecalTextureRegionFromAtlas(atlas_objects, "lighthouse");
-        texR_palmtree = loadDecalTextureRegionFromAtlas(atlas_objects, "palmtree");
-        texR_boat = loadDecalTextureRegionFromAtlas(atlas_objects, "boat");
+        texR_background_summer = loadAtlasTextureRegion(atlas_1, "bg_summer");
+        texR_background_tundra = loadAtlasTextureRegion(atlas_1, "bg_tundra");
+        texR_sun = loadAtlasTextureRegion(atlas_objects, "sun");
+        texR_hotairballoon_summer = loadAtlasTextureRegion(atlas_objects, "HAB_summer");
+        texR_hotairballoon_tundra = loadAtlasTextureRegion(atlas_objects, "HAB_tundra");
+        texR_balloon_red = loadAtlasTextureRegion(atlas_objects, "balloon_red");
+        texR_balloon_orange = loadAtlasTextureRegion(atlas_objects, "balloon_orange");
+        texR_balloon_blue = loadAtlasTextureRegion(atlas_objects, "balloon_blue");
+        texR_plane_red_body = loadAtlasTextureRegion(atlas_planes, "red_body");
+        texR_plane_1_red_wings = loadAtlasTextureRegion(atlas_planes,"red_1_wings");
+        texR_plane_2_red_wings = loadAtlasTextureRegion(atlas_planes, "red_2_wings");
+        texR_plane_3_red_wings = loadAtlasTextureRegion(atlas_planes,"red_3_wings");
+        texR_plane_wolf_body = loadAtlasTextureRegion(atlas_planes,"wolf_body");
+        texR_plane_wolf_wings = loadAtlasTextureRegion(atlas_planes,"wolf_wings");
+        texR_plane_fox_body = loadAtlasTextureRegion(atlas_planes,"fox_body");
+        texR_plane_fox_wings = loadAtlasTextureRegion(atlas_planes,"fox_wings");
+        texR_plane_koala_body = loadAtlasTextureRegion(atlas_planes,"koala_body");
+        texR_plane_koala_wings = loadAtlasTextureRegion(atlas_planes,"koala_wings");
+        texR_plane_giraff_body = loadAtlasTextureRegion(atlas_planes,"giraff_body");
+        texR_plane_giraff_wings = loadAtlasTextureRegion(atlas_planes,"giraff_wings");
+        texR_plane_bear_body = loadAtlasTextureRegion(atlas_planes,"bear_body");
+        texR_plane_bear_wings = loadAtlasTextureRegion(atlas_planes,"bear_wings");
+        texR_character_wolf = loadAtlasTextureRegion(atlas_planes,"wolf");
+        texR_character_fox = loadAtlasTextureRegion(atlas_planes,"fox");
+        texR_character_koala = loadAtlasTextureRegion(atlas_planes,"koala");
+        texR_character_giraff = loadAtlasTextureRegion(atlas_planes,"giraff");
+        texR_character_bear = loadAtlasTextureRegion(atlas_planes,"bear");
+        texR_character_hare = loadAtlasTextureRegion(atlas_planes,"hare");
+        texR_cloud1 = loadAtlasTextureRegion(atlas_objects, "cloud1");
+        texR_cloud2 = loadAtlasTextureRegion(atlas_objects, "cloud2");
+        texR_cloud3 = loadAtlasTextureRegion(atlas_objects, "cloud3");
+        texR_ring0 = loadAtlasTextureRegion(atlas_planes, "ring0");
+        texR_ring1 = loadAtlasTextureRegion(atlas_planes, "ring1");
+        texR_ring2 = loadAtlasTextureRegion(atlas_planes, "ring2");
+        texR_ring_arrows0 = loadAtlasTextureRegion(atlas_planes, "arrows0");
+        texR_ring_arrows1 = loadAtlasTextureRegion(atlas_planes, "arrows1");
+        texR_ring_arrows2 = loadAtlasTextureRegion(atlas_planes, "arrows2");
+        texR_tree_summer_big_dark = loadAtlasTextureRegion(atlas_objects, "tree_summer_big_dark");
+        texR_tree_summer_small_dark = loadAtlasTextureRegion(atlas_objects, "tree_summer_big_dark");
+        texR_tree_summer_big_light = loadAtlasTextureRegion(atlas_objects, "tree_summer_big_dark");
+        texR_tree_summer_small_light = loadAtlasTextureRegion(atlas_objects, "tree_summer_small_light");
+        texR_tree_tundra_big_dark = loadAtlasTextureRegion(atlas_objects, "tree_tundra_big_dark");
+        texR_tree_tundra_small_dark = loadAtlasTextureRegion(atlas_objects, "tree_tundra_small_dark");
+        texR_tree_tundra_medium_dark = loadAtlasTextureRegion(atlas_objects, "tree_tundra_medium_dark");
+        texR_tree_tundra_medium_light = loadAtlasTextureRegion(atlas_objects, "tree_tundra_medium_light");
+        texR_tree_tundra_big_light = loadAtlasTextureRegion(atlas_objects, "tree_tundra_big_light");
+        texR_tree_tundra_small_light = loadAtlasTextureRegion(atlas_objects, "tree_tundra_small_light");
+        texR_lake_summer = loadAtlasTextureRegion(atlas_1, "lake_summer");
+        texR_lake_tundra = loadAtlasTextureRegion(atlas_1, "lake_tundra");
+        texR_hill_tundra = loadAtlasTextureRegion(atlas_objects, "hill_tundra");
+        texR_hill_summer = loadAtlasTextureRegion(atlas_objects, "hill_summer");
+        texR_island = loadAtlasTextureRegion(atlas_1, "island");
+        texR_lighthouse = loadAtlasTextureRegion(atlas_objects, "lighthouse");
+        texR_palmtree = loadAtlasTextureRegion(atlas_objects, "palmtree");
+        texR_boat = loadAtlasTextureRegion(atlas_objects, "boat");
 
         //SPRITES
         sprites_menu_plane = atlas_menu_plane.createSprites();
@@ -258,26 +258,27 @@ public class Assets {
 
         //PARTICLES
         pfx_scarf = new ParticleEffect();
-        pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
         pfx_cloud_dispersion = new ParticleEffect();
-        pfx_cloud_dispersion.load(Gdx.files.internal("particles/pfx_cloud_dispersion"), Gdx.files.internal("particles/"));
         pfx_speed_lines = new ParticleEffect();
-        pfx_speed_lines.load(Gdx.files.internal("particles/pfx_speed_lines"), Gdx.files.internal("particles/"));
         pfx_speed_lines_2 = new ParticleEffect();
-        pfx_speed_lines_2.load(Gdx.files.internal("particles/pfx_speed_lines_2"), Gdx.files.internal("particles/"));
         pfx_speed_up = new ParticleEffect();
-        pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
         pfx_snow = new ParticleEffect();
-        pfx_snow.load(Gdx.files.internal("particles/pfx_snow"), Gdx.files.internal("particles/"));
         pfx_wind_trail = new ParticleEffect();
-        pfx_wind_trail.load(Gdx.files.internal("particles/pfx_wind_trail"), Gdx.files.internal("particles/"));
         pfx_placement = new ParticleEffect();
-        pfx_placement.load(Gdx.files.internal("particles/pfx_placement"), Gdx.files.internal("particles/"));
         pfx_placement1 = new ParticleEffect();
-        pfx_placement1.load(Gdx.files.internal("particles/pfx_placement1"), Gdx.files.internal("particles/"));
         pfx_placement2 = new ParticleEffect();
-        pfx_placement2.load(Gdx.files.internal("particles/pfx_placement2"), Gdx.files.internal("particles/"));
         pfx_placement3 = new ParticleEffect();
+
+        pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
+        pfx_cloud_dispersion.load(Gdx.files.internal("particles/pfx_cloud_dispersion"), Gdx.files.internal("particles/"));
+        pfx_speed_lines.load(Gdx.files.internal("particles/pfx_speed_lines"), Gdx.files.internal("particles/"));
+        pfx_speed_lines_2.load(Gdx.files.internal("particles/pfx_speed_lines_2"), Gdx.files.internal("particles/"));
+        pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
+        pfx_snow.load(Gdx.files.internal("particles/pfx_snow"), Gdx.files.internal("particles/"));
+        pfx_wind_trail.load(Gdx.files.internal("particles/pfx_wind_trail"), Gdx.files.internal("particles/"));
+        pfx_placement.load(Gdx.files.internal("particles/pfx_placement"), Gdx.files.internal("particles/"));
+        pfx_placement1.load(Gdx.files.internal("particles/pfx_placement1"), Gdx.files.internal("particles/"));
+        pfx_placement2.load(Gdx.files.internal("particles/pfx_placement2"), Gdx.files.internal("particles/"));
         pfx_placement3.load(Gdx.files.internal("particles/pfx_placement3"), Gdx.files.internal("particles/"));
 
         //FONTS
@@ -314,11 +315,8 @@ public class Assets {
         return texture;
     }
 
-    public static TextureRegion loadDecalTextureRegion(String path) {return flip(new TextureRegion(loadTexture(path)));}
+    public static TextureRegion loadAtlasTextureRegion(TextureAtlas atlas, String index) {return atlas.findRegion(index);}
 
-    public static TextureRegion loadDecalTextureRegionFromAtlas(TextureAtlas atlas, String index) {return atlas.findRegion(index);}
-
-    public static TextureRegion loadTextureRegion(String path) {return new TextureRegion(loadTexture(path));}
 
     public static TextureRegion flip(TextureRegion texR) {
         texR.flip(true, false);
@@ -406,26 +404,25 @@ public class Assets {
         texR_lighthouse.getTexture().dispose();
         texR_boat.getTexture().dispose();
         texR_palmtree.getTexture().dispose();
-        tex_finnishFlag.dispose();
-        tex_englishFlag.dispose();
-        tex_banana.dispose();
-        tex_gamelogo.dispose();
-        tex_radar.dispose();
-        tex_radar_dot.dispose();
-        tex_mainmenu_background.dispose();
-        tex_instructions.dispose();
-        tex_stage1.dispose();
-        tex_stage2.dispose();
-        tex_stage3.dispose();
-        tex_stage1_pressed.dispose();
-        tex_stage2_pressed.dispose();
-        tex_stage3_pressed.dispose();
+        texR_finnishFlag.getTexture().dispose();
+        texR_englishFlag.getTexture().dispose();
+        texR_banana.getTexture().dispose();
+        texR_gamelogo.getTexture().dispose();
+        texR_radar.getTexture().dispose();
+        texR_radar_dot.getTexture().dispose();
+        texR_mainmenu_background.getTexture().dispose();
+        texR_instructions.getTexture().dispose();
+        texR_stage1.getTexture().dispose();
+        texR_stage2.getTexture().dispose();
+        texR_stage3.getTexture().dispose();
+        texR_stage1_pressed.getTexture().dispose();
+        texR_stage2_pressed.getTexture().dispose();
+        texR_stage3_pressed.getTexture().dispose();
 
         atlas_menu_plane.dispose();
         atlas_planes.dispose();
         atlas_objects.dispose();
-        atlas_linear_objects.dispose();
-        atlas_HUD.dispose();
+        atlas_1.dispose();
 
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();

@@ -417,35 +417,35 @@ public class HUD {
     }
 
     public void drawState() {
-        stateRegion = Assets.atlas_HUD.findRegion("go" + language);
+        stateRegion = Assets.atlas_1.findRegion("go" + language);
         if(countdown) {
             if(gameState == START) {
                 if(gameStateTime < 3.3f) {
                     if(count == 0) {
                         resetY();
                     }
-                    stateRegion = Assets.atlas_HUD.findRegion("3");
+                    stateRegion = Assets.atlas_1.findRegion("3");
 
                 }else if (gameStateTime < 4.6f) {
                     if(count == 1) {
                         resetY();
                         AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                     }
-                    stateRegion = Assets.atlas_HUD.findRegion("2");
+                    stateRegion = Assets.atlas_1.findRegion("2");
 
                 }else if (gameStateTime < 5.9f) {
                     if(count == 2) {
                         resetY();
                         AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                     }
-                    stateRegion = Assets.atlas_HUD.findRegion("1");
+                    stateRegion = Assets.atlas_1.findRegion("1");
 
                 }else {
                     if(count == 3) {
                         resetY();
                         AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN_END,1f);
                     }
-                    stateRegion = Assets.atlas_HUD.findRegion("go" + language);
+                    stateRegion = Assets.atlas_1.findRegion("go" + language);
                 }
 
                 stateOpacity += Gdx.graphics.getDeltaTime();
@@ -461,7 +461,7 @@ public class HUD {
             if(count == 4) {
                 resetY();
             }
-            stateRegion = Assets.atlas_HUD.findRegion("finish" + language);
+            stateRegion = Assets.atlas_1.findRegion("finish" + language);
 
             if(gameStateTime < 1.7f) {
                 stateOpacity += Gdx.graphics.getDeltaTime();
@@ -483,7 +483,7 @@ public class HUD {
     }
 
     public void updatePlacementNumber(float delta) {
-        placementRegion = Assets.atlas_HUD.findRegion(playerPlacement + language);
+        placementRegion = Assets.atlas_1.findRegion(playerPlacement + language);
 
         if(gameState != END && gameState != EXIT && gameState != START) {
             if(playerPlacement == 1) {

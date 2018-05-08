@@ -1,7 +1,6 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -9,16 +8,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -430,10 +427,10 @@ public class SettingsMenu extends ScreenAdapter {
 
 class Radar extends Actor {
     Circle circle;
-    private Texture radarTexture;
+    private TextureRegion radarTexture;
 
     public Radar() {
-        radarTexture = Assets.tex_radar;
+        radarTexture = Assets.texR_radar;
         setName("radar");
         setBounds(70,250,500,500);
         circle = new Circle();
@@ -475,11 +472,11 @@ class Radar extends Actor {
 }
 
 class RadarDot extends Actor {
-    private Texture dotTexture;
+    private TextureRegion dotTexture;
 
     public RadarDot(int x, int y) {
         setName("dot");
-        dotTexture = Assets.tex_radar_dot;
+        dotTexture = Assets.texR_radar_dot;
         setBounds(x +70 -25,y +250 -25, 50,50);
     }
 

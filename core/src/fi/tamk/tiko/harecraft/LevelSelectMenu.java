@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,12 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
@@ -79,13 +78,13 @@ public class LevelSelectMenu extends ScreenAdapter {
         makeHighScores();
         highScoreTable.setPosition(240,630);
 
-        LevelButton levelOneButton = new LevelButton(Assets.tex_stage1, Assets.tex_stage1_pressed, 1);
+        LevelButton levelOneButton = new LevelButton(Assets.texR_stage1, Assets.texR_stage1_pressed, 1);
         levelOneButton.setPosition(240 -levelOneButton.getWidth()/2,220);
 
-        LevelButton levelTwoButton = new LevelButton(Assets.tex_stage2, Assets.tex_stage2_pressed, 2);
+        LevelButton levelTwoButton = new LevelButton(Assets.texR_stage2, Assets.texR_stage2_pressed, 2);
         levelTwoButton.setPosition(640 -levelTwoButton.getWidth()/2,220);
 
-        LevelButton levelThreeButton = new LevelButton(Assets.tex_stage3, Assets.tex_stage3_pressed, 0);
+        LevelButton levelThreeButton = new LevelButton(Assets.texR_stage3, Assets.texR_stage3_pressed, 0);
         levelThreeButton.setPosition(1040 -levelThreeButton.getWidth()/2,220);
 
         InstructionsBox instructionsBox = new InstructionsBox();
@@ -374,12 +373,12 @@ public class LevelSelectMenu extends ScreenAdapter {
 }
 
 class LevelButton extends Actor {
-    Texture buttonNotPressed;
-    Texture buttonPressed;
-    Texture textureToDraw;
+    TextureRegion buttonNotPressed;
+    TextureRegion buttonPressed;
+    TextureRegion textureToDraw;
     int levelToGo;
 
-    public LevelButton(Texture texture1, Texture texture2, int levelNumber) {
+    public LevelButton(TextureRegion texture1, TextureRegion texture2, int levelNumber) {
         buttonNotPressed = texture1;
         buttonPressed = texture2;
         textureToDraw = buttonNotPressed;
@@ -420,10 +419,10 @@ class LevelButton extends Actor {
 }
 
 class InstructionsBox extends Actor {
-    Texture instructionTexture;
+    TextureRegion instructionTexture;
 
     public InstructionsBox() {
-        instructionTexture = Assets.tex_instructions;
+        instructionTexture = Assets.texR_instructions;
     }
 
     public void draw(Batch batch, float alpha) {
