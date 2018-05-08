@@ -149,4 +149,14 @@ public class ConfirmDelete extends ScreenAdapter {
             game.setScreen(new ProfileMenu(game));
         }
     }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
 }

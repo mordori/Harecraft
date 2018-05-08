@@ -77,7 +77,7 @@ public class MainMenu extends ScreenAdapter {
         this.game = game;
         this.isLaunched = isLaunched;
 
-        logo = new Texture("textures/logo.png");
+        logo = Assets.tex_gamelogo;
         skin = Assets.skin_menu;
         //camera = new OrthographicCamera();
         orthoCamera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -87,7 +87,7 @@ public class MainMenu extends ScreenAdapter {
         locale = ProfileInfo.gameLanguage;
         localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
-        background = new Texture(Gdx.files.internal("textures/menubg.png"));
+        background = Assets.tex_mainmenu_background;
 
         profiles = new ArrayList<String>();
         for (int i = 0; i<200; i++) {
@@ -431,7 +431,6 @@ public class MainMenu extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        logo.dispose();
     }
 }
 
@@ -440,8 +439,8 @@ class LanguageButton extends Actor {
     Texture finnishFlag;
 
     public LanguageButton() {
-        finnishFlag = new Texture(Gdx.files.internal("textures/fiFlag.png"));
-        englishFlag = new Texture(Gdx.files.internal("textures/ukFlag.png"));
+        finnishFlag = Assets.tex_finnishFlag;
+        englishFlag = Assets.tex_englishFlag;
         setBounds(getX(),getY(),100,100);
     }
 
@@ -462,7 +461,7 @@ class BananaButton extends Actor {
     Texture banana;
 
     public BananaButton() {
-        banana = new Texture(Gdx.files.internal("textures/banana.png"));
+        banana = Assets.tex_banana;
         setBounds(getX(),getY(),100,100);
     }
 

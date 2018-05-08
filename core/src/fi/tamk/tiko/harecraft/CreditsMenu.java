@@ -135,4 +135,14 @@ public class CreditsMenu extends ScreenAdapter {
             game.setScreen(new MainMenu(game, false));
         }
     }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
 }

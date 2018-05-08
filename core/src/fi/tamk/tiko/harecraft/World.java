@@ -75,7 +75,8 @@ public abstract class World {
     float opacity;
 
     public World() {
-        finish = ProfileInfo.selectedDuration;
+        //finish = ProfileInfo.selectedDuration;
+        finish =100f;
         end = finish + spawnDistance + 20f;
 
         if(SCREEN_WIDTH > 1600) pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines_2);
