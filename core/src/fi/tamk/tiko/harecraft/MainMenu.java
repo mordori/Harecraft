@@ -1,31 +1,20 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -37,7 +26,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import static fi.tamk.tiko.harecraft.Assets.sprites_menu_plane;
@@ -45,13 +33,10 @@ import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
-import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.GameScreen.playerPlacement;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_vignette;
+
 
 /**
  * Created by musta on 26.3.2018.
@@ -92,12 +77,9 @@ public class MainMenu extends ScreenAdapter {
         this.isLaunched = isLaunched;
 
         logo = new Texture("textures/logo.png");
-        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
-        //skin = new Skin(Gdx.files.internal("harejson/hare.json"));
         skin = Assets.skin_menu;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        //stage = new Stage(new StretchViewport(1280, 800, camera));
         stage = new Stage(new StretchViewport(1280f, 800f, camera));
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE
         ProfileInfo.determineGameLanguage(); //check language data

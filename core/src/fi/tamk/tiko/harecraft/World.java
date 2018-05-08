@@ -3,13 +3,8 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.math.MathUtils;
-
 import java.util.ArrayList;
 
-import static fi.tamk.tiko.harecraft.GameMain.camera;
-import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
-import static fi.tamk.tiko.harecraft.GameScreen.DIFFICULTYSENSITIVITY;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
@@ -19,7 +14,6 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_blur;
 import static fi.tamk.tiko.harecraft.WorldBuilder.groundLevel;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -85,7 +79,8 @@ public abstract class World {
         //finish = 100f;
         end = finish + spawnDistance + 20f;
 
-        pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
+        if(SCREEN_WIDTH > 1600) pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines_2);
+        else pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
         pfx_snow = new ParticleEffect(Assets.pfx_snow);
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
         pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
@@ -162,8 +157,8 @@ class WorldSummer extends World {
         ground.rotateX(90f);
         pfx_snow = null;
 
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 28f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 28f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 36f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 36f));
     }
 
     public void update(float delta) {
@@ -211,8 +206,8 @@ class WorldTundra extends World {
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
 
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 28f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 28f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 36f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 36f));
     }
 
     public void update(float delta) {

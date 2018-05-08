@@ -2,37 +2,23 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
-import static fi.tamk.tiko.harecraft.GameMain.blurTargetA;
-import static fi.tamk.tiko.harecraft.GameMain.blurTargetB;
-import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
-import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
 import static fi.tamk.tiko.harecraft.GameScreen.opacity;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_DEFAULT;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.SHADER3D_SEA;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.activeShader;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_blur;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_luminance;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -45,11 +31,8 @@ public class WorldRenderer {
     World world;
     boolean isFBOEnabled;
     boolean isSeaEnabled;
-    boolean isBlurEnabled;
 
     static float radius = 3f;
-    final static float MAX_BLUR = 5.0f;
-
 
     public WorldRenderer(World world) {
         this.world = world;
@@ -75,10 +58,6 @@ public class WorldRenderer {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         }
 
-        if(isBlurEnabled) {
-
-        }
-
         drawDecals();
         drawParticles();
 
@@ -91,31 +70,11 @@ public class WorldRenderer {
     public void drawDecals() {
         activeShader = SHADER3D_DEFAULT;
         //----------------------------
-
-        //if(!isSeaEnabled) dBatch.add(world.decal_background);
-        //dBatch.flush();
-
-        if(isBlurEnabled) {
-            blurTargetA.begin();
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        }
-
-        //dBatch.flush();
         if(!isSeaEnabled) dBatch.add(world.decal_background);
 
         dBatch.add(world.decal_sun1);
         dBatch.add(world.decal_sun2);
         dBatch.flush();
-
-        if(isBlurEnabled) {
-            blurTargetA.end();
-
-            applyBlur(2.0f);
-            sBatch.setShader(null);
-
-            //if(!isSeaEnabled) dBatch.add(world.decal_background);
-            dBatch.flush();
-        }
 
 
         if(isSeaEnabled) activeShader = SHADER3D_SEA;
@@ -152,74 +111,9 @@ public class WorldRenderer {
         dBatch.flush();
     }
 
-    private void applyBlur(float blur) {
-        //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD );
-
-
-        //sBatch.begin();
-        //sBatch.setShader(shader2D_default);
-        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ZERO);
-        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //sprite.draw(sBatch);
-        //sBatch.end();
-
-        blurTargetB.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        shader2D_luminance.setUniformf("brightPassThreshold",0f);
-        sBatch.setShader(shader2D_luminance);
-        sBatch.begin();
-        drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
-        sBatch.flush();
-        blurTargetB.end();
-
-
-        //sBatch.begin();
-        blurTargetA.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
-        shader2D_blur.setUniformf("radius", blur);
-        sBatch.setShader(shader2D_blur);
-        drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
-        sBatch.flush();
-        blurTargetA.end();
-
-        Sprite sprite = new Sprite(blurTargetA.getColorBufferTexture());
-        sprite.flip(false, true);
-
-
-        //blurTargetB.begin();
-        shader2D_blur.setUniformf("dir", 1.0f, 1.0f);
-        shader2D_blur.setUniformf("radius", blur);
-
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //drawTexture(blurTargetA.getColorBufferTexture(),  0.0f, 0.0f);
-        sprite.draw(sBatch);
-        //sBatch.flush();
-        //blurTargetB.end();
-
-
-        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        //Gdx.gl.glBlendEquation( GL20.GL_FUNC_ADD);
-        //sBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //drawTexture(blurTargetB.getColorBufferTexture(),  0.0f, 0.0f);
-        sBatch.flush();
-        sBatch.end();
-
-        //sBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-    }
-
-    private void drawTexture(Texture texture, float x, float y) {
-        sBatch.draw(texture, x, y);
-    }
-
     public void renderToTexture() {
         texture.setTexture(fbo.getColorBufferTexture());
 
-        //if(gameState == END) sBatch.setShader(shader2D_vignette);
-
-        //Gdx.gl.glEnable(GL20.GL_BLEND);
         //------------------------------------------------
         sBatch.begin();
         texture.draw(sBatch, opacity);

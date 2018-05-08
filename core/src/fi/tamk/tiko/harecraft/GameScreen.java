@@ -26,7 +26,6 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.FINISH;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 import static fi.tamk.tiko.harecraft.World.player;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
 
@@ -215,9 +214,9 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             }
             if(gameState != END && gameState != EXIT) {
                 if (playerPlacement > lastPlayerPlacement)
-                    AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.5f);
+                    AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.4f);
                 else if (playerPlacement < lastPlayerPlacement)
-                    AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.5f);
+                    AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.35f);
                 lastPlayerPlacement = playerPlacement;
             }
         }
@@ -376,7 +375,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     }
 
     public void endGame() {
-        sBatch.setShader(shader2D_default);
+        sBatch.setShader(null);
         AssetsAudio.stopMusic();
         switch(selectedScreen) {
             case MAIN_MENU:
@@ -425,5 +424,8 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     }
 
     @Override
-    public void dispose() { world.dispose(); }
+    public void dispose() {
+        world.dispose();
+        HUD.dispose();
+    }
 }

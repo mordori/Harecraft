@@ -15,13 +15,10 @@ import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import java.util.ArrayList;
-
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
-import static fi.tamk.tiko.harecraft.Shaders2D.create2DShaders;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
+
 
 /**
  * Created by Mika and Mikko.
@@ -45,8 +42,6 @@ public class GameMain extends Game {
     static ShapeRenderer shapeRenderer;
 
     static FrameBuffer fbo;
-    static FrameBuffer blurTargetA, blurTargetB;
-    public static final int FBO_SIZE = 1024;
     static Sprite texture;
     static float musicVolume;
 	
@@ -64,8 +59,7 @@ public class GameMain extends Game {
 
         sBatch = new SpriteBatch();
         sBatch.setProjectionMatrix(orthoCamera.combined);
-        create2DShaders();
-        sBatch.setShader(shader2D_default);
+        sBatch.setShader(null);
 
         dBatch = new DecalBatch(new MyGroupStrategy(camera));
 
@@ -83,10 +77,6 @@ public class GameMain extends Game {
         texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, format));
         texture.flip(false, true);
 
-        blurTargetA = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
-        blurTargetB = new FrameBuffer(format, (int) SCREEN_WIDTH, (int) SCREEN_HEIGHT,false);
-
-        //setScreen(new MainMenu(this, false));
         setScreen(new SplashScreen(this));
 	}
 
@@ -101,10 +91,7 @@ public class GameMain extends Game {
         dBatch.dispose();
         shapeRenderer.dispose();
         fbo.dispose();
-        blurTargetA.dispose();
-        blurTargetB.dispose();
         texture.getTexture().dispose();
-        Shaders2D.dispose();
 
 		Assets.dispose();
         AssetsAudio.dispose();

@@ -2,7 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -10,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.badlogic.gdx.utils.I18NBundle;
 
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.shapeRenderer;
@@ -25,16 +23,13 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.countdown;
-import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
 import static fi.tamk.tiko.harecraft.GameScreen.paused;
 import static fi.tamk.tiko.harecraft.GameScreen.playerPlacement;
-import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.layout;
 import static fi.tamk.tiko.harecraft.GameScreen.selectedScreen;
 import static fi.tamk.tiko.harecraft.GameScreen.stage;
 import static fi.tamk.tiko.harecraft.GameScreen.game;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
-import static fi.tamk.tiko.harecraft.Shaders2D.shader2D_default;
 import static fi.tamk.tiko.harecraft.World.player;
 
 /**
@@ -51,12 +46,17 @@ public class HUD {
     float progressline_y = SCREEN_HEIGHT - 75f;
     float progressline_color_red = 255f;
     float progressline_color_green = 130f;
-    float progressline_width = 300f;
+    float progressline_width = SCREEN_WIDTH/4f;
     float progressline_arc_radius = 9f;
     float yPos = SCREEN_HEIGHT/1.5f;
     float opacity = 0f;
     float stateOpacity = 0f;
     int count;
+
+    ParticleEffect pfx_placement = new ParticleEffect(Assets.pfx_placement);
+    ParticleEffect pfx_placement1 = new ParticleEffect(Assets.pfx_placement1);
+    ParticleEffect pfx_placement2 = new ParticleEffect(Assets.pfx_placement2);
+    ParticleEffect pfx_placement3 = new ParticleEffect(Assets.pfx_placement3);
 
     TextureRegion stateRegion = new TextureRegion();
     TextureRegion placementRegion = new TextureRegion();
@@ -66,22 +66,52 @@ public class HUD {
         this.world = world;
         this.gameScreen = gameScreen;
 
+        pfx_placement.allowCompletion();
+        pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f));
+        pfx_placement.getEmitters().get(0).getXScale().setHighMax(240f * (SCREEN_WIDTH/1280f));
+
+        pfx_placement1.allowCompletion();
+        pfx_placement1.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f));
+        pfx_placement1.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f));
+
+        pfx_placement2.allowCompletion();
+        pfx_placement2.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f));
+        pfx_placement2.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f));
+
+        pfx_placement3.allowCompletion();
+        pfx_placement3.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f));
+        pfx_placement3.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f));
+
         if(localizationBundle.get("btnResumeText").equals("continue")) language = "_en";
         else language = "_fi";
 
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                Assets.skin_menu.getDrawable("listbutton"),
-                Assets.skin_menu.getDrawable("listbutton pressed"),
-                Assets.skin_menu.getDrawable("listbutton"),
-                Assets.font4);
-        style.pressedOffsetX = 4;
-        style.pressedOffsetY = -4;
-        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
-        style.fontColor = new Color(1f,1f,1f,1f);
+        TextButton.TextButtonStyle style;
+        if(SCREEN_WIDTH > 1600f) {
+            style = new TextButton.TextButtonStyle(
+                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.skin_menu.getDrawable("listbutton pressed"),
+                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.font3);
+            style.pressedOffsetX = 4;
+            style.pressedOffsetY = -4;
+            style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
+            style.fontColor = new Color(1f, 1f, 1f, 1f);
+        }
+        else {
+            style = new TextButton.TextButtonStyle(
+                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.skin_menu.getDrawable("listbutton pressed"),
+                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.font4);
+            style.pressedOffsetX = 4;
+            style.pressedOffsetY = -4;
+            style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
+            style.fontColor = new Color(1f, 1f, 1f, 1f);
+        }
         TextButton btnResume = new TextButton(localizationBundle.get("btnResumeText"), style);
-        if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(360f);
-        else btnResume.setWidth(300f);
-        btnResume.setHeight(160f);
+        if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(360f * (SCREEN_WIDTH/1280f));
+        else btnResume.setWidth(300f * (SCREEN_WIDTH/1280f));
+        btnResume.setHeight(160f * (SCREEN_WIDTH/1280f));
         if(SCREEN_WIDTH >= 1280f) btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.85f/2f * SCREEN_HEIGHT);
         else btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.55f/2f * SCREEN_HEIGHT);
         btnResume.setName("btnResume");
@@ -106,18 +136,31 @@ public class HUD {
             }
         });
 
-        style = new TextButton.TextButtonStyle(
-                Assets.skin_menu.getDrawable("button"),
-                Assets.skin_menu.getDrawable("button pressed"),
-                Assets.skin_menu.getDrawable("button"),
-                Assets.font6);
-        style.pressedOffsetX = 4;
-        style.pressedOffsetY = -4;
-        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
-        style.fontColor = new Color(1f,1f,1f,1f);
+        if(SCREEN_WIDTH > 1600f) {
+            style = new TextButton.TextButtonStyle(
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.skin_menu.getDrawable("button pressed"),
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.font5);
+            style.pressedOffsetX = 4;
+            style.pressedOffsetY = -4;
+            style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
+            style.fontColor = new Color(1f, 1f, 1f, 1f);
+        }
+        else {
+            style = new TextButton.TextButtonStyle(
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.skin_menu.getDrawable("button pressed"),
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.font6);
+            style.pressedOffsetX = 4;
+            style.pressedOffsetY = -4;
+            style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
+            style.fontColor = new Color(1f, 1f, 1f, 1f);
+        }
         TextButton btnReset = new TextButton(localizationBundle.get("btnResetText"), style);
-        btnReset.setWidth(210f);
-        btnReset.setHeight(100f);
+        btnReset.setWidth(210f * (SCREEN_WIDTH/1280f));
+        btnReset.setHeight(100f * (SCREEN_WIDTH/1280f));
         if(SCREEN_WIDTH >= 1280f) btnReset.setPosition(SCREEN_WIDTH/2f - btnReset.getWidth()/2f, 0.5f/2f * SCREEN_HEIGHT);
         else btnReset.setPosition(2f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
         btnReset.setName("btnReset");
@@ -145,8 +188,8 @@ public class HUD {
         });
 
         TextButton btnQuit = new TextButton(localizationBundle.get("btnQuitText"), style);
-        btnQuit.setWidth(210f);
-        btnQuit.setHeight(100f);
+        btnQuit.setWidth(210f * (SCREEN_WIDTH/1280f));
+        btnQuit.setHeight(100f * (SCREEN_WIDTH/1280f));
         if(SCREEN_WIDTH >= 1280f) btnQuit.setPosition(SCREEN_WIDTH/2f - btnQuit.getWidth()/2f, 0.2f/2f * SCREEN_HEIGHT);
         else btnQuit.setPosition(1f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
         btnQuit.setName("btnQuit");
@@ -187,7 +230,7 @@ public class HUD {
             opacity -= delta;
             if(opacity < 0f) opacity = 0f;
             if(opacity == 0f && gameStateTime > 5f) {
-                sBatch.setShader(shader2D_default);
+                sBatch.setShader(null);
                 AssetsAudio.stopMusic();
                 game.setScreen(new ScoreScreen());
             }
@@ -207,7 +250,7 @@ public class HUD {
             stage.act();
             stage.draw();
         }
-        else {
+        else if(gameState != EXIT) {
             if(gameState != START) {
                 drawProgressLine();
             }
@@ -227,10 +270,18 @@ public class HUD {
         shapeRenderer.end();
 
         sBatch.begin();
-        Assets.font1.setColor(1f,1f,1f,1f);
-        layout.setText(Assets.font1, localizationBundle.get("pauseText"));
-        float width = layout.width;
-        Assets.font1.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH/2f - width/2f,6f/7f*SCREEN_HEIGHT);
+        if(SCREEN_WIDTH > 1600f) {
+            Assets.font0.setColor(1f, 1f, 1f, 1f);
+            layout.setText(Assets.font0, localizationBundle.get("pauseText"));
+            float width = layout.width;
+            Assets.font0.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH / 2f - width / 2f, 6f / 7f * SCREEN_HEIGHT);
+        }
+        else {
+            Assets.font1.setColor(1f, 1f, 1f, 1f);
+            layout.setText(Assets.font1, localizationBundle.get("pauseText"));
+            float width = layout.width;
+            Assets.font1.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH / 2f - width / 2f, 6f / 7f * SCREEN_HEIGHT);
+        }
         sBatch.end();
     }
 
@@ -277,7 +328,6 @@ public class HUD {
                     if(count == 0) {
                         resetY();
                     }
-                    System.out.println("SUC");
                     stateRegion = Assets.atlas_HUD.findRegion("3");
 
                 }else if (gameStateTime < 4.6f) {
@@ -327,15 +377,9 @@ public class HUD {
             }
         }
 
-        /*if(index == 3) {
-            float temp = width;
-            width = height;
-            height = temp;
-        }*/
-
         yPos -= Gdx.graphics.getDeltaTime() * 20f / stateOpacity;
-        float width = stateRegion.getRegionWidth() * 1.65f;
-        float height = stateRegion.getRegionHeight() * 1.65f;
+        float width = stateRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
+        float height = stateRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
 
         sBatch.setColor(1f,1f,1f, stateOpacity);
         sBatch.draw(stateRegion,SCREEN_WIDTH/2f - width/2f, yPos - height/2f, width, height);
@@ -344,14 +388,61 @@ public class HUD {
 
     public void updatePlacementNumber(float delta) {
         placementRegion = Assets.atlas_HUD.findRegion(playerPlacement + language);
+
+        if(gameState != END && gameState != EXIT && gameState != START) {
+            if(playerPlacement == 1) {
+                pfx_placement.start();
+                pfx_placement1.start();
+                pfx_placement2.allowCompletion();
+            }
+            else if(playerPlacement == 2) {
+                pfx_placement.start();
+                pfx_placement2.start();
+                pfx_placement1.allowCompletion();
+                pfx_placement3.allowCompletion();
+            }
+            else if(playerPlacement == 3) {
+                pfx_placement.start();
+                pfx_placement3.start();
+                pfx_placement2.allowCompletion();
+            }
+        }
+        else {
+            pfx_placement.allowCompletion();
+            pfx_placement1.allowCompletion();
+            pfx_placement2.allowCompletion();
+            pfx_placement3.allowCompletion();
+        }
+
+        pfx_placement.update(delta);
+        pfx_placement1.update(delta);
+        pfx_placement2.update(delta);
+        pfx_placement3.update(delta);
     }
 
     public void drawPlacementNumber() {
-        float width = placementRegion.getRegionWidth() * 1.65f;
-        float height = placementRegion.getRegionHeight() * 1.65f;
+        pfx_placement1.draw(sBatch);
+        pfx_placement2.draw(sBatch);
+        pfx_placement3.draw(sBatch);
+        pfx_placement.draw(sBatch);
+
+        float width = placementRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
+        float height = placementRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
 
         sBatch.setColor(1f,1f,1f, opacity);
-        sBatch.draw(placementRegion,20f,15f, width, height);
+        sBatch.draw(placementRegion,30f,15f, width, height);
         sBatch.setColor(1f,1f,1f, 1f);
+
+        pfx_placement.setPosition(width/3f, height/2f);
+        pfx_placement1.setPosition(width/3f, height/2f);
+        pfx_placement2.setPosition(width/3f, height/2f);
+        pfx_placement3.setPosition(width/3f, height/2f);
+    }
+
+    public void dispose() {
+        pfx_placement.dispose();
+        pfx_placement1.dispose();
+        pfx_placement2.dispose();
+        pfx_placement3.dispose();
     }
 }

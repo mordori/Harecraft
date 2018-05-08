@@ -20,11 +20,7 @@ import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE1;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE2;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE3;
 import static com.badlogic.gdx.graphics.GL20.GL_TEXTURE4;
-import static fi.tamk.tiko.harecraft.GameMain.FBO_SIZE;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
-import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
-import static fi.tamk.tiko.harecraft.World.player;
-import static fi.tamk.tiko.harecraft.WorldRenderer.radius;
+
 
 /**
  * Created by Mika.

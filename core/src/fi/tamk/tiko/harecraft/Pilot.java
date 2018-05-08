@@ -182,6 +182,15 @@ class Player extends Pilot {
             windYOffset = 0f;
             windXOffset = decal.getWidth()/2.5f;
         }
+
+        pfx_scarf.getEmitters().get(0).getYScale().setHigh(43f * (SCREEN_WIDTH/1280f));
+        pfx_scarf.getEmitters().get(1).getYScale().setHigh(36f * (SCREEN_WIDTH/1280f));
+
+        pfx_wind_trail_left.getEmitters().get(0).getXScale().setHigh(65f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_left.getEmitters().get(1).getXScale().setHigh(60f * (SCREEN_WIDTH/1920f));
+
+        pfx_wind_trail_right.getEmitters().get(0).getXScale().setHigh(65f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(60f * (SCREEN_WIDTH/1920f));
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -348,8 +357,8 @@ class Player extends Pilot {
         pfx_scarf.setPosition(
                 projPosition.x,
                 projPosition.y - 5f);
-        pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f);
-        pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f);
+        pfx_scarf.getEmitters().get(0).getXScale().setHigh(velocity.x*5f * (SCREEN_WIDTH/1280f));
+        pfx_scarf.getEmitters().get(1).getXScale().setHigh(velocity.x*5f * (SCREEN_WIDTH/1280f));
         pfx_scarf.update(delta);
     }
 
