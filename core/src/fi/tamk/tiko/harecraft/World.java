@@ -82,7 +82,7 @@ public abstract class World {
 
     public World() {
         finish = ProfileInfo.selectedDuration;
-        finish = 100f;
+        //finish = 100f;
         end = finish + spawnDistance + 20f;
 
         pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
@@ -162,8 +162,8 @@ class WorldSummer extends World {
         ground.rotateX(90f);
         pfx_snow = null;
 
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 30f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 28f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 28f));
     }
 
     public void update(float delta) {
@@ -211,8 +211,8 @@ class WorldTundra extends World {
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
 
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 30f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 30f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 28f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 28f));
     }
 
     public void update(float delta) {

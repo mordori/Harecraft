@@ -11,14 +11,14 @@ repeat: none
   orig: 45, 104
   offset: 0, 0
   index: -1
-1st_en
+1_en
   rotate: false
   xy: 893, 5
   size: 91, 129
   orig: 91, 129
   offset: 0, 0
   index: -1
-1st_fi
+1_fi
   rotate: false
   xy: 1167, 4
   size: 52, 130
@@ -32,14 +32,14 @@ repeat: none
   orig: 82, 105
   offset: 0, 0
   index: -1
-2nd_en
+2_en
   rotate: false
   xy: 1774, 135
   size: 139, 115
   orig: 139, 115
   offset: 0, 0
   index: -1
-2nd_fi
+2_fi
   rotate: false
   xy: 696, 19
   size: 99, 115
@@ -53,56 +53,56 @@ repeat: none
   orig: 83, 106
   offset: 0, 0
   index: -1
-3rd_en
+3_en
   rotate: false
   xy: 1627, 133
   size: 145, 117
   orig: 145, 117
   offset: 0, 0
   index: -1
-3rd_fi
+3_fi
   rotate: false
   xy: 1915, 133
   size: 100, 117
   orig: 100, 117
   offset: 0, 0
   index: -1
-4th_en
+4_en
   rotate: false
   xy: 1475, 133
   size: 150, 117
   orig: 150, 117
   offset: 0, 0
   index: -1
-4th_fi
+4_fi
   rotate: false
   xy: 797, 17
   size: 94, 117
   orig: 94, 117
   offset: 0, 0
   index: -1
-5th_en
+5_en
   rotate: false
   xy: 426, 20
   size: 133, 114
   orig: 133, 114
   offset: 0, 0
   index: -1
-5th_fi
+5_fi
   rotate: false
   xy: 986, 20
   size: 90, 114
   orig: 90, 114
   offset: 0, 0
   index: -1
-6th_en
+6_en
   rotate: false
   xy: 561, 18
   size: 133, 116
   orig: 133, 116
   offset: 0, 0
   index: -1
-6th_fi
+6_fi
   rotate: false
   xy: 1078, 18
   size: 87, 116

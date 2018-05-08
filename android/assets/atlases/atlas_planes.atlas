@@ -41,28 +41,28 @@ bear_body
   index: -1
 bear_wings
   rotate: false
-  xy: 1355, 1794
+  xy: 1355, 1786
   size: 449, 227
   orig: 449, 227
   offset: 0, 0
   index: -1
 fox
   rotate: false
-  xy: 1355, 1418
+  xy: 326, 15
   size: 449, 186
   orig: 449, 186
   offset: 0, 0
   index: -1
 fox_body
   rotate: false
-  xy: 326, 339
+  xy: 1228, 1224
   size: 449, 186
   orig: 449, 186
   offset: 0, 0
   index: -1
 fox_wings
   rotate: false
-  xy: 1355, 1606
+  xy: 1355, 1598
   size: 449, 186
   orig: 449, 186
   offset: 0, 0
@@ -70,111 +70,118 @@ fox_wings
 giraff
   rotate: false
   xy: 453, 1175
-  size: 449, 254
-  orig: 449, 254
+  size: 449, 246
+  orig: 449, 246
   offset: 0, 0
   index: -1
 giraff_body
   rotate: false
   xy: 904, 1767
-  size: 449, 254
-  orig: 449, 254
+  size: 449, 246
+  orig: 449, 246
   offset: 0, 0
   index: -1
 giraff_wings
   rotate: false
   xy: 2, 879
-  size: 449, 254
-  orig: 449, 254
+  size: 449, 246
+  orig: 449, 246
   offset: 0, 0
   index: -1
 hare
   rotate: false
-  xy: 2, 1135
+  xy: 2, 1127
   size: 449, 294
   orig: 449, 294
   offset: 0, 0
   index: -1
 koala
   rotate: false
-  xy: 1228, 859
+  xy: 777, 615
   size: 449, 184
   orig: 449, 184
   offset: 0, 0
   index: -1
 koala_body
   rotate: false
-  xy: 1228, 1045
+  xy: 1355, 1412
   size: 449, 184
   orig: 449, 184
   offset: 0, 0
   index: -1
 koala_wings
   rotate: false
-  xy: 777, 802
+  xy: 1228, 851
   size: 449, 184
   orig: 449, 184
   offset: 0, 0
   index: -1
 red_1_wings
   rotate: false
-  xy: 2, 1727
+  xy: 2, 1719
   size: 449, 294
   orig: 449, 294
   offset: 0, 0
   index: -1
 red_2_wings
   rotate: false
-  xy: 2, 1431
+  xy: 2, 1423
   size: 449, 294
   orig: 449, 294
   offset: 0, 0
   index: -1
 red_3_wings
   rotate: false
-  xy: 453, 1727
+  xy: 453, 1719
   size: 449, 294
   orig: 449, 294
   offset: 0, 0
   index: -1
 red_body
   rotate: false
-  xy: 453, 1431
+  xy: 453, 1423
   size: 449, 294
   orig: 449, 294
   offset: 0, 0
   index: -1
-ring1
+ring0
   rotate: false
   xy: 2, 2
   size: 322, 322
   orig: 322, 322
   offset: 0, 0
   index: -1
-ring2
+ring1
   rotate: false
   xy: 453, 527
   size: 322, 322
   orig: 322, 322
   offset: 0, 0
   index: -1
+ring2
+  rotate: false
+  xy: 326, 203
+  size: 322, 322
+  orig: 322, 322
+  offset: 0, 0
+  index: -1
 wolf
   rotate: false
-  xy: 777, 988
+  xy: 777, 801
   size: 449, 185
   orig: 449, 185
   offset: 0, 0
   index: -1
 wolf_body
   rotate: false
-  xy: 326, 152
+  xy: 1228, 1037
   size: 449, 185
   orig: 449, 185
   offset: 0, 0
   index: -1
 wolf_wings
   rotate: false
-  xy: 1228, 1231
+  xy: 777, 988
   size: 449, 185
   orig: 449, 185
   offset: 0, 0

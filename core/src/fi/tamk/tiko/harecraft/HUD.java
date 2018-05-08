@@ -3,6 +3,7 @@ package fi.tamk.tiko.harecraft;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -52,18 +53,22 @@ public class HUD {
     float progressline_color_green = 130f;
     float progressline_width = 300f;
     float progressline_arc_radius = 9f;
-    float HUD_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
+    float opacity = 0f;
+    float stateOpacity = 0f;
+    int count;
 
-    Sprite text_gameStates = new Sprite();
-    Sprite text_placementNumber = new Sprite();
-
-    float text_opacity = 0f;
-    int index = 0;
+    TextureRegion stateRegion = new TextureRegion();
+    TextureRegion placementRegion = new TextureRegion();
+    String language;
 
     public HUD(World world, final GameScreen gameScreen) {
         this.world = world;
         this.gameScreen = gameScreen;
+
+        if(localizationBundle.get("btnResumeText").equals("continue")) language = "_en";
+        else language = "_fi";
+
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("listbutton"),
                 Assets.skin_menu.getDrawable("listbutton pressed"),
@@ -175,13 +180,13 @@ public class HUD {
 
     public void update(float delta) {
         if(gameState == RACE || gameState == FINISH) {
-            HUD_opacity += delta;
-            if(HUD_opacity > 1f) HUD_opacity = 1f;
+            opacity += delta;
+            if(opacity > 1f) opacity = 1f;
         }
         else if(gameState == END) {
-            HUD_opacity -= delta;
-            if(HUD_opacity < 0f) HUD_opacity = 0f;
-            if(text_opacity == 0f && gameStateTime > 5f) {
+            opacity -= delta;
+            if(opacity < 0f) opacity = 0f;
+            if(opacity == 0f && gameStateTime > 5f) {
                 sBatch.setShader(shader2D_default);
                 AssetsAudio.stopMusic();
                 game.setScreen(new ScoreScreen());
@@ -203,14 +208,14 @@ public class HUD {
             stage.draw();
         }
         else {
-            if (gameState != START) {
+            if(gameState != START) {
                 drawProgressLine();
             }
             sBatch.begin();
-            drawCountdown();
-            if (gameState != START) {
-                drawPlacementNumber();
-            }
+                drawState();
+                if(gameState != START) {
+                    drawPlacementNumber();
+                }
             sBatch.end();
         }
     }
@@ -241,108 +246,112 @@ public class HUD {
     public void drawProgressLine() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         //Black
-        shapeRenderer.setColor(0f, 0f, 0f, 0.3f * HUD_opacity);
+        shapeRenderer.setColor(0f, 0f, 0f, 0.3f * opacity);
         shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius + 3f, 90f, 180f);
         shapeRenderer.arc(SCREEN_WIDTH/2f + progressline_width/2f, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius + 3f, 270f, 180f);
         shapeRenderer.rect(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y, progressline_width, (progressline_arc_radius + 3)*2f);
 
         //Color
-        shapeRenderer.setColor(progressline_color_red, progressline_color_green, 44f/255f, 0.7f * HUD_opacity);
+        shapeRenderer.setColor(progressline_color_red, progressline_color_green, 44f/255f, 0.7f * opacity);
         shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius, 90f, 180f);
         shapeRenderer.rect(SCREEN_WIDTH/2f - progressline_width/2f, progressline_y + 3f, progressline_x, progressline_arc_radius*2f);
         shapeRenderer.arc(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius, 270f, 180f);
 
         //White
-        shapeRenderer.setColor(1f, 1f, 1f, 0.6f * HUD_opacity);
+        shapeRenderer.setColor(1f, 1f, 1f, 0.6f * opacity);
         shapeRenderer.circle(SCREEN_WIDTH/2f - progressline_width/2f + progressline_x, progressline_y + progressline_arc_radius + 3f, progressline_arc_radius);
         shapeRenderer.end();
     }
 
-    public void drawCountdown() {
-        //Countdown numbers
-        if(countdown || (gameState == END && gameStateTime < 4f)) {
+    private void resetY() {
+        yPos = SCREEN_HEIGHT/1.25f;
+        stateOpacity = 0f;
+        count++;
+    }
+
+    public void drawState() {
+        stateRegion = Assets.atlas_HUD.findRegion("go" + language);
+        if(countdown) {
             if(gameState == START) {
-                if (gameStateTime < 3.3f) {
-                    if(gameStateTime < 2f) {
-                        yPos = SCREEN_HEIGHT/1.5f;
-                        text_opacity = 0f;
+                if(gameStateTime < 3.3f) {
+                    if(count == 0) {
+                        resetY();
                     }
-                    index = 2;
-                } else if (gameStateTime < 4.6f) {
-                    if(index == 2) {
-                        yPos = SCREEN_HEIGHT/1.5f;
-                        text_opacity = 0f;
+                    System.out.println("SUC");
+                    stateRegion = Assets.atlas_HUD.findRegion("3");
+
+                }else if (gameStateTime < 4.6f) {
+                    if(count == 1) {
+                        resetY();
                         AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                     }
-                    index = 1;
-                } else if (gameStateTime < 5.9f) {
-                    if(index == 1) {
-                        yPos = SCREEN_HEIGHT/1.5f;
-                        text_opacity = 0f;
+                    stateRegion = Assets.atlas_HUD.findRegion("2");
+
+                }else if (gameStateTime < 5.9f) {
+                    if(count == 2) {
+                        resetY();
                         AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
                     }
-                    index = 0;
-                } else {
-                    if(index == 0) {
-                        yPos = SCREEN_HEIGHT/1.5f;
-                        text_opacity = 0f;
+                    stateRegion = Assets.atlas_HUD.findRegion("1");
+
+                }else {
+                    if(count == 3) {
+                        resetY();
                         AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN_END,1f);
                     }
-                    index = 4;
+                    stateRegion = Assets.atlas_HUD.findRegion("go" + language);
                 }
-                text_opacity += Gdx.graphics.getDeltaTime();
-                if(text_opacity > 1f) text_opacity = 1f;
-            }
-            else if(gameState == END) {
-                if (index == 4) {
-                    yPos = SCREEN_HEIGHT/1.5f;
-                    text_opacity = 0f;
-                }
-                index = 3;
 
-                if(gameStateTime < 1.7f) {
-                    text_opacity += Gdx.graphics.getDeltaTime();
-                    if (text_opacity > 1f) text_opacity = 1f;
-                }
-                else {
-                    text_opacity -= Gdx.graphics.getDeltaTime();
-                    if(text_opacity < 0f) text_opacity = 0f;
-                }
+                stateOpacity += Gdx.graphics.getDeltaTime();
+                if(stateOpacity > 1f) stateOpacity = 1f;
             }
             if(gameState == RACE) {
-                text_opacity -= Gdx.graphics.getDeltaTime();
-                if(text_opacity < 0f) text_opacity = 0f;
-                if(text_opacity == 0f) countdown = false;
+                stateOpacity -= Gdx.graphics.getDeltaTime();
+                if(stateOpacity < 0f) stateOpacity = 0f;
+                if(stateOpacity == 0f) countdown = false;
             }
-
-            text_gameStates = Assets.sprites_text_race_states.get(index);
-            float width = text_gameStates.getRegionHeight() * 1.25f;
-            float height = text_gameStates.getRegionWidth() * 1.25f;
-
-            if(index == 3) {
-                float temp = width;
-                width = height;
-                height = temp;
-            }
-
-            yPos -= Gdx.graphics.getDeltaTime() * 20f / text_opacity;
-
-            text_gameStates.setOriginCenter();
-            text_gameStates.setColor(1f, 1f, 1f, text_opacity);
-            text_gameStates.setBounds(0f, 0f, width, height);
-            text_gameStates.setPosition(SCREEN_WIDTH/2f - width/2f, yPos - height/2f);
-
-            text_gameStates.draw(sBatch);
         }
+        else if(gameState == END && gameStateTime < 4f) {
+            if(count == 4) {
+                resetY();
+            }
+            stateRegion = Assets.atlas_HUD.findRegion("finish" + language);
+
+            if(gameStateTime < 1.7f) {
+                stateOpacity += Gdx.graphics.getDeltaTime();
+                if (stateOpacity > 1f) stateOpacity = 1f;
+            }
+            else {
+                stateOpacity -= Gdx.graphics.getDeltaTime();
+                if(stateOpacity < 0f) stateOpacity = 0f;
+            }
+        }
+
+        /*if(index == 3) {
+            float temp = width;
+            width = height;
+            height = temp;
+        }*/
+
+        yPos -= Gdx.graphics.getDeltaTime() * 20f / stateOpacity;
+        float width = stateRegion.getRegionWidth() * 1.65f;
+        float height = stateRegion.getRegionHeight() * 1.65f;
+
+        sBatch.setColor(1f,1f,1f, stateOpacity);
+        sBatch.draw(stateRegion,SCREEN_WIDTH/2f - width/2f, yPos - height/2f, width, height);
+        sBatch.setColor(1f,1f,1f, 1f);
     }
 
     public void updatePlacementNumber(float delta) {
-        text_placementNumber = Assets.sprites_text_race_positions.get(playerPlacement - 1);
-        text_placementNumber.setPosition(10f, 10f);
-        text_placementNumber.setColor(1f, 1f, 1f, HUD_opacity);
+        placementRegion = Assets.atlas_HUD.findRegion(playerPlacement + language);
     }
 
     public void drawPlacementNumber() {
-        text_placementNumber.draw(sBatch);
+        float width = placementRegion.getRegionWidth() * 1.65f;
+        float height = placementRegion.getRegionHeight() * 1.65f;
+
+        sBatch.setColor(1f,1f,1f, opacity);
+        sBatch.draw(placementRegion,20f,15f, width, height);
+        sBatch.setColor(1f,1f,1f, 1f);
     }
 }

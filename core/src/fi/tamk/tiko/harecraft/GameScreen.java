@@ -140,6 +140,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static float opacity = 1f;
     static boolean isTransition = false;
     static boolean isTransitionComplete = false;
+    int lastPlayerPlacement = 6;
 
     public GameScreen(GameMain game, int worldIndex) {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -208,8 +209,17 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         updateCameras(delta);
 
         playerPlacement = 6;
-        for(Opponent o : world.opponents) {
-            if(player.distance > o.distance) playerPlacement--;
+        if(gameState != START) {
+            for (Opponent o : world.opponents) {
+                if (player.distance > o.distance) playerPlacement--;
+            }
+            if(gameState != END && gameState != EXIT) {
+                if (playerPlacement > lastPlayerPlacement)
+                    AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.5f);
+                else if (playerPlacement < lastPlayerPlacement)
+                    AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.5f);
+                lastPlayerPlacement = playerPlacement;
+            }
         }
 
         HUD.update(delta);
@@ -271,7 +281,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             //recordFlight();
         }
         else if(gameState == END) {
-            fadeMusic(delta/4.5f);
+            fadeMusic(delta/5f);
         }
     }
 

@@ -102,7 +102,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
     private final int LEVEL_MENU = 1;
     private final int NEW_GAME = 2;
 
-    private int selectedScreen;
+    private int selectedScreen = -1;
 
     public ScoreScreen() {
         sBatch.setProjectionMatrix(orthoCamera.combined);

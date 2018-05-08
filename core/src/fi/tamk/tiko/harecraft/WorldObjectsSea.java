@@ -87,23 +87,28 @@ class Island extends GameObject {
         width = textureRegion.getRegionWidth() / 20f;
         height = textureRegion.getRegionHeight() / 20f;
 
-        int random = MathUtils.random(1,6);
+        int random = MathUtils.random(1,7);
+
+        float pXMax = decal.getWidth()/4.6f * 2f / random;
+        float pX = decal.getPosition().x + decal.getWidth()/5.4f;
+        float pY = decal.getPosition().y + height/2.1f;
+        float pZ = 0f;
 
         for(int i = 0; i < random; i++) {
+            if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
             decal_palmtree = Decal.newDecal(width, height, textureRegion,true);
-            Vector3 palmtreePos = new Vector3(decal.getPosition().x + MathUtils.random(-decal.getWidth()/6f,decal.getWidth()/6f), decal.getPosition().y + height/2.1f, decal.getPosition().z+ MathUtils.random(-decal.getHeight()/6f,-decal.getHeight()/10f));
+
+            pX -= MathUtils.random(pXMax/3.5f, pXMax);
+            pZ = decal.getPosition().z+ MathUtils.random(-decal.getHeight()/4f, -decal.getHeight()/10f);
+
+            Vector3 palmtreePos = new Vector3(pX, pY, pZ);
             decal_palmtree.setPosition(palmtreePos);
 
-            if(palmtrees.isEmpty()) palmtrees.add(decal_palmtree);
+            palmtrees.add(decal_palmtree);
+        }
 
-            boolean isNear = true;
-
-            for(Decal d : palmtrees) {
-                if(!palmtrees.isEmpty() && decal_palmtree.getPosition().cpy().dst(d.getPosition()) > 7.5f) isNear = false;
-                else isNear = true;
-            }
-
-            if(!isNear) palmtrees.add(decal_palmtree);
+        for(Decal d : palmtrees) {
+            System.out.println(d.getPosition());
         }
     }
 
@@ -144,8 +149,8 @@ class LightHouse extends GameObject {
         decal.setPosition(x,y - 4f + height/2f, z);
 
         textureRegion = Assets.texR_island;
-        width = textureRegion.getRegionWidth() / 10f;
-        height = textureRegion.getRegionHeight() / 10f;
+        width = textureRegion.getRegionWidth() / 12f;
+        height = textureRegion.getRegionHeight() / 12f;
 
         decal_island = Decal.newDecal(width, height, textureRegion,true);
         decal_island.setPosition(x,y - 4f, z + 5f);

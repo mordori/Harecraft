@@ -87,16 +87,13 @@ public class Assets {
     static TextureRegion texR_boat;
     static TextureRegion texR_palmtree;
 
-    static TextureAtlas atlas_text_race_positions;
-    static TextureAtlas atlas_text_race_states;
-    static Array<Sprite> sprites_text_race_states;
-    static Array<Sprite> sprites_text_race_positions;
-
     static TextureAtlas atlas_menu_plane;
-    static Array<Sprite> sprites_menu_plane;
     static TextureAtlas atlas_planes;
     static TextureAtlas atlas_objects;
     static TextureAtlas atlas_linear_objects;
+    static TextureAtlas atlas_HUD;
+
+    static Array<Sprite> sprites_menu_plane;
 
     static MyAnimation<TextureRegion> animation_menu_plane;
 
@@ -140,18 +137,11 @@ public class Assets {
         }
 
         //ATLASES
-        atlas_text_race_positions = loadTextureAtlas("atlas_text_positions.txt");
-        sprites_text_race_positions = atlas_text_race_positions.createSprites();
-
-        atlas_text_race_states = loadTextureAtlas("atlas_text_race_states.txt");
-        sprites_text_race_states = atlas_text_race_states.createSprites();
-
         atlas_menu_plane = loadTextureAtlas("atlas_menu_plane.atlas");
-        sprites_menu_plane = atlas_menu_plane.createSprites();
-
         atlas_planes = loadTextureAtlas("atlas_planes.atlas");
         atlas_objects = loadTextureAtlas("atlas_objects.atlas");
         atlas_linear_objects = loadTextureAtlas("atlas_linear_objects.atlas");
+        atlas_HUD = loadTextureAtlas("atlas_HUD.atlas");
 
         //TEXTURES
         tex_mask_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep_mask.png"));
@@ -214,7 +204,7 @@ public class Assets {
         texR_cloud1 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud1");
         texR_cloud2 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud2");
         texR_cloud3 = loadDecalTextureRegionFromAtlas(atlas_objects, "cloud3");
-        texR_ring0 = loadDecalTextureRegionFromAtlas(atlas_objects, "ring0");
+        texR_ring0 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring0");
         texR_ring1 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring1");
         texR_ring2 = loadDecalTextureRegionFromAtlas(atlas_planes, "ring2");
         texR_ring_arrows0 = loadDecalTextureRegionFromAtlas(atlas_planes, "arrows0");
@@ -240,6 +230,7 @@ public class Assets {
         texR_boat = loadDecalTextureRegionFromAtlas(atlas_objects, "boat");
 
         //SPRITES
+        sprites_menu_plane = atlas_menu_plane.createSprites();
 
         //ANIMATIONS
         animation_menu_plane = new MyAnimation<TextureRegion>(1/25f, atlas_menu_plane.getRegions());
@@ -381,12 +372,11 @@ public class Assets {
         texR_boat.getTexture().dispose();
         texR_palmtree.getTexture().dispose();
 
-        atlas_text_race_positions.dispose();
-        atlas_text_race_states.dispose();
         atlas_menu_plane.dispose();
         atlas_planes.dispose();
         atlas_objects.dispose();
         atlas_linear_objects.dispose();
+        atlas_HUD.dispose();
 
         pfx_scarf.dispose();
         pfx_cloud_dispersion.dispose();
