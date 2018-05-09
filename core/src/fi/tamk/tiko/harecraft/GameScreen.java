@@ -167,6 +167,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         playerScore = 0;
         balloonsCollected = 0;
         ringsCollected = 0;
+        float timer;
 
         AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.3f);
     }
@@ -280,7 +281,27 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             //recordFlight();
         }
         else if(gameState == END) {
-            fadeMusic(delta/5f);
+            timer += delta;
+            switch(id_fanfaar) {
+                case AssetsAudio.SOUND_FANFAAR_6:
+                    if(timer > 5.7f) fadeMusic(delta/5f);
+                    break;
+                case AssetsAudio.SOUND_FANFAAR_5:
+                    if(timer > 2.9f) fadeMusic(delta/5f);
+                    break;
+                case AssetsAudio.SOUND_FANFAAR_4:
+                    if(timer > 2.2f) fadeMusic(delta/5f);
+                    break;
+                case AssetsAudio.SOUND_FANFAAR_3:
+                    if(timer > 1.7f) fadeMusic(delta/5f);
+                    break;
+                case AssetsAudio.SOUND_FANFAAR_2:
+                    if(timer > 1.5f) fadeMusic(delta/5f);
+                    break;
+                case AssetsAudio.SOUND_FANFAAR_1:
+                    if(timer > 2.8f) fadeMusic(delta/5f);
+                    break;
+            }
         }
     }
 
@@ -363,7 +384,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     public void fadeMusic(float delta) {
         volume -= delta;
         if(volume <= 0f) volume = 0f;
-        AssetsAudio.setMusicVolume(musicVolume * volume);
+        AssetsAudio.setMusicVolume(0.2f * volume);
     }
 
     public void transitionToScreen(float delta) {
