@@ -149,8 +149,8 @@ class WorldSummer extends World {
         ground.rotateX(90f);
         pfx_snow = null;
 
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 36f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 36f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 33f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 33f));
     }
 
     public void update(float delta) {
@@ -184,8 +184,8 @@ class WorldTundra extends World {
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
 
-        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 36f));
-        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 36f));
+        hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 33f));
+        hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 33f));
     }
 
     public void update(float delta) {

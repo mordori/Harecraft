@@ -274,7 +274,7 @@ public class LevelSelectMenu extends ScreenAdapter {
 
         if(isTransitionComplete) timer += delta;
 
-        if(isTransitionComplete && timer > 0.15f) {
+        if(isTransitionComplete && timer > 0.05f) {
             AssetsAudio.stopMusic();
             game.setScreen(new GameScreen(game, selectedLevelNumber));
         }

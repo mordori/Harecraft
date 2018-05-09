@@ -168,7 +168,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         balloonsCollected = 0;
         ringsCollected = 0;
 
-        AssetsAudio.stopMusic();
         AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.3f);
     }
 
@@ -248,7 +247,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
             AssetsAudio.stopSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
             AssetsAudio.playMusic(worldIndex);
-            AssetsAudio.setMusicVolume(0.6f);
+            AssetsAudio.setMusicVolume(0.55f);
 
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnZ;
@@ -282,13 +281,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         }
         else if(gameState == END) {
             fadeMusic(delta/5f);
-            if(!AssetsAudio.isPlaying(id_fanfaar) && !AssetsAudio.isPlaying()) {
-                if(volume > 0.4f) {
-                    volume = 0.4f;
-                    AssetsAudio.setMusicVolume(musicVolume * volume);
-                }
-                AssetsAudio.resumeMusic();
-            }
         }
     }
 
@@ -383,6 +375,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public void endGame() {
         sBatch.setShader(null);
+        AssetsAudio.stopMusic();
         switch(selectedScreen) {
             case MAIN_MENU:
                 game.setScreen(new MainMenu(game,true));
@@ -394,31 +387,31 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     }
 
     public void playFanfaar() {
-        AssetsAudio.pauseMusic();
+        AssetsAudio.setMusicVolume(0f);
         switch(playerPlacement) {
             case 1:
-                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_6);
-                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_6;
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_6,0.45f);
+                id_fanfaar = AssetsAudio.SOUND_FANFAAR_6;
                 break;
             case 2:
-                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_5);
-                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_5;
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_5,0.45f);
+                id_fanfaar = AssetsAudio.SOUND_FANFAAR_5;
                 break;
             case 3:
-                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_4);
-                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_4;
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_4,0.45f);
+                id_fanfaar = AssetsAudio.SOUND_FANFAAR_4;
                 break;
             case 4:
-                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_3);
-                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_3;
+                AssetsAudio.playMusic(AssetsAudio.SOUND_FANFAAR_3);
+                id_fanfaar = AssetsAudio.SOUND_FANFAAR_3;
                 break;
             case 5:
-                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_2);
-                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_2;
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_2,0.45f);
+                id_fanfaar = AssetsAudio.SOUND_FANFAAR_2;
                 break;
             case 6:
-                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_1);
-                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_1;
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_1,0.45f);
+                id_fanfaar = AssetsAudio.SOUND_FANFAAR_1;
                 break;
         }
     }

@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
+import static fi.tamk.tiko.harecraft.GameScreen.stage;
 
 
 /**
@@ -83,6 +84,7 @@ public class GameMain extends Game {
         if(dBatch != null) dBatch.dispose();
         if(shapeRenderer != null) shapeRenderer.dispose();
         if(fbo != null) fbo.dispose();
+        if(stage != null) stage.dispose();
 
         texture.getTexture().dispose();
 
