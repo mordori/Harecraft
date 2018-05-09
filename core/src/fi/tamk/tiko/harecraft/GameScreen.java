@@ -168,6 +168,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         balloonsCollected = 0;
         ringsCollected = 0;
 
+        AssetsAudio.stopMusic();
         AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.3f);
     }
 
@@ -382,7 +383,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public void endGame() {
         sBatch.setShader(null);
-        AssetsAudio.stopMusic();
         switch(selectedScreen) {
             case MAIN_MENU:
                 game.setScreen(new MainMenu(game,true));

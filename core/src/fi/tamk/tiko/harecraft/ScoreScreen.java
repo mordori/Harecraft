@@ -148,13 +148,13 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched && !isTransition) {
+                if(touched && !isTransition) {
                     Assets.font5.getData().setLineHeight(originalLineHeight3);
                     Assets.font6.getData().setLineHeight(originalLineHeight4);
 
                     selectedScreen = NEW_GAME;
-                    isTransition = true;
                     Gdx.input.setInputProcessor(null);
+                    isTransition = true;
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -189,13 +189,13 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched && !isTransition) {
+                if(touched && !isTransition) {
                     Assets.font5.getData().setLineHeight(originalLineHeight4);
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
                     selectedScreen = LEVEL_MENU;
-                    isTransition = true;
                     Gdx.input.setInputProcessor(null);
+                    isTransition = true;
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -220,13 +220,13 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched && !isTransition) {
+                if(touched && !isTransition) {
                     Assets.font5.getData().setLineHeight(originalLineHeight4);
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
                     selectedScreen = MAIN_MENU;
-                    isTransition = true;
                     Gdx.input.setInputProcessor(null);
+                    isTransition = true;
                 }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
@@ -293,11 +293,15 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
     }
 
     public void update(float delta) {
-        if(!isTransitionFromComplete) transitionFromScreen(delta);
         stage.act();
-        if(isTransition) {
-            transitionToScreen(delta);
+
+        if(!isTransitionFromComplete) {
+            Gdx.input.setInputProcessor(null);
+            transitionFromScreen(delta);
         }
+        if(isTransition) transitionToScreen(delta);
+
+
         if(isTransitionComplete) {
             switch(selectedScreen) {
                 case MAIN_MENU:
@@ -357,6 +361,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         if(opacity >= 1f) {
             opacity = 1f;
             isTransitionFromComplete = true;
+            Gdx.input.setInputProcessor(stage);
         }
     }
 

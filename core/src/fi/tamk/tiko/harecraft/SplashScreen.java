@@ -30,6 +30,7 @@ public class SplashScreen extends ScreenAdapter {
     Sprite exeriumSprite;
     Sprite projectileSprite;
     Sprite tikoSprite;
+    Sprite loadingSprite;
 
     float alpha;
     float timer;
@@ -44,21 +45,27 @@ public class SplashScreen extends ScreenAdapter {
         isAudioLoaded = false;
         isAssetsLoaded = false;
 
+        float yOffset = 40f;
+        float size = 1.2f;
+
+        loadingSprite = new Sprite(Assets.loadTexture("tex_loading.png"));
+        loadingSprite.setPosition(1280/2 - loadingSprite.getWidth()/2, 800/1.21f - loadingSprite.getHeight()/2);
+
         tamkSprite = new Sprite(Assets.loadTexture("tamk.png"));
-        tamkSprite.setSize(488,215);
-        tamkSprite.setPosition(960 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20);
+        tamkSprite.setSize(488/size,215/size);
+        tamkSprite.setPosition(920 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20 - yOffset*3f);
 
         exeriumSprite = new Sprite(Assets.loadTexture("exerium.png"));
-        exeriumSprite.setSize(575, 187);
-        exeriumSprite.setPosition(320 -exeriumSprite.getWidth()/2,100);
+        exeriumSprite.setSize(575/size, 187/size);
+        exeriumSprite.setPosition(370 -exeriumSprite.getWidth()/2,100 - yOffset);
 
         projectileSprite = new Sprite(Assets.loadTexture("projectile.png"));
-        projectileSprite.setSize(514,329 );
-        projectileSprite.setPosition(320 - projectileSprite.getWidth()/2, 533 - projectileSprite.getHeight()/2);
+        projectileSprite.setSize(514/size,329/size);
+        projectileSprite.setPosition(360 - projectileSprite.getWidth()/2, 520 - projectileSprite.getHeight()/2 - yOffset*3f);
 
         tikoSprite = new Sprite(Assets.loadTexture("tiko.png"));
-        tikoSprite.setSize(423,166);
-        tikoSprite.setPosition(960 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -20);
+        tikoSprite.setSize(423/size,166/size);
+        tikoSprite.setPosition(910 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -35 - yOffset);
 
         timer = 0f;
         alpha = 1f;
@@ -70,6 +77,7 @@ public class SplashScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         sBatch.begin();
+        loadingSprite.draw(sBatch, alpha);
         tamkSprite.draw(sBatch, alpha);
         exeriumSprite.draw(sBatch, alpha);
         projectileSprite.draw(sBatch, alpha);
@@ -99,6 +107,7 @@ public class SplashScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        loadingSprite.getTexture().dispose();
         tamkSprite.getTexture().dispose();
         exeriumSprite.getTexture().dispose();
         projectileSprite.getTexture().dispose();

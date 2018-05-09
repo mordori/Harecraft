@@ -56,6 +56,7 @@ public class LevelSelectMenu extends ScreenAdapter {
     boolean isTransitionComplete = false;
     boolean isTransitionFromComplete = false;
     boolean isFaded;
+    float timer;
 
     public LevelSelectMenu(GameMain game, ArrayList<String> profs, boolean isFaded) {
         this.game = game;
@@ -113,8 +114,10 @@ public class LevelSelectMenu extends ScreenAdapter {
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched)
+                if(touched) {
+                    Gdx.input.setInputProcessor(null);
                     mainMenu = true;
+                }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
             {
@@ -145,8 +148,10 @@ public class LevelSelectMenu extends ScreenAdapter {
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touched)
+                if(touched) {
+                    Gdx.input.setInputProcessor(null);
                     startGame = true;
+                }
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
             {
@@ -196,7 +201,6 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.addActor(instructionsBox);
 
         stage.addActor(instructionsLabel1);
-        //stage.addActor(instructionsLabel2);
         stage.addActor(minLabel);
         stage.addActor(maxLabel);
 
@@ -212,7 +216,13 @@ public class LevelSelectMenu extends ScreenAdapter {
     }
 
     public void render (float delta) {
-        if(isFaded && !isTransitionFromComplete) transitionFromScreen(delta);
+        if(isFaded && !isTransitionFromComplete) {
+            Gdx.input.setInputProcessor(null);
+            transitionFromScreen(delta);
+        }
+
+        if(isTransition) transitionToScreen(delta);
+
         switch (selectedLevelNumber) {
             case 0:
                 Gdx.gl.glClearColor(32/255f, 137/255f, 198/255f, 1f);
@@ -230,10 +240,11 @@ public class LevelSelectMenu extends ScreenAdapter {
         if(isFaded && !isTransitionFromComplete) Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act();
+
         fbo.begin();
             Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            stage.act();
             stage.draw();
         fbo.end();
         renderToTexture();
@@ -248,10 +259,8 @@ public class LevelSelectMenu extends ScreenAdapter {
 
             game.setScreen(new MainMenu(game, false));
         }
-        if(isTransition) {
-            transitionToScreen(delta);
-        }
-        if (startGame && !isTransition) {
+
+        if(startGame && !isTransition) {
             saveLastSelectedLevel();
 
             Slider tmpActor = stage.getRoot().findActor("durationslider");
@@ -263,7 +272,9 @@ public class LevelSelectMenu extends ScreenAdapter {
             isTransition = true;
         }
 
-        if(isTransitionComplete) {
+        if(isTransitionComplete) timer += delta;
+
+        if(isTransitionComplete && timer > 0.15f) {
             AssetsAudio.stopMusic();
             game.setScreen(new GameScreen(game, selectedLevelNumber));
         }
@@ -274,6 +285,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         if(opacity >= 1f) {
             opacity = 1f;
             isTransitionFromComplete = true;
+            Gdx.input.setInputProcessor(stage);
         }
     }
 
