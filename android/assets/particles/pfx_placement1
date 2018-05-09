@@ -99,22 +99,22 @@ active: false
 active: false
 - Tint - 
 colorsCount: 12
-colors0: 0.5647059
-colors1: 0.28235295
-colors2: 0.07058824
-colors3: 0.8784314
-colors4: 0.76862746
-colors5: 0.2509804
+colors0: 0.70980394
+colors1: 0.67058825
+colors2: 0.08235294
+colors3: 0.8980392
+colors4: 0.6313726
+colors5: 0.29411766
 colors6: 1.0
-colors7: 0.8
-colors8: 0.31764707
+colors7: 0.9529412
+colors8: 0.23529412
 colors9: 1.0
 colors10: 0.99607843
-colors11: 0.46666667
+colors11: 0.5686275
 timelineCount: 4
 timeline0: 0.0
 timeline1: 0.2444062
-timeline2: 0.68158346
+timeline2: 0.6798623
 timeline3: 1.0
 - Transparency - 
 lowMin: 0.0

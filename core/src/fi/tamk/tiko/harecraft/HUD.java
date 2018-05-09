@@ -535,10 +535,10 @@ public class HUD {
         sBatch.draw(placementRegion,30f,15f, width, height);
         sBatch.setColor(1f,1f,1f, 1f);
 
-        pfx_placement.setPosition(width/3f, height/2f);
-        pfx_placement1.setPosition(width/3f, height/2f);
-        pfx_placement2.setPosition(width/3f, height/2f);
-        pfx_placement3.setPosition(width/3f, height/2f);
+        pfx_placement.setPosition(width/2.5f, height/2f);
+        pfx_placement1.setPosition(width/2.5f, height/2f);
+        pfx_placement2.setPosition(width/2.5f, height/2f);
+        pfx_placement3.setPosition(width/2.5f, height/2f);
     }
 
     public void dispose() {

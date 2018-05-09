@@ -132,6 +132,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static int selectedScreen;
 
     float timer;
+    int id_fanfaar = -1;
 
     static float opacity = 1f;
     static boolean isTransition = false;
@@ -280,6 +281,13 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         }
         else if(gameState == END) {
             fadeMusic(delta/5f);
+            if(!AssetsAudio.isPlaying(id_fanfaar) && !AssetsAudio.isPlaying()) {
+                if(volume > 0.4f) {
+                    volume = 0.4f;
+                    AssetsAudio.setMusicVolume(musicVolume * volume);
+                }
+                AssetsAudio.resumeMusic();
+            }
         }
     }
 
@@ -369,7 +377,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         fadeMusic(delta);
         opacity -= delta;
         if(opacity <= 0f) opacity = 0f;
-
         if(opacity == 0f && volume == 0f) isTransitionComplete = true;
     }
 
@@ -390,22 +397,28 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         AssetsAudio.pauseMusic();
         switch(playerPlacement) {
             case 1:
-                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_6,0.45f);
+                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_6);
+                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_6;
                 break;
             case 2:
-                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_5,0.45f);
+                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_5);
+                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_5;
                 break;
             case 3:
-                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_4,0.45f);
+                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_4);
+                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_4;
                 break;
             case 4:
-                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_3,0.45f);
+                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_3);
+                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_3;
                 break;
             case 5:
-                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_2,0.45f);
+                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_2);
+                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_2;
                 break;
             case 6:
-                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_1,0.45f);
+                AssetsAudio.playMusic(AssetsAudio.MUSIC_FANFAAR_1);
+                id_fanfaar = AssetsAudio.MUSIC_FANFAAR_1;
                 break;
         }
     }

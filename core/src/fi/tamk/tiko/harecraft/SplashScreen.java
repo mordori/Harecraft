@@ -44,19 +44,19 @@ public class SplashScreen extends ScreenAdapter {
         isAudioLoaded = false;
         isAssetsLoaded = false;
 
-        tamkSprite = new Sprite(new Texture(Gdx.files.internal("textures/tamk.png")));
+        tamkSprite = new Sprite(Assets.loadTexture("tamk.png"));
         tamkSprite.setSize(488,215);
         tamkSprite.setPosition(960 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20);
 
-        exeriumSprite = new Sprite(new Texture(Gdx.files.internal("textures/exerium.png")));
+        exeriumSprite = new Sprite(Assets.loadTexture("exerium.png"));
         exeriumSprite.setSize(575, 187);
         exeriumSprite.setPosition(320 -exeriumSprite.getWidth()/2,100);
 
-        projectileSprite = new Sprite(new Texture(Gdx.files.internal("textures/projectile.png")));
+        projectileSprite = new Sprite(Assets.loadTexture("projectile.png"));
         projectileSprite.setSize(514,329 );
         projectileSprite.setPosition(320 - projectileSprite.getWidth()/2, 533 - projectileSprite.getHeight()/2);
 
-        tikoSprite = new Sprite(new Texture(Gdx.files.internal("textures/tiko.png")));
+        tikoSprite = new Sprite(Assets.loadTexture("tiko.png"));
         tikoSprite.setSize(423,166);
         tikoSprite.setPosition(960 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -20);
 

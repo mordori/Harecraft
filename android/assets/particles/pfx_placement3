@@ -99,15 +99,15 @@ active: false
 active: false
 - Tint - 
 colorsCount: 12
-colors0: 0.6156863
-colors1: 0.43529412
-colors2: 0.29803923
-colors3: 0.6784314
-colors4: 0.50980395
-colors5: 0.33333334
+colors0: 0.7411765
+colors1: 0.34901962
+colors2: 0.1764706
+colors3: 0.8627451
+colors4: 0.64705884
+colors5: 0.42352942
 colors6: 1.0
-colors7: 0.61960787
-colors8: 0.3764706
+colors7: 0.46666667
+colors8: 0.2627451
 colors9: 1.0
 colors10: 0.99607843
 colors11: 0.46666667
