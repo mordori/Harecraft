@@ -48,22 +48,28 @@ public class SplashScreen extends ScreenAdapter {
         float yOffset = 40f;
         float size = 1.2f;
 
-        loadingSprite = new Sprite(Assets.loadTexture("tex_loading.png"));
+        Assets.tex_loading = Assets.loadTexture("tex_loading.png");
+        Assets.tex_projectile = Assets.loadTexture("projectile.png");
+        Assets.tex_tamk = Assets.loadTexture("tamk.png");
+        Assets.tex_tiko = Assets.loadTexture("tiko.png");
+        Assets.tex_exerium = Assets.loadTexture("exerium.png");
+
+        loadingSprite = new Sprite(Assets.tex_loading);
         loadingSprite.setPosition(1280/2 - loadingSprite.getWidth()/2, 800/1.21f - loadingSprite.getHeight()/2);
 
-        tamkSprite = new Sprite(Assets.loadTexture("tamk.png"));
+        tamkSprite = new Sprite(Assets.tex_tamk);
         tamkSprite.setSize(488/size,215/size);
         tamkSprite.setPosition(920 -tamkSprite.getWidth()/2 -25,533 - tamkSprite.getHeight()/2 -20 - yOffset*3f);
 
-        exeriumSprite = new Sprite(Assets.loadTexture("exerium.png"));
+        exeriumSprite = new Sprite(Assets.tex_exerium);
         exeriumSprite.setSize(575/size, 187/size);
         exeriumSprite.setPosition(370 -exeriumSprite.getWidth()/2,100 - yOffset);
 
-        projectileSprite = new Sprite(Assets.loadTexture("projectile.png"));
+        projectileSprite = new Sprite(Assets.tex_projectile);
         projectileSprite.setSize(514/size,329/size);
         projectileSprite.setPosition(360 - projectileSprite.getWidth()/2, 520 - projectileSprite.getHeight()/2 - yOffset*3f);
 
-        tikoSprite = new Sprite(Assets.loadTexture("tiko.png"));
+        tikoSprite = new Sprite(Assets.tex_tiko);
         tikoSprite.setSize(423/size,166/size);
         tikoSprite.setPosition(910 - tikoSprite.getWidth()/2, 233 -tikoSprite.getHeight()/2 -35 - yOffset);
 
@@ -93,8 +99,8 @@ public class SplashScreen extends ScreenAdapter {
         if(timer != 0f) {
             if(isAudioLoaded && isAssetsLoaded) alpha -= 0.02f;
             else {
-                if (!isAudioLoaded) isAudioLoaded = AssetsAudio.load();
                 if (!isAssetsLoaded) isAssetsLoaded = Assets.load();
+                if (!isAudioLoaded) isAudioLoaded = AssetsAudio.load();
             }
             if(alpha < 0f) alpha = 0f;
         }
@@ -107,10 +113,5 @@ public class SplashScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        loadingSprite.getTexture().dispose();
-        tamkSprite.getTexture().dispose();
-        exeriumSprite.getTexture().dispose();
-        projectileSprite.getTexture().dispose();
-        tikoSprite.getTexture().dispose();
     }
 }

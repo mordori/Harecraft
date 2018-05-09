@@ -167,9 +167,8 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         playerScore = 0;
         balloonsCollected = 0;
         ringsCollected = 0;
-        float timer;
 
-        AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.3f);
+        AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.24f);
     }
 
     public void selectWorld() {
@@ -248,7 +247,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
             AssetsAudio.stopSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
             AssetsAudio.playMusic(worldIndex);
-            AssetsAudio.setMusicVolume(0.55f);
+            AssetsAudio.setMusicVolume(musicVolume);
 
             for(Opponent o : world.opponents) {
                 o.position.z = o.spawnZ;
@@ -384,7 +383,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     public void fadeMusic(float delta) {
         volume -= delta;
         if(volume <= 0f) volume = 0f;
-        AssetsAudio.setMusicVolume(0.2f * volume);
+        AssetsAudio.setMusicVolume(0.35f * volume);
     }
 
     public void transitionToScreen(float delta) {
@@ -423,7 +422,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
                 id_fanfaar = AssetsAudio.SOUND_FANFAAR_4;
                 break;
             case 4:
-                AssetsAudio.playMusic(AssetsAudio.SOUND_FANFAAR_3);
+                AssetsAudio.playSound(AssetsAudio.SOUND_FANFAAR_3,0.45f);
                 id_fanfaar = AssetsAudio.SOUND_FANFAAR_3;
                 break;
             case 5:

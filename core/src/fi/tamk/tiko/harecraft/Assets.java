@@ -31,6 +31,12 @@ public class Assets {
     static Texture tex_mask_foam;
     static Texture tex_mask_sea_deep;
 
+    static Texture tex_loading;
+    static Texture tex_tamk;
+    static Texture tex_exerium;
+    static Texture tex_projectile;
+    static Texture tex_tiko;
+
     static TextureRegion texR_background_summer;
     static TextureRegion texR_background_tundra;
     static TextureRegion texR_sun;
@@ -152,30 +158,25 @@ public class Assets {
         tex_mask_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep_mask.png"));
         tex_mask_sea_deep.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_mask_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
         tex_mask_foam = new Texture(Gdx.files.internal("shaders/tex_sea_mask.png"));
         tex_mask_foam.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_mask_foam.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
         tex_sea_deep = new Texture(Gdx.files.internal("shaders/tex_sea_deep.png"));
         tex_sea_deep.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_sea_deep.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
         tex_foam = new Texture(Gdx.files.internal("shaders/tex_foam.png"));
         tex_foam.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_foam.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
         tex_sea = new Texture(Gdx.files.internal("shaders/tex_sea.png"));
         tex_sea.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_sea.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
         tex_grass = new Texture(Gdx.files.internal("shaders/tex_grass.png"));
         tex_grass.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_grass.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
         tex_ground = new Texture(Gdx.files.internal("shaders/tex_ground.png"));
         tex_ground.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         tex_ground.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
 
         //TEXTURE REGIONS
         texR_finnishFlag = loadAtlasTextureRegion(atlas_1,"fiFlag");
@@ -348,6 +349,11 @@ public class Assets {
         tex_sea_deep.dispose();
         tex_mask_foam.dispose();
         tex_mask_sea_deep.dispose();
+        tex_loading.dispose();
+        tex_exerium.dispose();
+        tex_projectile.dispose();
+        tex_tiko.dispose();
+        tex_tamk.dispose();
 
         texR_background_summer.getTexture().dispose();
         texR_background_tundra.getTexture().dispose();

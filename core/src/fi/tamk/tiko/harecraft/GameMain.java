@@ -42,7 +42,7 @@ public class GameMain extends Game {
 
     static FrameBuffer fbo;
     static Sprite texture;
-    static float musicVolume;
+    static float musicVolume = 0.6f;
 	
 	@Override
 	public void create () {

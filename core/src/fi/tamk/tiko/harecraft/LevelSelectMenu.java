@@ -211,7 +211,6 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.addActor(durationSlider);
 
         AssetsAudio.playMusic(AssetsAudio.MUSIC_COURSE_2);
-        musicVolume = 0.5f;
         AssetsAudio.setMusicVolume(musicVolume);
     }
 

@@ -94,12 +94,12 @@ public class AssetsAudio {
         sound_fanfaar_5 = loadSound("sound_fanfaar_5.wav");
         sound_fanfaar_6 = loadSound("sound_fanfaar_6.wav");
 
+        ID_sound_airplane_engine = sound_airplane_engine.play(0);
         ID_sound_cloud_hit = sound_cloud_hit.play(0);
         ID_sound_ring_collected = sound_ring_collected.play(0);
         ID_sound_balloon_collected = sound_balloon_collected.play(0);
         ID_sound_countdown = sound_countdown.play(0);
         ID_sound_countdown_end = sound_countdown_end.play(0);
-        ID_sound_airplane_engine = sound_airplane_engine.play(0);
         ID_sound_overtaking = sound_overtaking.play(0);
         ID_sound_undertaking = sound_undertaking.play(0);
         ID_sound_points_counting = sound_points_counting.play(0);
@@ -111,7 +111,6 @@ public class AssetsAudio {
         ID_sound_fanfaar_4 = sound_fanfaar_4.play(0);
         ID_sound_fanfaar_5 = sound_fanfaar_5.play(0);
         ID_sound_fanfaar_6 = sound_fanfaar_6.play(0);
-
 
         return true;
     }

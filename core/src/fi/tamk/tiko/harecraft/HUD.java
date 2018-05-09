@@ -483,7 +483,7 @@ public class HUD {
     }
 
     public void updatePlacementNumber(float delta) {
-        placementRegion = Assets.atlas_1.findRegion(playerPlacement + language);
+        if(gameState == RACE || gameState == FINISH) placementRegion = Assets.atlas_1.findRegion(playerPlacement + language);
 
         if(gameState != END && gameState != EXIT && gameState != START) {
             if(playerPlacement == 1) {

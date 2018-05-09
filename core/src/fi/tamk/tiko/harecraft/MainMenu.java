@@ -279,7 +279,6 @@ public class MainMenu extends ScreenAdapter {
         sprite_plane.setPosition(x, y);
 
         AssetsAudio.playMusic(AssetsAudio.MUSIC_COURSE_2);
-        musicVolume = 0.5f;
         AssetsAudio.setMusicVolume(musicVolume);
     }
 
@@ -305,6 +304,7 @@ public class MainMenu extends ScreenAdapter {
                     Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
                     break;
             }
+            Gdx.input.setInputProcessor(null);
         }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(!animation_plane.isFlipped) {
@@ -370,6 +370,7 @@ public class MainMenu extends ScreenAdapter {
             if(opacity > 1f) {
                 isLaunched = false;
                 opacity = 1f;
+                Gdx.input.setInputProcessor(stage);
             }
         }
         if (settingsMenu) {
