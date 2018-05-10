@@ -36,6 +36,7 @@ public class Assets {
     static Texture tex_exerium;
     static Texture tex_projectile;
     static Texture tex_tiko;
+    static Texture tex_lataa;
 
     static TextureRegion texR_background_summer;
     static TextureRegion texR_background_tundra;
@@ -107,6 +108,8 @@ public class Assets {
     static TextureRegion texR_stage1_pressed;
     static TextureRegion texR_stage2_pressed;
     static TextureRegion texR_stage3_pressed;
+    static TextureRegion texR_adjusting;
+    static TextureRegion texR_asettaa;
 
     static TextureAtlas atlas_menu_plane;
     static TextureAtlas atlas_planes;
@@ -193,6 +196,8 @@ public class Assets {
         texR_stage1_pressed = loadAtlasTextureRegion(atlas_1,"stage1p");
         texR_stage2_pressed = loadAtlasTextureRegion(atlas_1,"stage2p");
         texR_stage3_pressed = loadAtlasTextureRegion(atlas_1,"stage3p");
+        texR_asettaa = loadAtlasTextureRegion(atlas_1,"asettaa");
+        texR_adjusting = loadAtlasTextureRegion(atlas_1,"adjusting");
 
         //DECALS
         texR_background_summer = loadAtlasTextureRegion(atlas_1, "bg_summer");
@@ -424,6 +429,8 @@ public class Assets {
         texR_stage1_pressed.getTexture().dispose();
         texR_stage2_pressed.getTexture().dispose();
         texR_stage3_pressed.getTexture().dispose();
+        texR_asettaa.getTexture().dispose();
+        texR_adjusting.getTexture().dispose();
 
         atlas_menu_plane.dispose();
         atlas_planes.dispose();

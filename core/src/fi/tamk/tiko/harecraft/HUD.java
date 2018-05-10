@@ -57,6 +57,7 @@ public class HUD {
     float opacity = 0f;
     float stateOpacity = 0f;
     int count;
+    float yPos2 = 0;
 
     ParticleEffect pfx_placement = new ParticleEffect(Assets.pfx_placement);
     ParticleEffect pfx_placement1 = new ParticleEffect(Assets.pfx_placement1);
@@ -68,6 +69,7 @@ public class HUD {
     TextureRegion ringRegion = new TextureRegion();
     TextureRegion balloonRegion = new TextureRegion();
     TextureRegion arrowsRegion = new TextureRegion();
+    TextureRegion adjustingRegion = new TextureRegion();
     String language;
 
     public HUD(World world, final GameScreen gameScreen) {
@@ -93,6 +95,11 @@ public class HUD {
             default:
                 break;
         }
+
+        if(Gdx.app.getPreferences("ProfileFile").getString("Language").contains("Finnish")) {
+            adjustingRegion = Assets.texR_asettaa;
+        }
+        else adjustingRegion = Assets.texR_adjusting;
 
         pfx_placement.allowCompletion();
         pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f) * 1.25f);
@@ -484,6 +491,23 @@ public class HUD {
 
         sBatch.setColor(1f,1f,1f, stateOpacity);
         sBatch.draw(stateRegion,SCREEN_WIDTH/2f - width/2f, yPos - height/2f, width, height);
+        sBatch.setColor(1f,1f,1f, 1f);
+
+        float adjustOpacity = 0f;
+
+        if(gameState == START || gameState == RACE) {
+            if(count == 1) adjustOpacity = stateOpacity;
+            else if(gameState == RACE){
+                adjustOpacity = stateOpacity;
+                yPos2 -= Gdx.graphics.getDeltaTime() * 20f / stateOpacity;
+            }
+            else if(count == 2 || count == 3 || count == 4) adjustOpacity = 1f;
+            else adjustOpacity = 0f;
+
+        }
+
+        sBatch.setColor(1f,1f,1f, adjustOpacity);
+        sBatch.draw(adjustingRegion, SCREEN_WIDTH/2f - adjustingRegion.getRegionWidth()/2f, SCREEN_HEIGHT/6f - adjustingRegion.getRegionHeight()/2f + yPos2, adjustingRegion.getRegionWidth(), adjustingRegion.getRegionHeight());
         sBatch.setColor(1f,1f,1f, 1f);
     }
 

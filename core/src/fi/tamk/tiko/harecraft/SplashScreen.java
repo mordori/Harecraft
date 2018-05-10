@@ -18,6 +18,7 @@ import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
+import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
 
 /**
  * Created by musta on 27.4.2018.
@@ -48,13 +49,20 @@ public class SplashScreen extends ScreenAdapter {
         float yOffset = 40f;
         float size = 1.2f;
 
+
+        Assets.tex_lataa = Assets.loadTexture("tex_lataa.png");
         Assets.tex_loading = Assets.loadTexture("tex_loading.png");
         Assets.tex_projectile = Assets.loadTexture("projectile.png");
         Assets.tex_tamk = Assets.loadTexture("tamk.png");
         Assets.tex_tiko = Assets.loadTexture("tiko.png");
         Assets.tex_exerium = Assets.loadTexture("exerium.png");
 
-        loadingSprite = new Sprite(Assets.tex_loading);
+
+        if(Gdx.app.getPreferences("ProfileFile").getString("Language").contains("Finnish")) {
+            loadingSprite = new Sprite(Assets.tex_lataa);
+        }
+        else loadingSprite = new Sprite(Assets.tex_loading);
+
         loadingSprite.setPosition(1280/2 - loadingSprite.getWidth()/2, 800/1.21f - loadingSprite.getHeight()/2);
 
         tamkSprite = new Sprite(Assets.tex_tamk);
