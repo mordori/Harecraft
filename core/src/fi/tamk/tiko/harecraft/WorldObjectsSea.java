@@ -67,6 +67,7 @@ class Boat extends GameObject {
 class Island extends GameObject {
     Decal decal_palmtree;
     ArrayList<Decal> palmtrees = new ArrayList<Decal>();
+    Vector3 up = new Vector3(0f,1f,0f);
     public Island(float x, float y, float z) {
         TextureRegion textureRegion = Assets.texR_island;
 
@@ -87,28 +88,16 @@ class Island extends GameObject {
         width = textureRegion.getRegionWidth() / 20f;
         height = textureRegion.getRegionHeight() / 20f;
 
-        int random = MathUtils.random(1,7);
-
-        float pXMax = decal.getWidth()/4.6f * 2f / random;
-        float pX = decal.getPosition().x + decal.getWidth()/5.4f;
-        float pY = decal.getPosition().y + height/2.1f;
-        float pZ = 0f;
+        int random = (int)(MathUtils.random(1f, 3.5f) * (randomSize*1.5f));
 
         for(int i = 0; i < random; i++) {
             if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
             decal_palmtree = Decal.newDecal(width, height, textureRegion,true);
 
-            pX -= MathUtils.random(pXMax/3.5f, pXMax);
-            pZ = decal.getPosition().z+ MathUtils.random(-decal.getHeight()/4f, -decal.getHeight()/10f);
-
-            Vector3 palmtreePos = new Vector3(pX, pY, pZ);
-            decal_palmtree.setPosition(palmtreePos);
+            decal_palmtree.setPosition(decal.getX() + MathUtils.random(-decal.getWidth()/6.5f,decal.getWidth()/6.5f),
+                    decal.getY() + width/2f + 0.5f, decal.getZ() + MathUtils.random(-decal.getHeight()/6.5f, decal.getHeight()/6.5f));
 
             palmtrees.add(decal_palmtree);
-        }
-
-        for(Decal d : palmtrees) {
-            System.out.println(d.getPosition());
         }
     }
 
@@ -119,14 +108,13 @@ class Island extends GameObject {
 
         //Opacity
         setOpacity();
-        for(Decal d : palmtrees) {
-            d.setColor(1f,1f,1f, opacity);
-        }
 
         //Movement Z
         moveZ(delta);
         for(Decal d : palmtrees) {
+            d.setColor(1f,1f,1f, opacity);
             d.translateZ(velocity.z * delta);
+            d.lookAt(camera.position,up);
         }
     }
 }
@@ -139,6 +127,9 @@ class Island extends GameObject {
 
 class LightHouse extends GameObject {
     Decal decal_island;
+    Decal decal_palmtree;
+    ArrayList<Decal> palmtrees = new ArrayList<Decal>();
+    Vector3 up = new Vector3(0f,1f,0f);
 
     public LightHouse(float x, float y, float z) {
         TextureRegion textureRegion = Assets.texR_lighthouse;
@@ -146,7 +137,7 @@ class LightHouse extends GameObject {
         height = textureRegion.getRegionHeight() / 15f;
 
         decal = Decal.newDecal(width, height, textureRegion,true);
-        decal.setPosition(x,y - 4f + height/2f, z);
+        decal.setPosition(x,y - 4.5f + height/2f, z);
 
         textureRegion = Assets.texR_island;
         width = textureRegion.getRegionWidth() / 12f;
@@ -156,6 +147,25 @@ class LightHouse extends GameObject {
         decal_island.setPosition(x,y - 4f, z + 5f);
         decal_island.rotateX(90f);
         decal_island.rotateZ(MathUtils.random(0f,360f));
+
+
+        textureRegion = Assets.texR_palmtree;
+
+        width = textureRegion.getRegionWidth() / 20f;
+        height = textureRegion.getRegionHeight() / 20f;
+
+        int random = (MathUtils.random(6, 10));
+
+        for(int i = 0; i < random; i++) {
+            if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
+            decal_palmtree = Decal.newDecal(width, height, textureRegion,true);
+
+            decal_palmtree.setPosition(decal_island.getX() + MathUtils.random(-decal_island.getWidth()/6f,decal_island.getWidth()/6f),
+                    decal_island.getY() + width/2f + 0.5f, decal_island.getZ() + MathUtils.random(-decal_island.getHeight()/6f, decal_island.getHeight()/6f));
+
+            if(!(decal_palmtree.getZ() < decal_island.getZ() && (decal_palmtree.getZ() > decal_island.getZ() - decal_island.getHeight()/7f)
+            && decal_palmtree.getZ() > decal_island.getZ() && (decal_palmtree.getZ() < decal_island.getZ() + decal_island.getHeight()/8f))) palmtrees.add(decal_palmtree);
+        }
     }
 
     @Override
@@ -169,6 +179,13 @@ class LightHouse extends GameObject {
         //Movement Z
         moveZ(delta);
         decal_island.translateZ(velocity.z * delta);
+
+
+        for(Decal d : palmtrees) {
+            d.setColor(1f,1f,1f, opacity);
+            d.translateZ(velocity.z * delta);
+            d.lookAt(camera.position,up);
+        }
     }
 }
 

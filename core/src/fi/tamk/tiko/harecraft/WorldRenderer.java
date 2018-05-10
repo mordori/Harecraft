@@ -79,21 +79,22 @@ public class WorldRenderer {
         //----------------------------
         dBatch.add(world.ground);
         dBatch.flush();
-
         if(isSeaEnabled) activeShader = SHADER3D_DEFAULT;
-        //----------------------------
+
+        if(isSeaEnabled){
+            drawIslands();
+            if(gameState == FINISH || gameState == END || (gameState == EXIT && player.distance > world.finish)) {
+                for (LightHouse lightHouse : world.lightHouses) dBatch.add(lightHouse.decal_island);
+            }
+            dBatch.flush();
+        }
 
         if(gameState == FINISH || gameState == END || (gameState == EXIT && player.distance > world.finish)) {
             if(worldIndex == 1 || worldIndex == 2) {
-                for (HotAirBalloon hotAirBalloon : world.hotAirBalloons) {
-                    dBatch.add(hotAirBalloon.decal);
-                }
+                for(HotAirBalloon hotAirBalloon : world.hotAirBalloons) dBatch.add(hotAirBalloon.decal);
             }
             else {
-                for (LightHouse lightHouse : world.lightHouses) {
-                    dBatch.add(lightHouse.decal);
-                    dBatch.add(lightHouse.decal_island);
-                }
+                for(LightHouse lightHouse : world.lightHouses) dBatch.add(lightHouse.decal);
             }
         }
 
@@ -140,6 +141,11 @@ public class WorldRenderer {
         sBatch.end();
     }
 
+    public void drawIslands() {
+        for(Island i : world.islands_L) dBatch.add(i.decal);
+        for(Island i : world.islands_R) dBatch.add(i.decal);
+    }
+
     public void drawDecalLists() {
         for(Cloud c : world.clouds_LUp) dBatch.add(c.decal);
         for(Cloud c : world.clouds_LDown) dBatch.add(c.decal);
@@ -165,15 +171,15 @@ public class WorldRenderer {
         for(Lake l : world.lakes_R) dBatch.add(l.decal);
 
         for(Island i : world.islands_L) {
-            dBatch.add(i.decal);
-            for(Decal d : i.palmtrees) {
-                dBatch.add(d);
-            }
+            for(Decal d : i.palmtrees) dBatch.add(d);
         }
         for(Island i : world.islands_R) {
-            dBatch.add(i.decal);
-            for(Decal d : i.palmtrees) {
-                dBatch.add(d);
+            for(Decal d : i.palmtrees) dBatch.add(d);
+        }
+
+        if(gameState == FINISH || gameState == END || (gameState == EXIT && player.distance > world.finish)) {
+            for (LightHouse lightHouse : world.lightHouses) {
+                for (Decal d : lightHouse.palmtrees) dBatch.add(d);
             }
         }
 

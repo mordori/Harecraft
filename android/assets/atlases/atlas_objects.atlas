@@ -20,21 +20,21 @@ HAB_tundra
   index: -1
 balloon_blue
   rotate: false
-  xy: 1058, 421
+  xy: 808, 421
   size: 246, 585
   orig: 246, 585
   offset: 0, 0
   index: -1
 balloon_orange
   rotate: false
-  xy: 1308, 421
+  xy: 1058, 421
   size: 246, 585
   orig: 246, 585
   offset: 0, 0
   index: -1
 balloon_red
   rotate: false
-  xy: 808, 421
+  xy: 1308, 421
   size: 246, 585
   orig: 246, 585
   offset: 0, 0
@@ -83,9 +83,9 @@ hill_tundra
   index: -1
 lighthouse
   rotate: false
-  xy: 1558, 375
-  size: 182, 631
-  orig: 182, 631
+  xy: 1558, 392
+  size: 182, 614
+  orig: 182, 614
   offset: 0, 0
   index: -1
 palmtree
@@ -104,7 +104,7 @@ sun
   index: -1
 tree_summer_big_dark
   rotate: false
-  xy: 596, 43
+  xy: 818, 85
   size: 107, 198
   orig: 107, 198
   offset: 0, 0
@@ -118,14 +118,14 @@ tree_summer_big_light
   index: -1
 tree_summer_small_dark
   rotate: false
-  xy: 1855, 273
+  xy: 1151, 120
   size: 107, 163
   orig: 107, 163
   offset: 0, 0
   index: -1
 tree_summer_small_light
   rotate: false
-  xy: 1040, 119
+  xy: 596, 77
   size: 107, 164
   orig: 107, 164
   offset: 0, 0
@@ -139,35 +139,35 @@ tree_tundra_big_dark
   index: -1
 tree_tundra_big_light
   rotate: false
-  xy: 818, 86
+  xy: 929, 86
   size: 107, 197
   orig: 107, 197
   offset: 0, 0
   index: -1
 tree_tundra_medium_dark
   rotate: false
-  xy: 929, 119
+  xy: 1040, 119
   size: 107, 164
   orig: 107, 164
   offset: 0, 0
   index: -1
 tree_tundra_medium_light
   rotate: false
-  xy: 1744, 275
+  xy: 1262, 168
   size: 107, 161
   orig: 107, 161
   offset: 0, 0
   index: -1
 tree_tundra_small_dark
   rotate: false
-  xy: 1378, 280
+  xy: 1373, 140
   size: 107, 137
   orig: 107, 137
   offset: 0, 0
   index: -1
 tree_tundra_small_light
   rotate: false
-  xy: 1153, 193
+  xy: 1378, 281
   size: 107, 136
   orig: 107, 136
   offset: 0, 0

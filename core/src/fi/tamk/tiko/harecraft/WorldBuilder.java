@@ -22,6 +22,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Speed;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
+import static fi.tamk.tiko.harecraft.World.end;
 import static fi.tamk.tiko.harecraft.World.finish;
 import static fi.tamk.tiko.harecraft.World.player;
 
@@ -113,6 +114,11 @@ public class WorldBuilder {
                     lightHouse.update(delta);
                 }
                 if (!world.lightHouses.isEmpty() && world.lightHouses.get(0).decal.getPosition().z < camera.position.z) {
+                    int size = world.lightHouses.get(0).palmtrees.size() - 1;
+
+                    for(int i = size; i > 0; i--) {
+                        world.lightHouses.get(0).palmtrees.remove(i);
+                    }
                     world.lightHouses.remove(0);
                 }
             }
@@ -131,7 +137,7 @@ public class WorldBuilder {
         }
         else if(world instanceof WorldSea) {
             addBoat();
-            addIsland();
+            if(player.distance < end - 375f || player.distance > end - 250f) addIsland();
         }
     }
 
@@ -139,6 +145,7 @@ public class WorldBuilder {
         for(Boat b : world.boats) b.update(delta);
         boat_RemoveTimer -= delta;
         if(boat_RemoveTimer < 0f) boat_RemoveTimer = 0f;
+
         removeBoats();
     }
 
@@ -157,7 +164,6 @@ public class WorldBuilder {
     public void removeIsland(ArrayList<Island> islandArray) {
         if(!islandArray.isEmpty() && islandArray.get(0).decal.getPosition().z < camera.position.z) {
             int size = islandArray.get(0).palmtrees.size() - 1;
-            System.out.println(islandArray.get(0).palmtrees.size());
 
             for(int i = size; i > 0; i--) {
                 islandArray.get(0).palmtrees.remove(i);
@@ -579,6 +585,19 @@ public class WorldBuilder {
                     world.clouds_LDown.add(new Cloud(i, MathUtils.random(0, 8), j)); //Clouds
                 }
             }
+        }
+
+        if(worldIndex == 0) {
+            x = MathUtils.random(-110f, -20f);
+            y = groundLevel;
+            z = MathUtils.random(200f, 350f);
+            world.islands_L.add(new Island(x, y, z));
+            islands_LTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+
+            x = MathUtils.random(110f, 20f);
+            z = MathUtils.random(200f, 350f);
+            world.islands_R.add(new Island(x, y, z));
+            islands_RTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
         }
     }
 

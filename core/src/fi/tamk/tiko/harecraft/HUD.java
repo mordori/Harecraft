@@ -91,20 +91,20 @@ public class HUD {
         }
 
         pfx_placement.allowCompletion();
-        pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f));
-        pfx_placement.getEmitters().get(0).getXScale().setHighMax(240f * (SCREEN_WIDTH/1280f));
+        pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f) * 1.25f);
+        pfx_placement.getEmitters().get(0).getXScale().setHighMax(240f * (SCREEN_WIDTH/1280f) * 1.25f);
 
         pfx_placement1.allowCompletion();
-        pfx_placement1.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f));
-        pfx_placement1.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f));
+        pfx_placement1.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
+        pfx_placement1.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);
 
         pfx_placement2.allowCompletion();
-        pfx_placement2.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f));
-        pfx_placement2.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f));
+        pfx_placement2.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
+        pfx_placement2.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);
 
         pfx_placement3.allowCompletion();
-        pfx_placement3.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f));
-        pfx_placement3.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f));
+        pfx_placement3.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
+        pfx_placement3.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);
 
         if(localizationBundle.get("btnResumeText").equals("continue")) language = "_en";
         else language = "_fi";
@@ -535,10 +535,10 @@ public class HUD {
         sBatch.draw(placementRegion,30f,15f, width, height);
         sBatch.setColor(1f,1f,1f, 1f);
 
-        pfx_placement.setPosition(width/2.5f, height/2f);
-        pfx_placement1.setPosition(width/2.5f, height/2f);
-        pfx_placement2.setPosition(width/2.5f, height/2f);
-        pfx_placement3.setPosition(width/2.5f, height/2f);
+        pfx_placement.setPosition(width/2.75f, height/2f);
+        pfx_placement1.setPosition(width/2.75f, height/2f);
+        pfx_placement2.setPosition(width/2.75f, height/2f);
+        pfx_placement3.setPosition(width/2.75f, height/2f);
     }
 
     public void dispose() {

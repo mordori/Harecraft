@@ -304,7 +304,6 @@ public class MainMenu extends ScreenAdapter {
                     Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
                     break;
             }
-            Gdx.input.setInputProcessor(null);
         }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if(!animation_plane.isFlipped) {
