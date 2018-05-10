@@ -507,7 +507,7 @@ public class HUD {
         }
 
         sBatch.setColor(1f,1f,1f, adjustOpacity);
-        sBatch.draw(adjustingRegion, SCREEN_WIDTH/2f - adjustingRegion.getRegionWidth()/2f, SCREEN_HEIGHT/6f - adjustingRegion.getRegionHeight()/2f + yPos2, adjustingRegion.getRegionWidth(), adjustingRegion.getRegionHeight());
+        sBatch.draw(adjustingRegion, SCREEN_WIDTH/2f - adjustingRegion.getRegionWidth()* SCREEN_WIDTH/1280f/2f, SCREEN_HEIGHT/4f - adjustingRegion.getRegionHeight()* SCREEN_WIDTH/1280f/2f + yPos2, adjustingRegion.getRegionWidth() * SCREEN_WIDTH/1280f, adjustingRegion.getRegionHeight() * SCREEN_WIDTH/1280f);
         sBatch.setColor(1f,1f,1f, 1f);
     }
 

@@ -160,14 +160,14 @@ help
   index: -1
 lake_summer
   rotate: false
-  xy: 1268, 952
+  xy: 1268, 1487
   size: 529, 533
   orig: 529, 533
   offset: 0, 0
   index: -1
 lake_tundra
   rotate: false
-  xy: 1268, 1487
+  xy: 1268, 952
   size: 529, 533
   orig: 529, 533
   offset: 0, 0
@@ -195,14 +195,14 @@ radardot
   index: -1
 stage2p
   rotate: false
-  xy: 1670, 520
+  xy: 1652, 218
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 stage3p
   rotate: false
-  xy: 1652, 218
+  xy: 1670, 520
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
@@ -257,28 +257,28 @@ menubg
   index: -1
 stage1
   rotate: false
-  xy: 1284, 1422
+  xy: 1284, 1724
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 stage1p
   rotate: false
-  xy: 890, 922
+  xy: 1284, 1422
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 stage2
   rotate: false
-  xy: 1636, 1724
+  xy: 890, 922
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 stage3
   rotate: false
-  xy: 1284, 1724
+  xy: 1636, 1724
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
