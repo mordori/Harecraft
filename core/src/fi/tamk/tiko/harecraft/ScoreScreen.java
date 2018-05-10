@@ -153,6 +153,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                     Assets.font6.getData().setLineHeight(originalLineHeight4);
 
                     selectedScreen = NEW_GAME;
+                    isTransitionFromComplete = true;
                     Gdx.input.setInputProcessor(null);
                     isTransition = true;
                 }
@@ -194,6 +195,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
                     selectedScreen = LEVEL_MENU;
+                    isTransitionFromComplete = true;
                     Gdx.input.setInputProcessor(null);
                     isTransition = true;
                 }
@@ -225,6 +227,7 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                     Assets.font6.getData().setLineHeight(originalLineHeight3);
 
                     selectedScreen = MAIN_MENU;
+                    isTransitionFromComplete = true;
                     Gdx.input.setInputProcessor(null);
                     isTransition = true;
                 }
@@ -296,7 +299,6 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         stage.act();
 
         if(!isTransitionFromComplete) {
-            Gdx.input.setInputProcessor(null);
             transitionFromScreen(delta);
         }
         if(isTransition) transitionToScreen(delta);
@@ -361,7 +363,6 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         if(opacity >= 1f) {
             opacity = 1f;
             isTransitionFromComplete = true;
-            Gdx.input.setInputProcessor(stage);
         }
     }
 

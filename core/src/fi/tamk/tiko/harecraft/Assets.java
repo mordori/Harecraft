@@ -286,7 +286,7 @@ public class Assets {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/KOMIKAX_.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = new Color(1f,1f,1f,1f);
-        parameter.size = 175;
+        parameter.size = 225;
         font0 = generator.generateFont(parameter);
         parameter.size = 150;
         font1 = generator.generateFont(parameter);

@@ -144,7 +144,7 @@ class LightHouse extends GameObject {
         height = textureRegion.getRegionHeight() / 12f;
 
         decal_island = Decal.newDecal(width, height, textureRegion,true);
-        decal_island.setPosition(x,y - 4f, z + 5f);
+        decal_island.setPosition(x,y - 4f, z);
         decal_island.rotateX(90f);
         decal_island.rotateZ(MathUtils.random(0f,360f));
 
@@ -154,7 +154,7 @@ class LightHouse extends GameObject {
         width = textureRegion.getRegionWidth() / 20f;
         height = textureRegion.getRegionHeight() / 20f;
 
-        int random = (MathUtils.random(6, 10));
+        int random = (MathUtils.random(11, 20));
 
         for(int i = 0; i < random; i++) {
             if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
@@ -163,8 +163,24 @@ class LightHouse extends GameObject {
             decal_palmtree.setPosition(decal_island.getX() + MathUtils.random(-decal_island.getWidth()/6f,decal_island.getWidth()/6f),
                     decal_island.getY() + width/2f + 0.5f, decal_island.getZ() + MathUtils.random(-decal_island.getHeight()/6f, decal_island.getHeight()/6f));
 
-            if(!(decal_palmtree.getZ() < decal_island.getZ() && (decal_palmtree.getZ() > decal_island.getZ() - decal_island.getHeight()/7f)
-            && decal_palmtree.getZ() > decal_island.getZ() && (decal_palmtree.getZ() < decal_island.getZ() + decal_island.getHeight()/8f))) palmtrees.add(decal_palmtree);
+
+            boolean isNear = false;
+            boolean isClose = false;
+            boolean isAdded = false;
+
+            if(decal_palmtree.getZ() < decal.getZ() && (decal_palmtree.getZ() > decal.getZ() - decal_island.getHeight()/9f)) isNear = true;
+            if(decal_palmtree.getZ() > decal.getZ() && (decal_palmtree.getZ() < decal.getZ() + decal_island.getHeight()/11)) isClose = true;
+
+            if(isNear && isClose) isAdded = true;
+            if((isNear == false && isClose == false) == false) isAdded = true;
+
+
+            if(!isAdded) palmtrees.add(decal_palmtree);
+            else {
+                System.out.println(decal_palmtree.getZ());
+                System.out.println("SUCCESSSSDFSDFSDF!!!!");
+            }
+
         }
     }
 

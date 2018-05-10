@@ -116,6 +116,7 @@ public class LevelSelectMenu extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(touched) {
                     Gdx.input.setInputProcessor(null);
+                    isTransitionFromComplete = true;
                     mainMenu = true;
                 }
             }
@@ -150,6 +151,7 @@ public class LevelSelectMenu extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(touched) {
                     Gdx.input.setInputProcessor(null);
+                    isTransitionFromComplete = true;
                     startGame = true;
                 }
             }
@@ -216,7 +218,6 @@ public class LevelSelectMenu extends ScreenAdapter {
 
     public void render (float delta) {
         if(isFaded && !isTransitionFromComplete) {
-            Gdx.input.setInputProcessor(null);
             transitionFromScreen(delta);
         }
 
@@ -284,7 +285,6 @@ public class LevelSelectMenu extends ScreenAdapter {
         if(opacity >= 1f) {
             opacity = 1f;
             isTransitionFromComplete = true;
-            Gdx.input.setInputProcessor(stage);
         }
     }
 

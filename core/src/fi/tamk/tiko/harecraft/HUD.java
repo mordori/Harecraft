@@ -47,7 +47,7 @@ public class HUD {
     final GameScreen gameScreen;
 
     float progressline_x;
-    float progressline_y = SCREEN_HEIGHT - 75f;
+    float progressline_y = SCREEN_HEIGHT/(1.1f);
     float progressline_color_red = 255f;
     float progressline_color_green = 130f;
     float progressline_width = SCREEN_WIDTH/3.5f;
@@ -67,6 +67,7 @@ public class HUD {
     TextureRegion placementRegion = new TextureRegion();
     TextureRegion ringRegion = new TextureRegion();
     TextureRegion balloonRegion = new TextureRegion();
+    TextureRegion arrowsRegion = new TextureRegion();
     String language;
 
     public HUD(World world, final GameScreen gameScreen) {
@@ -77,14 +78,17 @@ public class HUD {
             case 0:
                 ringRegion = Assets.texR_ring0;
                 balloonRegion = Assets.texR_balloon_red;
+                arrowsRegion = Assets.texR_ring_arrows2;
                 break;
             case 1:
                 ringRegion = Assets.texR_ring2;
                 balloonRegion = Assets.texR_balloon_orange;
+                arrowsRegion = Assets.texR_ring_arrows0;
                 break;
             case 2:
                 ringRegion = Assets.texR_ring1;
                 balloonRegion = Assets.texR_balloon_blue;
+                arrowsRegion = Assets.texR_ring_arrows1;
                 break;
             default:
                 break;
@@ -110,7 +114,7 @@ public class HUD {
         else language = "_fi";
 
         TextButton.TextButtonStyle style;
-        if(SCREEN_WIDTH > 1600f) {
+        if(SCREEN_WIDTH >= 1600f) {
             style = new TextButton.TextButtonStyle(
                     Assets.skin_menu.getDrawable("listbutton"),
                     Assets.skin_menu.getDrawable("listbutton pressed"),
@@ -160,7 +164,7 @@ public class HUD {
             }
         });
 
-        if(SCREEN_WIDTH > 1600f) {
+        if(SCREEN_WIDTH >= 1600f) {
             style = new TextButton.TextButtonStyle(
                     Assets.skin_menu.getDrawable("button"),
                     Assets.skin_menu.getDrawable("button pressed"),
@@ -296,11 +300,11 @@ public class HUD {
         shapeRenderer.end();
 
         sBatch.begin();
-        if(SCREEN_WIDTH > 1600f) {
+        if(SCREEN_WIDTH >= 1600f) {
             Assets.font0.setColor(1f, 1f, 1f, 1f);
             layout.setText(Assets.font0, localizationBundle.get("pauseText"));
             float width = layout.width;
-            Assets.font0.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH / 2f - width / 2f, 6f / 7f * SCREEN_HEIGHT);
+            Assets.font0.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH / 2f - width / 2f, 6.3f / 7f * SCREEN_HEIGHT);
         }
         else {
             Assets.font1.setColor(1f, 1f, 1f, 1f);
@@ -350,7 +354,7 @@ public class HUD {
         float width = ringRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
         float height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
 
-        float x = SCREEN_WIDTH/1.302f;
+        float x = SCREEN_WIDTH/1.308f;
         float y = SCREEN_HEIGHT/1.1f;
         float y2 = 0;
         float backdropWidth = SCREEN_WIDTH/6.3f;
@@ -372,15 +376,16 @@ public class HUD {
         float height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
 
         float x = SCREEN_WIDTH/1.3f;
-        float y = SCREEN_HEIGHT/1.104f;
+        float y = SCREEN_HEIGHT/1.1f;
         float y2 = 0;
 
         sBatch.setColor(1f,1f,1f, opacity);
 
-        sBatch.draw(ringRegion, x, SCREEN_HEIGHT/1.1075f, width, height);
+        sBatch.draw(ringRegion, x, SCREEN_HEIGHT/1.106f, width, height);
+        sBatch.draw(arrowsRegion, x, SCREEN_HEIGHT/1.106f, width, height);
         String rings = Integer.toString(ringsCollected);
 
-        if(SCREEN_WIDTH > 1600f) {
+        if(SCREEN_WIDTH >= 1600f) {
             Assets.font5.setColor(1f, 1f, 1f, opacity);
             layout.setText(Assets.font5, rings);
             float layoutHeight = layout.height;

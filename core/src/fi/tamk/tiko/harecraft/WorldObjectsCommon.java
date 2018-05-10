@@ -86,7 +86,7 @@ class Ring extends GameObject {
                 if(global_Multiplier < MULTIPLIER_HIGH) global_Multiplier += MULTIPLIER_INCREMENT;
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
 
-                AssetsAudio.playSound(AssetsAudio.SOUND_RING_COLLECTED,1f);
+                AssetsAudio.playSound(AssetsAudio.SOUND_RING_COLLECTED,0.6f);
 
                 decal.setPosition(position.x, position.y,0.5f);
                 decal_arrows.setPosition(position.x, position.y,0.5f);

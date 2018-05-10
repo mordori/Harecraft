@@ -168,7 +168,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         balloonsCollected = 0;
         ringsCollected = 0;
 
-        AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.24f);
+        AssetsAudio.playSound(AssetsAudio.SOUND_AIRPLANE_ENGINE, 0.28f);
     }
 
     public void selectWorld() {
@@ -214,9 +214,9 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             }
             if(gameState != END && gameState != EXIT) {
                 if (playerPlacement > lastPlayerPlacement)
-                    AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.4f);
+                    AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.2f);
                 else if (playerPlacement < lastPlayerPlacement)
-                    AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.35f);
+                    AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.18f);
                 lastPlayerPlacement = playerPlacement;
             }
         }
@@ -286,19 +286,19 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
                     if(timer > 5.7f) fadeMusic(delta/5f);
                     break;
                 case AssetsAudio.SOUND_FANFAAR_5:
-                    if(timer > 2.9f) fadeMusic(delta/5f);
+                    if(timer > 2.6f) fadeMusic(delta/5f);
                     break;
                 case AssetsAudio.SOUND_FANFAAR_4:
-                    if(timer > 2.2f) fadeMusic(delta/5f);
+                    if(timer > 1.9f) fadeMusic(delta/5f);
                     break;
                 case AssetsAudio.SOUND_FANFAAR_3:
-                    if(timer > 1.7f) fadeMusic(delta/5f);
+                    if(timer > 1.2f) fadeMusic(delta/5f);
                     break;
                 case AssetsAudio.SOUND_FANFAAR_2:
-                    if(timer > 1.5f) fadeMusic(delta/5f);
+                    if(timer > 1.2f) fadeMusic(delta/5f);
                     break;
                 case AssetsAudio.SOUND_FANFAAR_1:
-                    if(timer > 2.8f) fadeMusic(delta/5f);
+                    if(timer > 2.5f) fadeMusic(delta/5f);
                     break;
             }
         }
@@ -383,7 +383,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     public void fadeMusic(float delta) {
         volume -= delta;
         if(volume <= 0f) volume = 0f;
-        AssetsAudio.setMusicVolume(0.35f * volume);
+        AssetsAudio.setMusicVolume(0.25f * volume);
     }
 
     public void transitionToScreen(float delta) {
