@@ -177,8 +177,8 @@ class Player extends Pilot {
         pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(10f * (SCREEN_WIDTH/1920f));
 
 
-        pfx_wind_trail_left.allowCompletion();
-        pfx_wind_trail_right.allowCompletion();
+        //pfx_wind_trail_left.allowCompletion();
+        //pfx_wind_trail_right.allowCompletion();
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -270,14 +270,14 @@ class Player extends Pilot {
         decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.06f);
 
 
-        if(player.velocity.z < -31.5f) {
+        /*if(player.velocity.z < -29.5f) {
             pfx_wind_trail_left.start();
             pfx_wind_trail_right.start();
         }
-        else {
+        else if(player.velocity.z >= -29.5f){
             pfx_wind_trail_left.allowCompletion();
             pfx_wind_trail_right.allowCompletion();
-        }
+        }*/
 
         updateParticles(delta);
     }
@@ -313,8 +313,22 @@ class Player extends Pilot {
         offsetY = (float)((windPos.x - curPosition.x) * Math.sin(angle) + (windPos.y - curPosition.y) * Math.cos(angle) + curPosition.y);
         windPos.x = offsetX;
         windPos.y = offsetY;
-        //pfx_wind_trail_right.getEmitters().first().getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
-        //pfx_wind_trail_right.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+        pfx_wind_trail_right.getEmitters().first().getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+        pfx_wind_trail_right.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+
+        System.out.println(decal.getRotation().getAngle());
+        angle = decal.getRotation().getAngle();
+
+        if(angle < 345f && angle > 300f) {
+            //pfx_wind_trail_right.getEmitters().get(0).getTransparency().setHigh(1f);
+            //pfx_wind_trail_right.getEmitters().get(1).getTransparency().setHigh(1f);
+            pfx_wind_trail_right.start();
+        }
+        else {
+            //pfx_wind_trail_right.getEmitters().get(0).getTransparency().setHigh(0f);
+            //pfx_wind_trail_right.getEmitters().get(1).getTransparency().setHigh(0f);
+            pfx_wind_trail_right.allowCompletion();
+        }
 
         projPosition = camera.project(windPos);
         pfx_wind_trail_right.setPosition(
@@ -330,8 +344,23 @@ class Player extends Pilot {
         offsetY = (float)((windPos.x - curPosition.x) * Math.sin(angle) + (windPos.y - curPosition.y) * Math.cos(angle) + curPosition.y);
         windPos.x = offsetX;
         windPos.y = offsetY;
-        //pfx_wind_trail_left.getEmitters().first().getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
-        //pfx_wind_trail_left.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+        pfx_wind_trail_left.getEmitters().first().getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+        pfx_wind_trail_left.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+
+
+        angle = decal.getRotation().getAngle();
+
+
+        if(angle > 15f && angle < 50f) {
+            //pfx_wind_trail_left.getEmitters().get(0).getTransparency().setHigh(1f);
+            //pfx_wind_trail_left.getEmitters().get(1).getTransparency().setHigh(1f);
+            pfx_wind_trail_left.start();
+        }
+        else {
+            //pfx_wind_trail_left.getEmitters().get(0).getTransparency().setHigh(0f);
+            //pfx_wind_trail_left.getEmitters().get(1).getTransparency().setHigh(0f);
+            pfx_wind_trail_left.allowCompletion();
+        }
 
 
         projPosition = camera.project(windPos);

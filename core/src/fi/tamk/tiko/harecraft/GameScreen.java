@@ -44,7 +44,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             if(rectPause.contains(x, y)) {
                 if (!paused) {
                     paused = true;
-                    AssetsAudio.pauseSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
                     Gdx.input.setInputProcessor(stage);
                 }
             }
@@ -239,7 +238,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         if(gameState != START) ringCollectTimer += delta * 0.22;
         if(ringCollectTimer > 1f) ringCollectTimer = 1f;
         if(global_Multiplier > 1f) global_Multiplier -= delta * 1.2f * ringCollectTimer;
-        if(global_Multiplier < 1.5f) global_Multiplier = 1.5f;
+        if(global_Multiplier < 2f) global_Multiplier = 2f;
 
         //System.out.println(player.velocity.z);
 

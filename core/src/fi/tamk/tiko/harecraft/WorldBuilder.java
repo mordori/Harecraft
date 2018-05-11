@@ -566,7 +566,7 @@ public class WorldBuilder {
 
     public void updateWorldParticles(float delta) {
         world.pfx_speed_lines.setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2f);
-        world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 5.5f*3f) - 0.54f) * 1f);
+        world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 7f*3f) - 0.54f) * 1f);
         world.pfx_speed_lines.update(delta);
 
         if(world.pfx_snow != null) world.pfx_snow.update(delta);
