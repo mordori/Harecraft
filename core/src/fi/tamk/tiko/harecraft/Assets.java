@@ -110,6 +110,7 @@ public class Assets {
     static TextureRegion texR_stage3_pressed;
     static TextureRegion texR_adjusting;
     static TextureRegion texR_asettaa;
+    static TextureRegion texR_pause;
 
     static TextureAtlas atlas_menu_plane;
     static TextureAtlas atlas_planes;
@@ -198,6 +199,7 @@ public class Assets {
         texR_stage3_pressed = loadAtlasTextureRegion(atlas_1,"stage3p");
         texR_asettaa = loadAtlasTextureRegion(atlas_1,"asettaa");
         texR_adjusting = loadAtlasTextureRegion(atlas_1,"adjusting");
+        texR_pause = loadAtlasTextureRegion(atlas_1,"pause");
 
         //DECALS
         texR_background_summer = loadAtlasTextureRegion(atlas_1, "bg_summer");
@@ -295,7 +297,7 @@ public class Assets {
         font0 = generator.generateFont(parameter);
         parameter.size = 150;
         font1 = generator.generateFont(parameter);
-        parameter.size = 100;
+        parameter.size = 75;
         font2 = generator.generateFont(parameter);
         parameter.size = 60;
         font3 = generator.generateFont(parameter);
@@ -431,6 +433,7 @@ public class Assets {
         texR_stage3_pressed.getTexture().dispose();
         texR_asettaa.getTexture().dispose();
         texR_adjusting.getTexture().dispose();
+        texR_pause.getTexture().dispose();
 
         atlas_menu_plane.dispose();
         atlas_planes.dispose();

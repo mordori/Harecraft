@@ -47,17 +47,28 @@ public class HUD {
     final GameScreen gameScreen;
 
     float progressline_x;
-    float progressline_y = SCREEN_HEIGHT/(1.1f);
+    float progressline_y = SCREEN_HEIGHT/(1.105f);
     float progressline_color_red = 255f;
     float progressline_color_green = 130f;
-    float progressline_width = SCREEN_WIDTH/3.5f;
-    float progressline_arc_radius = 9f * (SCREEN_HEIGHT/800f);
-    float progressline_arc_radius2 = 3f * (SCREEN_HEIGHT/800f);
-    float yPos = SCREEN_HEIGHT/1.5f;
+    float progressline_width = SCREEN_WIDTH/4f;
+    float progressline_arc_radius = 11.5f * (SCREEN_HEIGHT/800f);
+    float progressline_arc_radius2 = 3.5f * (SCREEN_HEIGHT/800f);
     float opacity = 0f;
     float stateOpacity = 0f;
     int count;
+    float yPos = SCREEN_HEIGHT/1.15f;
     float yPos2 = 0;
+
+    float width;
+    float height;
+
+    float x;
+    float y;
+    float y2 = 0;
+    float backdropWidth = SCREEN_WIDTH/6.2f;
+    float backdropRadius = SCREEN_HEIGHT/30f;
+    float backdropHeight = backdropRadius*2f;
+    float adjustOpacity = 0f;
 
     ParticleEffect pfx_placement = new ParticleEffect(Assets.pfx_placement);
     ParticleEffect pfx_placement1 = new ParticleEffect(Assets.pfx_placement1);
@@ -69,12 +80,23 @@ public class HUD {
     TextureRegion ringRegion = new TextureRegion();
     TextureRegion balloonRegion = new TextureRegion();
     TextureRegion arrowsRegion = new TextureRegion();
-    TextureRegion adjustingRegion = new TextureRegion();
+    TextureRegion adjustingRegion;
+    TextureRegion pauseRegion = Assets.texR_pause;
     String language;
 
     public HUD(World world, final GameScreen gameScreen) {
         this.world = world;
         this.gameScreen = gameScreen;
+
+        if(SCREEN_WIDTH < 1280f) {
+            backdropWidth = SCREEN_WIDTH/5.5f;
+            progressline_arc_radius = 9f * (SCREEN_HEIGHT/800f) * 1.4f;
+            progressline_arc_radius2 = 3f * (SCREEN_HEIGHT/800f) * 1.4f;
+            progressline_y = SCREEN_HEIGHT/(1.115f);
+        }
+        if(SCREEN_HEIGHT < 800f) {
+            yPos = SCREEN_HEIGHT/1.1f;
+        }
 
         switch (worldIndex) {
             case 0:
@@ -101,6 +123,7 @@ public class HUD {
         }
         else adjustingRegion = Assets.texR_adjusting;
 
+
         pfx_placement.allowCompletion();
         pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f) * 1.25f);
         pfx_placement.getEmitters().get(0).getXScale().setHighMax(240f * (SCREEN_WIDTH/1280f) * 1.25f);
@@ -126,7 +149,7 @@ public class HUD {
                     Assets.skin_menu.getDrawable("listbutton"),
                     Assets.skin_menu.getDrawable("listbutton pressed"),
                     Assets.skin_menu.getDrawable("listbutton"),
-                    Assets.font3);
+                    Assets.font2);
             style.pressedOffsetX = 4;
             style.pressedOffsetY = -4;
             style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
@@ -143,11 +166,14 @@ public class HUD {
             style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
             style.fontColor = new Color(1f, 1f, 1f, 1f);
         }
+        layout.setText(style.font, localizationBundle.get("btnResumeText"));
+        width = layout.width;
+        height = layout.height;
+
         TextButton btnResume = new TextButton(localizationBundle.get("btnResumeText"), style);
-        if(localizationBundle.get("btnResumeText").equals("continue")) btnResume.setWidth(360f * (SCREEN_WIDTH/1280f));
-        else btnResume.setWidth(300f * (SCREEN_WIDTH/1280f));
-        btnResume.setHeight(160f * (SCREEN_WIDTH/1280f));
-        if(SCREEN_WIDTH >= 1280f) btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.85f/2f * SCREEN_HEIGHT);
+        btnResume.setWidth(width * 1.25f);
+        btnResume.setHeight(height * 3.2f);
+        if(SCREEN_WIDTH >= 1280f) btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.8f/2f * SCREEN_HEIGHT);
         else btnResume.setPosition(SCREEN_WIDTH/2f - btnResume.getWidth()/2f, 0.55f/2f * SCREEN_HEIGHT);
         btnResume.setName("btnResume");
         btnResume.addListener(new InputListener() {
@@ -193,11 +219,15 @@ public class HUD {
             style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
             style.fontColor = new Color(1f, 1f, 1f, 1f);
         }
+        layout.setText(style.font, localizationBundle.get("btnResetText"));
+        width = layout.width;
+        height = layout.height;
+
         TextButton btnReset = new TextButton(localizationBundle.get("btnResetText"), style);
-        btnReset.setWidth(210f * (SCREEN_WIDTH/1280f));
-        btnReset.setHeight(100f * (SCREEN_WIDTH/1280f));
+        btnReset.setWidth(width * 1.4f);
+        btnReset.setHeight(height * 3.4f);
         if(SCREEN_WIDTH >= 1280f) btnReset.setPosition(SCREEN_WIDTH/2f - btnReset.getWidth()/2f, 0.5f/2f * SCREEN_HEIGHT);
-        else btnReset.setPosition(2f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
+        else btnReset.setPosition(1.85f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
         btnReset.setName("btnReset");
         btnReset.addListener(new InputListener() {
             Boolean touched = false;
@@ -223,10 +253,10 @@ public class HUD {
         });
 
         TextButton btnQuit = new TextButton(localizationBundle.get("btnQuitText"), style);
-        btnQuit.setWidth(210f * (SCREEN_WIDTH/1280f));
-        btnQuit.setHeight(100f * (SCREEN_WIDTH/1280f));
+        btnQuit.setWidth(width * 1.4f);
+        btnQuit.setHeight(height * 3.4f);
         if(SCREEN_WIDTH >= 1280f) btnQuit.setPosition(SCREEN_WIDTH/2f - btnQuit.getWidth()/2f, 0.2f/2f * SCREEN_HEIGHT);
-        else btnQuit.setPosition(1f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
+        else btnQuit.setPosition(1.15f/3f*SCREEN_WIDTH - btnReset.getWidth()/2f, 0.15f/2f * SCREEN_HEIGHT);
         btnQuit.setName("btnQuit");
         btnQuit.addListener(new InputListener() {
             Boolean touched = false;
@@ -310,20 +340,20 @@ public class HUD {
         if(SCREEN_WIDTH >= 1600f) {
             Assets.font0.setColor(1f, 1f, 1f, 1f);
             layout.setText(Assets.font0, localizationBundle.get("pauseText"));
-            float width = layout.width;
+            width = layout.width;
             Assets.font0.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH / 2f - width / 2f, 6.3f / 7f * SCREEN_HEIGHT);
         }
         else {
             Assets.font1.setColor(1f, 1f, 1f, 1f);
             layout.setText(Assets.font1, localizationBundle.get("pauseText"));
-            float width = layout.width;
+            width = layout.width;
             Assets.font1.draw(sBatch, localizationBundle.get("pauseText"), SCREEN_WIDTH / 2f - width / 2f, 6f / 7f * SCREEN_HEIGHT);
         }
         sBatch.end();
     }
 
     public void updateProgressLine(float delta) {
-        progressline_x = SCREEN_WIDTH/3.5f * (player.distance / world.end);
+        progressline_x = SCREEN_WIDTH/4f * (player.distance / world.end);
         progressline_color_green = (130f + (125f * (player.distance / world.end))) / 255f; //110 + 160 = 270
         progressline_color_red = (255f - ((255f - 95f) * (player.distance / world.end))) / 255f;
 
@@ -352,25 +382,21 @@ public class HUD {
     }
 
     private void resetY() {
-        yPos = SCREEN_HEIGHT/1.25f;
+        yPos = SCREEN_HEIGHT/1.15f;
+        if(SCREEN_HEIGHT < 800f) yPos = SCREEN_HEIGHT/1.1f;
         stateOpacity = 0f;
         count++;
     }
 
     public void drawBackdrop() {
-        float width = ringRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
-        float height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
+        width = ringRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
+        height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
 
-        float x = SCREEN_WIDTH/1.308f;
-        float y = SCREEN_HEIGHT/1.1f;
-        float y2 = 0;
-        float backdropWidth = SCREEN_WIDTH/6.3f;
-        float backdropRadius = SCREEN_HEIGHT/30f;
-        float backdropHeight = backdropRadius*2f;
-
+        x = SCREEN_WIDTH/1.308f;
+        y = SCREEN_HEIGHT/1.1f;
+        y2 = 0;
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        //Black
         shapeRenderer.setColor(0f, 0f, 0f, 0.3f * opacity);
         shapeRenderer.arc(x + backdropRadius/4f, y + backdropHeight/4f, backdropRadius, 90f, 180f);
         shapeRenderer.arc(x + backdropWidth + backdropRadius/4f, y + backdropHeight/4f, backdropRadius, 270f, 180f);
@@ -379,17 +405,18 @@ public class HUD {
     }
 
     public void drawCollectables() {
-        float width = ringRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
-        float height = ringRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
+        width = ringRegion.getRegionWidth()/6f * SCREEN_WIDTH/1920f;
+        height = ringRegion.getRegionHeight()/6f * SCREEN_WIDTH/1920f;
 
-        float x = SCREEN_WIDTH/1.3f;
-        float y = SCREEN_HEIGHT/1.1f;
-        float y2 = 0;
+        x = SCREEN_WIDTH/1.3f;
+        y = SCREEN_HEIGHT/1.1f;
+        if(SCREEN_HEIGHT < 800f) y = SCREEN_HEIGHT/1.105f;
+        y2 = 0;
 
         sBatch.setColor(1f,1f,1f, opacity);
 
-        sBatch.draw(ringRegion, x, SCREEN_HEIGHT/1.106f, width, height);
-        sBatch.draw(arrowsRegion, x, SCREEN_HEIGHT/1.106f, width, height);
+        sBatch.draw(ringRegion, x, SCREEN_HEIGHT/1.108f, width, height);
+        sBatch.draw(arrowsRegion, x, SCREEN_HEIGHT/1.108f, width, height);
         String rings = Integer.toString(ringsCollected);
 
         if(SCREEN_WIDTH >= 1600f) {
@@ -409,8 +436,8 @@ public class HUD {
             Assets.font5.setColor(1f, 1f, 1f, 1f);
         }
 
-        width = balloonRegion.getRegionWidth()/10f * SCREEN_WIDTH/1280f;
-        height = balloonRegion.getRegionHeight()/10f * SCREEN_WIDTH/1280f;
+        width = balloonRegion.getRegionWidth()/7f * SCREEN_WIDTH/1920f;
+        height = balloonRegion.getRegionHeight()/7f * SCREEN_WIDTH/1920f;
         x = SCREEN_WIDTH/1.16f;
 
         sBatch.draw(balloonRegion, x, y - height/4f, width, height);
@@ -425,6 +452,14 @@ public class HUD {
             Assets.font6.draw(sBatch, balloons, x + width * 1.5f, y + y2);
             Assets.font6.setColor(1f, 1f, 1f, 1f);
         }
+
+        width = pauseRegion.getRegionWidth()/1.5f * SCREEN_WIDTH/1920f;
+        height = pauseRegion.getRegionHeight()/1.5f * SCREEN_WIDTH/1920f;
+        x = SCREEN_WIDTH/1.11f;
+        y = SCREEN_HEIGHT/30f;
+
+        sBatch.draw(pauseRegion, x, y, width, height);
+
         sBatch.setColor(1f,1f,1f,1f);
     }
 
@@ -486,14 +521,17 @@ public class HUD {
         }
 
         yPos -= Gdx.graphics.getDeltaTime() * 20f / stateOpacity;
-        float width = stateRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
-        float height = stateRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
+        width = stateRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
+        height = stateRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
+
+        x = SCREEN_WIDTH/2f - width/2f;
+        y = yPos - height/2f;
 
         sBatch.setColor(1f,1f,1f, stateOpacity);
-        sBatch.draw(stateRegion,SCREEN_WIDTH/2f - width/2f, yPos - height/2f, width, height);
+        sBatch.draw(stateRegion, x, y, width, height);
         sBatch.setColor(1f,1f,1f, 1f);
 
-        float adjustOpacity = 0f;
+        adjustOpacity = 0f;
 
         if(gameState == START || gameState == RACE) {
             if(count == 1) adjustOpacity = stateOpacity;
@@ -507,7 +545,7 @@ public class HUD {
         }
 
         sBatch.setColor(1f,1f,1f, adjustOpacity);
-        sBatch.draw(adjustingRegion, SCREEN_WIDTH/2f - adjustingRegion.getRegionWidth()* SCREEN_WIDTH/1280f/2f, SCREEN_HEIGHT/4f - adjustingRegion.getRegionHeight()* SCREEN_WIDTH/1280f/2f + yPos2, adjustingRegion.getRegionWidth() * SCREEN_WIDTH/1280f, adjustingRegion.getRegionHeight() * SCREEN_WIDTH/1280f);
+        sBatch.draw(adjustingRegion, SCREEN_WIDTH/2f - adjustingRegion.getRegionWidth()* SCREEN_WIDTH/1920f/2f, SCREEN_HEIGHT/4f - adjustingRegion.getRegionHeight()* SCREEN_WIDTH/1920f/2f + yPos2, adjustingRegion.getRegionWidth() * SCREEN_WIDTH/1920f, adjustingRegion.getRegionHeight() * SCREEN_WIDTH/1920f);
         sBatch.setColor(1f,1f,1f, 1f);
     }
 
@@ -557,8 +595,8 @@ public class HUD {
         pfx_placement3.draw(sBatch);
         pfx_placement.draw(sBatch);
 
-        float width = placementRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
-        float height = placementRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
+        width = placementRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
+        height = placementRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
 
         sBatch.setColor(1f,1f,1f, opacity);
         sBatch.draw(placementRegion,30f,15f, width, height);

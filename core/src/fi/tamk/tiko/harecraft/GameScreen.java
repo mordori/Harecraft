@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -40,10 +41,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     @Override
     public boolean tap(float x, float y, int count, int button) {
         if(gameState != END && gameState != START) {
-            if(!paused) {
-                paused = true;
-                AssetsAudio.pauseSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
-                Gdx.input.setInputProcessor(stage);
+            if(rectPause.contains(x, y)) {
+                if (!paused) {
+                    paused = true;
+                    AssetsAudio.pauseSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
+                    Gdx.input.setInputProcessor(stage);
+                }
             }
         }
         return false;
@@ -138,6 +141,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static boolean isTransition = false;
     static boolean isTransitionComplete = false;
     int lastPlayerPlacement = 6;
+
+    Rectangle rectPause = new Rectangle(
+            SCREEN_WIDTH/1.2f,
+            SCREEN_HEIGHT/1.3f,
+            Assets.texR_pause.getRegionWidth()/1.5f * SCREEN_WIDTH/1920f * 3f,
+            Assets.texR_pause.getRegionWidth()/1.5f * SCREEN_WIDTH/1920f * 3f);
 
 
     public GameScreen(GameMain game, int worldIndex) {

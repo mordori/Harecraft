@@ -78,7 +78,7 @@ public abstract class World {
         finish = ProfileInfo.selectedDuration;
         end = finish + spawnDistance + 20f;
 
-        if(SCREEN_WIDTH > 1600) pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines_2);
+        if(SCREEN_WIDTH >= 1600) pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines_2);
         else pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
         pfx_snow = new ParticleEffect(Assets.pfx_snow);
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
@@ -209,8 +209,8 @@ class WorldSea extends World {
     float velocity;
 
     public WorldSea() {
-        ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 600, 330), true);
-        ground.setPosition(0f, -30f, 125f);
+        ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 560, 280), true);
+        ground.setPosition(0f, -30f, 165f);
         ground.rotateX(90f);
         pfx_snow = null;
 
