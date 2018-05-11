@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,86 +19,53 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.Locale;
 
-/**
- * Created by musta on 28.4.2018.
- */
-
-public class CreditsMenu extends ScreenAdapter {
-
+public class ExitScreen extends ScreenAdapter {
     GameMain game;
     Skin skin;
     Stage stage;
     OrthographicCamera camera;
+    Preferences profilesData;
+    Boolean yesSelect = false;
+    Boolean noSelect = false;
     Locale locale;
-    Boolean mainMenu = false;
 
-    public CreditsMenu(GameMain game) {
+    public ExitScreen(GameMain game) {
         this.game = game;
+        skin = Assets.skin_menu;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
         stage = new Stage(new StretchViewport(1280, 800, camera));
-        skin = Assets.skin_menu;
-        Gdx.input.setInputProcessor(stage);
+        profilesData = Gdx.app.getPreferences("ProfileFile");
 
         ProfileInfo.determineGameLanguage(); //check language data
         locale = ProfileInfo.gameLanguage;
         I18NBundle localizationBundle = I18NBundle.createBundle(Gdx.files.internal("Localization"), locale);
 
+        Gdx.input.setInputProcessor(stage);
+
         Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font6,
+                Assets.font5,
                 new Color(1f,1f,1f,1f)
         );
 
-        Label label1 = new Label(localizationBundle.get("miikaCreditsText"), style2);
-        label1.setPosition(640-label1.getWidth()/2, 560);
-
-        Label label2 = new Label(localizationBundle.get("mikaCreditsText"), style2);
-        label2.setPosition(640-label2.getWidth()/2, 480);
-
-        Label label3 = new Label(localizationBundle.get("mikkoCreditsText"), style2);
-        label3.setPosition(640-label3.getWidth()/2, 400);
-
-        Label label4 = new Label(localizationBundle.get("juusoCreditsText"), style2);
-        label4.setPosition(640-label4.getWidth()/2, 320);
-
-        Label label5 = new Label(localizationBundle.get("henriCreditsText"), style2);
-        label5.setPosition(640-label5.getWidth()/2, 240);
-
-        Label twoDots = new Label("..", style2);
-        if (ProfileInfo.gameLanguage.toString().equals("fi_FI")) {
-            twoDots.setPosition(828, 270);
-        }
-        else {
-            twoDots.setPosition(808, 270);
-        }
-
-        style2 = new Label.LabelStyle(
-                Assets.font3,
-                new Color(1f,1f,1f,1f)
-        );
-
-        Label creditLabel = new Label(localizationBundle.get("creditsText"), style2);
-        creditLabel.setPosition(640-creditLabel.getWidth()/2, 650);
-
+        Label questionLabel = new Label(localizationBundle.get("txtExit"), style2);
+        questionLabel.setPosition(640 -questionLabel.getWidth()/2,500);
+        questionLabel.setFontScale(1);
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font6);
-
+                Assets.font6
+        );
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
         style.fontColor = new Color(1f,1f,1f,1f);
 
-        TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), style);
-        returnButton.setWidth(270f);
-        returnButton.setHeight(120f);
-        returnButton.setPosition(640 -returnButton.getWidth()/2,50); //y170 x640
-        returnButton.setName("settingsbutton");
-
-        returnButton.addListener(new InputListener() {
+        TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), style);
+        yesButton.setPosition(1280/2 +200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
+        yesButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
@@ -106,7 +74,7 @@ public class CreditsMenu extends ScreenAdapter {
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched)
-                    mainMenu = true;
+                    yesSelect = true;
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor button)
             {
@@ -114,30 +82,42 @@ public class CreditsMenu extends ScreenAdapter {
             }
         });
 
-        stage.addActor(creditLabel);
-        stage.addActor(label1);
-        stage.addActor(label2);
-        stage.addActor(label3);
-        stage.addActor(label4);
-        stage.addActor(label5);
-        stage.addActor(twoDots);
-        stage.addActor(returnButton);
+        TextButton noButton = new TextButton(localizationBundle.get("noButton"), style);
+        noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
+        noButton.addListener(new InputListener() {
+            Boolean touched = false;
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
+                touched = true;
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (touched)
+                    noSelect = true;
+            }
+            public void exit(InputEvent event, float x, float y, int pointer, Actor button)
+            {
+                touched = false;
+            }
+        });
+
+        stage.addActor(noButton);
+        stage.addActor(yesButton);
+        stage.addActor(questionLabel);
     }
 
     public void render (float delta) {
-
         Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
         stage.draw();
 
-        if (mainMenu) {
-            game.setScreen(new MainMenu(game, false));
+        if (yesSelect) {
+            Gdx.app.exit();
         }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            mainMenu = true;
+        if (noSelect) {
+            game.setScreen(new MainMenu(game, false));
         }
     }
 

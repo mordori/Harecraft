@@ -198,10 +198,9 @@ public class CreateUser extends ScreenAdapter {
             game.setScreen(new ProfileMenu(game));
         }
 
-
-        game.sBatch.begin();
-        //Assets.font.draw(game.sBatch, "Difficulty", 730,750);
-        game.sBatch.end();
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            profilesMenuWithoutSaving = true;
+        }
     }
 
     @Override
@@ -211,7 +210,6 @@ public class CreateUser extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        //skin.dispose();
         stage.dispose();
     }
 }

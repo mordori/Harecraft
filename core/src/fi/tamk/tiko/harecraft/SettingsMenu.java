@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -345,6 +346,10 @@ public class SettingsMenu extends ScreenAdapter {
             game.setScreen(new MainMenu(game,false));
         }
         //Gdx.app.log("Kenen profiili on valittuna", ""+ProfileInfo.selectedPlayerProfile);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            mainMenuNotSave = true;
+        }
     }
 
     @Override

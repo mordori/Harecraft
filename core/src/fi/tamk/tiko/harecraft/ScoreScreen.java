@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -288,10 +289,17 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
 
             Assets.font1.setColor(1f,1f,1f, 1f);
             Assets.font1.draw(sBatch,"" + oldTotalScore, (Gdx.graphics.getWidth()/4) *2.1f, Gdx.graphics.getHeight()/1.8f);
-
-
-
         sBatch.end();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            Assets.font5.getData().setLineHeight(originalLineHeight4);
+            Assets.font6.getData().setLineHeight(originalLineHeight3);
+
+            selectedScreen = MAIN_MENU;
+            isTransitionFromComplete = true;
+            Gdx.input.setInputProcessor(null);
+            isTransition = true;
+        }
     }
 
     @Override

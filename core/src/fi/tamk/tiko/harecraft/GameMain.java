@@ -70,6 +70,8 @@ public class GameMain extends Game {
         texture = new Sprite(new Texture((int) SCREEN_WIDTH, (int) SCREEN_HEIGHT, format));
         texture.flip(false, true);
 
+        Gdx.input.setCatchBackKey(true);
+
         setScreen(new SplashScreen(this));
 	}
 

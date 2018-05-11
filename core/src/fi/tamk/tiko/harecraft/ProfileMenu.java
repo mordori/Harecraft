@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -201,6 +202,10 @@ public class ProfileMenu extends ScreenAdapter {
             profilesData.flush(); */
 
             game.setScreen(new ConfirmDelete(game, tempString));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            mainMenu = true;
         }
     }
 

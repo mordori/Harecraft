@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -277,6 +278,10 @@ public class LevelSelectMenu extends ScreenAdapter {
         if(isTransitionComplete && timer > 0.05f) {
             AssetsAudio.stopMusic();
             game.setScreen(new GameScreen(game, selectedLevelNumber));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            mainMenu = true;
         }
     }
 

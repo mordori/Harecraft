@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -212,6 +213,14 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public void update(float delta) {
         logger.log();
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            if(gameState != END && gameState != START) {
+                if (!paused) {
+                    paused = true;
+                    Gdx.input.setInputProcessor(stage);
+                }
+            }
+        }
         updateState(delta);
         builder.update(delta);
         updateCameras(delta);

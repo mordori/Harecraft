@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -17,6 +18,9 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.Locale;
+
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
+import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 
 /**
  * Created by musta on 19.4.2018.
@@ -147,6 +151,10 @@ public class ConfirmDelete extends ScreenAdapter {
         }
         if (noSelect) {
             game.setScreen(new ProfileMenu(game));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            noSelect = true;
         }
     }
 
