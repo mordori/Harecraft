@@ -85,7 +85,7 @@ public class CreateUser extends ScreenAdapter {
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font6
+                Assets.font5
         );
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;

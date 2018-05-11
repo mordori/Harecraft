@@ -44,7 +44,7 @@ public class ExitScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font5,
+                Assets.font3,
                 new Color(1f,1f,1f,1f)
         );
 
@@ -56,7 +56,7 @@ public class ExitScreen extends ScreenAdapter {
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font6
+                Assets.font5
         );
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
@@ -81,6 +81,17 @@ public class ExitScreen extends ScreenAdapter {
                 touched = false;
             }
         });
+
+        style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.skin_menu.getDrawable("listbutton pressed"),
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.font5
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton noButton = new TextButton(localizationBundle.get("noButton"), style);
         noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);

@@ -41,7 +41,6 @@ public class ConfirmDelete extends ScreenAdapter {
     public ConfirmDelete(GameMain game, String deleteString) {
 
         this.game = game;
-        //skin = new Skin(Gdx.files.internal("json/glassy-ui.json"));
         skin = Assets.skin_menu;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 800);
@@ -55,22 +54,39 @@ public class ConfirmDelete extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(stage);
 
-        Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font5,
+        Label.LabelStyle style2;
+
+        if(localizationBundle.get("yesButton").equals("Yes")) {
+            style2 = new Label.LabelStyle(
+                    Assets.font4,
+                    new Color(1f, 1f, 1f, 1f)
+            );
+        }
+        else {
+            style2 = new Label.LabelStyle(
+                    Assets.font5,
+                    new Color(1f, 1f, 1f, 1f)
+            );
+        }
+
+        Label questionLabel = new Label(localizationBundle.get("sureToDelete"), style2);
+        questionLabel.setPosition(640 -questionLabel.getWidth()/2,620);
+        questionLabel.setName("difficultylabel");
+
+        style2 = new Label.LabelStyle(
+                Assets.font2,
                 new Color(1f,1f,1f,1f)
         );
 
-        Label questionLabel = new Label(localizationBundle.get("sureToDelete") +" " +tempString +" ?", style2);
-        questionLabel.setPosition(640 -questionLabel.getWidth()/2,500);
-        //questionLabel.setPosition(640 - 150, 500);
-        questionLabel.setFontScale(1);
-        questionLabel.setName("difficultylabel");
+        Label nameLabel = new Label((tempString), style2);
+        nameLabel.setPosition(640 -nameLabel.getWidth()/2,500);
+        nameLabel.setName("namelabel");
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
-                Assets.font6
+                Assets.font5
         );
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
@@ -118,6 +134,7 @@ public class ConfirmDelete extends ScreenAdapter {
         stage.addActor(noButton);
         stage.addActor(yesButton);
         stage.addActor(questionLabel);
+        stage.addActor(nameLabel);
     }
 
     public void render (float delta) {

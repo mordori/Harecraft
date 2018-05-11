@@ -169,13 +169,13 @@ public class LevelSelectMenu extends ScreenAdapter {
         durationSlider.setName("durationslider");
 
         Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font6,
-                new Color(1f,1f,1f,1f)
+            Assets.font6,
+            new Color(1f,1f,1f,1f)
         );
 
         Label.LabelStyle instructionStyle = new Label.LabelStyle(
-                Assets.font7,
-                new Color(1f,1f,1f,1f)
+            Assets.font7,
+            new Color(1f,1f,1f,1f)
         );
 
         Label durationLabel = new Label(localizationBundle.get("durationLabelText"), style2);
@@ -186,6 +186,11 @@ public class LevelSelectMenu extends ScreenAdapter {
 
         //Label instructionsLabel2 = new Label(localizationBundle.get("instructionText2"), instructionStyle);
         //instructionsLabel2.setPosition(800 -instructionsLabel2.getWidth()/2, 565);
+
+        style2 = new Label.LabelStyle(
+            Assets.font5,
+            new Color(1f,1f,1f,1f)
+        );
 
         Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
         topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
