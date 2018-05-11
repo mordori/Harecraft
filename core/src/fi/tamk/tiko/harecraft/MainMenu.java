@@ -254,6 +254,7 @@ public class MainMenu extends ScreenAdapter {
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
+                    AssetsAudio.playSound(AssetsAudio.SOUND_BITE,1.5f);
                     creditsMenu = true;
                 }
             }

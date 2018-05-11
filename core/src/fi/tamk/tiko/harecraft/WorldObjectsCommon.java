@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
+import static fi.tamk.tiko.harecraft.GameScreen.ringCollectTimer;
 import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
@@ -33,8 +34,8 @@ public abstract class WorldObjectsCommon {
 
 class Ring extends GameObject {
     final float COLLECTED_SPEED = 10f;
-    final float MULTIPLIER_HIGH = 5.5f;
-    final float MULTIPLIER_INCREMENT = 2.1f;
+    final float MULTIPLIER_HIGH = 7f;
+    final float MULTIPLIER_INCREMENT = 3.22f;
     boolean isCollected = false;
     Decal decal_arrows;
     float opacity_arrows;
@@ -82,6 +83,7 @@ class Ring extends GameObject {
                 isCollected = true;
                 playerScore++;
                 ringsCollected++;
+                ringCollectTimer = 0f;
 
                 if(global_Multiplier < MULTIPLIER_HIGH) global_Multiplier += MULTIPLIER_INCREMENT;
                 if(global_Multiplier > MULTIPLIER_HIGH) global_Multiplier = MULTIPLIER_HIGH;
@@ -173,8 +175,8 @@ class Ring extends GameObject {
  */
 
 class Cloud extends GameObject {
-    final float MULTIPLIER_LOW = 1f;
-    final float MULTIPLIER_DECREMENT = 1.5f;
+    final float MULTIPLIER_LOW = 1.5f;
+    final float MULTIPLIER_DECREMENT = 2.5f;
 
     Vector2 transposedPosition = new Vector2();
     boolean isCollided = false;
@@ -200,8 +202,8 @@ class Cloud extends GameObject {
 
         if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
 
-        width = textureRegion.getRegionWidth() / 70f;
-        height = textureRegion.getRegionHeight() / 70f;
+        width = textureRegion.getRegionWidth() / 65f;
+        height = textureRegion.getRegionHeight() / 65f;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
         decal.setPosition(x,y,z);
@@ -283,7 +285,6 @@ class Cloud extends GameObject {
                 player.projPosition.x,
                 player.projPosition.y);
 
-        player.cloudHitTimer = 0f;
         isCollided = true;
     }
 

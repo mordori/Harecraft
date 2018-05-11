@@ -384,6 +384,10 @@ public class HUD {
     private void resetY() {
         yPos = SCREEN_HEIGHT/1.15f;
         if(SCREEN_HEIGHT < 800f) yPos = SCREEN_HEIGHT/1.1f;
+        if(gameState == END) {
+            yPos = SCREEN_HEIGHT/1.3f;
+            if(SCREEN_HEIGHT < 800f) yPos = SCREEN_HEIGHT/1.2f;
+        }
         stateOpacity = 0f;
         count++;
     }

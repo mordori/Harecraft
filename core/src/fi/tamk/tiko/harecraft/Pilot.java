@@ -14,6 +14,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.RACE;
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
+import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.flights;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
@@ -103,7 +104,6 @@ class Player extends Pilot {
     float angle;
     float offsetX;
     float offsetY;
-    static float cloudHitTimer;
     float windYOffset;
     float windXOffset;
 
@@ -151,7 +151,7 @@ class Player extends Pilot {
 
         decal_head.rotateY(-90f);
 
-        if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 4000) {
+        /*if(ProfileInfo.profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0) >= 4000) {
             windYOffset = -decal.getHeight()/15f;
             windXOffset = decal.getWidth()/2.25f;
         }
@@ -162,16 +162,23 @@ class Player extends Pilot {
         else {
             windYOffset = 0f;
             windXOffset = decal.getWidth()/2.5f;
-        }
+        }*/
+
+        windYOffset = decal.getHeight()/6.55f;
+        windXOffset = decal.getWidth()/2.1f;
 
         pfx_scarf.getEmitters().get(0).getYScale().setHigh(43f * (SCREEN_WIDTH/1280f));
         pfx_scarf.getEmitters().get(1).getYScale().setHigh(36f * (SCREEN_WIDTH/1280f));
 
-        pfx_wind_trail_left.getEmitters().get(0).getXScale().setHigh(65f * (SCREEN_WIDTH/1920f));
-        pfx_wind_trail_left.getEmitters().get(1).getXScale().setHigh(60f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_left.getEmitters().get(0).getXScale().setHigh(15f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_left.getEmitters().get(1).getXScale().setHigh(10f * (SCREEN_WIDTH/1920f));
 
-        pfx_wind_trail_right.getEmitters().get(0).getXScale().setHigh(65f * (SCREEN_WIDTH/1920f));
-        pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(60f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_right.getEmitters().get(0).getXScale().setHigh(15f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(10f * (SCREEN_WIDTH/1920f));
+
+
+        pfx_wind_trail_left.allowCompletion();
+        pfx_wind_trail_right.allowCompletion();
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -263,16 +270,16 @@ class Player extends Pilot {
         decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.06f);
 
 
-        updateParticles(delta);
-        cloudHitTimer += delta;
-        if(gameState == START || cloudHitTimer > 2.4f) {
-            pfx_wind_trail_left.allowCompletion();
-            pfx_wind_trail_right.allowCompletion();
-        }
-        else if(cloudHitTimer > 0.001f && pfx_wind_trail_left.isComplete()) {
+        if(player.velocity.z < -31.5f) {
             pfx_wind_trail_left.start();
             pfx_wind_trail_right.start();
         }
+        else {
+            pfx_wind_trail_left.allowCompletion();
+            pfx_wind_trail_right.allowCompletion();
+        }
+
+        updateParticles(delta);
     }
 
     private void recordFlight() {
@@ -306,6 +313,8 @@ class Player extends Pilot {
         offsetY = (float)((windPos.x - curPosition.x) * Math.sin(angle) + (windPos.y - curPosition.y) * Math.cos(angle) + curPosition.y);
         windPos.x = offsetX;
         windPos.y = offsetY;
+        //pfx_wind_trail_right.getEmitters().first().getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+        //pfx_wind_trail_right.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
 
         projPosition = camera.project(windPos);
         pfx_wind_trail_right.setPosition(
@@ -321,6 +330,9 @@ class Player extends Pilot {
         offsetY = (float)((windPos.x - curPosition.x) * Math.sin(angle) + (windPos.y - curPosition.y) * Math.cos(angle) + curPosition.y);
         windPos.x = offsetX;
         windPos.y = offsetY;
+        //pfx_wind_trail_left.getEmitters().first().getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+        //pfx_wind_trail_left.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
+
 
         projPosition = camera.project(windPos);
         pfx_wind_trail_left.setPosition(
@@ -377,21 +389,22 @@ class Opponent extends Pilot {
         float min = finish/12f;
 
         spawnZ = MathUtils.random(min, max);
-        speed = MathUtils.random(1f, 4f) + MathUtils.random(1f, 9f);
+        speed = MathUtils.random(1f, 6f) + MathUtils.random(2f, 10.5f);
+
+        if(spawnZ > finish/5f && speed > 11.2f) speed = 11.2f;
+        else if(spawnZ > finish/5.5f && speed > 11.4f) speed = 11.4f;
+        else if(spawnZ > finish/6f && speed > 11.5f) speed = 11.5f;
+        else if(spawnZ > finish/6.5f && speed > 11.6f) speed = 11.6f;
+        else if(spawnZ > finish/8f && speed > 12.75f) speed = 12.75f;
+        else if(spawnZ > finish/10f && speed > 14f) speed = 14f;
 
         if(character == WOLF) {
             spawnZ = finish/4f;
-            speed = 8.2f;
+            speed = 11.4f;
         }
 
-        if(speed < 2f) speed = 2f;
-        if(spawnZ > finish/5f && speed > 8.2f) speed = 8.2f;
-        else if(spawnZ > finish/5.5f && speed > 8.3f) speed = 8.4f;
-        else if(spawnZ > finish/6f && speed > 8.4f) speed = 8.6f;
-        else if(spawnZ > finish/6.5f && speed > 8.5f) speed = 9f;
-        else if(spawnZ > finish/8f && speed > 11f) speed = 10f;
-        else if(spawnZ > finish/10f && speed > 13f) speed = 11f;
-        speed -= (5f/(1f+DIFFICULTYSENSITIVITY) * 0.65f);
+        speed -= (5f/(1f+DIFFICULTYSENSITIVITY) * 0.9f)/(ProfileInfo.selectedDuration/1000f);
+        if(speed < 3f) speed = 3f;
 
         System.out.println("SPAWN: " + spawnZ + ", SPEED: " + speed);
 

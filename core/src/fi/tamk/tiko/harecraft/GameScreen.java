@@ -141,6 +141,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static boolean isTransition = false;
     static boolean isTransitionComplete = false;
     int lastPlayerPlacement = 6;
+    static float ringCollectTimer = 0f;
 
     Rectangle rectPause = new Rectangle(
             SCREEN_WIDTH/1.2f,
@@ -235,8 +236,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public void updateState(float delta) {
         gameStateTime += delta;
-        if(global_Multiplier > 1f) global_Multiplier -= 0.35f * delta;
-        if(global_Multiplier < 1f) global_Multiplier = 1f;
+        if(gameState != START) ringCollectTimer += delta * 0.22;
+        if(ringCollectTimer > 1f) ringCollectTimer = 1f;
+        if(global_Multiplier > 1f) global_Multiplier -= delta * 1.2f * ringCollectTimer;
+        if(global_Multiplier < 1.5f) global_Multiplier = 1.5f;
+
+        //System.out.println(player.velocity.z);
 
         renderCount++;
 
@@ -267,7 +272,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             System.out.println(player.distance);
         }
         else if(gameState == START) {
-            global_Multiplier = 3f;
+            global_Multiplier = 3.5f;
 
             if(gameStateTime > 2f && !countdown) {
                 AssetsAudio.playSound(AssetsAudio.SOUND_COUNTDOWN,0.6f);
@@ -317,7 +322,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         System.out.println(playerScore + " / " + worldScore);
         System.out.println((int)((double)playerScore/(double)worldScore * 100) + (balloonsCollected/3) + "%");
 
-        if(balloonsCollected == 3) playerScore *= 2;
+        playerScore *= (balloonsCollected + 1);
 
         int lengthMultiplier = ProfileInfo.selectedDuration/1000;
         if(lengthMultiplier == 2) lengthMultiplier = 3;

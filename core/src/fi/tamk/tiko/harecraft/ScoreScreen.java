@@ -119,19 +119,21 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
         oldTotalScore = profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
         oldTotalScore -= playerScore;
 
+
+
         Assets.font5.getData().setLineHeight(Assets.font5.getLineHeight()/1.3f);
         Assets.font6.getData().setLineHeight(Assets.font6.getLineHeight()/1.3f);
-
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("listbutton"),
                 Assets.skin_menu.getDrawable("listbutton pressed"),
                 Assets.skin_menu.getDrawable("listbutton"),
                 Assets.font5);
-
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
         style.fontColor = new Color(1f,1f,1f,1f);
+
+
         TextButton btnNewGame = new TextButton(localizationBundle.get("btnNewGameText"), style);
         if(localizationBundle.get("btnNewGameText").equals("uusi\nlento")) btnNewGame.setWidth(280f);
         else btnNewGame.setWidth(280f);
@@ -169,11 +171,12 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                 Assets.skin_menu.getDrawable("button pressed"),
                 Assets.skin_menu.getDrawable("button"),
                 Assets.font6);
-
         style.pressedOffsetX = 4;
         style.pressedOffsetY = -4;
         style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
         style.fontColor = new Color(1f,1f,1f,1f);
+
+
         TextButton btnCourseSelect = new TextButton(localizationBundle.get("btnCourseSelectText"), style);
         if(localizationBundle.get("btnNewGameText").equals("uusi\nlento")) btnCourseSelect.setWidth(240f);
         else btnCourseSelect.setWidth(220f);
@@ -205,6 +208,8 @@ public class ScoreScreen extends ScreenAdapter implements GestureDetector.Gestur
                 touched = false;
             }
         });
+
+
 
         TextButton btnMainMenu = new TextButton(localizationBundle.get("btnMainMenuText"), style);
         if(localizationBundle.get("btnNewGameText").equals("uusi\nlento")) btnMainMenu.setWidth(240f);

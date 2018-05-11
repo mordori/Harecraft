@@ -26,6 +26,7 @@ public class AssetsAudio {
     private static Sound sound_fanfaar_4;
     private static Sound sound_fanfaar_5;
     private static Sound sound_fanfaar_6;
+    private static Sound sound_bite;
 
     private static long ID_sound_cloud_hit;
     private static long ID_sound_ring_collected;
@@ -44,6 +45,7 @@ public class AssetsAudio {
     private static long ID_sound_fanfaar_4;
     private static long ID_sound_fanfaar_5;
     private static long ID_sound_fanfaar_6;
+    private static long ID_sound_bite;
 
     static final int MUSIC_COURSE_0 = 0;
     static final int MUSIC_COURSE_1 = 1;
@@ -65,6 +67,7 @@ public class AssetsAudio {
     static final int SOUND_POINTS_COUNTING = 17;
     static final int SOUND_POINTS_COUNTING_END = 18;
     static final int SOUND_POINTS_HIGHSCORE = 19;
+    static final int SOUND_BITE = 20;
 
     private static int CURRENT_MUSIC;
 
@@ -93,6 +96,7 @@ public class AssetsAudio {
         sound_fanfaar_4 = loadSound("sound_fanfaar_4.wav");
         sound_fanfaar_5 = loadSound("sound_fanfaar_5.wav");
         sound_fanfaar_6 = loadSound("sound_fanfaar_6.wav");
+        sound_bite = loadSound("sound_bite.wav");
 
         ID_sound_airplane_engine = sound_airplane_engine.play(0);
         ID_sound_cloud_hit = sound_cloud_hit.play(0);
@@ -111,6 +115,7 @@ public class AssetsAudio {
         ID_sound_fanfaar_4 = sound_fanfaar_4.play(0);
         ID_sound_fanfaar_5 = sound_fanfaar_5.play(0);
         ID_sound_fanfaar_6 = sound_fanfaar_6.play(0);
+        ID_sound_bite = sound_bite.play(0);
 
         return true;
     }
@@ -300,6 +305,11 @@ public class AssetsAudio {
             case SOUND_FANFAAR_6:
                 sound_fanfaar_6.stop(ID_sound_fanfaar_6);
                 ID_sound_fanfaar_6 = sound_fanfaar_6.play(volume);
+                break;
+            case SOUND_BITE:
+                sound_bite.stop(ID_sound_bite);
+                ID_sound_bite = sound_bite.play(volume);
+                break;
         }
     }
 
@@ -329,5 +339,6 @@ public class AssetsAudio {
         sound_fanfaar_4.dispose();
         sound_fanfaar_5.dispose();
         sound_fanfaar_6.dispose();
+        sound_bite.dispose();
     }
 }
