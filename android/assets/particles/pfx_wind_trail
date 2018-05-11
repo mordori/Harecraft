@@ -6,12 +6,12 @@ lowMin: 100.0
 lowMax: 100.0
 - Count - 
 min: 0
-max: 300
+max: 500
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 150.0
-highMax: 150.0
+highMin: 400.0
+highMax: 400.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 800.0
-highMax: 800.0
+highMin: 550.0
+highMax: 550.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -63,55 +63,26 @@ highMax: 65.0
 relative: false
 scalingCount: 4
 scaling0: 0.08988764
-scaling1: 0.5224719
-scaling2: 0.6516854
-scaling3: 0.2247191
+scaling1: 0.38202247
+scaling2: 0.4494382
+scaling3: 0.09550562
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.29601517
-timeline2: 0.5237192
+timeline1: 0.30170777
+timeline2: 0.5047438
 timeline3: 1.0
 - Y Scale - 
 active: false
 - Velocity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 5.0
-highMax: 5.0
-relative: false
-scalingCount: 2
-scaling0: 0.0
-scaling1: 1.0
-timelineCount: 2
-timeline0: 0.0
-timeline1: 1.0
+active: false
 - Angle - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -90.0
-highMax: -90.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
+active: false
 - Rotation - 
 active: false
 - Wind - 
 active: false
 - Gravity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -50.0
-highMax: -50.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
+active: false
 - Tint - 
 colorsCount: 3
 colors0: 1.0
@@ -157,12 +128,12 @@ lowMin: 100.0
 lowMax: 100.0
 - Count - 
 min: 0
-max: 300
+max: 500
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 150.0
-highMax: 150.0
+highMin: 400.0
+highMax: 400.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -171,8 +142,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 800.0
-highMax: 800.0
+highMin: 550.0
+highMax: 550.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -214,55 +185,26 @@ highMax: 60.0
 relative: false
 scalingCount: 4
 scaling0: 0.08988764
-scaling1: 0.5168539
-scaling2: 0.60674155
-scaling3: 0.20786516
+scaling1: 0.38764045
+scaling2: 0.4494382
+scaling3: 0.084269665
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.30170777
-timeline2: 0.5370019
+timeline1: 0.29981026
+timeline2: 0.49335864
 timeline3: 1.0
 - Y Scale - 
 active: false
 - Velocity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 5.0
-highMax: 5.0
-relative: false
-scalingCount: 2
-scaling0: 0.0
-scaling1: 1.0
-timelineCount: 2
-timeline0: 0.0
-timeline1: 1.0
+active: false
 - Angle - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -90.0
-highMax: -90.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
+active: false
 - Rotation - 
 active: false
 - Wind - 
 active: false
 - Gravity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -50.0
-highMax: -50.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
+active: false
 - Tint - 
 colorsCount: 6
 colors0: 1.0

@@ -330,7 +330,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         System.out.println(playerScore + " / " + worldScore);
         System.out.println((int)((double)playerScore/(double)worldScore * 100) + (balloonsCollected/3) + "%");
 
-        playerScore *= (balloonsCollected + 1);
+        playerScore *= (1f + balloonsCollected * 0.5f);
 
         int lengthMultiplier = ProfileInfo.selectedDuration/1000;
         if(lengthMultiplier == 2) lengthMultiplier = 3;
@@ -338,13 +338,13 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
         switch(playerPlacement) {
             case 1:
-                playerScore += 10 * lengthMultiplier;
+                playerScore += 15 * lengthMultiplier;
                 break;
             case 2:
-                playerScore += 7 * lengthMultiplier;
+                playerScore += 10 * lengthMultiplier;
                 break;
             case 3:
-                playerScore += 5 * lengthMultiplier;
+                playerScore += 7 * lengthMultiplier;
                 break;
             case 4:
                 playerScore += 3 * lengthMultiplier;
@@ -374,7 +374,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             if (panAccelY > 1f) panAccelY = 1f;
             cameraPanY += (delta * 40f) * panAccelY;
             if (cameraPanY > 80f) cameraPanY = 80f;
-            else if(gameState == EXIT && player.distance < world.end && cameraPanY > 35f) {
+            else if(gameState == EXIT && cameraPanY > 35f) {
                 isTransition = true;
             }
         }

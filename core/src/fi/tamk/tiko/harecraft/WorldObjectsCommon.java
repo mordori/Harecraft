@@ -181,7 +181,7 @@ class Cloud extends GameObject {
     Vector2 transposedPosition = new Vector2();
     boolean isCollided = false;
     boolean isTransparent = false;
-    float proximity = 1.2f;
+    float proximity = 1f;
 
     ParticleEffect pfx_dispersion;
 
@@ -244,13 +244,13 @@ class Cloud extends GameObject {
     public void checkCollision() {
         if(decal.getPosition().z < 2f && decal.getPosition().z > -0.5f) {
             //Center
-            if(position.dst(player.curPosition) < 1.65f) {
+            if(position.dst(player.curPosition) < 1.4f) {
                 decreaseSpeed();
                 return;
             }
 
             //Left
-            transposedPosition.x = position.x - width / 3.2f;
+            transposedPosition.x = position.x - width / 3.1f;
             transposedPosition.y = position.y;
             if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
@@ -261,7 +261,7 @@ class Cloud extends GameObject {
             }
 
             //Right
-            transposedPosition.x = position.x + width / 3.2f;
+            transposedPosition.x = position.x + width / 3.1f;
             if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
                 decreaseSpeed();
                 return;
