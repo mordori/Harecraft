@@ -63,9 +63,9 @@ public class SettingsMenu extends ScreenAdapter {
 
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-            Assets.skin_menu.getDrawable("button"),
-            Assets.skin_menu.getDrawable("button pressed"),
-            Assets.skin_menu.getDrawable("button"),
+            Assets.skin_menu.getDrawable("buttongreen"),
+            Assets.skin_menu.getDrawable("buttongreenpressed"),
+            Assets.skin_menu.getDrawable("buttongreen"),
             Assets.font5
         );
         style.pressedOffsetX = 4;
@@ -94,6 +94,17 @@ public class SettingsMenu extends ScreenAdapter {
                 touched = false;
             }
         });
+
+        style = new TextButton.TextButtonStyle(
+                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("button pressed"),
+                Assets.skin_menu.getDrawable("button"),
+                Assets.font5
+        );
+        style.pressedOffsetX = 4;
+        style.pressedOffsetY = -4;
+        style.downFontColor = new Color(0.59f,0.59f,0.59f,1f);
+        style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton returnButton = new TextButton(localizationBundle.get("backButtonText"), style);
         returnButton.setWidth(270);
@@ -181,9 +192,9 @@ public class SettingsMenu extends ScreenAdapter {
         );
 
         style = new TextButton.TextButtonStyle(
-                Assets.skin_menu.getDrawable("button"),
-                Assets.skin_menu.getDrawable("button pressed"),
-                Assets.skin_menu.getDrawable("button"),
+                Assets.skin_menu.getDrawable("listbutton"),
+                Assets.skin_menu.getDrawable("listbutton pressed"),
+                Assets.skin_menu.getDrawable("listbutton"),
                 Assets.font6
         );
         style.pressedOffsetX = 4;

@@ -70,7 +70,7 @@ public class ConfirmDelete extends ScreenAdapter {
         }
 
         Label questionLabel = new Label(localizationBundle.get("sureToDelete"), style2);
-        questionLabel.setPosition(640 -questionLabel.getWidth()/2,620);
+        questionLabel.setPosition(640 -questionLabel.getWidth()/2,520);
         questionLabel.setName("difficultylabel");
 
         style2 = new Label.LabelStyle(
@@ -79,7 +79,7 @@ public class ConfirmDelete extends ScreenAdapter {
         );
 
         Label nameLabel = new Label((tempString), style2);
-        nameLabel.setPosition(640 -nameLabel.getWidth()/2,500);
+        nameLabel.setPosition(640 -nameLabel.getWidth()/2,400);
         nameLabel.setName("namelabel");
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
@@ -94,7 +94,7 @@ public class ConfirmDelete extends ScreenAdapter {
         style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), style);
-        yesButton.setPosition(1280/2 +200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
+        yesButton.setPosition(1280/2 +200 -yesButton.getWidth()/2,300 -yesButton.getHeight()/2);
         yesButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -113,7 +113,7 @@ public class ConfirmDelete extends ScreenAdapter {
         });
 
         TextButton noButton = new TextButton(localizationBundle.get("noButton"), style);
-        noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
+        noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,300 -noButton.getHeight()/2);
         noButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override

@@ -44,12 +44,12 @@ public class ExitScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Label.LabelStyle style2 = new Label.LabelStyle(
-                Assets.font3,
+                Assets.font12,
                 new Color(1f,1f,1f,1f)
         );
 
         Label questionLabel = new Label(localizationBundle.get("txtExit"), style2);
-        questionLabel.setPosition(640 -questionLabel.getWidth()/2,500);
+        questionLabel.setPosition(640 -questionLabel.getWidth()/2,420);
         questionLabel.setFontScale(1);
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
@@ -64,7 +64,7 @@ public class ExitScreen extends ScreenAdapter {
         style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton yesButton = new TextButton(localizationBundle.get("yesButton"), style);
-        yesButton.setPosition(1280/2 +200 -yesButton.getWidth()/2,400 -yesButton.getHeight()/2);
+        yesButton.setPosition(1280/2 +200 -yesButton.getWidth()/2,300 -yesButton.getHeight()/2);
         yesButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override
@@ -94,7 +94,7 @@ public class ExitScreen extends ScreenAdapter {
         style.fontColor = new Color(1f,1f,1f,1f);
 
         TextButton noButton = new TextButton(localizationBundle.get("noButton"), style);
-        noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,400 -noButton.getHeight()/2);
+        noButton.setPosition(1280/2 -200 -noButton.getWidth()/2,300 -noButton.getHeight()/2);
         noButton.addListener(new InputListener() {
             Boolean touched = false;
             @Override

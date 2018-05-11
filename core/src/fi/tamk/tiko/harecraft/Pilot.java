@@ -170,11 +170,11 @@ class Player extends Pilot {
         pfx_scarf.getEmitters().get(0).getYScale().setHigh(43f * (SCREEN_WIDTH/1280f));
         pfx_scarf.getEmitters().get(1).getYScale().setHigh(36f * (SCREEN_WIDTH/1280f));
 
-        pfx_wind_trail_left.getEmitters().get(0).getXScale().setHigh(15f * (SCREEN_WIDTH/1920f));
-        pfx_wind_trail_left.getEmitters().get(1).getXScale().setHigh(10f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_left.getEmitters().get(0).getXScale().setHigh(25f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_left.getEmitters().get(1).getXScale().setHigh(20f * (SCREEN_WIDTH/1920f));
 
-        pfx_wind_trail_right.getEmitters().get(0).getXScale().setHigh(15f * (SCREEN_WIDTH/1920f));
-        pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(10f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_right.getEmitters().get(0).getXScale().setHigh(25f * (SCREEN_WIDTH/1920f));
+        pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(20f * (SCREEN_WIDTH/1920f));
 
 
         //pfx_wind_trail_left.allowCompletion();
@@ -320,8 +320,8 @@ class Player extends Pilot {
         angle = decal.getRotation().getAngle();
 
         if(angle < 345f && angle > 300f) {
-            //pfx_wind_trail_right.getEmitters().get(0).getTransparency().setHigh(1f);
-            //pfx_wind_trail_right.getEmitters().get(1).getTransparency().setHigh(1f);
+            pfx_wind_trail_right.getEmitters().get(0).getTransparency().setHigh(0.75f);
+            pfx_wind_trail_right.getEmitters().get(1).getTransparency().setHigh(0.75f);
             pfx_wind_trail_right.start();
         }
         else {
@@ -352,8 +352,8 @@ class Player extends Pilot {
 
 
         if(angle > 15f && angle < 50f) {
-            //pfx_wind_trail_left.getEmitters().get(0).getTransparency().setHigh(1f);
-            //pfx_wind_trail_left.getEmitters().get(1).getTransparency().setHigh(1f);
+            pfx_wind_trail_left.getEmitters().get(0).getTransparency().setHigh(0.75f);
+            pfx_wind_trail_left.getEmitters().get(1).getTransparency().setHigh(0.75f);
             pfx_wind_trail_left.start();
         }
         else {
