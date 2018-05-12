@@ -29,6 +29,8 @@ import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
+import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 
 /**
  * Created by musta on 29.4.2018.
@@ -45,6 +47,7 @@ public class LevelSelectMenu extends ScreenAdapter {
     int[] top3Score = new int[3];
     Table highScoreTable = new Table();
     Preferences profilesData;
+    TextureRegion highscoreList = Assets.texR_highscoreList;
 
     Boolean mainMenu = false;
     Boolean startGame = false;
@@ -78,7 +81,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         selectedLevelNumber = profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"LastLevel", 1);
 
         makeHighScores();
-        highScoreTable.setPosition(240,630);
+        highScoreTable.setPosition(1000,630);
 
         LevelButton levelOneButton = new LevelButton(Assets.texR_stage1, Assets.texR_stage1_pressed, 1);
         levelOneButton.setPosition(240 -levelOneButton.getWidth()/2,220);
@@ -90,7 +93,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         levelThreeButton.setPosition(1040 -levelThreeButton.getWidth()/2,220);
 
         InstructionsBox instructionsBox = new InstructionsBox();
-        instructionsBox.setPosition(320 + 140, 610);
+        instructionsBox.setPosition(50, 610);
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("button"),
@@ -182,7 +185,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         durationLabel.setPosition(640 -durationLabel.getWidth()/2, 120);
 
         Label instructionsLabel1 = new Label(localizationBundle.get("instructionText1"), instructionStyle);
-        instructionsLabel1.setPosition(830 -instructionsLabel1.getWidth()/2,585);
+        instructionsLabel1.setPosition(115,565);
 
         //Label instructionsLabel2 = new Label(localizationBundle.get("instructionText2"), instructionStyle);
         //instructionsLabel2.setPosition(800 -instructionsLabel2.getWidth()/2, 565);
@@ -193,7 +196,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         );
 
         Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
-        topPilotsLabel.setPosition(230 -topPilotsLabel.getWidth()/2,710);
+        topPilotsLabel.setPosition(875,710);
 
         Label minLabel = new Label("Min", instructionStyle);
         minLabel.setPosition(640 - 250 ,120);
@@ -251,6 +254,9 @@ public class LevelSelectMenu extends ScreenAdapter {
         fbo.begin();
             Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            sBatch.begin();
+            sBatch.draw(highscoreList,800f, SCREEN_HEIGHT/1.455f);
+            sBatch.end();
             stage.draw();
         fbo.end();
         renderToTexture();

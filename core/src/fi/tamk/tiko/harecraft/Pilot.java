@@ -333,8 +333,6 @@ class Player extends Pilot {
         //pfx_wind_trail_left.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
 
 
-        System.out.println(getRotationAverage());
-
         if(getRotationAverage() < -0.6f) {
             pfx_wind_trail_left.getEmitters().get(0).getTransparency().setHigh(Math.abs(getRotationAverage() +0.6f));
             pfx_wind_trail_left.getEmitters().get(1).getTransparency().setHigh(Math.abs(getRotationAverage() +0.6f));

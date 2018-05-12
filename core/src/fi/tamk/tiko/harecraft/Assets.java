@@ -111,6 +111,7 @@ public class Assets {
     static TextureRegion texR_adjusting;
     static TextureRegion texR_asettaa;
     static TextureRegion texR_pause;
+    static TextureRegion texR_highscoreList;
 
     static TextureAtlas atlas_menu_plane;
     static TextureAtlas atlas_planes;
@@ -258,6 +259,7 @@ public class Assets {
         texR_lighthouse = loadAtlasTextureRegion(atlas_objects, "lighthouse");
         texR_palmtree = loadAtlasTextureRegion(atlas_objects, "palmtree");
         texR_boat = loadAtlasTextureRegion(atlas_objects, "boat");
+        texR_highscoreList = loadAtlasTextureRegion(atlas_1, "highscorelist");
 
         //SPRITES
         sprites_menu_plane = atlas_menu_plane.createSprites();

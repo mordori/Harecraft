@@ -42,7 +42,7 @@ public class WorldBuilder {
     float clouds_LDownTimer = 1f;
     float clouds_RUpTimer = 1f;
     float clouds_RDownTimer = 1f;
-    float boatsTimer = 5f;
+    float boatsTimer = 2f;
     float islands_LTimer = 5f;
     float islands_RTimer = 5f;
 
@@ -141,8 +141,10 @@ public class WorldBuilder {
             addTrees();
         }
         else if(world instanceof WorldSea) {
-            addBoat();
-            if(player.distance < end - 375f || player.distance > end - 250f) addIsland();
+            if(player.distance < end - 375f || player.distance > end - 250f) {
+                addBoat();
+                addIsland();
+            }
         }
     }
 
@@ -177,13 +179,13 @@ public class WorldBuilder {
 
     public void removeBoats() {
         if(!world.boats.isEmpty()) {
-            if(!world.islands_L.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_L.get(world.islands_L.size() - 1).position) < world.islands_L.get(world.islands_L.size() - 1).width
-                    || !world.islands_R.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_R.get(world.islands_R.size() - 1).position) < world.islands_R.get(world.islands_R.size() - 1).width) {
+            if(!world.islands_L.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_L.get(world.islands_L.size() - 1).position) < world.islands_L.get(world.islands_L.size() - 1).decal.getWidth()/2f
+                    || !world.islands_R.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_R.get(world.islands_R.size() - 1).position) < world.islands_R.get(world.islands_R.size() - 1).decal.getWidth()/2f) {
 
                 Boat boat = world.boats.get(world.boats.size() - 1);
                 world.boats.remove(boat);
                 world.boatPool.free(boat);
-                boat_RemoveTimer = 0.5f;
+                boat_RemoveTimer = 0.05f;
 
                 System.out.println("BOAT REMOVED!!!!");
             }
@@ -200,12 +202,12 @@ public class WorldBuilder {
         if(boat_RemoveTimer == 0) {
             if (world.boats.isEmpty() || world.boats.get(world.boats.size() - 1).stateTime >= boatsTimer) {
                 if (gameStateTime >= boatsTimer) {
-                    x = MathUtils.random(-150f, 150f);
+                    x = MathUtils.random(-140f, 140f);
                     y = groundLevel;
                     Boat boat = world.boatPool.obtain();
                     boat.init(x, y, 350f);
                     world.boats.add(boat);
-                    boatsTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
+                    boatsTimer = MathUtils.random(0.15f, 4f - global_Multiplier * 0.35f);
                 }
             }
         }

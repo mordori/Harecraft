@@ -130,18 +130,18 @@ go_en
   orig: 209, 114
   offset: 0, 0
   index: -1
-go_fi
-  rotate: false
-  xy: 1567, 76
-  size: 422, 140
-  orig: 422, 140
-  offset: 0, 0
-  index: -1
 help
   rotate: false
   xy: 1268, 822
   size: 720, 128
   orig: 720, 128
+  offset: 0, 0
+  index: -1
+highscorelist
+  rotate: false
+  xy: 1567, 59
+  size: 415, 157
+  orig: 415, 157
   offset: 0, 0
   index: -1
 lake_summer
@@ -186,16 +186,16 @@ radardot
   orig: 50, 50
   offset: 0, 0
   index: -1
-stage1p
+stage2p
   rotate: false
-  xy: 1567, 218
+  xy: 1567, 520
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
-stage2
+stage3p
   rotate: false
-  xy: 1567, 520
+  xy: 1567, 218
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
@@ -236,7 +236,7 @@ bg_tundra
   index: -1
 finish_en
   rotate: false
-  xy: 890, 504
+  xy: 890, 362
   size: 415, 114
   orig: 415, 114
   offset: 0, 0
@@ -246,6 +246,13 @@ finish_fi
   xy: 804, 2
   size: 419, 114
   orig: 419, 114
+  offset: 0, 0
+  index: -1
+go_fi
+  rotate: false
+  xy: 890, 478
+  size: 422, 140
+  orig: 422, 140
   offset: 0, 0
   index: -1
 island
@@ -264,26 +271,26 @@ menubg
   index: -1
 stage1
   rotate: false
-  xy: 890, 620
+  xy: 1284, 1612
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
-stage2p
+stage1p
   rotate: false
   xy: 890, 922
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
-stage3
+stage2
   rotate: false
-  xy: 1284, 1612
+  xy: 890, 620
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
-stage3p
+stage3
   rotate: false
   xy: 1284, 1310
   size: 350, 300

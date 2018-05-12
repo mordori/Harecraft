@@ -32,6 +32,7 @@ class Boat extends GameObject implements Pool.Poolable{
     Vector3 up = new Vector3(0f,1f,0f);
     public Boat() {
         TextureRegion textureRegion = Assets.texR_boat;
+        if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
 
         width = textureRegion.getRegionWidth()/25f;
         height = textureRegion.getRegionHeight()/25f;
