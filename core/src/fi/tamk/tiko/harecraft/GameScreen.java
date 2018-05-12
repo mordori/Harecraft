@@ -343,16 +343,16 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
         switch(playerPlacement) {
             case 1:
-                playerScore += 15 * lengthMultiplier;
+                playerScore += 25 * lengthMultiplier;
                 break;
             case 2:
-                playerScore += 10 * lengthMultiplier;
+                playerScore += 17 * lengthMultiplier;
                 break;
             case 3:
-                playerScore += 7 * lengthMultiplier;
+                playerScore += 10 * lengthMultiplier;
                 break;
             case 4:
-                playerScore += 3 * lengthMultiplier;
+                playerScore += 5 * lengthMultiplier;
                 break;
             case 5:
                 playerScore += lengthMultiplier;

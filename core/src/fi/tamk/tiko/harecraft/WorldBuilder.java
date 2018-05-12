@@ -163,12 +163,10 @@ public class WorldBuilder {
 
     public void removeIsland(ArrayList<Island> islandArray) {
         if(!islandArray.isEmpty() && islandArray.get(0).decal.getPosition().z < camera.position.z) {
-            int size = islandArray.get(0).palmtrees.size() - 1;
 
-            for(int i = size; i > 0; i--) {
-                islandArray.get(0).palmtrees.remove(i);
-            }
-            islandArray.remove(0);
+            Island island = islandArray.get(0);
+            islandArray.remove(island);
+            world.islandPool.free(island);
         }
     }
 
@@ -204,19 +202,23 @@ public class WorldBuilder {
     public void addIsland() {
         if(world.islands_L.isEmpty() || world.islands_L.get(world.islands_L.size() - 1).stateTime >= islands_LTimer) {
             if(gameStateTime >= islands_LTimer) {
-                x = MathUtils.random(-110f, -20f);
+                x = MathUtils.random(-135f, -20f);
                 y = groundLevel;
-                world.islands_L.add(new Island(x, y, 350f));
-                islands_LTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+                Island island = world.islandPool.obtain();
+                island.init(x, y, 350f);
+                world.islands_L.add(island);
+                islands_LTimer = MathUtils.random(1f, 8f - global_Multiplier * 0.65f);
             }
         }
 
         if(world.islands_R.isEmpty() || world.islands_R.get(world.islands_R.size() - 1).stateTime >= islands_RTimer) {
             if(gameStateTime >= islands_RTimer) {
-                x = MathUtils.random(20f, 110f);
+                x = MathUtils.random(20f, 135f);
                 y = groundLevel;
-                world.islands_R.add(new Island(x, y, 350f));
-                islands_RTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+                Island island = world.islandPool.obtain();
+                island.init(x, y, 350f);
+                world.islands_R.add(island);
+                islands_RTimer = MathUtils.random(1f, 8f - global_Multiplier * 0.65f);
             }
         }
     }
@@ -592,7 +594,6 @@ public class WorldBuilder {
     public void removeCloud(ArrayList<Cloud> cloudArray) {
         if(!cloudArray.isEmpty() && cloudArray.get(0).decal.getPosition().z < camera.position.z) {
             if(!cloudArray.get(0).isCollided || cloudArray.get(0).pfx_dispersion.isComplete()) {
-                //cloudArray.get(0).dispose();
                 Cloud cloud = cloudArray.get(0);
                 cloudArray.remove(cloud);
                 world.cloudPool.free(cloud);
@@ -657,16 +658,20 @@ public class WorldBuilder {
         }
 
         if(worldIndex == 0) {
-            x = MathUtils.random(-110f, -20f);
+            x = MathUtils.random(-135f, -35f);
             y = groundLevel;
             z = MathUtils.random(200f, 350f);
-            world.islands_L.add(new Island(x, y, z));
-            islands_LTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+            Island island = world.islandPool.obtain();
+            island.init(x, y, z);
+            world.islands_L.add(island);
+            islands_LTimer = MathUtils.random(1f, 7f - global_Multiplier * 0.65f);
 
-            x = MathUtils.random(110f, 20f);
+            x = MathUtils.random(135f, 35f);
             z = MathUtils.random(200f, 350f);
-            world.islands_R.add(new Island(x, y, z));
-            islands_RTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.65f);
+            island = world.islandPool.obtain();
+            island.init(x, y, z);
+            world.islands_R.add(island);
+            islands_RTimer = MathUtils.random(1f, 7f - global_Multiplier * 0.65f);
         }
     }
 

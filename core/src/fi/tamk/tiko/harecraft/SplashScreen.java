@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameMain.dBatch;
+import static fi.tamk.tiko.harecraft.GameMain.myGroupStrategy;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
 import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
@@ -99,7 +100,8 @@ public class SplashScreen extends ScreenAdapter {
         sBatch.end();
 
         if(alpha == 0f && timer > 2f) {
-            dBatch = new DecalBatch(new MyGroupStrategy(camera));
+            myGroupStrategy = new MyGroupStrategy(camera);
+            dBatch = new DecalBatch(myGroupStrategy);
             sBatch.setProjectionMatrix(orthoCamera.combined); //palautetaan projektion matrix alkuperäiseksi
             game.setScreen(new MainMenu(game,true));
         }

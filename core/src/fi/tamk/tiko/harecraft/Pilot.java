@@ -269,15 +269,14 @@ class Player extends Pilot {
         decal_wings.setRotation(decal.getRotation());
         decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.06f);
 
-
-        /*if(player.velocity.z < -29.5f) {
+        if(player.velocity.z < -29.5f) {
             pfx_wind_trail_left.start();
             pfx_wind_trail_right.start();
         }
         else if(player.velocity.z >= -29.5f){
             pfx_wind_trail_left.allowCompletion();
             pfx_wind_trail_right.allowCompletion();
-        }*/
+        }
 
         updateParticles(delta);
     }

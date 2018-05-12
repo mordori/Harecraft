@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Pool;
 
 import java.util.ArrayList;
 
@@ -64,40 +65,49 @@ class Boat extends GameObject {
  * Game object Island.
  */
 
-class Island extends GameObject {
+class Island extends GameObject implements Pool.Poolable{
     Decal decal_palmtree;
     ArrayList<Decal> palmtrees = new ArrayList<Decal>();
     Vector3 up = new Vector3(0f,1f,0f);
-    public Island(float x, float y, float z) {
-        TextureRegion textureRegion = Assets.texR_island;
-
+    TextureRegion textureRegion;
+    Decal[] palmtreesArr;
+    float randomSize;
+    int random;
+    public Island() {
+        textureRegion = Assets.texR_island;
         width = textureRegion.getRegionWidth() / 20f;
         height = textureRegion.getRegionHeight() / 20f;
 
-        float randomSize = MathUtils.random(1f, 2.5f);
+        randomSize = MathUtils.random(1f, 2.5f);
         width *= randomSize;
         height *= randomSize;
 
         decal = Decal.newDecal(width, height, textureRegion,true);
-        decal.setPosition(x,y - 4f, z);
         decal.rotateX(90f);
         decal.rotateZ(MathUtils.random(0f,360f));
 
         textureRegion = Assets.texR_palmtree;
-
         width = textureRegion.getRegionWidth() / 20f;
         height = textureRegion.getRegionHeight() / 20f;
 
-        int random = (int)(MathUtils.random(1f, 3.5f) * (randomSize*1.5f));
+        palmtreesArr = new Decal[(int)(3.5f * (randomSize*1.5f))];
 
-        for(int i = 0; i < random; i++) {
+        for(int i = 0; i < (int)(3.5f * (randomSize*1.5f)); i++) {
             if(MathUtils.random(0,1) == 0) textureRegion = Assets.flip(textureRegion);
             decal_palmtree = Decal.newDecal(width, height, textureRegion,true);
+            palmtreesArr[i] = decal_palmtree;
+        }
+    }
 
-            decal_palmtree.setPosition(decal.getX() + MathUtils.random(-decal.getWidth()/6.5f,decal.getWidth()/6.5f),
+    public void init(float x, float y, float z) {
+        decal.setPosition(x,y - 4f, z);
+
+        random = (int)(MathUtils.random(1f, 3.5f) * (randomSize*1.5f));
+        for(int i = 0; i < random; i++) {
+            palmtreesArr[i].setPosition(decal.getX() + MathUtils.random(-decal.getWidth()/6.5f,decal.getWidth()/6.5f),
                     decal.getY() + width/2f + 0.5f, decal.getZ() + MathUtils.random(-decal.getHeight()/6.5f, decal.getHeight()/6.5f));
 
-            palmtrees.add(decal_palmtree);
+            palmtrees.add(palmtreesArr[i]);
         }
     }
 
@@ -116,6 +126,19 @@ class Island extends GameObject {
             d.translateZ(velocity.z * delta);
             d.lookAt(camera.position,up);
         }
+    }
+
+    public void dispose() {
+        for(int i = 0; i < palmtrees.size(); i++) {
+            palmtrees.remove(i);
+        }
+    }
+
+    @Override
+    public void reset() {
+        refresh();
+
+        palmtrees.removeAll(palmtrees);
     }
 }
 

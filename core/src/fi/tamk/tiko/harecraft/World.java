@@ -101,7 +101,7 @@ public abstract class World {
             return new Hill();
         }
     };
-    final Pool<Lake> lakePool = new Pool<Lake>() {
+    final Pool<Lake> lakePool = new Pool<Lake>(15) {
         @Override
         protected Lake newObject() {
             return new Lake();
@@ -111,6 +111,12 @@ public abstract class World {
         @Override
         protected Tree newObject() {
             return new Tree();
+        }
+    };
+    final Pool<Island> islandPool = new Pool<Island>(15) {
+        @Override
+        protected Island newObject() {
+            return new Island();
         }
     };
 

@@ -43,6 +43,7 @@ public class GameMain extends Game {
     static FrameBuffer fbo;
     static Sprite texture;
     static float musicVolume = 0.6f;
+    static MyGroupStrategy myGroupStrategy;
 	
 	@Override
 	public void create () {
@@ -87,6 +88,7 @@ public class GameMain extends Game {
         if(shapeRenderer != null) shapeRenderer.dispose();
         if(fbo != null) fbo.dispose();
         if(stage != null) stage.dispose();
+        if(myGroupStrategy != null) myGroupStrategy.dispose();
 
         texture.getTexture().dispose();
 
