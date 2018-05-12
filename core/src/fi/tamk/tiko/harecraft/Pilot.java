@@ -113,6 +113,8 @@ class Player extends Pilot {
         pfx_scarf = Assets.pfx_scarf;
         pfx_wind_trail_left = Assets.pfx_wind_trail;
         pfx_wind_trail_right = Assets.pfx_wind_trail;
+        pfx_wind_trail_left.reset();
+        pfx_wind_trail_right.reset();
 
         drawDistance = spawnDistance/50f;
         speed = SPEED;
@@ -263,14 +265,6 @@ class Player extends Pilot {
         decal_wings.setRotation(decal.getRotation());
         decal_wings.setPosition(decal.getPosition().x, decal.getPosition().y, decal.getPosition().z + 0.06f);
 
-        if(player.velocity.z < -29.5f) {
-            pfx_wind_trail_left.start();
-            pfx_wind_trail_right.start();
-        }
-        else if(player.velocity.z >= -29.5f){
-            pfx_wind_trail_left.allowCompletion();
-            pfx_wind_trail_right.allowCompletion();
-        }
 
         updateParticles(delta);
     }
@@ -339,7 +333,7 @@ class Player extends Pilot {
         //pfx_wind_trail_left.getEmitters().get(1).getAngle().setHigh(-MathUtils.atan2(direction.y, direction.x)*(float)(180f/Math.PI));
 
 
-
+        System.out.println(getRotationAverage());
 
         if(getRotationAverage() < -0.6f) {
             pfx_wind_trail_left.getEmitters().get(0).getTransparency().setHigh(Math.abs(getRotationAverage() +0.6f));

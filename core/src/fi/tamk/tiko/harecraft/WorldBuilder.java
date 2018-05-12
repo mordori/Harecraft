@@ -60,6 +60,11 @@ public class WorldBuilder {
     Vector3 pos = new Vector3();
     Vector2 ringSpawnVector = new Vector2(0f,18f);      //18 maksimi säde
     int staticHold = 0;
+    float max;
+    float min;
+    float difficultyRate = (4 - DIFFICULTYSENSITIVITY) * 0.17f;
+    int whatVector;
+    Vector2 tmpVector = new Vector2(18f,0f);
 
     float balloon1SpawnPos, balloon2SpawnPos, balloon3SpawnPos;
     boolean balloon1Collected, balloon2Collected, balloon3Collected;
@@ -291,9 +296,8 @@ public class WorldBuilder {
     }
 
     public void addClouds() {
-        float difficultyRate = (4 - DIFFICULTYSENSITIVITY) * 0.17f;
-        float min = 0.45f + 5.6f/global_Multiplier * 0.12f;
-        float max = 1.35f - global_Multiplier * 0.15f;
+        min = 0.45f + 5.6f/global_Multiplier * 0.12f;
+        max = 1.35f - global_Multiplier * 0.15f;
 
         if(world.clouds_LUp.isEmpty() || world.clouds_LUp.get(world.clouds_LUp.size() - 1).stateTime >= clouds_LUpTimer) {
             x = MathUtils.random(-40f,0f);
@@ -393,12 +397,8 @@ public class WorldBuilder {
     }
 
     public void addTrees() {
-        //float min = 0.1f + 6.1f/global_Multiplier * 0.04f;
-        //float max = 0.4f - global_Multiplier * 0.05f;
-        //float min = 0.01f;
-        //float max = 0.05f;
-        float min = 0.05f + 5.6f/global_Multiplier * 0.04f;
-        float max = 0.35f - global_Multiplier * 0.04f;
+        min = 0.05f + 5.6f/global_Multiplier * 0.04f;
+        max = 0.35f - global_Multiplier * 0.04f;
 
         if((world.trees_L.isEmpty() && trees_LRemoveTimer == 0f)
                 || (!world.trees_L.isEmpty() && trees_LRemoveTimer == 0f && world.trees_L.get(world.trees_L.size() - 1).stateTime >= trees_LTimer)) {
@@ -445,8 +445,8 @@ public class WorldBuilder {
     }
 
     public void addHills() {
-        float min = 0.7f;
-        float max = 3f - global_Multiplier * 0.3f;
+        min = 0.7f;
+        max = 3f - global_Multiplier * 0.3f;
 
         if((world.hills_L.isEmpty() && hills_LRemoveTimer == 0f) || (!world.hills_L.isEmpty() && hills_LRemoveTimer == 0f && world.hills_L.get(world.hills_L.size() - 1).stateTime >= hills_LTimer)) {
             x = MathUtils.random(-160f, 0f);
@@ -683,8 +683,9 @@ public class WorldBuilder {
     }
 
     public Vector2 randomizeRingSpawnVector() {
-        int whatVector = MathUtils.random(1,6);     //radomize what vector to spawn
-        Vector2 tmpVector = new Vector2(18f,0f);
+        whatVector = MathUtils.random(1,6);     //radomize what vector to spawn
+        tmpVector.x = 18f;
+        tmpVector.y = 0f;
 
         if (whatVector == 1) {
             tmpVector.x = ProfileInfo.customVector1.x;

@@ -142,6 +142,8 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     static boolean isTransitionComplete = false;
     int lastPlayerPlacement = 6;
     static float ringCollectTimer = 0f;
+    float x;
+    float y;
 
     Rectangle rectPause = new Rectangle(
             SCREEN_WIDTH/1.2f,
@@ -249,7 +251,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         if(global_Multiplier > 1f) global_Multiplier -= delta * 1.2f * ringCollectTimer;
         if(global_Multiplier < 2f) global_Multiplier = 2f;
 
-        System.out.println(player.velocity.z);
+        //System.out.println(player.velocity.z);
 
         renderCount++;
 
@@ -260,8 +262,8 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
             player.acceleration = 0f;
             world.pfx_speed_lines.start();
 
-            float x = MathUtils.random(-7f, 7f);
-            float y = MathUtils.random(-7.2f, 4.2f);
+            x = MathUtils.random(-7f, 7f);
+            y = MathUtils.random(-7.2f, 4.2f);
             Ring ring = world.ringPool.obtain();
             ring.init(x, y, spawnDistance/3.25f);
             world.rings.add(ring);
