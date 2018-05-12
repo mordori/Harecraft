@@ -192,7 +192,6 @@ class WorldSummer extends World {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_grass, 0, 0, 600, 330), true);
         ground.setPosition(0f, -45f, 125f);
         ground.rotateX(90f);
-        pfx_snow = null;
 
         hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 33f));
         hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 33f));
@@ -257,7 +256,6 @@ class WorldSea extends World {
         ground = Decal.newDecal(new TextureRegion(Assets.tex_sea, 0, 0, 560, 280), true);
         ground.setPosition(0f, -30f, 165f);
         ground.rotateX(90f);
-        pfx_snow = null;
 
         lightHouses.add(new LightHouse(-33f, groundLevel, spawnDistance + 48f));
         lightHouses.add(new LightHouse(33f, groundLevel, spawnDistance + 48f));
