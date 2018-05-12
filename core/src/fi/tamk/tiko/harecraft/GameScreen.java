@@ -262,10 +262,15 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
             float x = MathUtils.random(-7f, 7f);
             float y = MathUtils.random(-7.2f, 4.2f);
-            world.rings.add(new Ring(x, y, spawnDistance/3.25f));
+            Ring ring = world.ringPool.obtain();
+            ring.init(x, y, spawnDistance/3.25f);
+            world.rings.add(ring);
             x = MathUtils.random(-7f, 7f);
             y = MathUtils.random(-7.2f, 4.2f);
-            world.rings.add(new Ring(x, y, spawnDistance/1.35f));
+
+            ring = world.ringPool.obtain();
+            ring.init(x, y, spawnDistance/1.35f);
+            world.rings.add(ring);
 
             AssetsAudio.stopSound(AssetsAudio.SOUND_AIRPLANE_ENGINE);
             AssetsAudio.playMusic(worldIndex);

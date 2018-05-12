@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 
 import static fi.tamk.tiko.harecraft.GameMain.camera;
 import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
@@ -23,8 +24,7 @@ import static fi.tamk.tiko.harecraft.World.player;
  * Contains all the common world objects-
  */
 
-public abstract class WorldObjectsCommon {
-}
+public abstract class WorldObjectsCommon {}
 
 /**
  * Created by Mika on 19.4.2018.
@@ -32,7 +32,7 @@ public abstract class WorldObjectsCommon {
  * Game object Ring.
  */
 
-class Ring extends GameObject {
+class Ring extends GameObject implements Pool.Poolable{
     final float COLLECTED_SPEED = 10f;
     final float MULTIPLIER_HIGH = 7f;
     final float MULTIPLIER_INCREMENT = 3.22f;
@@ -40,9 +40,9 @@ class Ring extends GameObject {
     Decal decal_arrows;
     float opacity_arrows;
     float stateTime_arrows;
-    ParticleEffect pfx_speed_up;
+    ParticleEffect pfx_speed_up = new ParticleEffect(Assets.pfx_speed_up);
 
-    public Ring(float x, float y, float z) {
+    public Ring() {
         TextureRegion textureRegion = Assets.texR_ring0;
         TextureRegion textureRegion2 = Assets.texR_ring_arrows0;
         switch (worldIndex) {
@@ -62,21 +62,22 @@ class Ring extends GameObject {
         width = textureRegion.getRegionWidth()/75f;
         height = textureRegion.getRegionHeight()/75f;
         decal = Decal.newDecal(width, height, textureRegion, true);
-        decal.setPosition(x,y,z);
 
         decal_arrows = Decal.newDecal(width, height, textureRegion2, true);
-        decal_arrows.setPosition(x,y,z);
         decal_arrows.setScale(1.5f);
+    }
 
-        pfx_speed_up = new ParticleEffect(Assets.pfx_speed_up);
-
+    public void init(float x, float y, float z) {
+        decal.setPosition(x,y,z);
+        decal_arrows.setPosition(x,y,z);
         worldScore++;
+        decal_arrows.setScale(1.5f);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-        stateTime_arrows += delta;
+        stateTime_arrows += delta*1.25f;
 
         if(!isCollected) {
             if(decal.getPosition().z < 0.5f && decal.getPosition().z > -1.5f && position.dst(player.curPosition) < 2.5f) {
@@ -163,8 +164,14 @@ class Ring extends GameObject {
         pfx_speed_up.update(delta);
     }
 
-    public void dispose() {
-        pfx_speed_up.dispose();
+    @Override
+    public void reset() {
+        refresh();
+        isCollected = false;
+        stateTime_arrows = 0f;
+        opacity_arrows = 0f;
+        decal.setScale(1f);
+        decal_arrows.setScale(1.5f);
     }
 }
 
@@ -174,7 +181,7 @@ class Ring extends GameObject {
  * Game object Cloud.
  */
 
-class Cloud extends GameObject {
+class Cloud extends GameObject implements Pool.Poolable {
     final float MULTIPLIER_LOW = 1.5f;
     final float MULTIPLIER_DECREMENT = 2.5f;
 
@@ -183,9 +190,9 @@ class Cloud extends GameObject {
     boolean isTransparent = false;
     float proximity = 1f;
 
-    ParticleEffect pfx_dispersion;
+    ParticleEffect pfx_dispersion = new ParticleEffect(Assets.pfx_cloud_dispersion);
 
-    public Cloud(float x, float y, float z) {
+    public Cloud() {
         TextureRegion textureRegion = Assets.texR_cloud1;
 
         switch(MathUtils.random(0,2)) {
@@ -206,9 +213,10 @@ class Cloud extends GameObject {
         height = textureRegion.getRegionHeight() / 65f;
 
         decal = Decal.newDecal(width, height, textureRegion, true);
-        decal.setPosition(x,y,z);
+    }
 
-        pfx_dispersion = new ParticleEffect(Assets.pfx_cloud_dispersion);
+    public void init(float x, float y, float z) {
+        decal.setPosition(x,y,z);
     }
 
     @Override
@@ -295,6 +303,15 @@ class Cloud extends GameObject {
 
     public void dispose() {
         pfx_dispersion.dispose();
+    }
+
+    @Override
+    public void reset() {
+        refresh();
+        transposedPosition = new Vector2();
+        isCollided = false;
+        isTransparent = false;
+        decal.setScale(1f);
     }
 }
 

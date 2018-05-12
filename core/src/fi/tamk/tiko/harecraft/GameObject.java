@@ -34,6 +34,15 @@ abstract class GameObject {
 
     }
 
+    public void refresh() {
+        velocity = new Vector3();
+        direction = new Vector3();
+        position = new Vector3();
+        rotation = new Vector3();
+        stateTime = 0f;
+        opacity = 0f;
+    }
+
     public void moveZ(float delta) {
         decal.translateZ(velocity.z * delta);
     }

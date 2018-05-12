@@ -1,8 +1,13 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pools;
+
 import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
@@ -73,6 +78,41 @@ public abstract class World {
     Decal decal_sun2;
 
     float opacity;
+
+    ParticleEffectPool pfxPool_snow;
+    ParticleEffectPool.PooledEffect part_snow;
+    ArrayList<ParticleEffectPool.PooledEffect> pooledEffects = new ArrayList<ParticleEffectPool.PooledEffect>();
+
+    final Pool<Cloud> cloudPool = new Pool<Cloud>() {
+        @Override
+        protected Cloud newObject() {
+            return new Cloud();
+        }
+    };
+    final Pool<Ring> ringPool = new Pool<Ring>() {
+        @Override
+        protected Ring newObject() {
+            return new Ring();
+        }
+    };
+    final Pool<Hill> hillPool = new Pool<Hill>() {
+        @Override
+        protected Hill newObject() {
+            return new Hill();
+        }
+    };
+    final Pool<Lake> lakePool = new Pool<Lake>() {
+        @Override
+        protected Lake newObject() {
+            return new Lake();
+        }
+    };
+    final Pool<Tree> treePool = new Pool<Tree>() {
+        @Override
+        protected Tree newObject() {
+            return new Tree();
+        }
+    };
 
     public World() {
         finish = ProfileInfo.selectedDuration;
@@ -186,6 +226,10 @@ class WorldTundra extends World {
 
         hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 33f));
         hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 33f));
+
+
+        pfxPool_snow = new ParticleEffectPool(pfx_snow,40,80);
+        part_snow = pfxPool_snow.obtain();
     }
 
     public void update(float delta) {
