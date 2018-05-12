@@ -244,12 +244,12 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     public void updateState(float delta) {
         gameStateTime += delta;
-        if(gameState != START) ringCollectTimer += delta * 0.22;
+        if(gameState != START) ringCollectTimer += delta * 0.2;
         if(ringCollectTimer > 1f) ringCollectTimer = 1f;
         if(global_Multiplier > 1f) global_Multiplier -= delta * 1.2f * ringCollectTimer;
         if(global_Multiplier < 2f) global_Multiplier = 2f;
 
-        //System.out.println(player.velocity.z);
+        System.out.println(player.velocity.z);
 
         renderCount++;
 
