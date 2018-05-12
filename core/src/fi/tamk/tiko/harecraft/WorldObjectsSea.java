@@ -180,7 +180,6 @@ class LightHouse extends GameObject {
         decal_island.rotateX(90f);
         decal_island.rotateZ(MathUtils.random(0f,360f));
 
-
         textureRegion = Assets.texR_palmtree;
 
         width = textureRegion.getRegionWidth() / 20f;
@@ -195,7 +194,6 @@ class LightHouse extends GameObject {
             decal_palmtree.setPosition(decal_island.getX() + MathUtils.random(-decal_island.getWidth()/6f,decal_island.getWidth()/6f),
                     decal_island.getY() + width/2f + 0.5f, decal_island.getZ() + MathUtils.random(-decal_island.getHeight()/6f, decal_island.getHeight()/6f));
 
-
             boolean isNear = false;
             boolean isClose = false;
             boolean isAdded = false;
@@ -208,11 +206,6 @@ class LightHouse extends GameObject {
 
 
             if(!isAdded) palmtrees.add(decal_palmtree);
-            else {
-                System.out.println(decal_palmtree.getZ());
-                System.out.println("SUCCESSSSDFSDFSDF!!!!");
-            }
-
         }
     }
 

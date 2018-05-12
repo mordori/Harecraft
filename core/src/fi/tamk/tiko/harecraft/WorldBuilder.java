@@ -186,8 +186,6 @@ public class WorldBuilder {
                 world.boats.remove(boat);
                 world.boatPool.free(boat);
                 boat_RemoveTimer = 0.05f;
-
-                System.out.println("BOAT REMOVED!!!!");
             }
         }
 

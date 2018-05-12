@@ -129,10 +129,10 @@ public class Assets {
     static ParticleEffect pfx_speed_up;
     static ParticleEffect pfx_snow;
     static ParticleEffect pfx_wind_trail;
-    static ParticleEffect pfx_placement;
-    static ParticleEffect pfx_placement1;
-    static ParticleEffect pfx_placement2;
-    static ParticleEffect pfx_placement3;
+    //static ParticleEffect pfx_placement;
+    //static ParticleEffect pfx_placement1;
+    //static ParticleEffect pfx_placement2;
+    //static ParticleEffect pfx_placement3;
 
     static BitmapFont font0;
     static BitmapFont font1;
@@ -275,10 +275,10 @@ public class Assets {
         pfx_speed_up = new ParticleEffect();
         pfx_snow = new ParticleEffect();
         pfx_wind_trail = new ParticleEffect();
-        pfx_placement = new ParticleEffect();
-        pfx_placement1 = new ParticleEffect();
-        pfx_placement2 = new ParticleEffect();
-        pfx_placement3 = new ParticleEffect();
+        //pfx_placement = new ParticleEffect();
+        //pfx_placement1 = new ParticleEffect();
+        //pfx_placement2 = new ParticleEffect();
+        //pfx_placement3 = new ParticleEffect();
 
         pfx_scarf.load(Gdx.files.internal("particles/pfx_scarf"), Gdx.files.internal("particles/"));
         pfx_cloud_dispersion.load(Gdx.files.internal("particles/pfx_cloud_dispersion"), Gdx.files.internal("particles/"));
@@ -287,10 +287,10 @@ public class Assets {
         pfx_speed_up.load(Gdx.files.internal("particles/pfx_speed_up"), Gdx.files.internal("particles/"));
         pfx_snow.load(Gdx.files.internal("particles/pfx_snow"), Gdx.files.internal("particles/"));
         pfx_wind_trail.load(Gdx.files.internal("particles/pfx_wind_trail"), Gdx.files.internal("particles/"));
-        pfx_placement.load(Gdx.files.internal("particles/pfx_placement"), Gdx.files.internal("particles/"));
-        pfx_placement1.load(Gdx.files.internal("particles/pfx_placement1"), Gdx.files.internal("particles/"));
-        pfx_placement2.load(Gdx.files.internal("particles/pfx_placement2"), Gdx.files.internal("particles/"));
-        pfx_placement3.load(Gdx.files.internal("particles/pfx_placement3"), Gdx.files.internal("particles/"));
+        //pfx_placement.load(Gdx.files.internal("particles/pfx_placement"), Gdx.files.internal("particles/"));
+        //pfx_placement1.load(Gdx.files.internal("particles/pfx_placement1"), Gdx.files.internal("particles/"));
+        //pfx_placement2.load(Gdx.files.internal("particles/pfx_placement2"), Gdx.files.internal("particles/"));
+        //pfx_placement3.load(Gdx.files.internal("particles/pfx_placement3"), Gdx.files.internal("particles/"));
 
         //FONTS
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/KOMIKAX_.ttf"));
@@ -379,10 +379,10 @@ public class Assets {
         pfx_speed_up.dispose();
         pfx_snow.dispose();
         pfx_wind_trail.dispose();
-        pfx_placement.dispose();
-        pfx_placement1.dispose();
-        pfx_placement2.dispose();
-        pfx_placement3.dispose();
+        //pfx_placement.dispose();
+        //pfx_placement1.dispose();
+        //pfx_placement2.dispose();
+        //pfx_placement3.dispose();
 
         font0.dispose();
         font1.dispose();

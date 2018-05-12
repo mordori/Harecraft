@@ -95,6 +95,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         InstructionsBox instructionsBox = new InstructionsBox();
         instructionsBox.setPosition(50, 610);
 
+
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
                 Assets.skin_menu.getDrawable("button"),
                 Assets.skin_menu.getDrawable("button pressed"),
@@ -204,6 +205,9 @@ public class LevelSelectMenu extends ScreenAdapter {
         Label maxLabel = new Label("Max", instructionStyle);
         maxLabel.setPosition(640 + 250 -maxLabel.getWidth() , 120);
 
+        HighscoreBox highscoreBox = new HighscoreBox();
+        highscoreBox.setPosition(800f, 550);
+
         stage.addActor(levelOneButton);
         stage.addActor(levelTwoButton);
         stage.addActor(levelThreeButton);
@@ -215,6 +219,7 @@ public class LevelSelectMenu extends ScreenAdapter {
         stage.addActor(minLabel);
         stage.addActor(maxLabel);
 
+        stage.addActor(highscoreBox);
         stage.addActor(topPilotsLabel);
         stage.addActor(highScoreTable);
 
@@ -254,9 +259,6 @@ public class LevelSelectMenu extends ScreenAdapter {
         fbo.begin();
             Gdx.gl.glClearColor(68f/255f, 153f/255f, 223f/255f, 1f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            sBatch.begin();
-            sBatch.draw(highscoreList,800f, SCREEN_HEIGHT/1.455f);
-            sBatch.end();
             stage.draw();
         fbo.end();
         renderToTexture();
@@ -453,6 +455,18 @@ class InstructionsBox extends Actor {
     }
 
     public void draw(Batch batch, float alpha) {
-        batch.draw(instructionTexture, getX(),getY(), 720 , 128);
+        batch.draw(instructionTexture, getX(),getY());
+    }
+}
+
+class HighscoreBox extends Actor {
+    TextureRegion highscore;
+
+    public HighscoreBox() {
+        highscore = Assets.texR_highscoreList;
+    }
+
+    public void draw(Batch batch, float alpha) {
+        batch.draw(highscore, getX(),getY());
     }
 }
