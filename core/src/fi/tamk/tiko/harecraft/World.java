@@ -18,6 +18,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.gameState;
 import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
 import static fi.tamk.tiko.harecraft.GameScreen.isTransition;
+import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.MyGroupStrategy.shader3D_sea;
 import static fi.tamk.tiko.harecraft.WorldBuilder.groundLevel;
 import static fi.tamk.tiko.harecraft.WorldBuilder.spawnDistance;
@@ -34,7 +35,9 @@ public abstract class World {
     static float end;
 
     ParticleEffect pfx_speed_lines;
-    ParticleEffect pfx_snow;
+    ParticleEffect pfx_snow = Assets.pfx_snow;
+    ParticleEffect pfx_cloud = Assets.pfx_cloud_dispersion;
+    ParticleEffect pfx_speedUp = Assets.pfx_speed_up;
 
     //Player
     static Player player;
@@ -79,9 +82,8 @@ public abstract class World {
 
     float opacity;
 
-    ParticleEffectPool pfxPool_snow;
-    ParticleEffectPool.PooledEffect part_snow;
-    ArrayList<ParticleEffectPool.PooledEffect> pooledEffects = new ArrayList<ParticleEffectPool.PooledEffect>();
+    ParticleEffectPool pfxPool_cloudDispersion;
+    ParticleEffectPool pfxPool_playerSpeedUp;
 
     final Pool<Cloud> cloudPool = new Pool<Cloud>() {
         @Override
@@ -101,16 +103,16 @@ public abstract class World {
             return new Hill();
         }
     };
-    final Pool<Lake> lakePool = new Pool<Lake>(15) {
-        @Override
-        protected Lake newObject() {
-            return new Lake();
-        }
-    };
     final Pool<Tree> treePool = new Pool<Tree>() {
         @Override
         protected Tree newObject() {
             return new Tree();
+        }
+    };
+    final Pool<Lake> lakePool = new Pool<Lake>(15) {
+        @Override
+        protected Lake newObject() {
+            return new Lake();
         }
     };
     final Pool<Island> islandPool = new Pool<Island>(15) {
@@ -119,14 +121,20 @@ public abstract class World {
             return new Island();
         }
     };
+    final Pool<Boat> boatPool = new Pool<Boat>() {
+        @Override
+        protected Boat newObject() {
+            return new Boat();
+        }
+    };
 
     public World() {
         finish = ProfileInfo.selectedDuration;
         end = finish + spawnDistance + 20f;
 
-        if(SCREEN_WIDTH >= 1600) pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines_2);
-        else pfx_speed_lines = new ParticleEffect(Assets.pfx_speed_lines);
-        pfx_snow = new ParticleEffect(Assets.pfx_snow);
+        if(SCREEN_WIDTH >= 1600) pfx_speed_lines = Assets.pfx_speed_lines_2;
+        else pfx_speed_lines = Assets.pfx_speed_lines;
+
         pfx_snow.getEmitters().first().setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
         pfx_snow.getEmitters().get(1).setPosition(SCREEN_WIDTH/2f, SCREEN_HEIGHT/2.2f);
 
@@ -142,21 +150,12 @@ public abstract class World {
         decal_sun2 = Decal.newDecal(Assets.texR_sun, true);
         decal_sun2.setPosition(0f, -40f, 298f);
         decal_sun2.rotateZ(45f);
-    }
 
-    public void dispose() {
-        player.dispose();
-
-        for(Opponent o : opponents) {
-            o.dispose();
-        }
-
-        if(pfx_speed_lines != null) pfx_speed_lines.dispose();
-        if(pfx_snow != null) pfx_snow.dispose();
+        pfxPool_cloudDispersion = new ParticleEffectPool(pfx_cloud,2,3);
+        pfxPool_playerSpeedUp = new ParticleEffectPool(pfx_speedUp,2,2);
     }
 
     public abstract void updateShaders(float delta);
-
     public void update(float delta) {
         if(gameState == START) opacity = gameStateTime < 1f ? gameStateTime : 1f;
         else if(gameState == END && gameStateTime > 4f) opacity = 5f - gameStateTime > 0f ? 5f - gameStateTime : 0f;
@@ -232,10 +231,6 @@ class WorldTundra extends World {
 
         hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 33f));
         hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 33f));
-
-
-        pfxPool_snow = new ParticleEffectPool(pfx_snow,40,80);
-        part_snow = pfxPool_snow.obtain();
     }
 
     public void update(float delta) {

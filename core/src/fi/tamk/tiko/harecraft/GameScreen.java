@@ -475,10 +475,4 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
     public void hide() {
         dispose();
     }
-
-    @Override
-    public void dispose() {
-        world.dispose();
-        HUD.dispose();
-    }
 }

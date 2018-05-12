@@ -1,6 +1,7 @@
 package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
@@ -14,6 +15,7 @@ import static fi.tamk.tiko.harecraft.GameScreen.fieldOfView;
 import static fi.tamk.tiko.harecraft.GameScreen.global_Multiplier;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.ringsCollected;
+import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.World.player;
@@ -35,12 +37,12 @@ public abstract class WorldObjectsCommon {}
 class Ring extends GameObject implements Pool.Poolable{
     final float COLLECTED_SPEED = 10f;
     final float MULTIPLIER_HIGH = 7f;
-    final float MULTIPLIER_INCREMENT = 3.22f;
+    final float MULTIPLIER_INCREMENT = 3.4f;
     boolean isCollected = false;
     Decal decal_arrows;
     float opacity_arrows;
     float stateTime_arrows;
-    ParticleEffect pfx_speed_up = new ParticleEffect(Assets.pfx_speed_up);
+    ParticleEffectPool.PooledEffect pfx_speed_up;
 
     public Ring() {
         TextureRegion textureRegion = Assets.texR_ring0;
@@ -94,7 +96,8 @@ class Ring extends GameObject implements Pool.Poolable{
                 decal.setPosition(position.x, position.y,0.5f);
                 decal_arrows.setPosition(position.x, position.y,0.5f);
 
-                pfx_speed_up.start();
+                pfx_speed_up = world.pfxPool_playerSpeedUp.obtain();
+                pfx_speed_up.reset();
                 pfx_speed_up.setPosition(
                         player.projPosition.x,
                         player.projPosition.y);
@@ -170,6 +173,7 @@ class Ring extends GameObject implements Pool.Poolable{
         isCollected = false;
         stateTime_arrows = 0f;
         opacity_arrows = 0f;
+        pfx_speed_up = null;
         decal.setScale(1f);
         decal_arrows.setScale(1.5f);
     }
@@ -182,15 +186,15 @@ class Ring extends GameObject implements Pool.Poolable{
  */
 
 class Cloud extends GameObject implements Pool.Poolable {
-    final float MULTIPLIER_LOW = 1.5f;
-    final float MULTIPLIER_DECREMENT = 2.5f;
+    final float MULTIPLIER_LOW = 2f;
+    final float MULTIPLIER_DECREMENT = 3f;
 
     Vector2 transposedPosition = new Vector2();
     boolean isCollided = false;
     boolean isTransparent = false;
     float proximity = 1f;
 
-    ParticleEffect pfx_dispersion = new ParticleEffect(Assets.pfx_cloud_dispersion);
+    ParticleEffectPool.PooledEffect pfx_dispersion;
 
     public Cloud() {
         TextureRegion textureRegion = Assets.texR_cloud1;
@@ -211,7 +215,6 @@ class Cloud extends GameObject implements Pool.Poolable {
 
         width = textureRegion.getRegionWidth() / 65f;
         height = textureRegion.getRegionHeight() / 65f;
-
         decal = Decal.newDecal(width, height, textureRegion, true);
     }
 
@@ -258,24 +261,28 @@ class Cloud extends GameObject implements Pool.Poolable {
             }
 
             //Left
-            transposedPosition.x = position.x - width / 3.1f;
-            transposedPosition.y = position.y;
-            if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
-                decreaseSpeed();
-                return;
-            } else if (transposedPosition.dst(player.curPosition.x + player.width / 4f, player.curPosition.y) < proximity) {
-                decreaseSpeed();
-                return;
+            if(!isCollided) {
+                transposedPosition.x = position.x - width / 3.1f;
+                transposedPosition.y = position.y;
+                if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
+                    decreaseSpeed();
+                    return;
+                } else if (transposedPosition.dst(player.curPosition.x + player.width / 4f, player.curPosition.y) < proximity) {
+                    decreaseSpeed();
+                    return;
+                }
             }
 
             //Right
-            transposedPosition.x = position.x + width / 3.1f;
-            if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
-                decreaseSpeed();
-                return;
-            } else if (transposedPosition.dst(player.curPosition.x + player.width / 4f, player.curPosition.y) < proximity) {
-                decreaseSpeed();
-                return;
+            if(!isCollided) {
+                transposedPosition.x = position.x + width / 3.1f;
+                if (transposedPosition.dst(player.curPosition.x - player.width / 4f, player.curPosition.y) < proximity) {
+                    decreaseSpeed();
+                    return;
+                } else if (transposedPosition.dst(player.curPosition.x + player.width / 4f, player.curPosition.y) < proximity) {
+                    decreaseSpeed();
+                    return;
+                }
             }
         }
     }
@@ -288,7 +295,8 @@ class Cloud extends GameObject implements Pool.Poolable {
 
         AssetsAudio.playSound(AssetsAudio.SOUND_CLOUD_HIT, 0.7f);
 
-        pfx_dispersion.start();
+        pfx_dispersion = world.pfxPool_cloudDispersion.obtain();
+        pfx_dispersion.reset();
         pfx_dispersion.setPosition(
                 player.projPosition.x,
                 player.projPosition.y);
@@ -298,11 +306,7 @@ class Cloud extends GameObject implements Pool.Poolable {
 
     @Override
     public void updateParticles(float delta) {
-        pfx_dispersion.update(delta);
-    }
-
-    public void dispose() {
-        pfx_dispersion.dispose();
+        if(pfx_dispersion != null) pfx_dispersion.update(delta);
     }
 
     @Override
@@ -311,6 +315,7 @@ class Cloud extends GameObject implements Pool.Poolable {
         transposedPosition = new Vector2();
         isCollided = false;
         isTransparent = false;
+        pfx_dispersion = null;
         decal.setScale(1f);
     }
 }

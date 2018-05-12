@@ -70,16 +70,16 @@ public class HUD {
     float backdropHeight = backdropRadius*2f;
     float adjustOpacity = 0f;
 
-    ParticleEffect pfx_placement = new ParticleEffect(Assets.pfx_placement);
-    ParticleEffect pfx_placement1 = new ParticleEffect(Assets.pfx_placement1);
-    ParticleEffect pfx_placement2 = new ParticleEffect(Assets.pfx_placement2);
-    ParticleEffect pfx_placement3 = new ParticleEffect(Assets.pfx_placement3);
+    ParticleEffect pfx_placement = Assets.pfx_placement;
+    ParticleEffect pfx_placement1 = Assets.pfx_placement1;
+    ParticleEffect pfx_placement2 = Assets.pfx_placement2;
+    ParticleEffect pfx_placement3 = Assets.pfx_placement3;
 
-    TextureRegion stateRegion = new TextureRegion();
-    TextureRegion placementRegion = new TextureRegion();
-    TextureRegion ringRegion = new TextureRegion();
-    TextureRegion balloonRegion = new TextureRegion();
-    TextureRegion arrowsRegion = new TextureRegion();
+    TextureRegion stateRegion;
+    TextureRegion placementRegion;
+    TextureRegion ringRegion;
+    TextureRegion balloonRegion;
+    TextureRegion arrowsRegion;
     TextureRegion adjustingRegion;
     TextureRegion pauseRegion = Assets.texR_pause;
     String language;
@@ -120,8 +120,12 @@ public class HUD {
 
         if(Gdx.app.getPreferences("ProfileFile").getString("Language").contains("Finnish")) {
             adjustingRegion = Assets.texR_asettaa;
+            language = "_fi";
         }
-        else adjustingRegion = Assets.texR_adjusting;
+        else{
+            adjustingRegion = Assets.texR_adjusting;
+            language = "_en";
+        }
 
 
         pfx_placement.allowCompletion();
@@ -139,9 +143,6 @@ public class HUD {
         pfx_placement3.allowCompletion();
         pfx_placement3.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
         pfx_placement3.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);
-
-        if(localizationBundle.get("btnResumeText").equals("continue")) language = "_en";
-        else language = "_fi";
 
         TextButton.TextButtonStyle style;
         if(SCREEN_WIDTH >= 1600f) {
@@ -610,12 +611,5 @@ public class HUD {
         pfx_placement1.setPosition(width/2.75f, height/2f);
         pfx_placement2.setPosition(width/2.75f, height/2f);
         pfx_placement3.setPosition(width/2.75f, height/2f);
-    }
-
-    public void dispose() {
-        pfx_placement.dispose();
-        pfx_placement1.dispose();
-        pfx_placement2.dispose();
-        pfx_placement3.dispose();
     }
 }

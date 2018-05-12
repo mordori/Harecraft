@@ -73,8 +73,6 @@ public abstract class Pilot extends GameObject {
 
     @Override
     public void updateParticles(float delta) {}
-
-    public void dispose() {}
 }
 
 /**
@@ -112,9 +110,9 @@ class Player extends Pilot {
         keyboardDestination = new Vector3();
         curPosition = new Vector3();
         rotationsArray = new float[10];
-        pfx_scarf = new ParticleEffect(Assets.pfx_scarf);
-        pfx_wind_trail_left = new ParticleEffect(Assets.pfx_wind_trail);
-        pfx_wind_trail_right = new ParticleEffect(Assets.pfx_wind_trail);
+        pfx_scarf = Assets.pfx_scarf;
+        pfx_wind_trail_left = Assets.pfx_wind_trail;
+        pfx_wind_trail_right = Assets.pfx_wind_trail;
 
         drawDistance = spawnDistance/50f;
         speed = SPEED;
@@ -175,10 +173,6 @@ class Player extends Pilot {
 
         pfx_wind_trail_right.getEmitters().get(0).getXScale().setHigh(30f * (SCREEN_WIDTH/1920f));
         pfx_wind_trail_right.getEmitters().get(1).getXScale().setHigh(25f * (SCREEN_WIDTH/1920f));
-
-
-        //pfx_wind_trail_left.allowCompletion();
-        //pfx_wind_trail_right.allowCompletion();
     }
 
     public void update(float delta, float accelX, float accelY) {
@@ -382,13 +376,6 @@ class Player extends Pilot {
         }
         return average;
     }
-
-    public void dispose() {
-        super.dispose();
-        pfx_scarf.dispose();
-        pfx_wind_trail_right.dispose();
-        pfx_wind_trail_left.dispose();
-    }
 }
 
 /**
@@ -538,13 +525,7 @@ class Opponent extends Pilot {
         decal.translateY(yDir);
         decal.setRotationZ(rotZ * 1.25f);
 
-
         count++;
-
         if(count == input.length - 1) count = 0;
-    }
-
-    public void dispose() {
-        super.dispose();
     }
 }

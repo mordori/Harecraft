@@ -174,7 +174,10 @@ public class WorldBuilder {
         if(!world.boats.isEmpty()) {
             if(!world.islands_L.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_L.get(world.islands_L.size() - 1).position) < world.islands_L.get(world.islands_L.size() - 1).width
                     || !world.islands_R.isEmpty() && world.boats.get(world.boats.size() - 1).position.dst(world.islands_R.get(world.islands_R.size() - 1).position) < world.islands_R.get(world.islands_R.size() - 1).width) {
-                world.boats.remove(world.boats.size() - 1);
+
+                Boat boat = world.boats.get(world.boats.size() - 1);
+                world.boats.remove(boat);
+                world.boatPool.free(boat);
                 boat_RemoveTimer = 0.5f;
 
                 System.out.println("BOAT REMOVED!!!!");
@@ -182,7 +185,9 @@ public class WorldBuilder {
         }
 
         if(!world.boats.isEmpty() && world.boats.get(0).decal.getPosition().z < camera.position.z) {
-            world.boats.remove(0);
+            Boat boat = world.boats.get(0);
+            world.boats.remove(boat);
+            world.boatPool.free(boat);
         }
     }
 
@@ -192,7 +197,9 @@ public class WorldBuilder {
                 if (gameStateTime >= boatsTimer) {
                     x = MathUtils.random(-150f, 150f);
                     y = groundLevel;
-                    world.boats.add(new Boat(x, y, 350f));
+                    Boat boat = world.boatPool.obtain();
+                    boat.init(x, y, 350f);
+                    world.boats.add(boat);
                     boatsTimer = MathUtils.random(0.5f, 8f - global_Multiplier * 0.5f);
                 }
             }
@@ -570,15 +577,12 @@ public class WorldBuilder {
     public void removeRing() {
         if(!world.rings.isEmpty() && world.rings.get(0).decal.getPosition().z < camera.position.z) {
             if(!world.rings.get(0).isCollected || world.rings.get(0).pfx_speed_up.isComplete()) {
-
+                if(world.rings.get(0).pfx_speed_up != null) {
+                    world.pfxPool_playerSpeedUp.free(world.rings.get(0).pfx_speed_up);
+                }
                 Ring ring = world.rings.get(0);
                 world.rings.remove(0);
                 world.ringPool.free(ring);
-
-
-                int i = world.trees_R.size()+world.trees_L.size() + world.clouds_RDown.size() +world.clouds_RUp.size()+world.clouds_LDown.size()+world.clouds_LUp.size()
-                        +world.hills_L.size()+world.hills_R.size();
-                System.out.println("Decals: " + i);
             }
         }
     }
@@ -594,6 +598,9 @@ public class WorldBuilder {
     public void removeCloud(ArrayList<Cloud> cloudArray) {
         if(!cloudArray.isEmpty() && cloudArray.get(0).decal.getPosition().z < camera.position.z) {
             if(!cloudArray.get(0).isCollided || cloudArray.get(0).pfx_dispersion.isComplete()) {
+                if(cloudArray.get(0).pfx_dispersion != null) {
+                    world.pfxPool_cloudDispersion.free(cloudArray.get(0).pfx_dispersion);
+                }
                 Cloud cloud = cloudArray.get(0);
                 cloudArray.remove(cloud);
                 world.cloudPool.free(cloud);

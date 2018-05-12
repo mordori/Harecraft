@@ -28,9 +28,9 @@ public abstract class WorldObjectsSea {
  * Game object Boat.
  */
 
-class Boat extends GameObject {
+class Boat extends GameObject implements Pool.Poolable{
     Vector3 up = new Vector3(0f,1f,0f);
-    public Boat(float x, float y, float z) {
+    public Boat() {
         TextureRegion textureRegion = Assets.texR_boat;
 
         width = textureRegion.getRegionWidth()/25f;
@@ -41,6 +41,9 @@ class Boat extends GameObject {
         height *= randomSize;
 
         decal = Decal.newDecal(width, height, textureRegion,true);
+    }
+
+    public void init(float x, float y, float z) {
         decal.setPosition(x,y + height/2f-4f,z);
     }
 
@@ -56,6 +59,11 @@ class Boat extends GameObject {
         moveZ(delta);
 
         decal.lookAt(camera.position,up);
+    }
+
+    @Override
+    public void reset() {
+        refresh();
     }
 }
 
