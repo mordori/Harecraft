@@ -219,7 +219,8 @@ public class WorldBuilder {
                 Island island = world.islandPool.obtain();
                 island.init(x, y, 350f);
                 world.islands_L.add(island);
-                islands_LTimer = MathUtils.random(1f, 8f - global_Multiplier * 0.65f);
+                islands_LTimer = MathUtils.random(1f, 7.5f - global_Multiplier * 0.6f);
+                islands_RTimer += 1.25f;
             }
         }
 
@@ -230,7 +231,8 @@ public class WorldBuilder {
                 Island island = world.islandPool.obtain();
                 island.init(x, y, 350f);
                 world.islands_R.add(island);
-                islands_RTimer = MathUtils.random(1f, 8f - global_Multiplier * 0.65f);
+                islands_RTimer = MathUtils.random(1f, 7.5f - global_Multiplier * 0.6f);
+                islands_LTimer += 1.25f;
             }
         }
     }
@@ -640,7 +642,7 @@ public class WorldBuilder {
         world.pfx_speed_lines.getEmitters().get(0).getTransparency().setHigh(Math.abs(player.velocity.z / (global_Speed - 7f*3f) - 0.54f) * 1f);
         world.pfx_speed_lines.update(delta);
 
-        if(world.pfx_snow != null) world.pfx_snow.update(delta);
+        if(worldIndex == 2) world.pfx_snow.update(delta);
 
         if(gameState == END) {
             if(world.pfx_speed_lines != null) world.pfx_speed_lines.allowCompletion();

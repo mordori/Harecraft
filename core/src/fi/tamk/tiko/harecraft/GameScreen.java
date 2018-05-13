@@ -115,7 +115,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     static boolean countdown;
     static boolean paused;
-    static GlyphLayout layout = new GlyphLayout();
+    static GlyphLayout layout;
     static int worldIndex = -2;
 
     static String strFlightRecord = "";
@@ -159,6 +159,7 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         isTransitionComplete = false;
         opacity = 1f;
         countdown = false;
+        layout = new GlyphLayout();
 
         this.game = game;
         this.worldIndex = worldIndex;
@@ -227,18 +228,17 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         builder.update(delta);
         updateCameras(delta);
 
-        playerPlacement = 6;
-        if(gameState != START) {
+        if(gameState == RACE || gameState == FINISH) {
+            playerPlacement = 6;
             for (Opponent o : world.opponents) {
                 if (player.distance > o.distance) playerPlacement--;
             }
-            if(gameState != END && gameState != EXIT) {
-                if (playerPlacement > lastPlayerPlacement)
-                    AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.2f);
-                else if (playerPlacement < lastPlayerPlacement)
-                    AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.18f);
-                lastPlayerPlacement = playerPlacement;
-            }
+
+            if (playerPlacement > lastPlayerPlacement)
+                AssetsAudio.playSound(AssetsAudio.SOUND_UNDERTAKING, 0.2f);
+            else if (playerPlacement < lastPlayerPlacement)
+                AssetsAudio.playSound(AssetsAudio.SOUND_OVERTAKING, 0.18f);
+            lastPlayerPlacement = playerPlacement;
         }
 
         HUD.update(delta);

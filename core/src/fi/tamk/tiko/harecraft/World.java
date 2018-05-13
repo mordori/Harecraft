@@ -130,6 +130,7 @@ public abstract class World {
 
     public World() {
         finish = ProfileInfo.selectedDuration;
+        //finish = 10f;
         end = finish + spawnDistance + 20f;
 
         if(SCREEN_WIDTH >= 1600) pfx_speed_lines = Assets.pfx_speed_lines_2;
@@ -153,6 +154,8 @@ public abstract class World {
 
         pfxPool_cloudDispersion = new ParticleEffectPool(pfx_cloud,2,3);
         pfxPool_playerSpeedUp = new ParticleEffectPool(pfx_speedUp,2,2);
+
+        pfx_snow.allowCompletion();
     }
 
     public abstract void updateShaders(float delta);
@@ -230,6 +233,8 @@ class WorldTundra extends World {
 
         hotAirBalloons.add(new HotAirBalloon(-26f, -23f, spawnDistance + 33f));
         hotAirBalloons.add(new HotAirBalloon(26f, -23f, spawnDistance + 33f));
+
+        pfx_snow.reset();
     }
 
     public void update(float delta) {

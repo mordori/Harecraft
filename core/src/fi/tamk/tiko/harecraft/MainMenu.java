@@ -259,7 +259,7 @@ public class MainMenu extends ScreenAdapter {
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touched) {
-                    AssetsAudio.playSound(AssetsAudio.SOUND_BITE,1.5f);
+                    AssetsAudio.playSound(AssetsAudio.SOUND_BITE,1f);
                     creditsMenu = true;
                 }
             }
@@ -368,6 +368,7 @@ public class MainMenu extends ScreenAdapter {
             setCurrentPlayerProfile();      //käynnistyksessä asetetaan Profileinfo.selectedPlayerProfile voimaan
             ProfileInfo.load();
             game.setScreen(new LevelSelectMenu(game, profiles,false));
+            //game.setScreen(new ScoreScreen());
         }
         else if(!isLaunched) opacity = 1f;
         else if(isLaunched) {

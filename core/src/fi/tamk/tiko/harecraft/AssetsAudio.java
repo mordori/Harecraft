@@ -272,7 +272,7 @@ public class AssetsAudio {
                 break;
             case SOUND_POINTS_COUNTING:
                 sound_points_counting.stop(ID_sound_points_counting);
-                ID_sound_points_counting = sound_points_counting.loop(volume);
+                ID_sound_points_counting = sound_points_counting.play(volume);
                 break;
             case SOUND_POINTS_COUNTING_END:
                 sound_points_counting_end.stop(ID_sound_points_counting_end);

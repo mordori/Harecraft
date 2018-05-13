@@ -136,7 +136,7 @@ public class WorldRenderer {
             r.pfx_speed_up.draw(sBatch);
         }
 
-        if(world.pfx_snow != null) world.pfx_snow.draw(sBatch);
+        if(worldIndex == 2) world.pfx_snow.draw(sBatch);
         world.pfx_speed_lines.draw(sBatch);
         sBatch.end();
     }

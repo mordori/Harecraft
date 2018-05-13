@@ -69,6 +69,7 @@ public class HUD {
     float backdropRadius = SCREEN_HEIGHT/30f;
     float backdropHeight = backdropRadius*2f;
     float adjustOpacity = 0f;
+    float layoutHeight;
 
     //ParticleEffect pfx_placement = Assets.pfx_placement;
     //ParticleEffect pfx_placement1 = Assets.pfx_placement1;
@@ -126,23 +127,6 @@ public class HUD {
             adjustingRegion = Assets.texR_adjusting;
             language = "_en";
         }
-
-
-        /*pfx_placement.allowCompletion();
-        pfx_placement.getEmitters().get(0).getXScale().setHighMin(120f * (SCREEN_WIDTH/1280f) * 1.25f);
-        pfx_placement.getEmitters().get(0).getXScale().setHighMax(240f * (SCREEN_WIDTH/1280f) * 1.25f);
-
-        pfx_placement1.allowCompletion();
-        pfx_placement1.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
-        pfx_placement1.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);
-
-        pfx_placement2.allowCompletion();
-        pfx_placement2.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
-        pfx_placement2.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);
-
-        pfx_placement3.allowCompletion();
-        pfx_placement3.getEmitters().get(0).getXScale().setHighMin(90f * (SCREEN_WIDTH/1280f) * 1.25f);
-        pfx_placement3.getEmitters().get(0).getXScale().setHighMax(200f * (SCREEN_WIDTH/1280f) * 1.25f);*/
 
         TextButton.TextButtonStyle style;
         if(SCREEN_WIDTH >= 1600f) {
@@ -427,7 +411,7 @@ public class HUD {
         if(SCREEN_WIDTH >= 1600f) {
             Assets.font5.setColor(1f, 1f, 1f, opacity);
             layout.setText(Assets.font5, rings);
-            float layoutHeight = layout.height;
+            layoutHeight = layout.height;
             y2 = layoutHeight;
             Assets.font5.draw(sBatch, rings, x + width * 1.5f, y + y2);
             Assets.font5.setColor(1f, 1f, 1f, 1f);
@@ -435,7 +419,7 @@ public class HUD {
         else {
             Assets.font6.setColor(1f, 1f, 1f, opacity);
             layout.setText(Assets.font6, rings);
-            float layoutHeight = layout.height;
+            layoutHeight = layout.height;
             y2 = layoutHeight;
             Assets.font6.draw(sBatch, rings, x + width * 1.5f, y + y2);
             Assets.font5.setColor(1f, 1f, 1f, 1f);
@@ -546,7 +530,6 @@ public class HUD {
             }
             else if(count == 2 || count == 3 || count == 4) adjustOpacity = 1f;
             else adjustOpacity = 0f;
-
         }
 
         sBatch.setColor(1f,1f,1f, adjustOpacity);
@@ -556,57 +539,11 @@ public class HUD {
 
     public void updatePlacementNumber(float delta) {
         if(gameState == RACE || gameState == FINISH) placementRegion = Assets.atlas_1.findRegion(playerPlacement + language);
-
-        /*if(gameState != END && gameState != EXIT && gameState != START) {
-            if(playerPlacement == 1) {
-                pfx_placement.start();
-                pfx_placement1.start();
-                pfx_placement2.allowCompletion();
-            }
-            else if(playerPlacement == 2) {
-                pfx_placement.start();
-                pfx_placement2.start();
-                pfx_placement1.allowCompletion();
-                pfx_placement3.allowCompletion();
-            }
-            else if(playerPlacement == 3) {
-                pfx_placement.start();
-                pfx_placement3.start();
-                pfx_placement2.allowCompletion();
-            }
-            else {
-                pfx_placement.allowCompletion();
-                pfx_placement1.allowCompletion();
-                pfx_placement2.allowCompletion();
-                pfx_placement3.allowCompletion();
-            }
-        }
-        else {
-            pfx_placement.allowCompletion();
-            pfx_placement1.allowCompletion();
-            pfx_placement2.allowCompletion();
-            pfx_placement3.allowCompletion();
-        }
-
-        if(!pfx_placement.isComplete()) pfx_placement.setPosition(width/2.75f, height/2f);
-        if(!pfx_placement1.isComplete()) pfx_placement1.setPosition(width/2.75f, height/2f);
-        if(!pfx_placement2.isComplete()) pfx_placement2.setPosition(width/2.75f, height/2f);
-        if(!pfx_placement3.isComplete()) pfx_placement3.setPosition(width/2.75f, height/2f);
-
-        if(!pfx_placement.isComplete()) pfx_placement.update(delta);
-        if(!pfx_placement1.isComplete()) pfx_placement1.update(delta);
-        if(!pfx_placement2.isComplete()) pfx_placement2.update(delta);
-        if(!pfx_placement3.isComplete()) pfx_placement3.update(delta);*/
     }
 
     public void drawPlacementNumber() {
-        /*if(!pfx_placement1.isComplete()) pfx_placement1.draw(sBatch);
-        if(!pfx_placement2.isComplete()) pfx_placement2.draw(sBatch);
-        if(!pfx_placement3.isComplete()) pfx_placement3.draw(sBatch);
-        if(!pfx_placement.isComplete()) pfx_placement.draw(sBatch);*/
-
-        width = placementRegion.getRegionWidth() * 1.65f * (SCREEN_WIDTH/1280f);
-        height = placementRegion.getRegionHeight() * 1.65f * (SCREEN_WIDTH/1280f);
+        width = placementRegion.getRegionWidth() * 1.6f * (SCREEN_WIDTH/1280f);
+        height = placementRegion.getRegionHeight() * 1.6f * (SCREEN_WIDTH/1280f);
 
         sBatch.setColor(1f,1f,1f, opacity);
         sBatch.draw(placementRegion,30f,15f, width, height);

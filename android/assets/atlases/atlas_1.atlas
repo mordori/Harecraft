@@ -6,203 +6,189 @@ filter: Linear,Linear
 repeat: none
 1
   rotate: false
-  xy: 2001, 1916
+  xy: 1988, 1753
   size: 45, 104
   orig: 45, 104
   offset: 0, 0
   index: -1
+15x
+  rotate: false
+  xy: 1799, 940
+  size: 228, 121
+  orig: 228, 121
+  offset: 0, 0
+  index: -1
 1_en
   rotate: false
-  xy: 1799, 984
+  xy: 1641, 66
   size: 91, 129
   orig: 91, 129
   offset: 0, 0
   index: -1
 1_fi
   rotate: false
-  xy: 1994, 983
+  xy: 1991, 1911
   size: 52, 130
   orig: 52, 130
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 1919, 607
+  xy: 1353, 3
   size: 82, 105
   orig: 82, 105
   offset: 0, 0
   index: -1
-2_en
+25x
   rotate: false
-  xy: 1799, 1349
-  size: 139, 115
-  orig: 139, 115
+  xy: 1734, 74
+  size: 259, 121
+  orig: 259, 121
   offset: 0, 0
   index: -1
-2_fi
+2x
   rotate: false
-  xy: 1940, 1349
-  size: 99, 115
-  orig: 99, 115
+  xy: 1799, 499
+  size: 168, 121
+  orig: 168, 121
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 1919, 714
+  xy: 1268, 2
   size: 83, 106
   orig: 83, 106
   offset: 0, 0
   index: -1
-3_en
-  rotate: false
-  xy: 1799, 1466
-  size: 145, 117
-  orig: 145, 117
-  offset: 0, 0
-  index: -1
 3_fi
   rotate: false
-  xy: 1946, 1466
+  xy: 1919, 1507
   size: 100, 117
   orig: 100, 117
   offset: 0, 0
   index: -1
-4_en
+adjusting
   rotate: false
-  xy: 1799, 1585
-  size: 150, 117
-  orig: 150, 117
-  offset: 0, 0
-  index: -1
-4_fi
-  rotate: false
-  xy: 1951, 1585
-  size: 94, 117
-  orig: 94, 117
-  offset: 0, 0
-  index: -1
-5_en
-  rotate: false
-  xy: 1799, 1115
-  size: 133, 114
-  orig: 133, 114
-  offset: 0, 0
-  index: -1
-5_fi
-  rotate: false
-  xy: 1934, 1233
-  size: 90, 114
-  orig: 90, 114
-  offset: 0, 0
-  index: -1
-6_en
-  rotate: false
-  xy: 1799, 1231
-  size: 133, 116
-  orig: 133, 116
-  offset: 0, 0
-  index: -1
-6_fi
-  rotate: false
-  xy: 1934, 1115
-  size: 87, 116
-  orig: 87, 116
+  xy: 1268, 1193
+  size: 760, 110
+  orig: 760, 110
   offset: 0, 0
   index: -1
 banana
   rotate: false
-  xy: 1919, 403
+  xy: 1919, 1405
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 fiFlag
   rotate: false
-  xy: 1892, 1013
+  xy: 1437, 8
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
+finish_en
+  rotate: false
+  xy: 1268, 412
+  size: 415, 114
+  orig: 415, 114
+  offset: 0, 0
+  index: -1
+finish_fi
+  rotate: false
+  xy: 1567, 1785
+  size: 419, 114
+  orig: 419, 114
+  offset: 0, 0
+  index: -1
 go_en
   rotate: false
-  xy: 1799, 1704
+  xy: 1799, 824
   size: 209, 114
   orig: 209, 114
   offset: 0, 0
   index: -1
+go_fi
+  rotate: false
+  xy: 1567, 1901
+  size: 422, 140
+  orig: 422, 140
+  offset: 0, 0
+  index: -1
 help
   rotate: false
-  xy: 1268, 822
+  xy: 1268, 1063
   size: 720, 128
   orig: 720, 128
   offset: 0, 0
   index: -1
 highscorelist
   rotate: false
-  xy: 1567, 59
+  xy: 1567, 1626
   size: 415, 157
   orig: 415, 157
   offset: 0, 0
   index: -1
 lake_summer
   rotate: false
-  xy: 1268, 952
-  size: 529, 533
-  orig: 529, 533
-  offset: 0, 0
-  index: -1
-lake_tundra
-  rotate: false
-  xy: 1268, 1487
+  xy: 1268, 528
   size: 529, 533
   orig: 529, 533
   offset: 0, 0
   index: -1
 logo
   rotate: false
-  xy: 2, 2
+  xy: 2, 1305
   size: 1563, 736
   orig: 1563, 736
   offset: 0, 0
   index: -1
 pause
   rotate: false
-  xy: 1799, 1820
+  xy: 1799, 622
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 radar
   rotate: false
-  xy: 2, 740
+  xy: 2, 23
   size: 1264, 1280
   orig: 1264, 1280
   offset: 0, 0
   index: -1
 radardot
   rotate: false
-  xy: 1268, 770
+  xy: 1991, 1859
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
+stage2
+  rotate: false
+  xy: 1567, 1324
+  size: 350, 300
+  orig: 350, 300
+  offset: 0, 0
+  index: -1
 stage2p
   rotate: false
-  xy: 1567, 520
+  xy: 1268, 110
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 stage3p
   rotate: false
-  xy: 1567, 218
+  xy: 1685, 197
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 ukFlag
   rotate: false
-  xy: 1919, 505
+  xy: 1539, 8
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
@@ -213,100 +199,177 @@ size: 2048,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-adjusting
+2_en
   rotate: false
-  xy: 1284, 1914
-  size: 760, 110
-  orig: 760, 110
+  xy: 1451, 1370
+  size: 139, 115
+  orig: 139, 115
+  offset: 0, 0
+  index: -1
+2_fi
+  rotate: false
+  xy: 1592, 1370
+  size: 99, 115
+  orig: 99, 115
+  offset: 0, 0
+  index: -1
+3_en
+  rotate: false
+  xy: 1284, 1245
+  size: 145, 117
+  orig: 145, 117
+  offset: 0, 0
+  index: -1
+3x
+  rotate: false
+  xy: 1284, 1364
+  size: 165, 121
+  orig: 165, 121
+  offset: 0, 0
+  index: -1
+4_en
+  rotate: false
+  xy: 890, 343
+  size: 150, 117
+  orig: 150, 117
+  offset: 0, 0
+  index: -1
+4_fi
+  rotate: false
+  xy: 1815, 1662
+  size: 94, 117
+  orig: 94, 117
+  offset: 0, 0
+  index: -1
+5_en
+  rotate: false
+  xy: 1042, 346
+  size: 133, 114
+  orig: 133, 114
+  offset: 0, 0
+  index: -1
+5_fi
+  rotate: false
+  xy: 1177, 346
+  size: 90, 114
+  orig: 90, 114
+  offset: 0, 0
+  index: -1
+5x
+  rotate: false
+  xy: 1815, 1899
+  size: 163, 121
+  orig: 163, 121
+  offset: 0, 0
+  index: -1
+6_en
+  rotate: false
+  xy: 1815, 1781
+  size: 133, 116
+  orig: 133, 116
+  offset: 0, 0
+  index: -1
+6_fi
+  rotate: false
+  xy: 1815, 1544
+  size: 87, 116
+  orig: 87, 116
+  offset: 0, 0
+  index: -1
+_fi
+  rotate: false
+  xy: 1693, 1369
+  size: 87, 116
+  orig: 87, 116
   offset: 0, 0
   index: -1
 asettaa
   rotate: false
-  xy: 2, 6
+  xy: 890, 462
   size: 800, 110
   orig: 800, 110
   offset: 0, 0
   index: -1
+backdrop
+  rotate: false
+  xy: 890, 698
+  size: 1086, 520
+  orig: 1086, 520
+  offset: 0, 0
+  index: -1
 bg_tundra
   rotate: false
-  xy: 2, 118
+  xy: 2, 114
   size: 1320, 212
   orig: 1320, 212
   offset: 0, 0
   index: -1
-finish_en
+high_en
   rotate: false
-  xy: 890, 362
-  size: 415, 114
-  orig: 415, 114
+  xy: 890, 574
+  size: 1039, 122
+  orig: 1039, 122
   offset: 0, 0
   index: -1
-finish_fi
+high_fi
   rotate: false
-  xy: 804, 2
-  size: 419, 114
-  orig: 419, 114
-  offset: 0, 0
-  index: -1
-go_fi
-  rotate: false
-  xy: 890, 478
-  size: 422, 140
-  orig: 422, 140
+  xy: 2, 2
+  size: 1316, 110
+  orig: 1316, 110
   offset: 0, 0
   index: -1
 island
   rotate: false
-  xy: 2, 332
+  xy: 2, 328
   size: 886, 890
   orig: 886, 890
   offset: 0, 0
   index: -1
+lake_tundra
+  rotate: false
+  xy: 1284, 1487
+  size: 529, 533
+  orig: 529, 533
+  offset: 0, 0
+  index: -1
 menubg
   rotate: false
-  xy: 2, 1224
+  xy: 2, 1220
   size: 1280, 800
   orig: 1280, 800
   offset: 0, 0
   index: -1
 stage1
   rotate: false
-  xy: 1284, 1612
+  xy: 1324, 160
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 stage1p
   rotate: false
-  xy: 890, 922
-  size: 350, 300
-  orig: 350, 300
-  offset: 0, 0
-  index: -1
-stage2
-  rotate: false
-  xy: 890, 620
-  size: 350, 300
-  orig: 350, 300
-  offset: 0, 0
-  index: -1
-stage3
-  rotate: false
-  xy: 1284, 1310
+  xy: 1692, 272
   size: 350, 300
   orig: 350, 300
   offset: 0, 0
   index: -1
 
 atlas_13.png
-size: 2048,256
+size: 2048,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 bg_summer
   rotate: false
-  xy: 2, 2
+  xy: 2, 304
   size: 1320, 183
   orig: 1320, 183
+  offset: 0, 0
+  index: -1
+stage3
+  rotate: false
+  xy: 2, 2
+  size: 350, 300
+  orig: 350, 300
   offset: 0, 0
   index: -1
