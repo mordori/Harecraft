@@ -131,9 +131,9 @@ public class HUD {
         TextButton.TextButtonStyle style;
         if(SCREEN_WIDTH >= 1600f) {
             style = new TextButton.TextButtonStyle(
-                    Assets.skin_menu.getDrawable("listbutton"),
-                    Assets.skin_menu.getDrawable("listbutton pressed"),
-                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.skin_menu.getDrawable("buttongreen"),
+                    Assets.skin_menu.getDrawable("buttongreenpressed"),
+                    Assets.skin_menu.getDrawable("buttongreen"),
                     Assets.font2);
             style.pressedOffsetX = 4;
             style.pressedOffsetY = -4;
@@ -142,9 +142,9 @@ public class HUD {
         }
         else {
             style = new TextButton.TextButtonStyle(
-                    Assets.skin_menu.getDrawable("listbutton"),
-                    Assets.skin_menu.getDrawable("listbutton pressed"),
-                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.skin_menu.getDrawable("buttongreen"),
+                    Assets.skin_menu.getDrawable("buttongreenpressed"),
+                    Assets.skin_menu.getDrawable("buttongreen"),
                     Assets.font4);
             style.pressedOffsetX = 4;
             style.pressedOffsetY = -4;
@@ -184,9 +184,9 @@ public class HUD {
 
         if(SCREEN_WIDTH >= 1600f) {
             style = new TextButton.TextButtonStyle(
-                    Assets.skin_menu.getDrawable("button"),
-                    Assets.skin_menu.getDrawable("button pressed"),
-                    Assets.skin_menu.getDrawable("button"),
+                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.skin_menu.getDrawable("listbutton pressed"),
+                    Assets.skin_menu.getDrawable("listbutton"),
                     Assets.font5);
             style.pressedOffsetX = 4;
             style.pressedOffsetY = -4;
@@ -195,9 +195,9 @@ public class HUD {
         }
         else {
             style = new TextButton.TextButtonStyle(
-                    Assets.skin_menu.getDrawable("button"),
-                    Assets.skin_menu.getDrawable("button pressed"),
-                    Assets.skin_menu.getDrawable("button"),
+                    Assets.skin_menu.getDrawable("listbutton"),
+                    Assets.skin_menu.getDrawable("listbutton pressed"),
+                    Assets.skin_menu.getDrawable("listbutton"),
                     Assets.font6);
             style.pressedOffsetX = 4;
             style.pressedOffsetY = -4;
@@ -236,6 +236,30 @@ public class HUD {
                 touched = false;
             }
         });
+
+
+        if(SCREEN_WIDTH >= 1600f) {
+            style = new TextButton.TextButtonStyle(
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.skin_menu.getDrawable("button pressed"),
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.font5);
+            style.pressedOffsetX = 4;
+            style.pressedOffsetY = -4;
+            style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
+            style.fontColor = new Color(1f, 1f, 1f, 1f);
+        }
+        else {
+            style = new TextButton.TextButtonStyle(
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.skin_menu.getDrawable("button pressed"),
+                    Assets.skin_menu.getDrawable("button"),
+                    Assets.font6);
+            style.pressedOffsetX = 4;
+            style.pressedOffsetY = -4;
+            style.downFontColor = new Color(0.59f, 0.59f, 0.59f, 1f);
+            style.fontColor = new Color(1f, 1f, 1f, 1f);
+        }
 
         TextButton btnQuit = new TextButton(localizationBundle.get("btnQuitText"), style);
         btnQuit.setWidth(width * 1.4f);

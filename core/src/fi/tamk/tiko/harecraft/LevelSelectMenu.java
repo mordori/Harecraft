@@ -47,7 +47,6 @@ public class LevelSelectMenu extends ScreenAdapter {
     int[] top3Score = new int[3];
     Table highScoreTable = new Table();
     Preferences profilesData;
-    TextureRegion highscoreList = Assets.texR_highscoreList;
 
     Boolean mainMenu = false;
     Boolean startGame = false;
@@ -466,7 +465,10 @@ class HighscoreBox extends Actor {
         highscore = Assets.texR_highscoreList;
     }
 
+    @Override
     public void draw(Batch batch, float alpha) {
+        batch.setColor(1f,1f,1f,alpha);
         batch.draw(highscore, getX(),getY());
+        batch.setColor(1f,1f,1f,1f);
     }
 }

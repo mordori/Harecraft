@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -20,11 +21,14 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
 import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
@@ -53,14 +57,28 @@ import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
 import static fi.tamk.tiko.harecraft.MainMenu.profiles;
 
+/**
+ * Created by Mika on 28/02/2018.
+ *
+ * Not a lot of love went into making this class. It brought tears of sorrow and anguish to its maker. Lots of spilled spaghetti that stinks like sour milk in here.
+ */
 
 public class ScoreScreen extends ScreenAdapter {
     Stage stage;
     OrthographicCamera camera;
     Group grpLevelScore;
+    Group grpTotalScore;
     Group grpObjects;
     Group grpButton;
+    Group grpHighscore;
+    Group grpHighscoreBox;
     GlyphLayout layout = new GlyphLayout();
+
+    HighscoreBox highscoreBox;
+
+    String[] top3Names = new String[3];
+    int[] top3Score = new int[3];
+    Table highScoreTable = new Table();
 
     float scoreboard_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
@@ -73,7 +91,7 @@ public class ScoreScreen extends ScreenAdapter {
     float accelerator = 1f;
     float scoreCounterTime = 0f;
     boolean isCourseScoreCounted = true;
-    boolean isTotalScoreCounted;
+    boolean isTotalScoreCounted = true;
     boolean isTransition = false;
     boolean isTransitionComplete = false;
     boolean isTransitionFromComplete = false;
@@ -92,17 +110,28 @@ public class ScoreScreen extends ScreenAdapter {
     float lastTime;
     int gainedScore = playerScore;
     float shitCounter;
+    float anotherShittyCounter;
+    String playerName = ProfileInfo.selectedPlayerProfile;
 
     Label ringAmount;
     Label balloonAmount;
     Label scoreCourse;
     Label scoreTotal;
+
     Image imgPlacement;
     Image imgDifficulty;
+    Image imgLength;
+    Image imgHighscore;
 
     boolean flip;
     float lastScore;
     int shitcountererere = 11;
+    int oldTotalScore;
+    boolean isTimeToTransfer = false;
+    float scoreOpacity = 1f;
+    float highscoreOpacity = 0f;
+    float highscoreTableOpacity = 0f;
+    boolean isHighScored = true;
 
     ParticleEffect pfx_points = Assets.pfx_points;
 
@@ -114,8 +143,8 @@ public class ScoreScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         profilesData = Gdx.app.getPreferences("ProfileFile"); // KEY ja VALUE //diu
-        //oldTotalScore = profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
-        //oldTotalScore -= playerScore;
+        oldTotalScore = profilesData.getInteger(ProfileInfo.selectedPlayerProfile +"Score", 0);
+        oldTotalScore -= playerScore;
 
         Assets.font5.getData().setLineHeight(Assets.font5.getLineHeight()/1.3f);
         Assets.font6.getData().setLineHeight(Assets.font6.getLineHeight()/1.3f);
@@ -320,6 +349,25 @@ public class ScoreScreen extends ScreenAdapter {
         imgPlacement.setHeight(region.getRegionHeight()/1.5f);
         imgPlacement.setPosition(0f + width + 20,-300);
 
+        layout.setText(difficulty.getStyle().font, difficulty.getText());
+        width = layout.width;
+        height = layout.height;
+
+        region = Assets.atlas_1.findRegion(Integer.toString(ProfileInfo.selectedDifficulty + 1) + "x");
+        imgDifficulty = new Image(region);
+        imgDifficulty.setWidth(region.getRegionWidth()/2f);
+        imgDifficulty.setHeight(region.getRegionHeight()/2f);
+        imgDifficulty.setPosition(0f + width + 20, -371);
+
+        layout.setText(length.getStyle().font, length.getText());
+        width = layout.width;
+        height = layout.height;
+
+        region = Assets.atlas_1.findRegion(Integer.toString(ProfileInfo.selectedDuration/10) + "km");
+        imgLength = new Image(region);
+        imgLength.setWidth(region.getRegionWidth()/2.1f);
+        imgLength.setHeight(region.getRegionHeight()/2.1f);
+        imgLength.setPosition(0f + width + 20, -445);
 
         grpObjects.setPosition(160, 727);
         grpObjects.addActor(ring);
@@ -331,7 +379,34 @@ public class ScoreScreen extends ScreenAdapter {
         grpObjects.addActor(length);
         grpObjects.addActor(difficulty);
         grpObjects.addActor(imgPlacement);
+        grpObjects.addActor(imgDifficulty);
+        grpObjects.addActor(imgLength);
         stage.addActor(grpObjects);
+
+
+        makeHighScores();
+        highScoreTable.setPosition(200,80);
+
+        style2 = new Label.LabelStyle(
+                Assets.font5,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label topPilotsLabel = new Label(localizationBundle.get("top3pilots"), style2);
+        topPilotsLabel.setPosition(75,160);
+
+        highscoreBox = new HighscoreBox();
+        highscoreBox.setPosition(0, 0);
+        highscoreBox.setColor(1f,1f,1f,0f);
+
+        grpHighscoreBox = new Group();
+        grpHighscoreBox.setPosition(670, 500f);
+
+        grpHighscoreBox.addActor(highscoreBox);
+        grpHighscoreBox.addActor(topPilotsLabel);
+        grpHighscoreBox.addActor(highScoreTable);
+        grpHighscoreBox.setColor(1f,1f,1f,0f);
+        stage.addActor(grpHighscoreBox);
 
 
         grpLevelScore = new Group();
@@ -345,21 +420,41 @@ public class ScoreScreen extends ScreenAdapter {
         height = layout.height;
         levelScore.setPosition(0f - width/2f,0f - height);
 
+        Label total = new Label(localizationBundle.get("txtTotalScore"), style2);
+        layout.setText(total.getStyle().font, total.getText());
+        width = layout.width;
+        height = layout.height;
+        total.setPosition(0f - width/2f,0f - height);
+
 
         style2 = new Label.LabelStyle(
-                Assets.font1,
+                Assets.font12,
                 new Color(1f,1f,1f,1f)
         );
         scoreCourse = new Label(("0"), style2);
         layout.setText(scoreCourse.getStyle().font, scoreCourse.getText());
         width = layout.width;
         height = layout.height;
-        scoreCourse.setPosition(0f - width/2f,0f - height - 100);
+        scoreCourse.setPosition(0f - width/2f,0f - height -90);
+
+        scoreTotal = new Label(Integer.toString(oldTotalScore), style2);
+        layout.setText(scoreTotal.getStyle().font, scoreTotal.getText());
+        width = layout.width;
+        height = layout.height;
+        scoreTotal.setPosition(0f - width/2f,0f - height -90);
 
         grpLevelScore.addActor(levelScore);
         grpLevelScore.addActor(scoreCourse);
-        grpLevelScore.setPosition(882, 592);
+        grpLevelScore.addActor(total);
+        grpLevelScore.addActor(scoreTotal);
+        grpLevelScore.setPosition(880, 700);
         stage.addActor(grpLevelScore);
+
+        grpTotalScore = new Group();
+        grpTotalScore.addActor(total);
+        grpTotalScore.addActor(scoreTotal);
+        grpTotalScore.setPosition(880, 450);
+        stage.addActor(grpTotalScore);
 
 
         grpButton = new Group();
@@ -373,9 +468,33 @@ public class ScoreScreen extends ScreenAdapter {
         stage.addActor(grpButton);
 
 
-        pfx_points.setPosition(SCREEN_WIDTH/1.36f, SCREEN_HEIGHT/1.8f);
-        pfx_points.getEmitters().first().getXScale().setHigh(65f * (SCREEN_WIDTH/1920f));
+        region =  Assets.atlas_1.findRegion("high" + language);
+        imgHighscore = new Image(region);
+        imgHighscore.setWidth(region.getRegionWidth()/2f);
+        imgHighscore.setHeight(region.getRegionHeight()/2f);
+        imgHighscore.setPosition(0f - width/2f, 0f - height/2f);
+
+        grpHighscore = new Group();
+        if(language.equals("_fi")) {
+            grpHighscore.setPosition(650, 490);
+            System.out.println("FI");
+        }
+        else {
+            grpHighscore.setPosition(750, 490);
+            System.out.println("EN");
+        }
+        grpHighscore.setOrigin(width/2f, height/2f);
+        grpHighscore.setScale(10f);
+        grpHighscore.setRotation(5f);
+        grpHighscore.setColor(1f,1f,1f,0f);
+        grpHighscore.addActor(imgHighscore);
+        stage.addActor(grpHighscore);
+
+
+        pfx_points.setPosition(SCREEN_WIDTH/1.48f, SCREEN_HEIGHT/1.27f);
+        pfx_points.getEmitters().first().getXScale().setHigh(50f * (SCREEN_WIDTH/1920f));
         pfx_points.allowCompletion();
+
     }
 
     public void countScore(float delta) {
@@ -384,21 +503,23 @@ public class ScoreScreen extends ScreenAdapter {
         if(!flip) shitCounter = scoreCounterTime;
         else shitCounter = 0.5f + (0.5f - scoreCounterTime);
 
-        countingScore = (int)(gainedScore * (shitCounter));
+        countingScore = (int)MathUtils.floor(gainedScore * (shitCounter));
 
 
         if(countingScore >= playerScore) {
             isCourseScoreCounted = true;
             countingScore = playerScore;
-            if(playerScore > 15) AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.6f);
-            pfx_points.allowCompletion();
+            if(playerScore > 0) AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.8f);
+            accelerator = 1f;
+            scoreCounterTime = 0f;
+            stateTime = 0f;
         }
-        else if(countingScore > lastScore && (playerScore > 15)) {
-            if(shitCounter < 0.99f && shitcountererere > 1) {
+        else if(countingScore > lastScore && (playerScore > 0)) {
+            if(shitCounter < 0.9f && shitcountererere > 1) {
                 shitcountererere = 0;
                 AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.3f);
             }
-            else if(shitCounter>0.99f) AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.3f);
+            else if(shitCounter>0.9f) AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.3f);
             shitcountererere++;
         }
 
@@ -407,8 +528,48 @@ public class ScoreScreen extends ScreenAdapter {
         layout.setText(scoreCourse.getStyle().font, scoreCourse.getText());
         width = layout.width;
         height = layout.height;
-        scoreCourse.setPosition(0 -width/2f, 0f - height - 100);
+        scoreCourse.setPosition(0 -width/2f, 0f - height - 90);
         scoreCourse.setText(Integer.toString(countingScore));
+    }
+
+    public void countTotalScore(float delta) {
+        if(scoreCounterTime>=0.5f && !flip) flip = true;
+
+        if(!flip) anotherShittyCounter = scoreCounterTime;
+        else anotherShittyCounter = 0.5f + (0.5f - scoreCounterTime);
+
+        countingScore = (int)MathUtils.floor(gainedScore * (1f - anotherShittyCounter));
+
+
+        if(countingScore <= 0) {
+            isTotalScoreCounted = true;
+            countingScore = 0;
+            if(playerScore > 0) AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.8f);
+            stateTime = 0f;
+            pfx_points.allowCompletion();
+        }
+        else if(countingScore < lastScore && (playerScore > 0)) {
+            if(anotherShittyCounter < 0.9f && shitcountererere > 1) {
+                shitcountererere = 0;
+                AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.3f);
+            }
+            else if(anotherShittyCounter>0.9f) AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_COUNTING, 0.3f);
+            shitcountererere++;
+        }
+
+        lastScore = countingScore;
+
+        scoreCourse.setText(Integer.toString(countingScore));
+        layout.setText(scoreCourse.getStyle().font, scoreCourse.getText());
+        width = layout.width;
+        height = layout.height;
+        scoreCourse.setPosition(0 -width/2f, 0f - height - 90);
+
+        scoreTotal.setText(Integer.toString(oldTotalScore + gainedScore - countingScore));
+        layout.setText(scoreTotal.getStyle().font, scoreTotal.getText());
+        width = layout.width;
+        height = layout.height;
+        scoreTotal.setPosition(0 -width/2f, 0f - height - 90);
     }
 
     @Override
@@ -418,21 +579,79 @@ public class ScoreScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
-        stateTime += delta;
+        if(isTransitionFromComplete) stateTime += delta;
 
-        accelerator -= delta/4f;
-        if(accelerator < 0f) accelerator = 0f;
+        if(!isCourseScoreCounted) {
+            accelerator -= delta / 4f;
+            if (accelerator < 0f) accelerator = 0f;
 
-        scoreCounterTime += delta*2.7f;
-        scoreCounterTime *= accelerator;
+            scoreCounterTime += delta * 2.7f;
+            scoreCounterTime *= accelerator;
 
-        if(!isCourseScoreCounted) countScore(delta);
+            countScore(delta);
+        }
 
+        if(isCourseScoreCounted && stateTime > 1.5f && !isTimeToTransfer) {
+            pfx_points.reset();
+            isTotalScoreCounted = false;
+            isTimeToTransfer = true;
+            flip = false;
+        }
+
+        if(!isTotalScoreCounted){
+            accelerator -= delta / 4f;
+            if (accelerator < 0f) accelerator = 0f;
+
+            scoreCounterTime += delta * 2.7f;
+            scoreCounterTime *= accelerator;
+
+            countTotalScore(delta);
+        }
+
+        if(isTotalScoreCounted && isCourseScoreCounted && isTimeToTransfer && stateTime > 1f && scoreOpacity != 0f) {
+            scoreOpacity -= delta;
+            if(scoreOpacity < 0f) {
+                scoreOpacity = 0f;
+                stateTime = 0f;
+            }
+            grpLevelScore.setColor(1f,1f,1f, scoreOpacity);
+            grpLevelScore.setPosition(880, 700 + (-1f + stateTime) * 50f);
+        }
+
+        if(scoreOpacity == 0 && stateTime > 0.5f && highscoreTableOpacity != 1f) {
+            highscoreTableOpacity += delta * 3f;
+            if(highscoreTableOpacity > 1f) {
+                highscoreTableOpacity = 1f;
+                stateTime = 0f;
+            }
+            grpHighscoreBox.setColor(1f,1f,1f, highscoreTableOpacity);
+            highscoreBox.setColor(1f,1f,1f,highscoreTableOpacity);
+        }
+
+
+        if(gainedScore + oldTotalScore > top3Score[2]) {
+            isHighScored = true;
+        }
+        else isHighScored = false;
+
+        if (highscoreTableOpacity == 1f && stateTime > 0.5f) {
+            if (highscoreOpacity == 0f && isHighScored)
+                AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_HIGHSCORE, 1f);
+
+            highscoreOpacity += delta * 3f;
+            if (highscoreOpacity > 1f) {
+                highscoreOpacity = 1f;
+            }
+            if(isHighScored) grpHighscore.setColor(1f, 1f, 1f, highscoreOpacity);
+            else grpHighscore.setColor(1f, 1f, 1f, 0f);
+            grpHighscore.setScale(10f - 9f * highscoreOpacity);
+        }
 
         stage.act();
         if(!isTransitionFromComplete) transitionFromScreen(delta);
         if(isTransition) transitionToScreen(delta);
         if(isTransitionComplete) {
+            pfx_points.allowCompletion();
             switch(selectedScreen) {
                 case MAIN_MENU:
                     worldIndex = -1;
@@ -454,7 +673,7 @@ public class ScoreScreen extends ScreenAdapter {
             isTransition = true;
         }
 
-        pfx_points.getEmitters().get(0).getEmission().setHigh(20f*(1f - shitCounter/1.5f));
+        pfx_points.getEmitters().get(0).getEmission().setHigh(20f*(1f - shitCounter/1.65f));
         pfx_points.update(delta);
     }
 
@@ -481,7 +700,7 @@ public class ScoreScreen extends ScreenAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             stage.draw();
             sBatch.begin();
-            pfx_points.draw(sBatch);
+                pfx_points.draw(sBatch);
             sBatch.end();
         fbo.end();
         renderToTexture();
@@ -503,7 +722,6 @@ public class ScoreScreen extends ScreenAdapter {
             scoreCounterTime = 0f;
             accelerator = 1f;
             isCourseScoreCounted = false;
-            pfx_points.reset();
         }
     }
 
@@ -514,6 +732,66 @@ public class ScoreScreen extends ScreenAdapter {
         sBatch.begin();
         texture.draw(sBatch, opacity);
         sBatch.end();
+    }
+
+    public void makeHighScores() {
+        ArrayList<String> tempProfileList = new ArrayList<String>(profiles);
+        int tempScoreInt;
+
+        //profilesData.putInteger("Mikko"+"Score", 987);
+        //profilesData.putInteger("Miika"+"Score", 200);
+        //profilesData.putInteger("Mika"+"Score", 400);
+        //profilesData.flush();
+
+        for (int i = 0; i <= 2 ; i++) { //Järjestelee top3name top3scores muttujiin 3 parasta profiilia ja coret
+
+            int highestScoreFound = 0;
+            String highestProfileName = "----------";
+
+            for (String y : tempProfileList) { //haetaan profiilien scooret
+                Gdx.app.log("username: ", "" +y);
+                tempScoreInt = profilesData.getInteger(y + "Score", 0);
+
+                if (tempScoreInt > highestScoreFound) {
+                    highestScoreFound = tempScoreInt;
+                    highestProfileName = y;
+                }
+            }
+            tempProfileList.remove(highestProfileName);
+            //if (highestProfileName.length() > 10) {     //limit String to 10 chars on highscore board
+            //    highestProfileName = highestProfileName.substring(0,10);
+            //}
+            top3Names[i] = highestProfileName;
+            top3Score[i] = highestScoreFound;
+            Gdx.app.log("paras score oli pelaajalla ", "" +highestProfileName +" lukemalla " +highestScoreFound);
+        }
+
+        Label.LabelStyle style2 = new Label.LabelStyle(
+                Assets.font6,
+                new Color(1f,1f,1f,1f)
+        );
+
+        Label name1 = new Label(top3Names[0], style2);
+        Label name2 = new Label(top3Names[1], style2);
+        Label name3 = new Label(top3Names[2], style2);
+
+        Label score1 = new Label("" +top3Score[0], style2);
+        Label score2 = new Label("" +top3Score[1], style2);
+        Label score3 = new Label("" +top3Score[2], style2);
+
+        Label emptySpaceLabel = new Label("   ", style2);
+
+        highScoreTable.add(name1);
+        highScoreTable.add(emptySpaceLabel);
+        highScoreTable.add(score1);
+        highScoreTable.row();
+        highScoreTable.add(name2);
+        highScoreTable.add(emptySpaceLabel);
+        highScoreTable.add(score2);
+        highScoreTable.row();
+        highScoreTable.add(name3);
+        highScoreTable.add(emptySpaceLabel);
+        highScoreTable.add(score3);
     }
 
     public void hide() {
