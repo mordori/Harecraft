@@ -504,7 +504,7 @@ public class ScoreScreen extends ScreenAdapter {
         if(!flip) shitCounter = scoreCounterTime;
         else shitCounter = 0.5f + (0.5f - scoreCounterTime);
 
-        countingScore = (int)MathUtils.ceil(gainedScore * (shitCounter));
+        countingScore = (int) MathUtils.ceil(gainedScore * (shitCounter));
 
 
         if(countingScore >= playerScore) {
@@ -596,8 +596,8 @@ public class ScoreScreen extends ScreenAdapter {
 
         if(isCourseScoreCounted && stateTime > 1.5f && !isTimeToTransfer) {
             pfx_points.reset();
-            isTotalScoreCounted = false;
             isTimeToTransfer = true;
+            isTotalScoreCounted = false;
             flip = false;
         }
 
@@ -700,7 +700,7 @@ public class ScoreScreen extends ScreenAdapter {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             stage.draw();
             sBatch.begin();
-                pfx_points.draw(sBatch);
+                if(isTimeToTransfer) pfx_points.draw(sBatch);
             sBatch.end();
         fbo.end();
         renderToTexture();
