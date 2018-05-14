@@ -504,6 +504,8 @@ public class ScoreScreen extends ScreenAdapter {
 
         countingScore = (int)MathUtils.floor(gainedScore * (shitCounter));
 
+        System.out.println(shitCounter);
+
 
         if(countingScore >= playerScore) {
             isCourseScoreCounted = true;
@@ -584,7 +586,7 @@ public class ScoreScreen extends ScreenAdapter {
             accelerator -= delta / 4f;
             if (accelerator < 0f) accelerator = 0f;
 
-            scoreCounterTime += delta * 2.7f;
+            scoreCounterTime += delta * 2.9f;
             scoreCounterTime *= accelerator;
 
             countScore(delta);
@@ -601,7 +603,7 @@ public class ScoreScreen extends ScreenAdapter {
             accelerator -= delta / 4f;
             if (accelerator < 0f) accelerator = 0f;
 
-            scoreCounterTime += delta * 2.7f;
+            scoreCounterTime += delta * 2.9f;
             scoreCounterTime *= accelerator;
 
             countTotalScore(delta);
