@@ -18,7 +18,6 @@ public class AssetsAudio {
     private static Sound sound_overtaking;
     private static Sound sound_undertaking;
     private static Sound sound_points_counting;
-    private static Sound sound_points_counting_end;
     private static Sound sound_points_highscore;
     private static Sound sound_fanfaar_1;
     private static Sound sound_fanfaar_2;
@@ -37,7 +36,6 @@ public class AssetsAudio {
     private static long ID_sound_overtaking;
     private static long ID_sound_undertaking;
     private static long ID_sound_points_counting;
-    private static long ID_sound_points_counting_end;
     private static long ID_sound_points_highscore;
     private static long ID_sound_fanfaar_1;
     private static long ID_sound_fanfaar_2;
@@ -65,9 +63,8 @@ public class AssetsAudio {
     static final int SOUND_OVERTAKING = 15;
     static final int SOUND_UNDERTAKING = 16;
     static final int SOUND_POINTS_COUNTING = 17;
-    static final int SOUND_POINTS_COUNTING_END = 18;
-    static final int SOUND_POINTS_HIGHSCORE = 19;
-    static final int SOUND_BITE = 20;
+    static final int SOUND_POINTS_HIGHSCORE = 18;
+    static final int SOUND_BITE = 19;
 
     private static int CURRENT_MUSIC;
 
@@ -88,7 +85,6 @@ public class AssetsAudio {
         sound_overtaking = loadSound("sound_overtaking.wav");
         sound_undertaking = loadSound("sound_undertaking.wav");
         sound_points_counting = loadSound("sound_points_counting.wav");
-        sound_points_counting_end = loadSound("sound_points_counting_end.wav");
         sound_points_highscore = loadSound("sound_points_highscore.wav");
         sound_fanfaar_1 = loadSound("sound_fanfaar_1.wav");
         sound_fanfaar_2 = loadSound("sound_fanfaar_2.wav");
@@ -107,7 +103,6 @@ public class AssetsAudio {
         ID_sound_overtaking = sound_overtaking.play(0);
         ID_sound_undertaking = sound_undertaking.play(0);
         ID_sound_points_counting = sound_points_counting.play(0);
-        ID_sound_points_counting_end = sound_points_counting_end.play(0);
         ID_sound_points_highscore = sound_points_highscore.play(0);
         ID_sound_fanfaar_1 = sound_fanfaar_1.play(0);
         ID_sound_fanfaar_2 = sound_fanfaar_2.play(0);
@@ -274,10 +269,6 @@ public class AssetsAudio {
                 sound_points_counting.stop(ID_sound_points_counting);
                 ID_sound_points_counting = sound_points_counting.play(volume);
                 break;
-            case SOUND_POINTS_COUNTING_END:
-                sound_points_counting_end.stop(ID_sound_points_counting_end);
-                ID_sound_points_counting_end = sound_points_counting_end.play(volume);
-                break;
             case SOUND_POINTS_HIGHSCORE:
                 sound_points_highscore.stop(ID_sound_points_highscore);
                 ID_sound_points_highscore = sound_points_highscore.play(volume);
@@ -331,7 +322,6 @@ public class AssetsAudio {
         sound_airplane_engine.dispose();
         sound_balloon_collected.dispose();
         sound_points_counting.dispose();
-        sound_points_counting_end.dispose();
         sound_points_highscore.dispose();
         sound_fanfaar_1.dispose();
         sound_fanfaar_2.dispose();

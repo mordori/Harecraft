@@ -494,7 +494,6 @@ public class ScoreScreen extends ScreenAdapter {
         pfx_points.setPosition(SCREEN_WIDTH/1.48f, SCREEN_HEIGHT/1.27f);
         pfx_points.getEmitters().first().getXScale().setHigh(50f * (SCREEN_WIDTH/1920f));
         pfx_points.allowCompletion();
-
     }
 
     public void countScore(float delta) {
@@ -635,8 +634,9 @@ public class ScoreScreen extends ScreenAdapter {
         else isHighScored = false;
 
         if (highscoreTableOpacity == 1f && stateTime > 0.5f) {
-            if (highscoreOpacity == 0f && isHighScored)
+            if (highscoreOpacity == 0f && isHighScored) {
                 AssetsAudio.playSound(AssetsAudio.SOUND_POINTS_HIGHSCORE, 1f);
+            }
 
             highscoreOpacity += delta * 3f;
             if (highscoreOpacity > 1f) {
