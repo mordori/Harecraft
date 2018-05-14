@@ -2,6 +2,7 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -169,6 +170,7 @@ public class ScoreScreen extends ScreenAdapter {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
                 touched = true;
+                System.out.println("IM TOUCHED");
                 return true;
             }
             @Override
@@ -211,6 +213,7 @@ public class ScoreScreen extends ScreenAdapter {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
                 touched = true;
+                System.out.println("IM TOUCHED");
                 return true;
             }
             @Override
@@ -242,6 +245,7 @@ public class ScoreScreen extends ScreenAdapter {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) { //touchdown täytyy palauttaa true jotta touchup voi toimia
                 touched = true;
+                System.out.println("IM TOUCHED");
                 return true;
             }
             @Override
@@ -456,34 +460,22 @@ public class ScoreScreen extends ScreenAdapter {
         grpTotalScore.setPosition(880, 450);
         stage.addActor(grpTotalScore);
 
-
-        grpButton = new Group();
-        btnMainMenu.setPosition(0 - btnMainMenu.getWidth()/2f - btnNewGame.getWidth(),0);
-        btnCourseSelect.setPosition(0 - btnCourseSelect.getWidth()/2f + btnNewGame.getWidth(),0);
-        btnNewGame.setPosition(0f - btnNewGame.getWidth()/2f,0);
-        grpButton.setPosition(640, 40);
-        grpButton.addActor(btnNewGame);
-        grpButton.addActor(btnCourseSelect);
-        grpButton.addActor(btnMainMenu);
-        stage.addActor(grpButton);
-
-
         region = Assets.atlas_1.findRegion("high" + language);
         imgHighscore = new Image(region);
         imgHighscore.setWidth(region.getRegionWidth()/2f);
         imgHighscore.setHeight(region.getRegionHeight()/2f);
-        imgHighscore.setPosition(0f - width/2f, 0f - height/2f);
+        imgHighscore.setPosition(0f - imgHighscore.getWidth()/2f, 0f - imgHighscore.getImageHeight()/2f);
 
         grpHighscore = new Group();
         if(language.equals("_fi")) {
-            grpHighscore.setPosition(650, 490);
+            grpHighscore.setPosition(875, 460);
             System.out.println("FI");
         }
         else {
-            grpHighscore.setPosition(700, 490);
+            grpHighscore.setPosition(890, 460);
             System.out.println("EN");
         }
-        grpHighscore.setOrigin(width/2f, height/2f);
+        //grpHighscore.setOrigin(imgHighscore.getWidth()/2f, imgHighscore.getImageHeight()/2f);
         grpHighscore.setScale(10f);
         grpHighscore.setRotation(5f);
         grpHighscore.setColor(1f,1f,1f,0f);
@@ -494,6 +486,16 @@ public class ScoreScreen extends ScreenAdapter {
         pfx_points.setPosition(SCREEN_WIDTH/1.48f, SCREEN_HEIGHT/1.27f);
         pfx_points.getEmitters().first().getXScale().setHigh(50f * (SCREEN_WIDTH/1920f));
         pfx_points.allowCompletion();
+
+        grpButton = new Group();
+        btnMainMenu.setPosition(0 - btnMainMenu.getWidth()/2f - btnNewGame.getWidth(),0);
+        btnCourseSelect.setPosition(0 - btnCourseSelect.getWidth()/2f + btnNewGame.getWidth(),0);
+        btnNewGame.setPosition(0 - btnNewGame.getWidth()/2f,0);
+        grpButton.setPosition(640, 40);
+        grpButton.addActor(btnNewGame);
+        grpButton.addActor(btnCourseSelect);
+        grpButton.addActor(btnMainMenu);
+        stage.addActor(grpButton);
     }
 
     public void countScore(float delta) {
@@ -502,9 +504,7 @@ public class ScoreScreen extends ScreenAdapter {
         if(!flip) shitCounter = scoreCounterTime;
         else shitCounter = 0.5f + (0.5f - scoreCounterTime);
 
-        countingScore = (int)MathUtils.floor(gainedScore * (shitCounter));
-
-        System.out.println(shitCounter);
+        countingScore = (int)MathUtils.ceil(gainedScore * (shitCounter));
 
 
         if(countingScore >= playerScore) {
@@ -539,7 +539,7 @@ public class ScoreScreen extends ScreenAdapter {
         if(!flip) anotherShittyCounter = scoreCounterTime;
         else anotherShittyCounter = 0.5f + (0.5f - scoreCounterTime);
 
-        countingScore = (int)MathUtils.floor(gainedScore * (1f - anotherShittyCounter));
+        countingScore = (int)MathUtils.ceil(gainedScore * (1f - anotherShittyCounter));
 
 
         if(countingScore <= 0) {
@@ -580,7 +580,9 @@ public class ScoreScreen extends ScreenAdapter {
     }
 
     public void update(float delta) {
-        if(isTransitionFromComplete) stateTime += delta;
+        stage.act();
+
+        stateTime += delta;
 
         if(!isCourseScoreCounted) {
             accelerator -= delta / 4f;
@@ -630,10 +632,7 @@ public class ScoreScreen extends ScreenAdapter {
         }
 
 
-        if(gainedScore + oldTotalScore > top3Score[2]) {
-            isHighScored = true;
-        }
-        else isHighScored = false;
+        isHighScored = gainedScore + oldTotalScore > top3Score[2] && gainedScore > 0;
 
         if (highscoreTableOpacity == 1f && stateTime > 0.5f) {
             if (highscoreOpacity == 0f && isHighScored) {
@@ -649,7 +648,6 @@ public class ScoreScreen extends ScreenAdapter {
             grpHighscore.setScale(10f - 9f * highscoreOpacity);
         }
 
-        stage.act();
         if(!isTransitionFromComplete) transitionFromScreen(delta);
         if(isTransition) transitionToScreen(delta);
         if(isTransitionComplete) {
@@ -721,6 +719,7 @@ public class ScoreScreen extends ScreenAdapter {
         if(opacity >= 1f) {
             opacity = 1f;
             isTransitionFromComplete = true;
+            stateTime = 0f;
             scoreCounterTime = 0f;
             accelerator = 1f;
             isCourseScoreCounted = false;
@@ -751,7 +750,6 @@ public class ScoreScreen extends ScreenAdapter {
             String highestProfileName = "----------";
 
             for (String y : tempProfileList) { //haetaan profiilien scooret
-                Gdx.app.log("username: ", "" +y);
                 tempScoreInt = profilesData.getInteger(y + "Score", 0);
 
                 if (tempScoreInt > highestScoreFound) {
@@ -765,7 +763,6 @@ public class ScoreScreen extends ScreenAdapter {
             //}
             top3Names[i] = highestProfileName;
             top3Score[i] = highestScoreFound;
-            Gdx.app.log("paras score oli pelaajalla ", "" +highestProfileName +" lukemalla " +highestScoreFound);
         }
 
         Label.LabelStyle style2 = new Label.LabelStyle(
