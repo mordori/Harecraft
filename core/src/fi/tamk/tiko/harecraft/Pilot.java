@@ -193,7 +193,11 @@ class Player extends Pilot {
             destination.y = (accelY - ACCEL_Y_OFFSET) * -5f;
 
             if (ProfileInfo.invertY == false) { //INVERTOITU LENTO
-                destination.y = (destination.y * -1) -ACCEL_Y_OFFSET -ACCEL_Y_OFFSET;
+                //destination.y = (destination.y * -1) -ACCEL_Y_OFFSET*7;
+                destination.y = (accelY - ACCEL_Y_OFFSET) * 5f;
+                destination.y = destination.y -8f;
+                Gdx.app.log("destinatony ", ""+destination.y);
+                //destination.y -= ACCEL_Y_OFFSET*4;
             }
 
             if (destination.x > 25f)

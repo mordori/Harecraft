@@ -130,6 +130,7 @@ public abstract class World {
 
     public World() {
         finish = ProfileInfo.selectedDuration;
+        finish = 10f;
         end = finish + spawnDistance + 20f;
 
         if(SCREEN_WIDTH >= 1600) pfx_speed_lines = Assets.pfx_speed_lines_2;

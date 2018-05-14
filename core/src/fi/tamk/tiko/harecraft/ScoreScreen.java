@@ -468,7 +468,7 @@ public class ScoreScreen extends ScreenAdapter {
         stage.addActor(grpButton);
 
 
-        region =  Assets.atlas_1.findRegion("high" + language);
+        region = Assets.atlas_1.findRegion("high" + language);
         imgHighscore = new Image(region);
         imgHighscore.setWidth(region.getRegionWidth()/2f);
         imgHighscore.setHeight(region.getRegionHeight()/2f);
@@ -480,7 +480,7 @@ public class ScoreScreen extends ScreenAdapter {
             System.out.println("FI");
         }
         else {
-            grpHighscore.setPosition(750, 490);
+            grpHighscore.setPosition(700, 490);
             System.out.println("EN");
         }
         grpHighscore.setOrigin(width/2f, height/2f);
