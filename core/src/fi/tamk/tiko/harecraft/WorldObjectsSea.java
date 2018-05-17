@@ -139,16 +139,9 @@ class Island extends GameObject implements Pool.Poolable{
         }
     }
 
-    public void dispose() {
-        for(int i = 0; i < palmtrees.size(); i++) {
-            palmtrees.remove(i);
-        }
-    }
-
     @Override
     public void reset() {
         refresh();
-
         palmtrees.removeAll(palmtrees);
     }
 }
@@ -229,6 +222,10 @@ class LightHouse extends GameObject {
             d.translateZ(velocity.z * delta);
             d.lookAt(camera.position,up);
         }
+    }
+
+    public void reset() {
+        palmtrees.removeAll(palmtrees);
     }
 }
 

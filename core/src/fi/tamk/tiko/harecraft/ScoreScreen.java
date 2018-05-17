@@ -2,7 +2,6 @@ package fi.tamk.tiko.harecraft;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -11,10 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,35 +20,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
 
 import static fi.tamk.tiko.harecraft.GameMain.fbo;
-import static fi.tamk.tiko.harecraft.GameMain.musicVolume;
-import static fi.tamk.tiko.harecraft.GameMain.orthoCamera;
 import static fi.tamk.tiko.harecraft.GameMain.sBatch;
-import static fi.tamk.tiko.harecraft.GameMain.shapeRenderer;
 import static fi.tamk.tiko.harecraft.GameMain.texture;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.END;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.EXIT;
-import static fi.tamk.tiko.harecraft.GameScreen.GameState.START;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_HEIGHT;
 import static fi.tamk.tiko.harecraft.GameScreen.SCREEN_WIDTH;
 import static fi.tamk.tiko.harecraft.GameScreen.balloonsCollected;
 import static fi.tamk.tiko.harecraft.GameScreen.game;
-import static fi.tamk.tiko.harecraft.GameScreen.gameState;
-import static fi.tamk.tiko.harecraft.GameScreen.gameStateTime;
-import static fi.tamk.tiko.harecraft.GameScreen.layout;
-import static fi.tamk.tiko.harecraft.GameScreen.paused;
 import static fi.tamk.tiko.harecraft.GameScreen.playerPlacement;
 import static fi.tamk.tiko.harecraft.GameScreen.playerScore;
 import static fi.tamk.tiko.harecraft.GameScreen.ringsCollected;
-import static fi.tamk.tiko.harecraft.GameScreen.stage;
-import static fi.tamk.tiko.harecraft.GameScreen.world;
 import static fi.tamk.tiko.harecraft.GameScreen.worldIndex;
 import static fi.tamk.tiko.harecraft.GameScreen.worldScore;
 import static fi.tamk.tiko.harecraft.MainMenu.localizationBundle;
@@ -83,8 +64,8 @@ public class ScoreScreen extends ScreenAdapter {
 
     float scoreboard_opacity;
     float yPos = SCREEN_HEIGHT/1.5f;
-    float originalLineHeight3 = Assets.font5.getLineHeight();
-    float originalLineHeight4 = Assets.font6.getLineHeight();
+    float originalLineHeight5 = Assets.font5.getLineHeight();
+    float originalLineHeight6 = Assets.font6.getLineHeight();
 
     float width, height;
     float opacity = 0f;
@@ -176,8 +157,8 @@ public class ScoreScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(touched && !isTransition) {
-                    Assets.font5.getData().setLineHeight(originalLineHeight3);
-                    Assets.font6.getData().setLineHeight(originalLineHeight4);
+                    Assets.font5.getData().setLineHeight(originalLineHeight5);
+                    Assets.font6.getData().setLineHeight(originalLineHeight6);
 
                     selectedScreen = NEW_GAME;
                     isTransitionFromComplete = true;
@@ -219,8 +200,8 @@ public class ScoreScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(touched && !isTransition) {
-                    Assets.font5.getData().setLineHeight(originalLineHeight4);
-                    Assets.font6.getData().setLineHeight(originalLineHeight3);
+                    Assets.font5.getData().setLineHeight(originalLineHeight5);
+                    Assets.font6.getData().setLineHeight(originalLineHeight6);
 
                     selectedScreen = LEVEL_MENU;
                     isTransitionFromComplete = true;
@@ -251,8 +232,8 @@ public class ScoreScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(touched && !isTransition) {
-                    Assets.font5.getData().setLineHeight(originalLineHeight4);
-                    Assets.font6.getData().setLineHeight(originalLineHeight3);
+                    Assets.font5.getData().setLineHeight(originalLineHeight5);
+                    Assets.font6.getData().setLineHeight(originalLineHeight6);
 
                     selectedScreen = MAIN_MENU;
                     isTransitionFromComplete = true;

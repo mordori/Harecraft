@@ -173,6 +173,7 @@ class Ring extends GameObject implements Pool.Poolable{
         isCollected = false;
         stateTime_arrows = 0f;
         opacity_arrows = 0f;
+        if(pfx_speed_up != null) pfx_speed_up.free();
         pfx_speed_up = null;
         decal.setScale(1f);
         decal_arrows.setScale(1.5f);
@@ -315,6 +316,7 @@ class Cloud extends GameObject implements Pool.Poolable {
         transposedPosition = new Vector2();
         isCollided = false;
         isTransparent = false;
+        if(pfx_dispersion != null) pfx_dispersion.free();
         pfx_dispersion = null;
         decal.setScale(1f);
     }

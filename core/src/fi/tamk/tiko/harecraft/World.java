@@ -176,6 +176,39 @@ public abstract class World {
             decal_sun2.setColor(1f,1f,1f, opacity2);
         }
     }
+
+    public void clear() {
+        for(LightHouse l: lightHouses) l.reset();
+        for(int i = 0; i < hotAirBalloons.size(); i++) hotAirBalloons.remove(i);
+        for(int i = 0; i < lightHouses.size(); i++) lightHouses.remove(i);
+
+
+        for(Ring r: rings) ringPool.free(r);
+        for(Cloud c: clouds_LDown) cloudPool.free(c);
+        for(Cloud c: clouds_RDown) cloudPool.free(c);
+        for(Cloud c: clouds_RUp) cloudPool.free(c);
+        for(Cloud c: clouds_LUp) cloudPool.free(c);
+        for(Tree t: trees_L) treePool.free(t);
+        for(Tree t: trees_R) treePool.free(t);
+        for(Hill h: hills_L) hillPool.free(h);
+        for(Hill h: hills_R) hillPool.free(h);
+        for(Lake l: lakes_L) lakePool.free(l);
+        for(Lake l: lakes_R) lakePool.free(l);
+        for(Boat b: boats) boatPool.free(b);
+        for(Island i: islands_L) islandPool.free(i);
+        for(Island i: islands_R) islandPool.free(i);
+
+
+        ringPool.clear();
+        cloudPool.clear();
+        treePool.clear();
+        hillPool.clear();
+        lakePool.clear();
+        islandPool.clear();
+        boatPool.clear();
+        pfxPool_playerSpeedUp.clear();
+        pfxPool_cloudDispersion.clear();
+    }
 }
 
 /**
