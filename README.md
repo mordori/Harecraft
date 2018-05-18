@@ -1,8 +1,8 @@
 # Harecraft
-Current version: 1.21 (final?)
+Current version: 1.21 (final)
 
-Recent changes: Pooled objects and effects, Implemented score screen, Made sure pools are cleared
+Recent changes: Pooled objects and effects, Implemented score screen, Made sure pools are nicely cleared
 
-Available in Google Play: https://play.google.com/store/apps/details?id=fi.tamk.tiko.harecraft (version 1.2)
+Available in Google Play: https://play.google.com/store/apps/details?id=fi.tamk.tiko.harecraft (version 1.21)
 
 © 2018 Mika Yli-Pentti and Mikko Mustasaari. All rights reserved.
