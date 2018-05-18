@@ -651,14 +651,14 @@ public class WorldBuilder {
     }
 
     public void spawnStartObjects() {
-        for (int j = 100; j < 220; j += MathUtils.random(30,40)) {               //Z Depth step
-            for (int i = -100; i < 100; i += MathUtils.random(15, 50)) {         //X step
-                if(world instanceof WorldSummer || world instanceof WorldTundra) {
+        for (int j = 70; j < 250; j += MathUtils.random(30,40)) {               //Z Depth step
+            for (int i = -100; i < 100; i += MathUtils.random(20, 35)) {         //X step
+                if(worldIndex == 1 || worldIndex == 2) {
                     Tree tree = world.treePool.obtain();
                     tree.init(i, groundLevel, j);
                     world.trees_L.add(tree);
                 }
-                if ( i < -10 || i > 10 ) {
+                if ( i < -15 || i > 15 ) {
                     Cloud cloud = world.cloudPool.obtain();
                     cloud.init(i, MathUtils.random(0, 8), j);
                     world.clouds_LDown.add(cloud); //Clouds

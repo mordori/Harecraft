@@ -182,6 +182,7 @@ public abstract class World {
         for(int i = 0; i < hotAirBalloons.size(); i++) hotAirBalloons.remove(i);
         for(int i = 0; i < lightHouses.size(); i++) lightHouses.remove(i);
 
+        for(int i = 0; i < balloons.size(); i++) balloons.remove(0);
 
         for(Ring r: rings) ringPool.free(r);
         for(Cloud c: clouds_LDown) cloudPool.free(c);
@@ -198,6 +199,20 @@ public abstract class World {
         for(Island i: islands_L) islandPool.free(i);
         for(Island i: islands_R) islandPool.free(i);
 
+        for(int i = 0; i < rings.size(); i++) rings.remove(0);
+        for(int i = 0; i < clouds_LDown.size(); i++) clouds_LDown.remove(0);
+        for(int i = 0; i < clouds_RDown.size(); i++) clouds_RDown.remove(0);
+        for(int i = 0; i < clouds_RUp.size(); i++) clouds_RUp.remove(0);
+        for(int i = 0; i < clouds_LUp.size(); i++) clouds_LUp.remove(0);
+        for(int i = 0; i < trees_L.size(); i++) trees_L.remove(0);
+        for(int i = 0; i < trees_R.size(); i++) trees_R.remove(0);
+        for(int i = 0; i < hills_L.size(); i++) hills_L.remove(0);
+        for(int i = 0; i < hills_R.size(); i++) hills_R.remove(0);
+        for(int i = 0; i < lakes_L.size(); i++) lakes_L.remove(0);
+        for(int i = 0; i < lakes_R.size(); i++) lakes_R.remove(0);
+        for(int i = 0; i < boats.size(); i++) boats.remove(0);
+        for(int i = 0; i < islands_L.size(); i++) islands_L.remove(0);
+        for(int i = 0; i < islands_R.size(); i++) islands_R.remove(0);
 
         ringPool.clear();
         cloudPool.clear();

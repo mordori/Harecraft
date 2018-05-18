@@ -306,6 +306,7 @@ public class HUD {
             if(opacity == 0f && gameStateTime > 5f) {
                 sBatch.setShader(null);
                 AssetsAudio.stopMusic();
+                world.clear();
                 game.setScreen(new ScoreScreen());
             }
         }

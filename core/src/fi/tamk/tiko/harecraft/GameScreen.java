@@ -427,9 +427,11 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
         AssetsAudio.stopMusic();
         switch(selectedScreen) {
             case MAIN_MENU:
+                world.clear();
                 game.setScreen(new MainMenu(game,true));
                 break;
             case NEW_GAME:
+                world.clear();
                 game.setScreen(new GameScreen(game, worldIndex));
                 break;
         }
@@ -480,7 +482,6 @@ public class GameScreen extends ScreenAdapter implements GestureDetector.Gesture
 
     @Override
     public void dispose() {
-        super.dispose();
-        world.clear();
+
     }
 }
